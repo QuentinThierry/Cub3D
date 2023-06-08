@@ -71,12 +71,14 @@ int main(int argc, char **argv)
 	ao_initialize();
 
 	/* -- Setup for default driver -- */
-	errno = 0;
+
 	default_driver = ao_default_driver_id();
 	// perror("default driver");
 
 	memset(&format, 0, sizeof(format));
-	int fd = open("app.wav", O_RDONLY);
+	// int pid = fork();
+	int fd = open("stereo.wav", O_RDONLY);
+
 	parsing(fd, &format, &buf_size);
 
 	/* -- Open driver -- */
@@ -85,22 +87,30 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Error opening device.\n");
 		return 1;
 	}
-
+	printf("size : %ld\n", buf_size);
 	buffer = calloc(buf_size,
 			sizeof(char));
 	read(fd, buffer, buf_size);
 	int i = 0;
+	// if (pid == 0)
+		// usleep(50000);
 	while (i < buf_size / 2)
 	{
-		((u_int16_t*)buffer)[i] = 32000;
+		if (i % 2 == (0)) // right
+			((short *)buffer)[i] *= 0* i * 2 / (float) buf_size;
+		else 
+			((short *)buffer)[i] *= (float)(1 - (float)(i * 2/ (float)buf_size));
 		i++;
 	}
 	ao_play(device, buffer, buf_size);
 
 	/* -- Close and shutdown -- */
 	ao_close(device);
+	free(buffer);
+	close(fd);
 
 	ao_shutdown();
 
   return (0);
 }
+// 

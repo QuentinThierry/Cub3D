@@ -1,3 +1,6 @@
 # Cub3D
 
-First commit
+first commit
+
+compilation avec son
+gcc ao_example.c libao.so.4.1.0 -lm -I.

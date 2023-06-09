@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/06/09 16:09:58 by jvigny           ###   ########.fr        #
+#    Updated: 2023/06/09 16:22:46 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,14 +14,17 @@ NAME = Cub3d
 
 CC = gcc
 CFLAGS = -g -Wall -Wextra #-Werror
-LIBS = -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext
+LIBS = -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext $(LIBAO)
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR)
 
 MINILIBX_DIR = $(HEADERS_DIR)minilibx-linux/
 MINILIBX_HEADERS = $(MINILIBX_DIR)
 MINILIBX = $(MINILIBX_DIR)libmlx.a
 
-HEADERS_LIST = ao.h cub3d.h
+LIBAO_DIR = $(HEADERS_DIR)libao/
+LIBAO = $(LIBAO_DIR)libao.so.4.1.0
+
+HEADERS_LIST = ao.h cub3d.h 
 HEADERS_DIR = ./includes/
 HEADERS = $(addprefix $(HEADERS_DIR), $(HEADERS_LIST))
 

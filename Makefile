@@ -6,11 +6,11 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/06/09 16:22:46 by jvigny           ###   ########.fr        #
+#    Updated: 2023/06/09 19:30:59 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = Cub3d
+NAME = cub3d
 
 CC = gcc
 CFLAGS = -g -Wall -Wextra #-Werror
@@ -24,7 +24,7 @@ MINILIBX = $(MINILIBX_DIR)libmlx.a
 LIBAO_DIR = $(HEADERS_DIR)libao/
 LIBAO = $(LIBAO_DIR)libao.so.4.1.0
 
-HEADERS_LIST = ao.h cub3d.h 
+HEADERS_LIST = ao.h cub3d.h get_next_line.h
 HEADERS_DIR = ./includes/
 HEADERS = $(addprefix $(HEADERS_DIR), $(HEADERS_LIST))
 
@@ -32,7 +32,12 @@ SOUND = sound/
 SRC_SOUND = \
 			sound.c
 
+GNL = get_next_line/
+SRC_GNL = get_next_line.c\
+			get_next_line_utils.c
+
 SRC_LIST =	$(addprefix $(SOUND), $(SRC_SOUND)) \
+			$(addprefix $(GNL), $(SRC_GNL)) \
 			main.c
 
 SRC_DIR = ./src/
@@ -61,6 +66,7 @@ $(OBJ_DIR)%.o:	$(SRC_DIR)%.c $(HEADERS) Makefile
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 	mkdir -p $(OBJ_DIR)$(SOUND)
+	mkdir -p $(OBJ_DIR)$(GNL)
 
 $(MINILIBX):
 	make -C $(MINILIBX_DIR) all

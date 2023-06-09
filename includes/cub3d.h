@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/08 19:04:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/09 19:40:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@
 
 # include "ao.h"
 #include "../includes/minilibx-linux/mlx.h"
+#include "../includes/get_next_line.h"
+
+typedef struct s_vector2
+{
+	int	x;
+	int	y;
+}	t_vector2;
+
 
 void parse_wav_file(int fd, ao_sample_format *format, long *data_size);
 

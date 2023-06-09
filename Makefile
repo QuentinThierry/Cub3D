@@ -5,29 +5,70 @@
 #                                                     +:+ +:+         +:+      #
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/06/09 15:40:26 by jvigny            #+#    #+#              #
-#    Updated: 2023/06/09 15:40:27 by jvigny           ###   ########.fr        #
+#    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
+#    Updated: 2023/06/09 16:09:58 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = cub3d
+NAME = Cub3d
 
-LIBS = -lm -L./includes/minilibx-linux -lmlx -lX11 -lXext
+CC = gcc
+CFLAGS = -g -Wall -Wextra #-Werror
+LIBS = -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext
+INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR)
 
-all: $(NAME)
+MINILIBX_DIR = $(HEADERS_DIR)minilibx-linux/
+MINILIBX_HEADERS = $(MINILIBX_DIR)
+MINILIBX = $(MINILIBX_DIR)libmlx.a
 
-$(NAME):
-	make -C includes/minilibx-linux
-	gcc src/sound/sound.c src/main.c includes/libao.so.4.1.0 $(LIBS) -Iincludes -o $(NAME)
+HEADERS_LIST = ao.h cub3d.h
+HEADERS_DIR = ./includes/
+HEADERS = $(addprefix $(HEADERS_DIR), $(HEADERS_LIST))
+
+SOUND = sound/
+SRC_SOUND = \
+			sound.c
+
+SRC_LIST =	$(addprefix $(SOUND), $(SRC_SOUND)) \
+			main.c
+
+SRC_DIR = ./src/
+SRC = $(addprefix $(SRC_DIR), $(SRC_LIST))
+
+OBJ_DIR = ./obj/
+OBJ_LIST = $(patsubst %.c, %.o, $(SRC_LIST))
+OBJ = $(addprefix $(OBJ_DIR), $(OBJ_LIST))
+
+all:	$(NAME)
+
+bonus:	all
 
 run: $(NAME)
 	./$(NAME)
 
-vrun: all
-	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
+vrun: $(NAME)
+	valgrind --leak-check=full --track-fds=yes --trace-children=yes --show-leak-kinds=all --track-origins=yes ./$(NAME)
 
-fclean:
-	# make -C includes/minilibx-linux clean
-	rm cub3d
+$(NAME):	$(MINILIBX) $(OBJ_DIR) $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBS) $(INCLUDES) -o $(NAME)
 
-re:	fclean all
+$(OBJ_DIR)%.o:	$(SRC_DIR)%.c $(HEADERS) Makefile
+	$(CC) $(CFLAGS) -c $(INCLUDES) $(LIBS) $< -o $@
+	
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+	mkdir -p $(OBJ_DIR)$(SOUND)
+
+$(MINILIBX):
+	make -C $(MINILIBX_DIR) all
+
+clean:
+	make -C $(MINILIBX_DIR) clean
+	rm -rf $(OBJ_DIR)
+
+fclean:	clean
+	rm -f $(NAME)
+
+re: fclean all
+
+.PHONY : all clean fclean re

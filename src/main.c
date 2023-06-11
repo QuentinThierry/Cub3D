@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/11 19:09:01 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/06/12 00:45:42 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,88 +110,67 @@ t_player	find_player(char **maps)
 
 int	get_wall_dist(t_game *game, float angle)
 {
-	t_vector2	start_pos;
-	t_vector2	delta;
-	int			dx;
-	int			dy;
-	t_fvector2	step;
+	t_vector2	xstep;
+	t_vector2	ystep;
 	float		r_angle;
 
-	angle = 30;
+	angle = 0;
 	r_angle = angle * M_PI / 180;
 	game->player.pos.x = 210;
 	game->player.pos.y = 120;
-	start_pos = game->player.pos;
-	printf("x : %d y:%d\n", start_pos.x, start_pos.y);
-	dy = game->player.pos.y % CHUNK_SIZE;
-	step.x = dy * (float)tan(r_angle);
-	dx = game->player.pos.x % CHUNK_SIZE;
-	step.y = dx / (float)tan(r_angle);
+	ystep.y = game->player.pos.y % CHUNK_SIZE;
+	ystep.x = ystep.y * (float)tan(r_angle);
+	xstep.x = game->player.pos.x % CHUNK_SIZE;
+	xstep.y = xstep.x / (float)tan(r_angle);
 
-	delta.x = step.x;
-	delta.y = step.y;	
-	printf("first steps x:%f y:%f\n", step.x, step.y);
-	printf("dx:%d dy:%d\n", dx, dy);
-
-	// start_pos.x -= game->player.pos.x % CHUNK_SIZE;
-	// start_pos.y -= game->player.pos.y % CHUNK_SIZE;
-	// printf("x : %d y : %d\n", start_pos.x, start_pos.y);
-
-	// while (true)
-	// {
-	// 	while (yIntercept < y)
-	// 	{
-	// 		printf("try at : (%d,%d)\n", x / CHUNK_SIZE, y / CHUNK_SIZE);
-	// 		if (game->maps[x / CHUNK_SIZE][y / CHUNK_SIZE] != '1')
-	// 			break ;
-	// 		y += step.y;
-	// 		x += CHUNK_SIZE;
-	// 	}
-	// 	while (xIntercept < x)
-	// 	{
-	// 		printf("try at : (%d,%d)\n", x / CHUNK_SIZE, y / CHUNK_SIZE);
-	// 		if (game->maps[x / CHUNK_SIZE][y / CHUNK_SIZE] != '1')
-	// 			break ;
-	// 		x += step.x;
-	// 		y += CHUNK_SIZE;
-	// 	}
-	// }
-	// game->maps[x / CHUNK_SIZE][y / CHUNK_SIZE] = 'A';
-	
 	int	x = 0;
 	int	y = 0;
 	
-	x = game->player.pos.x - step.x;
-	y = game->player.pos.y - dy;
+	x = game->player.pos.x;
+	y = game->player.pos.y;
 
-	if (game->maps[y / CHUNK_SIZE][x / CHUNK_SIZE] == '1')
-		return (10);
+	int	x_cmp = game->player.pos.x - game->player.pos.x % CHUNK_SIZE;
+	int	y_cmp = game->player.pos.y - game->player.pos.y % CHUNK_SIZE;
+
 	while (true)
 	{
-		y -= CHUNK_SIZE;
-		x -= CHUNK_SIZE * (float)tan(r_angle);
-		printf("try at : (%d,%d)\n", x, y);
-		if (game->maps[(y) / CHUNK_SIZE][(x) / CHUNK_SIZE] == '1')
-			break ;
+		while (x > x_cmp) // increase y
+		{
+			if (game->player.pos.x == x && game->player.pos.y == y)
+			{
+				x -= ystep.x;
+				y_cmp -= ystep.y;
+			}
+			else
+			{
+				x -= CHUNK_SIZE * (float)tan(r_angle);
+				y_cmp -= CHUNK_SIZE;
+			}
+			if (game->maps[(y_cmp) / CHUNK_SIZE][(x) / CHUNK_SIZE] == '1')
+			{
+				game->maps[(y_cmp) / CHUNK_SIZE][(x) / CHUNK_SIZE] = 'A';
+				return (0);
+			}
+		}
+		while (y > y_cmp) // increase x
+		{
+			if (game->player.pos.x == x && game->player.pos.y == y)
+			{
+				x_cmp -= xstep.x;
+				y -= xstep.y;
+			}
+			else
+			{
+				x_cmp -= CHUNK_SIZE;
+				y -= CHUNK_SIZE / (float)tan(r_angle);
+			}
+			if (game->maps[(y) / CHUNK_SIZE][(x_cmp) / CHUNK_SIZE] == '1')
+			{
+				game->maps[(y) / CHUNK_SIZE][(x_cmp) / CHUNK_SIZE] = 'A';
+				return (0);
+			}
+		}
 	}
-	game->maps[(y) / CHUNK_SIZE][(x) / CHUNK_SIZE] = 'A';
-
-	x = game->player.pos.x - dx;
-	y = game->player.pos.y - delta.y;
-	
-	if (game->maps[y / CHUNK_SIZE][x / CHUNK_SIZE] == '1')
-		return (10);
-	while (true)
-	{
-		x -= CHUNK_SIZE;
-		y -= CHUNK_SIZE / (float)tan(r_angle);
-		printf("try at : (%d,%d)\n", x, y);
-		if (game->maps[(y) / CHUNK_SIZE][(x) / CHUNK_SIZE] == '1')
-			break ;
-	}
-	game->maps[(y) / CHUNK_SIZE][(x) / CHUNK_SIZE] = 'A';
-	print_map(game->maps);
-	printf("find at : %d\n", x);
 
 	return (0);
 }
@@ -254,6 +233,7 @@ int main(int argc, char **argv)
 	game.player = player;
 	game.maps = maps;
 	get_wall_dist(&game, 0);
+	print_map(game.maps);
 	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	mlx_key_hook(game.win, end_game, &game);
 	// mlx_hook(game.win, KeyPress, KeyPressMask, end_game, &game);

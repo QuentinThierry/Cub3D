@@ -3,22 +3,85 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/09 19:47:19 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/11 19:09:01 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+#include <X11/X.h>
+
+#define WIN_X 500
+#define WIN_Y 500
+#define CHUNK_SIZE 50
+#define FOV 60
 
 typedef	struct s_player{
-	int	x;
-	int	y;
+	t_vector2	pos;
 	float	angle;
 	float	f_x;
 	float	f_y;
 }	t_player;
+
+typedef struct s_image
+{
+	void	*ptr;
+	char	*data;
+	int		bpp;
+	int		size_line;
+	int		endian;
+}	t_image;
+
+typedef struct s_game
+{
+	void		*mlx_ptr;
+	void		*win;
+	char		**maps;
+	t_image		image;
+	t_player	player;
+}	t_game;
+
+void	print_map(char **maps)
+{
+	int y = 0;
+	
+	while(maps[y] != NULL)
+	{
+		printf("%s\n", maps[y]);
+		y++;
+	}
+}
+
+void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = img->data + (y * img->size_line + x * (img->bpp / 8));
+	*(unsigned int*)dst = color;
+}
+
+// draw a vertical line on 'x' axis, from y1 up to y2 down
+void	draw_vert(t_game *game, int x, int y1, int y2)
+{
+	int	y;
+
+	y = y1;
+	while (y < y2)
+	{
+		my_mlx_pixel_put(&game->image, x, y, 0xFF0000);
+		y++;
+	}
+}
+
+int	end_game(int key, t_game *game)
+{
+	(void)game;
+	if (key == 65307 ) // esc
+		exit(0);
+	return (0);
+}
 
 t_player	find_player(char **maps)
 {
@@ -35,8 +98,8 @@ t_player	find_player(char **maps)
 			if (maps[index.y][index.x] == 'N')
 			{
 				player.angle = 0;
-				player.x = index.x;
-				player.y = index.y;
+				player.pos.x = index.x * CHUNK_SIZE;
+				player.pos.y = index.y * CHUNK_SIZE;
 			}
 			index.x++;
 		}
@@ -45,34 +108,155 @@ t_player	find_player(char **maps)
 	return (player);
 }
 
+int	get_wall_dist(t_game *game, float angle)
+{
+	t_vector2	start_pos;
+	t_vector2	delta;
+	int			dx;
+	int			dy;
+	t_fvector2	step;
+	float		r_angle;
+
+	angle = 30;
+	r_angle = angle * M_PI / 180;
+	game->player.pos.x = 210;
+	game->player.pos.y = 120;
+	start_pos = game->player.pos;
+	printf("x : %d y:%d\n", start_pos.x, start_pos.y);
+	dy = game->player.pos.y % CHUNK_SIZE;
+	step.x = dy * (float)tan(r_angle);
+	dx = game->player.pos.x % CHUNK_SIZE;
+	step.y = dx / (float)tan(r_angle);
+
+	delta.x = step.x;
+	delta.y = step.y;	
+	printf("first steps x:%f y:%f\n", step.x, step.y);
+	printf("dx:%d dy:%d\n", dx, dy);
+
+	// start_pos.x -= game->player.pos.x % CHUNK_SIZE;
+	// start_pos.y -= game->player.pos.y % CHUNK_SIZE;
+	// printf("x : %d y : %d\n", start_pos.x, start_pos.y);
+
+	// while (true)
+	// {
+	// 	while (yIntercept < y)
+	// 	{
+	// 		printf("try at : (%d,%d)\n", x / CHUNK_SIZE, y / CHUNK_SIZE);
+	// 		if (game->maps[x / CHUNK_SIZE][y / CHUNK_SIZE] != '1')
+	// 			break ;
+	// 		y += step.y;
+	// 		x += CHUNK_SIZE;
+	// 	}
+	// 	while (xIntercept < x)
+	// 	{
+	// 		printf("try at : (%d,%d)\n", x / CHUNK_SIZE, y / CHUNK_SIZE);
+	// 		if (game->maps[x / CHUNK_SIZE][y / CHUNK_SIZE] != '1')
+	// 			break ;
+	// 		x += step.x;
+	// 		y += CHUNK_SIZE;
+	// 	}
+	// }
+	// game->maps[x / CHUNK_SIZE][y / CHUNK_SIZE] = 'A';
+	
+	int	x = 0;
+	int	y = 0;
+	
+	x = game->player.pos.x - step.x;
+	y = game->player.pos.y - dy;
+
+	if (game->maps[y / CHUNK_SIZE][x / CHUNK_SIZE] == '1')
+		return (10);
+	while (true)
+	{
+		y -= CHUNK_SIZE;
+		x -= CHUNK_SIZE * (float)tan(r_angle);
+		printf("try at : (%d,%d)\n", x, y);
+		if (game->maps[(y) / CHUNK_SIZE][(x) / CHUNK_SIZE] == '1')
+			break ;
+	}
+	game->maps[(y) / CHUNK_SIZE][(x) / CHUNK_SIZE] = 'A';
+
+	x = game->player.pos.x - dx;
+	y = game->player.pos.y - delta.y;
+	
+	if (game->maps[y / CHUNK_SIZE][x / CHUNK_SIZE] == '1')
+		return (10);
+	while (true)
+	{
+		x -= CHUNK_SIZE;
+		y -= CHUNK_SIZE / (float)tan(r_angle);
+		printf("try at : (%d,%d)\n", x, y);
+		if (game->maps[(y) / CHUNK_SIZE][(x) / CHUNK_SIZE] == '1')
+			break ;
+	}
+	game->maps[(y) / CHUNK_SIZE][(x) / CHUNK_SIZE] = 'A';
+	print_map(game->maps);
+	printf("find at : %d\n", x);
+
+	return (0);
+}
+
+void	raycasting(t_game *game)
+{
+	int	x;
+	int	angle;
+
+	x = 0;
+	while (x < WIN_X)
+	{
+		// angle = FOV / x;
+
+		draw_vert(game, x, 10, 20);
+		x++;
+	}
+}
+
+int	on_update(t_game *game)
+{
+	raycasting(game);
+	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image.ptr, 0, 0);
+	usleep(100000);
+	// bzero(game->image.data, 200 * 200 * 4);
+	// mlx_clear_window(game->mlx_ptr, game->win);
+	return (0);
+}
+
 int main(int argc, char **argv)
 {
-	char	*buff;
-	char	*maps[12];
+	char		*maps[20] = {0};
 	t_player	player;
-	int y,x;
-	int p_y,p_x;
-	
+	void		*img;
+	t_game		game;
+	int y;
 	int fd;
-	
+
+	game.mlx_ptr = mlx_init();
+	game.win = mlx_new_window(game.mlx_ptr, WIN_X, WIN_Y, "cub3d");
+	img = mlx_new_image(game.mlx_ptr, WIN_X, WIN_Y);
+	game.image.data = mlx_get_data_addr(img,
+		&game.image.bpp, &game.image.size_line, &game.image.endian);
+	game.image.ptr = img;
+
 	fd = open("maps/test.cub", O_RDONLY);
 	y = 0;
 	maps[y] = get_next_line(fd);
 	while (maps[y] != NULL)
 	{
+		maps[y][strlen(maps[y]) - 1] = 0;
 		y++;
 		maps[y] = get_next_line(fd);
 	}
 	close(fd);
-	y = 0;
 	player = find_player(maps);
 	
-	printf("x : %d Y:%d\n", player.x, player.y);
-	while(maps[y] != NULL)
-	{
-		printf("%s\n", maps[y]);
-		y++;
-	}
-	
+	print_map(maps);
+
+	game.player = player;
+	game.maps = maps;
+	get_wall_dist(&game, 0);
+	mlx_loop_hook(game.mlx_ptr, on_update, &game);
+	mlx_key_hook(game.win, end_game, &game);
+	// mlx_hook(game.win, KeyPress, KeyPressMask, end_game, &game);
+	// mlx_loop(game.mlx_ptr);
 	return (0);
 }

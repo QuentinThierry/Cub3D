@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   sound.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:17:06 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/09 19:46:50 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/09 21:05:47 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 typedef struct s_sound
 {

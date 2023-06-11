@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/09 19:40:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/11 15:16:57 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <strings.h>
 # include <unistd.h>
 # include <stdbool.h>
-# include <stdbool.h>
+# include <math.h>
 
 # include "ao.h"
 #include "../includes/minilibx-linux/mlx.h"
@@ -31,6 +31,12 @@ typedef struct s_vector2
 	int	x;
 	int	y;
 }	t_vector2;
+
+typedef struct s_fvector2
+{
+	float	x;
+	float	y;
+}	t_fvector2;
 
 
 void parse_wav_file(int fd, ao_sample_format *format, long *data_size);

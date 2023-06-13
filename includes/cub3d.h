@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/13 17:42:25 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/14 00:22:12 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 #include <X11/X.h>
 
 #define WIN_X 400
-#define WIN_Y 300
+#define WIN_Y 600
 #define CHUNK_SIZE 50
 #define FOV 60
 

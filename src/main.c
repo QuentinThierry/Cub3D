@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/13 20:30:36 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/14 00:18:36 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ t_player	find_player(char **maps)
 			if (maps[index.y][index.x] == 'N')
 			{
 				player.angle = 0;
-				player.pos.x = index.x * CHUNK_SIZE + CHUNK_SIZE / 3.0;
-				player.pos.y = index.y * CHUNK_SIZE + CHUNK_SIZE / 3.0;
-				player.f_real_pos.x = index.x + 1 / 3.0;
-				player.f_real_pos.y = index.y + 1 / 3.0;
+				player.pos.x = index.x * CHUNK_SIZE + CHUNK_SIZE / 2.0;
+				player.pos.y = index.y * CHUNK_SIZE + CHUNK_SIZE / 2.0;
+				player.f_real_pos.x = index.x + 1 / 2.0;
+				player.f_real_pos.y = index.y + 1 / 2.0;
 			}
 			index.x++;
 		}
@@ -49,8 +49,8 @@ int	on_update(t_game *game)
 		clock_gettime(CLOCK_REALTIME, &last_time);
 		
 	quadrillage(game);
-	// raycasting(game);
-	get_wall_dist(game, game->player.angle);
+	raycasting(game);
+	// get_wall_dist(game, game->player.angle);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image.ptr, 0, 0);
 	// usleep(100000);
 	// mlx_clear_window(game->mlx_ptr, game->win);
@@ -90,14 +90,21 @@ int main(int argc, char **argv)
 	}
 	close(fd);
 	player = find_player(maps);
-	player.angle=45;
 	printf("%d, %d\n", player.pos.x, player.pos.y);
 	// print_map(maps);
 	game.player = player;
 	game.maps = maps;
+	// game.player.angle=45;
+	// get_wall_dist(&game, game.player.angle);
+	// game.player.angle=45 + 90;
+	// get_wall_dist(&game, game.player.angle);
+	// game.player.angle=45 + 180;
+	// get_wall_dist(&game, game.player.angle);
+	// game.player.angle=45 + 270;
+	// get_wall_dist(&game, game.player.angle);
 	quadrillage(&game);
 	// raycasting(&game);
-	
+	// mlx_put_image_to_window(game.mlx_ptr, game.win, game.image.ptr, 0, 0);
 	// print_map(game.maps);
 	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	mlx_key_hook(game.win, key_press_hook, &game);

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/13 17:30:50 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/13 17:42:25 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ typedef struct s_fvector2
 
 typedef	struct s_player{
 	t_vector2	pos;
-	float	angle;
-	float	f_x;
-	float	f_y;
+	t_fvector2 	f_pos;
+	t_fvector2 	f_real_pos;
+	float		angle;
 }	t_player;
 
 typedef struct s_image
@@ -66,8 +66,8 @@ typedef struct s_game
 {
 	void		*mlx_ptr;
 	void		*win;
-	char		**maps;
 	t_image		image;
+	char		**maps;
 	t_player	player;
 }	t_game;
 

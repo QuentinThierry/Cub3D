@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/13 17:28:54 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/13 18:45:46 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ t_player	find_player(char **maps)
 			if (maps[index.y][index.x] == 'N')
 			{
 				player.angle = 0;
-				player.pos.x = index.x * CHUNK_SIZE;
-				player.pos.y = index.y * CHUNK_SIZE;
+				player.pos.x = index.x * CHUNK_SIZE + CHUNK_SIZE / 2;
+				player.pos.y = index.y * CHUNK_SIZE + CHUNK_SIZE / 2;
+				player.f_real_pos.x = index.x + 1 / 2;
+				player.f_real_pos.y = index.y + 1 / 2;
 			}
 			index.x++;
 		}
@@ -50,9 +52,9 @@ int	on_update(t_game *game)
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
 		
-	raycasting(game);
 	quadrillage(game);
-	get_wall_dist(game, game->player.angle);
+	raycasting(game);
+	// get_wall_dist(game, game->player.angle);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image.ptr, 0, 0);
 	// usleep(100000);
 	// bzero(game->image.data, 200 * 200 * 4);
@@ -93,14 +95,15 @@ int main(int argc, char **argv)
 	}
 	close(fd);
 	player = find_player(maps);
-	player.angle = 45;
-	// print_map(maps);
+	// player.angle = 45;
+	print_map(maps);
 	game.player = player;
 	game.maps = maps;
 	quadrillage(&game);
+	raycasting(&game);
 	
 	// print_map(game.maps);
-	mlx_loop_hook(game.mlx_ptr, on_update, &game);
+	// mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	mlx_key_hook(game.win, key_press_hook, &game);
 	mlx_loop(game.mlx_ptr);
 	return (0);

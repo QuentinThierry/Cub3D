@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/13 17:27:27 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/13 18:56:44 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,29 +18,27 @@ int	get_wall_dist(t_game *game, float angle)
 {
 	float	x_step;
 	float	y_step;
-	float	r_angle;
 	int		x,y;
 	float	dx;
 	float	dy;
 	float	x_comp;
 	float	y_comp;
+	float	tan_angle;
 
-	game->player.pos.x = 210;
-	game->player.pos.y = 120;
+	tan_angle = (float)tan(angle * M_PI / 180);
 	my_mlx_pixel_put(&game->image,
 		game->player.pos.x, game->player.pos.y, 0xFF0000);
-	r_angle = angle * M_PI / 180;
 	dx = (float)game->player.pos.x / CHUNK_SIZE - (int)(game->player.pos.x / CHUNK_SIZE);
 	dy = (float)game->player.pos.y / CHUNK_SIZE - (int)(game->player.pos.y / CHUNK_SIZE);
 
-	x_step = 1 * (float)tan(r_angle);
-	y_step = 1 / (float)tan(r_angle);
+	x_step = tan_angle;
+	y_step = 1 / tan_angle;
 
 	x = game->player.pos.x / CHUNK_SIZE;
 	y = game->player.pos.y / CHUNK_SIZE;
 
-	x_comp = x + dx - dy * (float)tan(r_angle);
-	y_comp = y + dy - dx / (float)tan(r_angle);
+	x_comp = x + dx - dy * tan_angle;
+	y_comp = y + dy - dx / tan_angle;
 
 	while (true)
 	{

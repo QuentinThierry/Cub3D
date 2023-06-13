@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/13 17:28:54 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/13 18:55:28 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-
 
 t_player	find_player(char **maps)
 {
@@ -29,8 +27,8 @@ t_player	find_player(char **maps)
 			if (maps[index.y][index.x] == 'N')
 			{
 				player.angle = 0;
-				player.pos.x = index.x * CHUNK_SIZE;
-				player.pos.y = index.y * CHUNK_SIZE;
+				player.pos.x = index.x * CHUNK_SIZE + 10;
+				player.pos.y = index.y * CHUNK_SIZE + 10;
 			}
 			index.x++;
 		}
@@ -38,8 +36,6 @@ t_player	find_player(char **maps)
 	}
 	return (player);
 }
-
-
 
 int	on_update(t_game *game)
 {
@@ -55,7 +51,6 @@ int	on_update(t_game *game)
 	get_wall_dist(game, game->player.angle);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image.ptr, 0, 0);
 	// usleep(100000);
-	// bzero(game->image.data, 200 * 200 * 4);
 	// mlx_clear_window(game->mlx_ptr, game->win);
 	
 	clock_gettime(CLOCK_REALTIME, &cur_time);
@@ -93,6 +88,7 @@ int main(int argc, char **argv)
 	}
 	close(fd);
 	player = find_player(maps);
+	printf("%d, %d\n", player.pos.x, player.pos.y);
 	player.angle = 45;
 	// print_map(maps);
 	game.player = player;

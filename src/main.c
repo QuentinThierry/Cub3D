@@ -6,13 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/13 18:45:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/13 19:01:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-
 
 t_player	find_player(char **maps)
 {
@@ -41,8 +39,6 @@ t_player	find_player(char **maps)
 	return (player);
 }
 
-
-
 int	on_update(t_game *game)
 {
 	static struct timespec	last_time = {0};
@@ -53,11 +49,10 @@ int	on_update(t_game *game)
 		clock_gettime(CLOCK_REALTIME, &last_time);
 		
 	quadrillage(game);
-	raycasting(game);
-	// get_wall_dist(game, game->player.angle);
+	// raycasting(game);
+	get_wall_dist(game, game->player.angle);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image.ptr, 0, 0);
 	// usleep(100000);
-	// bzero(game->image.data, 200 * 200 * 4);
 	// mlx_clear_window(game->mlx_ptr, game->win);
 	
 	clock_gettime(CLOCK_REALTIME, &cur_time);
@@ -95,15 +90,15 @@ int main(int argc, char **argv)
 	}
 	close(fd);
 	player = find_player(maps);
-	// player.angle = 45;
-	print_map(maps);
+	printf("%d, %d\n", player.pos.x, player.pos.y);
+	// print_map(maps);
 	game.player = player;
 	game.maps = maps;
 	quadrillage(&game);
-	raycasting(&game);
+	// raycasting(&game);
 	
 	// print_map(game.maps);
-	// mlx_loop_hook(game.mlx_ptr, on_update, &game);
+	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	mlx_key_hook(game.win, key_press_hook, &game);
 	mlx_loop(game.mlx_ptr);
 	return (0);

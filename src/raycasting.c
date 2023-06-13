@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/13 18:55:04 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/13 19:00:43 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,25 @@ int	get_wall_dist(t_game *game, float angle)
 	t_fvector2	step;
 	t_fvector2	delta;
 	t_fvector2	comp;
-	float	r_angle;
+	float	tan_angle;
 	int		x,y;
 
 	// game->player.pos.x = 210;
 	// game->player.pos.y = 120;
 	my_mlx_pixel_put(&game->image,
 		game->player.pos.x, game->player.pos.y, 0xFF0000);
-	r_angle = angle * M_PI / 180;
+	tan_angle = (float)tan(angle * M_PI / 180);
 	delta.x = (float)game->player.pos.x / CHUNK_SIZE - (int)(game->player.pos.x / CHUNK_SIZE);
 	delta.y = (float)game->player.pos.y / CHUNK_SIZE - (int)(game->player.pos.y / CHUNK_SIZE);
 
-	step.x = 1 * (float)tan(r_angle);
-	step.y = 1 / (float)tan(r_angle);
+	step.x = 1 * tan_angle;
+	step.y = 1 / tan_angle;
 
 	x = game->player.pos.x / CHUNK_SIZE;
 	y = game->player.pos.y / CHUNK_SIZE;
 
-	comp.x = x + delta.x - delta.y * (float)tan(r_angle);
-	comp.y = y + delta.y - delta.x / (float)tan(r_angle);
+	comp.x = x + delta.x - delta.y * tan_angle;
+	comp.y = y + delta.y - delta.x / tan_angle;
 
 	while (true)
 	{

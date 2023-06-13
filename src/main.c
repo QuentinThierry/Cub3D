@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/13 19:01:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/13 20:30:36 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ t_player	find_player(char **maps)
 			if (maps[index.y][index.x] == 'N')
 			{
 				player.angle = 0;
-				player.pos.x = index.x * CHUNK_SIZE + CHUNK_SIZE / 2;
-				player.pos.y = index.y * CHUNK_SIZE + CHUNK_SIZE / 2;
-				player.f_real_pos.x = index.x + 1 / 2;
-				player.f_real_pos.y = index.y + 1 / 2;
+				player.pos.x = index.x * CHUNK_SIZE + CHUNK_SIZE / 3.0;
+				player.pos.y = index.y * CHUNK_SIZE + CHUNK_SIZE / 3.0;
+				player.f_real_pos.x = index.x + 1 / 3.0;
+				player.f_real_pos.y = index.y + 1 / 3.0;
 			}
 			index.x++;
 		}
@@ -90,6 +90,7 @@ int main(int argc, char **argv)
 	}
 	close(fd);
 	player = find_player(maps);
+	player.angle=45;
 	printf("%d, %d\n", player.pos.x, player.pos.y);
 	// print_map(maps);
 	game.player = player;

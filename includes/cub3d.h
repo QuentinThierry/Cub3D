@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/11 15:16:57 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/06/13 16:20:59 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <unistd.h>
 # include <stdbool.h>
 # include <math.h>
+# include <time.h>
 
 # include "ao.h"
 #include "../includes/minilibx-linux/mlx.h"

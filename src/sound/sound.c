@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:17:06 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/16 18:31:42 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/16 21:15:06 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_sound	init_sound(const char *sound_path, int driver)
 		return (close(fd), perror("Error3"), (t_sound){0});
 	if (read(fd, sound.buffer, sound.buf_size) <= 0)
 		return (free(sound.buffer), close(fd), perror("Error4"), (t_sound){0});
-	driver = ao_driver_id(const char *short_name);
+	driver = ao_driver_id("wav");
 	printf("driver : %d\n", driver);
 	sound.device = ao_open_live(driver, &sound.format, NULL);
 	if (!sound.device)

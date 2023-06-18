@@ -6,16 +6,25 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/18 15:59:00 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/18 19:55:04 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-//180 < x < 360 sign.x == -1 ->>change wall comp
-//270 < y < 90 sign.y == -1 ->>change wall comp
 
-int	get_wall_dist(t_game *game, float angle)
+float	get_dist(t_game *game, float x, float y)
+{
+	t_fvector2	delta;
+
+	delta.x = fabsf(x - game->player->f_real_pos.x);
+	delta.y = fabsf(y - game->player->f_real_pos.y);
+	// printf("delta x : %f delta y : %f\n", delta.x, delta.y);
+	return sqrt((delta.x * delta.x + delta.y * delta.y));
+	// return (delta.x * cos(game->player->angle * M_PI / 180) + delta.y * sin(game->player->angle * M_PI / 180));
+}
+
+float	get_wall_dist(t_game *game, float angle)
 {
 	t_fvector2	step;
 	t_fvector2	delta;
@@ -23,14 +32,9 @@ int	get_wall_dist(t_game *game, float angle)
 	t_vector2	sign;
 	int		x,y;
 	
-	my_mlx_pixel_put(game->image,
-		game->player->pos.x, game->player->pos.y, 0xFF0000);
-	if (angle > 360)
-		angle = angle - 360 ;
-	if (angle < 0)
-		angle = angle + 360 ;
+	// my_mlx_pixel_put(game->image,
+	// 	game->player->pos.x, game->player->pos.y, 0xFF0000);
 
-		
 	if (angle >= 0 && angle <= 180)
 		sign.x = 1;
 	else
@@ -59,22 +63,22 @@ int	get_wall_dist(t_game *game, float angle)
 		// printf("begin\n");
 		while ((sign.y == 1 && y >= comp.y) || (y <= comp.y && sign.y == -1))		//x
 		{
-			my_mlx_pixel_put(game->image,
-					x * CHUNK_SIZE, (int)(comp.y * CHUNK_SIZE), 0xFF0000);
+			// my_mlx_pixel_put(game->image,
+			// 		x * CHUNK_SIZE, (int)(comp.y * CHUNK_SIZE), 0xFF0000);
 			if (game->maps[(int)comp.y][x + (sign.x == -1) * -1] == '1')
 			{
-				return (0);
+				return (get_dist(game, x, comp.y));
 			}
 			comp.y += step.y;
 			x += sign.x;
 		}
 		while ((sign.x == 1 && x >= comp.x) || (x <= comp.x && sign.x == -1))		//y
 		{
-			my_mlx_pixel_put(game->image,
-					(int)(comp.x * CHUNK_SIZE), y * CHUNK_SIZE, 0x00FF00);
+			// my_mlx_pixel_put(game->image,
+			// 		(int)(comp.x * CHUNK_SIZE), y * CHUNK_SIZE, 0x00FF00);
 			if (game->maps[y + (sign.y == -1) * -1][(int)comp.x] == '1')
 			{
-				return (0);
+				return (get_dist(game, comp.x, y));
 			}
 			comp.x += step.x;
 			y += sign.y;
@@ -87,19 +91,22 @@ int	get_wall_dist(t_game *game, float angle)
 void	raycasting(t_game *game)
 {
 	int		x;
+	float	dist;
 	float	angle;
 
+	// printf("angle : %f\n", game->player->angle);
 	// printf("float x : %f y : %f		pixel x : %d y : %d\n", game->player->f_real_pos.x,game->player->f_real_pos.y, game->player->pos.x, game->player->pos.x);
-	x = - WIN_X / 2;
-	while (x <=  WIN_X / 2)
+	x = - WIN_X / 2.0;
+	while (x <  WIN_X / 2.0)
 	{
 		angle = ((float)x * (FOV / 2.0)) / (WIN_X / 2.0);
-		if (game->player->angle + angle > 360)
-			angle = angle - 360 ;
+		if (game->player->angle + angle >= 360)
+			game->player->angle = game->player->angle - 360;
 		if (game->player->angle + angle < 0)
-			angle = angle + 360 ;
-		// printf("angle : %f 	x: %d\n", game->player.angle + angle, x);
-		get_wall_dist(game, game->player->angle + angle);
+			game->player->angle = game->player->angle + 360;
+		dist = HEIGHT_WALL / get_wall_dist(game, game->player->angle + angle);
+		draw_vert(game, x + WIN_X / 2, WIN_Y / 2.0 - dist / 2.0, WIN_Y / 2.0 + dist / 2.0);
+		// printf("Dist : %f\n", get_wall_dist(game, game->player->angle + angle));
 		x++;
 	}
 }

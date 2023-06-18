@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:17:06 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/16 21:15:06 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/18 14:41:26 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,31 +52,31 @@ void parse_wav_file(int fd, ao_sample_format *format, long *data_size)
 }
 
 
-t_sound	init_sound(const char *sound_path, int driver)
+t_sound	init_sound(const char *sound_path, int driver, bool *error)
 {
 	t_sound	sound;
 	int		fd;
 	ssize_t	read_size;
 
+	*error = false;
 	bzero(&sound, sizeof(t_sound));
 	fd = open(sound_path, O_RDONLY);
 	if (fd < 0)
-		return (perror("Error1"), (t_sound){0});
+		return (perror("Error1"), *error = true, (t_sound){0});
 	parse_wav_file(fd, &sound.format, &sound.buf_size);
 	if (sound.buf_size == 0)
-		return (close(fd), perror("Error2"), (t_sound){0});
+		return (close(fd), perror("Error2"), *error = true, (t_sound){0});
 	sound.buffer = calloc(sound.buf_size, sizeof(char));
 	if (!sound.buffer)
-		return (close(fd), perror("Error3"), (t_sound){0});
+		return (close(fd), perror("Error3"), *error = true, (t_sound){0});
 	if (read(fd, sound.buffer, sound.buf_size) <= 0)
-		return (free(sound.buffer), close(fd), perror("Error4"), (t_sound){0});
-	driver = ao_driver_id("wav");
+		return (free(sound.buffer), close(fd), perror("Error4"), *error = true, (t_sound){0});
+	driver = ao_default_driver_id();
 	printf("driver : %d\n", driver);
 	sound.device = ao_open_live(driver, &sound.format, NULL);
 	if (!sound.device)
-		return (free(sound.buffer), close(fd), perror("Error5"), (t_sound){0});
-	// ao_play(sound.device, sound.buffer, sound.buf_size);
-	perror("Error6");
+		return (free(sound.buffer), close(fd), perror("Error5"), *error = true, (t_sound){0});
+	// perror("Error6");
 	close(fd);
 	return (sound);
 }
@@ -85,6 +85,7 @@ t_sound	init_sound(const char *sound_path, int driver)
 void	play_sound(t_sound *sound, t_vector2 listen_pos, t_vector2 emit_pos)
 {
 	int i;
+	int	error;
 
 	i = 0;
 	while (i < sound->buf_size / 2)
@@ -95,24 +96,28 @@ void	play_sound(t_sound *sound, t_vector2 listen_pos, t_vector2 emit_pos)
 		// 	((short *)sound->buffer)[i] *= (float)(1 - (float)(i * 2/ (float)sound->buf_size));
 		i++;
 	}
-	ao_play(sound->device, sound->buffer, sound->buf_size);
+	error = ao_play(sound->device, sound->buffer, sound->buf_size);
+	if (error == 0)
+		return (free(sound->buffer), perror("Error7"));
 }
 
-int sound(void)
+int main(void)
 {
+	bool	error;
 	int		driver;
 	t_sound	sound;
 	t_sound	sound2;
 	void	*mlx_ptr;
 
+	error = false;
 	ao_initialize();
 	mlx_ptr = mlx_init();
 
 	// mlx_loop(mlx_ptr);
 	
-	sound = init_sound("assets/sounds/CantinaBand3.wav", driver);
+	sound = init_sound("assets/sounds/sound.wav", driver, &error);
 	// sound = init_sound("assets/sounds/stereo.wav", driver);
-	if (errno != 0)
+	if (error == true)
 		return (perror("truc"), 1);
 	play_sound(&sound, (t_vector2){0 ,0}, (t_vector2){0 ,0});
 	// play_sound(&sound2, (t_vector2){0 ,0}, (t_vector2){0 ,0});
@@ -123,3 +128,5 @@ int sound(void)
 	ao_shutdown();
 	return (0);
 }
+
+

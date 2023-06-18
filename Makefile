@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/06/16 21:18:52 by jvigny           ###   ########.fr        #
+#    Updated: 2023/06/18 14:24:19 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,12 +57,14 @@ OBJ_DIR = ./obj/
 OBJ_LIST = $(patsubst %.c, %.o, $(SRC_LIST))
 OBJ = $(addprefix $(OBJ_DIR), $(OBJ_LIST))
 
+# export LD_LIBRARY_PATH=$(LIBAO_ABS_PATH)lib
+
 all:	$(NAME)
 
 bonus:	all
 
 run: $(NAME)
-	./$(NAME)
+	export LD_LIBRARY_PATH=$(LIBAO_ABS_PATH)lib && ./$(NAME)
 
 # vrun: $(NAME)
 # 	valgrind --leak-check=full --track-fds=yes --trace-children=yes --show-leak-kinds=all --track-origins=yes ./$(NAME)
@@ -87,7 +89,7 @@ $(LIBAO):
 	tar -xf $(LIBAO_TAR) $(REDIRECT_ERROR)
 	rm -rf $(LIBAO_TAR) $(REDIRECT_ERROR)
 	mkdir -p $(LIBAO_ABS_PATH)
-	cd $(LIBAO_SRC) && ./configure --prefix=$(LIBAO_ABS_PATH) --exec-prefix=$(LIBAO_ABS_PATH) $(REDIRECT_ERROR) && cd ..
+	cd $(LIBAO_SRC) && ./configure --prefix=$(LIBAO_ABS_PATH) --exec-prefix=$(LIBAO_ABS_PATH) $(REDIRECT_ERROR)
 	make -C $(LIBAO_SRC) $(REDIRECT_ERROR)
 	make -C $(LIBAO_SRC) install $(REDIRECT_ERROR)
 	rm -rf $(LIBAO_SRC)
@@ -101,8 +103,6 @@ clean:
 
 fclean:	clean
 	rm -f $(NAME)
-
-ffclean:	fclean
 	rm -rf $(LIBAO_DIR)
 
 re: fclean all

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/16 17:42:42 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/18 14:26:30 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,3 @@
 // 	mlx_loop(game.mlx_ptr);
 // 	return (0);
 // }
-int sound(void);
-
-
-int main()
-{
-	// ao_initialize();
-	sound();
-	return (0);
-}

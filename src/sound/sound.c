@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:17:06 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/18 14:41:26 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/18 14:56:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ void parse_wav_file(int fd, ao_sample_format *format, long *data_size)
 }
 
 
-t_sound	init_sound(const char *sound_path, int driver, bool *error)
+t_sound	init_sound(const char *sound_path, bool *error)
 {
 	t_sound	sound;
 	int		fd;
-	ssize_t	read_size;
+	int driver;
 
 	*error = false;
 	bzero(&sound, sizeof(t_sound));
@@ -82,11 +82,12 @@ t_sound	init_sound(const char *sound_path, int driver, bool *error)
 }
 
 // creer une struct pour chaque son
-void	play_sound(t_sound *sound, t_vector2 listen_pos, t_vector2 emit_pos)
+void	play_sound(t_sound *sound, t_vector2 listen_pos, t_vector2 emit_pos, bool *error)
 {
 	int i;
-	int	error;
 
+	(void)listen_pos;
+	(void)emit_pos;
 	i = 0;
 	while (i < sound->buf_size / 2)
 	{
@@ -96,31 +97,27 @@ void	play_sound(t_sound *sound, t_vector2 listen_pos, t_vector2 emit_pos)
 		// 	((short *)sound->buffer)[i] *= (float)(1 - (float)(i * 2/ (float)sound->buf_size));
 		i++;
 	}
-	error = ao_play(sound->device, sound->buffer, sound->buf_size);
-	if (error == 0)
-		return (free(sound->buffer), perror("Error7"));
+	*error = ao_play(sound->device, sound->buffer, sound->buf_size);
+	if (*error == 0)
+		return (*error = true, perror("Error7"));
 }
 
-int main(void)
+int sound(void)
 {
 	bool	error;
-	int		driver;
 	t_sound	sound;
-	t_sound	sound2;
-	void	*mlx_ptr;
 
 	error = false;
 	ao_initialize();
-	mlx_ptr = mlx_init();
 
 	// mlx_loop(mlx_ptr);
 	
-	sound = init_sound("assets/sounds/sound.wav", driver, &error);
-	// sound = init_sound("assets/sounds/stereo.wav", driver);
+	sound = init_sound("assets/sounds/stereo.wav", &error);
 	if (error == true)
-		return (perror("truc"), 1);
-	play_sound(&sound, (t_vector2){0 ,0}, (t_vector2){0 ,0});
-	// play_sound(&sound2, (t_vector2){0 ,0}, (t_vector2){0 ,0});
+		return (perror("truc1"), 1);
+	play_sound(&sound, (t_vector2){0 ,0}, (t_vector2){0 ,0}, &error);
+	if (error == true)
+		return (perror("truc2"), 1);
 	
 	/* -- Close and shutdown -- */
 	free(sound.buffer);

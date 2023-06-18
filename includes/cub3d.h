@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/18 14:28:16 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/18 15:42:58 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ typedef struct s_game
 {
 	void		*mlx_ptr;
 	void		*win;
-	t_image		image;
+	t_image		*image;
 	char		**maps;
-	t_player	player;
+	t_player	*player;
 }	t_game;
 
 

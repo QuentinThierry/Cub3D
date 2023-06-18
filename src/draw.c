@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/13 17:42:03 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/06/18 15:12:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	draw_vert(t_game *game, int x, int y1, int y2)
 	y = y1;
 	while (y < y2)
 	{
-		my_mlx_pixel_put(&game->image, x, y, 0xFF0000);
+		my_mlx_pixel_put(game->image, x, y, 0xFF0000);
 		y++;
 	}
 }
@@ -61,7 +61,7 @@ void	quadrillage(t_game *game)
 				color = 0x404040;
 			else
 				color = 0x202020;
-			my_mlx_pixel_put(&game->image, x, y, color);
+			my_mlx_pixel_put(game->image, x, y, color);
 			x++;
 		}
 		y += CHUNK_SIZE;
@@ -77,7 +77,7 @@ void	quadrillage(t_game *game)
 				color = 0x404040;
 			else
 				color = 0x202020;
-			my_mlx_pixel_put(&game->image, x, y, color);
+			my_mlx_pixel_put(game->image, x, y, color);
 			y++;
 		}
 		x += CHUNK_SIZE;

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/14 00:07:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/18 15:46:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	get_wall_dist(t_game *game, float angle)
 	float	tan_angle;
 	int		x,y;
 	
-	my_mlx_pixel_put(&game->image,
-		game->player.pos.x, game->player.pos.y, 0xFF0000);
+	my_mlx_pixel_put(game->image,
+		game->player->pos.x, game->player->pos.y, 0xFF0000);
 	if (angle > 360)
 		angle = angle - 360 ;
 	if (angle < 0)
@@ -39,25 +39,25 @@ int	get_wall_dist(t_game *game, float angle)
 		sign.y = -1;
 	tan_angle = fabsf((float)tan(angle * M_PI / 180));
 	
-	x = (int)(game->player.f_real_pos.x) + (sign.x == 1);
-	y = (int)(game->player.f_real_pos.y) + (sign.y == 1);
-	delta.x = fabsf(game->player.f_real_pos.x - (x));
-	delta.y = fabsf(game->player.f_real_pos.y - (y));
+	x = (int)(game->player->f_real_pos.x) + (sign.x == 1);
+	y = (int)(game->player->f_real_pos.y) + (sign.y == 1);
+	delta.x = fabsf(game->player->f_real_pos.x - (x));
+	delta.y = fabsf(game->player->f_real_pos.y - (y));
 
 	step.x = 1 * tan_angle * sign.x;
 	step.y = 1 / tan_angle * sign.y;
 
 	// printf("x : %d y : %d\n", x, y);
 	// printf("delta x : %f delta y : %f\n", delta.x, delta.y);
-	comp.x = game->player.f_real_pos.x + delta.y * tan_angle * sign.x;
-	comp.y = game->player.f_real_pos.y + delta.x / tan_angle * sign.y;
+	comp.x = game->player->f_real_pos.x + delta.y * tan_angle * sign.x;
+	comp.y = game->player->f_real_pos.y + delta.x / tan_angle * sign.y;
 
 	while (true)
 	{
 		// printf("begin\n");
 		while ((sign.y == 1 && y >= comp.y) || (y <= comp.y && sign.y == -1))
 		{
-			my_mlx_pixel_put(&game->image,
+			my_mlx_pixel_put(game->image,
 					x * CHUNK_SIZE, (int)(comp.y * CHUNK_SIZE), 0xFF0000);
 			if (game->maps[(int)comp.y][x] == '1')
 			{
@@ -68,7 +68,7 @@ int	get_wall_dist(t_game *game, float angle)
 		}
 		while ((sign.x == 1 && x >= comp.x) || (x <= comp.x && sign.x == -1))
 		{
-			my_mlx_pixel_put(&game->image,
+			my_mlx_pixel_put(game->image,
 					(int)(comp.x * CHUNK_SIZE), y * CHUNK_SIZE, 0x00FF00);
 			if (game->maps[y][(int)comp.x] == '1')
 			{
@@ -87,16 +87,17 @@ void	raycasting(t_game *game)
 	int		x;
 	float	angle;
 
+	// printf("float x : %f y : %f		pixel x : %d y : %d\n", game->player->f_real_pos.x,game->player->f_real_pos.y, game->player->pos.x, game->player->pos.x);
 	x = - WIN_X / 2;
 	while (x <=  WIN_X / 2)
 	{
-		angle = ((float)x * (FOV / 2)) / (WIN_X / 2);
-		if (game->player.angle + angle > 360)
+		angle = ((float)x * (FOV / 2.0)) / (WIN_X / 2.0);
+		if (game->player->angle + angle > 360)
 			angle = angle - 360 ;
-		if (game->player.angle + angle < 0)
+		if (game->player->angle + angle < 0)
 			angle = angle + 360 ;
 		// printf("angle : %f 	x: %d\n", game->player.angle + angle, x);
-		get_wall_dist(game, game->player.angle + angle);
+		get_wall_dist(game, game->player->angle + angle);
 		x++;
 	}
 }

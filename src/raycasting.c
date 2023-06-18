@@ -6,11 +6,14 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/18 15:46:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/18 15:59:00 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+
+//180 < x < 360 sign.x == -1 ->>change wall comp
+//270 < y < 90 sign.y == -1 ->>change wall comp
 
 int	get_wall_dist(t_game *game, float angle)
 {
@@ -18,7 +21,6 @@ int	get_wall_dist(t_game *game, float angle)
 	t_fvector2	delta;
 	t_fvector2	comp;
 	t_vector2	sign;
-	float	tan_angle;
 	int		x,y;
 	
 	my_mlx_pixel_put(game->image,
@@ -37,40 +39,40 @@ int	get_wall_dist(t_game *game, float angle)
 		sign.y = 1;
 	else
 		sign.y = -1;
-	tan_angle = fabsf((float)tan(angle * M_PI / 180));
+	angle = fabsf((float)tan(angle * M_PI / 180));
 	
 	x = (int)(game->player->f_real_pos.x) + (sign.x == 1);
 	y = (int)(game->player->f_real_pos.y) + (sign.y == 1);
 	delta.x = fabsf(game->player->f_real_pos.x - (x));
 	delta.y = fabsf(game->player->f_real_pos.y - (y));
 
-	step.x = 1 * tan_angle * sign.x;
-	step.y = 1 / tan_angle * sign.y;
+	step.x = 1 * angle * sign.x;
+	step.y = 1 / angle * sign.y;
 
 	// printf("x : %d y : %d\n", x, y);
 	// printf("delta x : %f delta y : %f\n", delta.x, delta.y);
-	comp.x = game->player->f_real_pos.x + delta.y * tan_angle * sign.x;
-	comp.y = game->player->f_real_pos.y + delta.x / tan_angle * sign.y;
+	comp.x = game->player->f_real_pos.x + delta.y * angle * sign.x;
+	comp.y = game->player->f_real_pos.y + delta.x / angle * sign.y;
 
 	while (true)
 	{
 		// printf("begin\n");
-		while ((sign.y == 1 && y >= comp.y) || (y <= comp.y && sign.y == -1))
+		while ((sign.y == 1 && y >= comp.y) || (y <= comp.y && sign.y == -1))		//x
 		{
 			my_mlx_pixel_put(game->image,
 					x * CHUNK_SIZE, (int)(comp.y * CHUNK_SIZE), 0xFF0000);
-			if (game->maps[(int)comp.y][x] == '1')
+			if (game->maps[(int)comp.y][x + (sign.x == -1) * -1] == '1')
 			{
 				return (0);
 			}
 			comp.y += step.y;
 			x += sign.x;
 		}
-		while ((sign.x == 1 && x >= comp.x) || (x <= comp.x && sign.x == -1))
+		while ((sign.x == 1 && x >= comp.x) || (x <= comp.x && sign.x == -1))		//y
 		{
 			my_mlx_pixel_put(game->image,
 					(int)(comp.x * CHUNK_SIZE), y * CHUNK_SIZE, 0x00FF00);
-			if (game->maps[y][(int)comp.x] == '1')
+			if (game->maps[y + (sign.y == -1) * -1][(int)comp.x] == '1')
 			{
 				return (0);
 			}

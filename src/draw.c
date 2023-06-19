@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/19 18:19:08 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/19 19:05:26 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	draw_vert(t_game *game, int x, int y1, int y2)
 	}
 }
 
+// draw a vertical line on 'x' axis, from y1 up to y2 down from the texture in game->asset
 void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float height)
 {
 	int	y, y1;

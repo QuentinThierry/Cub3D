@@ -6,40 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/19 18:26:49 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/19 19:03:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-t_player	find_player(char **maps)
-{
-	t_player	player;
-	t_vector2	index;
-
-	index.y = 0;
-	index.x = 0;
-	while(maps[index.y] != NULL)
-	{
-		index.x = 0;
-		while(maps[index.y][index.x] != '\0')
-		{	
-			if (maps[index.y][index.x] == 'N')
-			{
-				player.angle = 0;
-				player.pos.x = index.x * CHUNK_SIZE + CHUNK_SIZE / 2.0;
-				player.pos.y = index.y * CHUNK_SIZE + CHUNK_SIZE / 2.0;
-				player.f_pos.x = index.x * CHUNK_SIZE + CHUNK_SIZE / 2.0;
-				player.f_pos.y = index.y * CHUNK_SIZE + CHUNK_SIZE / 2.0;
-				player.f_real_pos.x = index.x + 1 / 2.0;
-				player.f_real_pos.y = index.y + 1 / 2.0;
-			}
-			index.x++;
-		}
-		index.y++;
-	}
-	return (player);
-}
 
 int	on_update(t_game *game)
 {
@@ -64,54 +35,26 @@ int	on_update(t_game *game)
 	return (0);
 }
 
-int sound();
-
 int main(void)
 {
-	char		*maps[20] = {0};
-	t_player	player;
-	t_image		img;
 	t_image		img_wall;
 	t_game		game;
-	int y;
-	int fd;
 
 	putenv("PULSE_LATENCY_MSEC=60");
-
-	game.image = &img;
-	game.mlx_ptr = mlx_init();
-	game.win = mlx_new_window(game.mlx_ptr, WIN_X, WIN_Y, "cub3d");
-	game.image->img = mlx_new_image(game.mlx_ptr, WIN_X, WIN_Y);
-	game.image->addr = mlx_get_data_addr(game.image->img,
-		&game.image->bpp, &game.image->size_line, &game.image->endian);
-
-	fd = open("maps/test.cub", O_RDONLY);
-	y = 0;
-	maps[y] = get_next_line(fd);
-	while (maps[y] != NULL)
-	{
-		maps[y][strlen(maps[y]) - 1] = 0;
-		y++;
-		maps[y] = get_next_line(fd);
-	}
-	close(fd);
-	player = find_player(maps);
+	if (init_mlx(&game) == -1)
+		return (ft_close(&game), perror("Error"), 1);
+	game.maps = parse_map("maps/test.cub");
+	if (game.maps == NULL)
+		return (ft_close(&game), perror("Error"), 1);
+	game.player = find_player(game.maps);
+	if (game.player == NULL)
+		return (ft_close(&game), perror("Error"), 1);
 	
 	img_wall.img = mlx_xpm_file_to_image(game.mlx_ptr,"assets/smiley.xpm", &(img_wall.size.x), &(img_wall.size.y));
 	img_wall.addr = mlx_get_data_addr(img_wall.img,
 		&img_wall.bpp, &img_wall.size_line, &img_wall.endian);
 	game.asset = &img_wall;
-	// printf("size image x: %d y : %d	size :%d\n", img_wall.size.x, img_wall.size.y, img_wall);
-	game.player = &player;
-	game.maps = maps;
-	// game.player.angle=45;
-	// get_wall_dist(&game, game.player.angle);
-	// game.player.angle=45 + 90;
-	// get_wall_dist(&game, game.player.angle);
-	// game.player.angle=45 + 180;
-	// get_wall_dist(&game, game.player.angle);
-	// game.player.angle=45 + 270;
-	// get_wall_dist(&game, game.player.angle);
+
 	// quadrillage(&game);
 	// raycasting(&game);
 	// mlx_put_image_to_window(game.mlx_ptr, game.win, game.image->img, 0, 0);

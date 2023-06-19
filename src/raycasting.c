@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/19 18:18:44 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/19 19:06:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_fvector2	get_wall_hit(t_game *game, float angle)
 		sign.y = 1;
 	else
 		sign.y = -1;
+
 	angle = fabsf((float)tan(angle * M_PI / 180));
 	
 	x = (int)(game->player->f_real_pos.x) + (sign.x == 1);

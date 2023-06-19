@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/19 17:08:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/19 19:00:27 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <stdbool.h>
 # include <math.h>
 # include <time.h>
+# include <stdint.h>
 
 # include "libao/include/ao/ao.h"
 #include "minilibx-linux/mlx.h"
@@ -66,16 +67,19 @@ typedef struct s_image
 
 typedef struct s_game
 {
+	t_image		*image;
 	void		*mlx_ptr;
 	void		*win;
-	t_image		*image;
 	t_image		*asset;
 	char		**maps;
 	t_player	*player;
 }	t_game;
 
+// ------ Utils------
+void	*ft_calloc(size_t nmemb, size_t size);
 
-
+int	init_mlx(t_game *game);
+char	**parse_map(char *filename);
 void parse_wav_file(int fd, ao_sample_format *format, long *data_size);
 int	key_press_hook(int key, t_game *game);
 void	print_map(char **maps);
@@ -85,7 +89,8 @@ void	draw_vert(t_game *game, int x, int y1, int y2);
 void	quadrillage(t_game *game);
 float	get_wall_dist(t_game *game, float angle);
 void	raycasting(t_game *game);
-t_player	find_player(char **maps);
+t_player	*find_player(char **maps);
 int	on_update(t_game *game);
+void	ft_close(t_game *game);
 
 #endif

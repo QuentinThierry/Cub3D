@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
+#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/06/19 14:23:32 by qthierry         ###   ########.fr        #
+#    Updated: 2023/06/19 18:53:33 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,9 @@ SRC_LIST =	$(addprefix $(SOUND), $(SRC_SOUND)) \
 			key_hook.c \
 			raycasting.c \
 			draw.c \
+			parsing.c \
+			ft_calloc.c \
+			init.c \
 			main.c
 
 SRC_DIR = ./src/

@@ -6,20 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/19 14:00:03 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/19 18:44:10 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-
-void	ft_close(t_game *game)
-{
-	mlx_destroy_image(game->mlx_ptr, game->image->img);
-	mlx_destroy_window(game->mlx_ptr, game->win);
-	mlx_destroy_display(game->mlx_ptr);
-	exit(0);
-}
 
 int	key_press_hook(int key, t_game *game)
 {
@@ -56,4 +47,20 @@ int	key_press_hook(int key, t_game *game)
 		game->player->f_real_pos.y += 1 / 4.0;
 	}
 return (0);
+}
+
+void	ft_close(t_game *game)
+{
+	if (game->mlx_ptr != NULL)
+	{
+		if (game->win != NULL)
+		{
+			if (game->image != NULL)
+				mlx_destroy_image(game->mlx_ptr, game->image->img);
+			mlx_destroy_window(game->mlx_ptr, game->win);
+		}
+		mlx_destroy_display(game->mlx_ptr);
+	}
+	free(game->image);
+	exit(0);
 }

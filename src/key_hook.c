@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/18 15:46:00 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/19 14:00:03 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	ft_close(t_game *game)
 {
-	mlx_destroy_image(game->mlx_ptr, game->image->ptr);
+	mlx_destroy_image(game->mlx_ptr, game->image->img);
 	mlx_destroy_window(game->mlx_ptr, game->win);
 	mlx_destroy_display(game->mlx_ptr);
 	exit(0);
@@ -23,7 +23,7 @@ void	ft_close(t_game *game)
 
 int	key_press_hook(int key, t_game *game)
 {
-	bzero(game->image->data, WIN_X * WIN_Y * 4);
+	bzero(game->image->addr, WIN_X * WIN_Y * 4);
 	(void)game;
 	if (key == 65307 ) // esc
 		ft_close(game);

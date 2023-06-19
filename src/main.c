@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/18 15:46:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/19 14:27:16 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ int	on_update(t_game *game)
 	return (0);
 }
 
+int sound();
+
 int main(void)
 {
 	char		*maps[20] = {0};
@@ -72,6 +74,8 @@ int main(void)
 	t_game		game;
 	int y;
 	int fd;
+
+	putenv("PULSE_LATENCY_MSEC=60");
 
 	game.image = &img;
 	game.mlx_ptr = mlx_init();
@@ -103,6 +107,7 @@ int main(void)
 	// get_wall_dist(&game, game.player.angle);
 	// game.player.angle=45 + 270;
 	// get_wall_dist(&game, game.player.angle);
+	sound();
 	quadrillage(&game);
 	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	mlx_key_hook(game.win, key_press_hook, &game);

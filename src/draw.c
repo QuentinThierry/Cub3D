@@ -6,11 +6,12 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/19 15:55:06 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/19 18:19:08 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+#include <math.h>
 
 void	print_map(char **maps)
 {
@@ -50,7 +51,7 @@ void	draw_vert(t_game *game, int x, int y1, int y2)
 		y = 0;
 	if (y2 > WIN_Y)
 		y2 = WIN_Y;
-	while (y < y2)
+	while (y <= y2)
 	{
 		my_mlx_pixel_put(game->image, x, y, 0xFF0000);
 		y++;
@@ -60,13 +61,9 @@ void	draw_vert(t_game *game, int x, int y1, int y2)
 void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float height)
 {
 	int	y, y1;
-	// int coord;
 	int	x_img;
 	float	y_img = 0;
 
-	// printf("Wall x:%f	y:%f\n", wall.x, wall.y);
-	// printf("screen x:%d	\n", x);
-	// printf("height : %f\n", height);
 	y =  WIN_Y / 2.0 - height / 2.0;
 	y1 = WIN_Y / 2.0 + height / 2.0;
 	if (y < 0)
@@ -77,11 +74,8 @@ void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float height)
 		x_img = (wall.y - (int)wall.y) * game->asset->size.x;
 	else
 		x_img = (wall.x - (int)wall.x) * game->asset->size.x;
-	// printf("x_img : %d\n", x_img);
-	while (y < y1)
+	while (y <= y1)
 	{
-		// coord = (int)y_img * game->asset->size_line + x_img;
-	// 	printf("coord : %d	x: %d	y : %d\n",coord, x_img, (int)y_img);
 		my_mlx_pixel_put(game->image, x, y, get_color_at(game->asset, x_img, (int)y_img));
 		y++;
 		y_img += game->asset->size.y / height;

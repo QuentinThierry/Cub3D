@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/19 17:08:47 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/19 18:26:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ int	on_update(t_game *game)
 	// mlx_clear_window(game->mlx_ptr, game->win);
 	
 	clock_gettime(CLOCK_REALTIME, &cur_time);
-	fps = 1.F / (cur_time.tv_sec - last_time.tv_sec + (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
-	printf("%ld\n", fps);
-	last_time = cur_time;
+	// fps = 1.F / (cur_time.tv_sec - last_time.tv_sec + (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
+	// printf("%ld\n", fps);
+	// last_time = cur_time;
 	return (0);
 }
 
@@ -97,7 +97,7 @@ int main(void)
 	close(fd);
 	player = find_player(maps);
 	
-	img_wall.img = mlx_xpm_file_to_image(game.mlx_ptr,"assets/wood_light.xpm", &(img_wall.size.x), &(img_wall.size.y));
+	img_wall.img = mlx_xpm_file_to_image(game.mlx_ptr,"assets/smiley.xpm", &(img_wall.size.x), &(img_wall.size.y));
 	img_wall.addr = mlx_get_data_addr(img_wall.img,
 		&img_wall.bpp, &img_wall.size_line, &img_wall.endian);
 	game.asset = &img_wall;
@@ -114,7 +114,6 @@ int main(void)
 	// get_wall_dist(&game, game.player.angle);
 	// quadrillage(&game);
 	// raycasting(&game);
-	// printf("angle : %f\n", game.player->angle + FOV / 2.0);
 	// mlx_put_image_to_window(game.mlx_ptr, game.win, game.image->img, 0, 0);
 
 	mlx_loop_hook(game.mlx_ptr, on_update, &game);

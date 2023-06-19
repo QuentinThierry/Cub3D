@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/19 15:00:54 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/19 17:08:14 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@
 # include <math.h>
 # include <time.h>
 
-# include "../includes/libao/include/ao/ao.h"
-#include "../includes/minilibx-linux/mlx.h"
-#include "../includes/get_next_line.h"
+# include "libao/include/ao/ao.h"
+#include "minilibx-linux/mlx.h"
+#include "get_next_line.h"
 
 #include <X11/X.h>
 

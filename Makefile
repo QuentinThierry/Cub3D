@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
+#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/06/18 15:18:49 by jvigny           ###   ########.fr        #
+#    Updated: 2023/06/19 14:23:32 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,17 +64,17 @@ all:	$(NAME)
 bonus:	all
 
 run: $(NAME)
-	export LD_LIBRARY_PATH=$(LIBAO_ABS_PATH)lib && ./$(NAME)
+	./$(NAME)
 
 # vrun: $(NAME)
 # 	valgrind --leak-check=full --track-fds=yes --trace-children=yes --show-leak-kinds=all --track-origins=yes ./$(NAME)
 
 vrun: $(NAME)
-	export LD_LIBRARY_PATH=$(LIBAO_ABS_PATH)lib && valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
+	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
 
 
 $(NAME):	$(LIBAO) $(MINILIBX) $(OBJ_DIR) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBS) $(INCLUDES) -o $(NAME)
+	$(CC) $(CFLAGS) -Wl,-rpath,$(LIBAO_ABS_PATH)lib $(OBJ) $(LIBS) $(INCLUDES) -o $(NAME)
 
 $(OBJ_DIR)%.o:	$(SRC_DIR)%.c $(HEADERS) Makefile
 	$(CC) $(CFLAGS) -c $(INCLUDES) $(LIBS) $< -o $@

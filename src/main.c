@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/19 15:53:00 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/19 17:08:47 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ int	on_update(t_game *game)
 	return (0);
 }
 
+int sound();
+
 int main(void)
 {
 	char		*maps[20] = {0};
@@ -73,6 +75,8 @@ int main(void)
 	t_game		game;
 	int y;
 	int fd;
+
+	putenv("PULSE_LATENCY_MSEC=60");
 
 	game.image = &img;
 	game.mlx_ptr = mlx_init();

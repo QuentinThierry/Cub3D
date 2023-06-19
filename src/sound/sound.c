@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:17:06 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/18 14:56:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/18 19:20:10 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,17 +88,17 @@ void	play_sound(t_sound *sound, t_vector2 listen_pos, t_vector2 emit_pos, bool *
 
 	(void)listen_pos;
 	(void)emit_pos;
-	i = 0;
-	while (i < sound->buf_size / 2)
-	{
-		if (i % 2 == (1)) // right
-			((short *)sound->buffer)[i] = 0;//* i * 2 / (float) sound->buf_size;
-		// else 
-		// 	((short *)sound->buffer)[i] *= (float)(1 - (float)(i * 2/ (float)sound->buf_size));
-		i++;
-	}
-	*error = ao_play(sound->device, sound->buffer, sound->buf_size);
-	if (*error == 0)
+	// i = 0;
+	// while (i < sound->buf_size / 2)
+	// {
+	// 	if (i % 2 == (1)) // right
+	// 		((short *)sound->buffer)[i] = 0;//* i * 2 / (float) sound->buf_size;
+	// 	// else 
+	// 	// 	((short *)sound->buffer)[i] *= (float)(1 - (float)(i * 2/ (float)sound->buf_size));
+	// 	i++;
+	// }
+	i = ao_play(sound->device, sound->buffer, sound->buf_size);
+	if (i == 0)
 		return (*error = true, perror("Error7"));
 }
 
@@ -112,7 +112,7 @@ int sound(void)
 
 	// mlx_loop(mlx_ptr);
 	
-	sound = init_sound("assets/sounds/stereo.wav", &error);
+	sound = init_sound("assets/sounds/CantinaBand3.wav", &error);
 	if (error == true)
 		return (perror("truc1"), 1);
 	play_sound(&sound, (t_vector2){0 ,0}, (t_vector2){0 ,0}, &error);

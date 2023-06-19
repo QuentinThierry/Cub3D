@@ -6,7 +6,11 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/06/19 14:27:16 by qthierry         ###   ########.fr       */
+=======
+/*   Updated: 2023/06/18 19:52:32 by jvigny           ###   ########.fr       */
+>>>>>>> origin/Johanne
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +54,11 @@ int	on_update(t_game *game)
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
 		
-	quadrillage(game);
+	// quadrillage(game);
 	raycasting(game);
 	// get_wall_dist(game, game->player.angle);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->ptr, 0, 0);
-	// usleep(100000);
+	// usleep(1000000000);
 	// mlx_clear_window(game->mlx_ptr, game->win);
 	
 	clock_gettime(CLOCK_REALTIME, &cur_time);
@@ -107,8 +111,11 @@ int main(void)
 	// get_wall_dist(&game, game.player.angle);
 	// game.player.angle=45 + 270;
 	// get_wall_dist(&game, game.player.angle);
-	sound();
-	quadrillage(&game);
+	// quadrillage(&game);
+	// raycasting(&game);
+	// printf("angle : %f\n", game.player->angle + FOV / 2.0);
+	// mlx_put_image_to_window(game.mlx_ptr, game.win, game.image->ptr, 0, 0);
+
 	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	mlx_key_hook(game.win, key_press_hook, &game);
 	mlx_loop(game.mlx_ptr);

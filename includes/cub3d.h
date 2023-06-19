@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/19 14:25:10 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/06/19 14:29:03 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@
 #define WIN_X 400
 #define WIN_Y 600
 #define CHUNK_SIZE 50
-#define FOV 60
+#define FOV 25
+#define HEIGHT_WALL 600
 
 typedef struct s_vector2
 {
@@ -79,7 +80,7 @@ void	print_map(char **maps);
 void	my_mlx_pixel_put(t_image *img, int x, int y, int color);
 void	draw_vert(t_game *game, int x, int y1, int y2);
 void	quadrillage(t_game *game);
-int	get_wall_dist(t_game *game, float angle);
+float	get_wall_dist(t_game *game, float angle);
 void	raycasting(t_game *game);
 t_player	find_player(char **maps);
 int	on_update(t_game *game);

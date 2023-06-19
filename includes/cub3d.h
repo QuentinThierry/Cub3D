@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/19 14:29:03 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/06/19 19:30:24 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <stdbool.h>
 # include <math.h>
 # include <time.h>
+# include <pthread.h>
 
 # include "libao/include/ao/ao.h"
 #include "minilibx-linux/mlx.h"
@@ -34,6 +35,8 @@
 #define CHUNK_SIZE 50
 #define FOV 25
 #define HEIGHT_WALL 600
+
+#define MAX_VOLUME 1.0
 
 typedef struct s_vector2
 {
@@ -72,7 +75,23 @@ typedef struct s_game
 	t_player	*player;
 }	t_game;
 
+typedef struct s_sound
+{
+	ao_device			*device;
+	ao_sample_format	format;
+	char				*buffer;
+	long				buf_size;
 
+}	t_sound;
+
+typedef struct	s_sound_thread
+{
+	t_sound			sound;
+	int				player_angle;
+	t_vector2		emitter_pos;
+	t_vector2		listener_pos;
+	pthread_mutex_t	mut_play_sound;
+}	t_sound_thread;
 
 void parse_wav_file(int fd, ao_sample_format *format, long *data_size);
 int	key_press_hook(int key, t_game *game);

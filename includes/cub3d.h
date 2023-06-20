@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/19 19:00:27 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/20 13:07:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@
 #define CHUNK_SIZE 50
 #define FOV 60
 #define HEIGHT_WALL 600
+#define MOUV 1
+#define SPEED 10
+#define ROTATION 10
 
 typedef struct s_vector2
 {
@@ -53,6 +56,8 @@ typedef	struct s_player{
 	t_fvector2 	f_pos;
 	t_fvector2 	f_real_pos;
 	float		angle;
+	t_vector2	dir;
+	int			view;
 }	t_player;
 
 typedef struct s_image
@@ -73,6 +78,7 @@ typedef struct s_game
 	t_image		*asset;
 	char		**maps;
 	t_player	*player;
+	float		delta_time;
 }	t_game;
 
 // ------ Utils------
@@ -82,6 +88,8 @@ int	init_mlx(t_game *game);
 char	**parse_map(char *filename);
 void parse_wav_file(int fd, ao_sample_format *format, long *data_size);
 int	key_press_hook(int key, t_game *game);
+int	key_release_hook(int key, t_player *player);
+void	ft_mouv(t_player *player, float delta_time);
 void	print_map(char **maps);
 void	my_mlx_pixel_put(t_image *img, int x, int y, int color);
 void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float dist);
@@ -91,6 +99,8 @@ float	get_wall_dist(t_game *game, float angle);
 void	raycasting(t_game *game);
 t_player	*find_player(char **maps);
 int	on_update(t_game *game);
+void	move_forward(t_player *player);
+t_vector2	get_sign(float angle);
 void	ft_close(t_game *game);
 
 #endif

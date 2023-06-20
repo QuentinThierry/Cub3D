@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/19 18:40:12 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/19 19:35:20 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ int	init_mlx(t_game *game)
 		&game->image->bpp, &game->image->size_line, &game->image->endian);
 	if (game->win == NULL)
 		return (-1);
+	mlx_do_key_autorepeatoff(game->mlx_ptr);
 	return (0);
 }

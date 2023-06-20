@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/06/19 18:53:33 by jvigny           ###   ########.fr        #
+#    Updated: 2023/06/19 19:18:22 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ SRC_LIST =	$(addprefix $(SOUND), $(SRC_SOUND)) \
 			parsing.c \
 			ft_calloc.c \
 			init.c \
+			move.c \
 			main.c
 
 SRC_DIR = ./src/

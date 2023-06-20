@@ -6,53 +6,109 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/19 18:44:10 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/20 13:08:03 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
+	// bzero(game->image->addr, WIN_X * WIN_Y * 4);
+	// if (key == 65307 ) // esc
+	// 	ft_close(game);
+	// if (key == 65361) // left rrow
+	// 	game->player->angle -= 5;
+	// if (key == 65363) // right arrow
+	// 	game->player->angle += 5;
+	// if (key == 'd')
+	// {
+	// 	game->player->f_pos.x += CHUNK_SIZE / 4.0;
+	// 	game->player->pos.x = (int)game->player->f_pos.x;
+	// 	game->player->f_real_pos.x += 1 / 4.0;
+	// }
+	// if (key == 'a' || key == 'q')
+	// {
+	// 	game->player->f_pos.x -= CHUNK_SIZE / 4.0;
+	// 	game->player->pos.x = (int)game->player->f_pos.x;
+	// 	game->player->f_real_pos.x -= 1 / 4.0;
+	// }
+	// if (key == 'w' || key == 'z')
+	// {
+	// 	// move_forward(game->player);
+	// 	game->player->f_pos.y -= CHUNK_SIZE / 4.0;
+	// 	game->player->pos.y = (int)game->player->f_pos.y;
+	// 	game->player->f_real_pos.y -= 1 / 4.0;
+	// }
+	// if (key == 's')
+	// {
+	// 	game->player->f_pos.y += CHUNK_SIZE / 4.0;
+	// 	game->player->pos.y = (int)game->player->f_pos.y;
+	// 	game->player->f_real_pos.y += 1 / 4.0;
+	// }
+
 int	key_press_hook(int key, t_game *game)
 {
-	bzero(game->image->addr, WIN_X * WIN_Y * 4);
-	(void)game;
 	if (key == 65307 ) // esc
 		ft_close(game);
 	if (key == 65361) // left rrow
-		game->player->angle -= 5;
+		game->player->view -= 1;
 	if (key == 65363) // right arrow
-		game->player->angle += 5;
+		game->player->view += 1;
 	if (key == 'd')
-	{
-		game->player->f_pos.x += CHUNK_SIZE / 4.0;
-		game->player->pos.x = (int)game->player->f_pos.x;
-		game->player->f_real_pos.x += 1 / 4.0;
-	}
+		game->player->dir.x += 1;
 	if (key == 'a' || key == 'q')
-	{
-		game->player->f_pos.x -= CHUNK_SIZE / 4.0;
-		game->player->pos.x = (int)game->player->f_pos.x;
-		game->player->f_real_pos.x -= 1 / 4.0;
-	}
+		game->player->dir.x -= 1;
+
 	if (key == 'w' || key == 'z')
-	{
-		game->player->f_pos.y -= CHUNK_SIZE / 4.0;
-		game->player->pos.y = (int)game->player->f_pos.y;
-		game->player->f_real_pos.y -= 1 / 4.0;
-	}
+		game->player->dir.y -= 1;
+
 	if (key == 's')
+		game->player->dir.y += 1;
+	return (0);
+}
+
+int	key_release_hook(int key, t_player *player)
+{
+	printf("key release : %d\n", key);
+	if (key == 65361) // left rrow
+		player->view += 1;
+	if (key == 65363) // right arrow
+		player->view -= 1;
+	if (key == 'd')
+		player->dir.x -= 1;
+	if (key == 'a' || key == 'q')
+		player->dir.x += 1;
+
+	if (key == 'w' || key == 'z')
+		player->dir.y += 1;
+
+	if (key == 's')
+		player->dir.y -= 1;
+	return (0);
+}
+
+void	ft_mouv(t_player *player, float delta_time)
+{
+	if (player->dir.y != 0)
 	{
-		game->player->f_pos.y += CHUNK_SIZE / 4.0;
-		game->player->pos.y = (int)game->player->f_pos.y;
-		game->player->f_real_pos.y += 1 / 4.0;
+		player->f_pos.y += SPEED * delta_time * player->dir.y;
+		player->pos.y = (int)player->f_pos.y;
+		player->f_real_pos.y = player->f_pos.y / CHUNK_SIZE;
 	}
-return (0);
+	if (player->dir.x != 0)
+	{
+		player->f_pos.x += SPEED * delta_time * player->dir.x;
+		player->pos.x = (int)player->f_pos.x;
+		player->f_real_pos.x = player->f_pos.x / CHUNK_SIZE;
+	}
+	if (player->view != 0)
+		player->angle += ROTATION * delta_time * player->view;
 }
 
 void	ft_close(t_game *game)
 {
 	if (game->mlx_ptr != NULL)
 	{
+		mlx_do_key_autorepeaton(game->mlx_ptr);
 		if (game->win != NULL)
 		{
 			if (game->image != NULL)

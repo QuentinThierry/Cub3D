@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/06/20 12:32:05 by qthierry         ###   ########.fr        #
+#    Updated: 2023/06/20 12:51:43 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,9 @@ SRC_LIST =	$(addprefix $(SOUND), $(SRC_SOUND)) \
 			key_hook.c \
 			raycasting.c \
 			draw.c \
+			parsing.c \
+			ft_calloc.c \
+			init.c \
 			main.c
 
 SRC_DIR = ./src/
@@ -106,28 +109,29 @@ $(LIBAO):
 
 $(MINILIBX):
 	@echo "${GREEN}~-~-~-~-~ COMPILING MINILIBX ~-~-~-~-~${RESET_COLOR}"
+	@echo "   ${GREEN}- Fetching sources...${RESET_COLOR}"
 	@if [ ! -d "$(MINILIBX_DIR)" ]; then \
 		git clone $(MINILIBX_URL) $(MINILIBX_DIR); \
 	else \
 		cd $(MINILIBX_DIR) && git pull; \
 	fi
+	@echo "   ${GREEN}- Compiling sources...${RESET_COLOR}"
 	@make -s -C $(MINILIBX_DIR) all $(REDIRECT_ERROR)
 	@echo "${GREEN}~ DONE ~\n${RESET_COLOR}"
 
 clean_libao:
-	rm -rf $(LIBAO_DIR)
 	rm -rf $(LIBAO_TAR)
 	rm -rf ./$(LIBAO_SRC)
 
 clean_minilibx:
 	rm -rf $(MINILIBX_DIR)
 
-clean: clean_libao clean_minilibx
+clean: clean_libao
 	rm -rf $(OBJ_DIR)
 
-fclean:	clean
+fclean:	clean clean_minilibx
 	rm -rf $(NAME)
-
+	rm -rf $(LIBAO_DIR)
 
 re: fclean all
 

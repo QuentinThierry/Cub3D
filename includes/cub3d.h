@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/20 13:07:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/20 13:12:22 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <stdbool.h>
 # include <math.h>
 # include <time.h>
+# include <pthread.h>
 # include <stdint.h>
 
 # include "libao/include/ao/ao.h"
@@ -38,6 +39,8 @@
 #define MOUV 1
 #define SPEED 10
 #define ROTATION 10
+
+#define MAX_VOLUME 1.0
 
 typedef struct s_vector2
 {
@@ -80,6 +83,24 @@ typedef struct s_game
 	t_player	*player;
 	float		delta_time;
 }	t_game;
+
+typedef struct s_sound
+{
+	ao_device			*device;
+	ao_sample_format	format;
+	char				*buffer;
+	long				buf_size;
+
+}	t_sound;
+
+typedef struct	s_sound_thread
+{
+	t_sound			sound;
+	int				player_angle;
+	t_vector2		emitter_pos;
+	t_vector2		listener_pos;
+	pthread_mutex_t	mut_play_sound;
+}	t_sound_thread;
 
 // ------ Utils------
 void	*ft_calloc(size_t nmemb, size_t size);

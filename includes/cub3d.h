@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/20 13:12:22 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/20 14:44:44 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,17 @@
 
 #include <X11/X.h>
 
-#define WIN_X 400
+#define WIN_X 600
 #define WIN_Y 600
 #define CHUNK_SIZE 50
 #define FOV 60
 #define HEIGHT_WALL 600
 #define MOUV 1
-#define SPEED 10
+#define SPEED 50
 #define ROTATION 10
-
 #define MAX_VOLUME 1.0
+#define THREED 0
+
 
 typedef struct s_vector2
 {
@@ -80,6 +81,7 @@ typedef struct s_game
 	void		*win;
 	t_image		*asset;
 	char		**maps;
+	t_vector2	map_size;
 	t_player	*player;
 	float		delta_time;
 }	t_game;
@@ -106,7 +108,7 @@ typedef struct	s_sound_thread
 void	*ft_calloc(size_t nmemb, size_t size);
 
 int	init_mlx(t_game *game);
-char	**parse_map(char *filename);
+char	**parse_map(char *filename, t_vector2 *map_size);
 void parse_wav_file(int fd, ao_sample_format *format, long *data_size);
 int	key_press_hook(int key, t_game *game);
 int	key_release_hook(int key, t_player *player);
@@ -123,5 +125,10 @@ int	on_update(t_game *game);
 void	move_forward(t_player *player);
 t_vector2	get_sign(float angle);
 void	ft_close(t_game *game);
+
+// --------2D--------
+t_fvector2	get_wall_hit_2d(t_game *game, float angle);
+void	raycasting_2d(t_game *game);
+void	quadrillage(t_game *game);
 
 #endif

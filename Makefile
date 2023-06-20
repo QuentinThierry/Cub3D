@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/06/20 13:12:46 by jvigny           ###   ########.fr        #
+#    Updated: 2023/06/20 14:46:56 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,7 @@ SRC_LIST =	$(addprefix $(SOUND), $(SRC_SOUND)) \
 			ft_calloc.c \
 			init.c \
 			move.c \
+			view_2d.c \
 			main.c
 
 SRC_DIR = ./src/
@@ -79,7 +80,7 @@ run: $(NAME)
 # 	valgrind --leak-check=full --track-fds=yes --trace-children=yes --show-leak-kinds=all --track-origins=yes ./$(NAME)
 
 vrun: $(NAME)
-	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
+	valgrind ./$(NAME)
 
 $(NAME):	$(LIBAO) $(MINILIBX) $(OBJ_DIR) $(OBJ)
 	$(CC) $(CFLAGS) -Wl,-rpath,$(LIBAO_ABS_PATH)lib $(OBJ) $(LIBS) $(INCLUDES) -o $(NAME)

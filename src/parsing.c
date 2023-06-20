@@ -6,13 +6,13 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/19 19:01:37 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/20 15:33:20 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-char	**parse_map(char *filename)	//change parsing
+char	**parse_map(char *filename, t_vector2 *map_size)	//change parsing
 {
 	int	fd;
 	int y;
@@ -30,6 +30,9 @@ char	**parse_map(char *filename)	//change parsing
 		y++;
 		maps[y] = get_next_line(fd);
 	}
+	map_size->x = strlen(maps[y - 1]);
+	map_size->y = y;
+	printf("size maps x:%d y : %d\n", map_size->x, map_size->y);
 	close(fd);
 	return (maps);
 }
@@ -51,7 +54,7 @@ t_player	*find_player(char **maps)
 		{	
 			if (maps[index.y][index.x] == 'N')
 			{
-				player->angle = 0;
+				player->angle = 90;
 				player->pos.x = index.x * CHUNK_SIZE + CHUNK_SIZE / 2.0;
 				player->pos.y = index.y * CHUNK_SIZE + CHUNK_SIZE / 2.0;
 				player->f_pos.x = index.x * CHUNK_SIZE + CHUNK_SIZE / 2.0;

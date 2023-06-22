@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/20 14:42:43 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/22 18:42:17 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ float	get_dist(t_game *game, float x, float y, float angle)
 {
 	t_fvector2	delta;
 
-	delta.x = fabsf(x - game->player->f_real_pos.x);
-	delta.y = fabsf(y - game->player->f_real_pos.y);
-	return (cos(angle * M_PI / 180) * sqrt((delta.x * delta.x + delta.y * delta.y)));
+	delta.x = fabsf(x - game->player->pos.x);
+	delta.y = fabsf(y - game->player->pos.y);
+	return (((cos(angle * M_PI / 180)) * sqrt((delta.x * delta.x + delta.y * delta.y))));
 	// return (delta.x * cos((FOV / 2.0) * M_PI / 180) + delta.y * sin((FOV / 2.0) * M_PI / 180));
 }
 
@@ -41,61 +41,47 @@ t_vector2	get_sign(float angle)
 t_fvector2	get_wall_hit(t_game *game, float angle)
 {
 	t_fvector2	step;
-	t_fvector2	delta;
+	t_vector2	delta;
 	t_fvector2	comp;
 	t_vector2	sign;
+	float		error = 0.001;
 	int		x,y;
-
-	int i = 0;
 	
 	sign = get_sign(angle);
+	angle = fabs((float)tan(angle * M_PI / 180));
+	x = ((game->player->pos.x) / CHUNK_SIZE) * CHUNK_SIZE + (sign.x == 1) * CHUNK_SIZE;
+	y = ((game->player->pos.y) / CHUNK_SIZE) * CHUNK_SIZE + (sign.y == 1) * CHUNK_SIZE;
+	delta.x = abs(game->player->pos.x - (x));
+	delta.y = abs(game->player->pos.y - (y));
 
-	angle = fabsf((float)tan(angle * M_PI / 180));
+	step.x = CHUNK_SIZE * angle * sign.x;
+	step.y = CHUNK_SIZE / angle * sign.y;
 	
-	x = (int)(game->player->f_real_pos.x) + (sign.x == 1);
-	y = (int)(game->player->f_real_pos.y) + (sign.y == 1);
-	delta.x = fabsf(game->player->f_real_pos.x - (x));
-	delta.y = fabsf(game->player->f_real_pos.y - (y));
-
-	step.x = 1 * angle * sign.x;
-	step.y = 1 / angle * sign.y;
-	
-	comp.x = game->player->f_real_pos.x + delta.y * angle * sign.x;
-	comp.y = game->player->f_real_pos.y + delta.x / angle * sign.y;
-
+	comp.x = game->player->pos.x + delta.y * angle * sign.x;
+	comp.y = game->player->pos.y + delta.x / angle * sign.y;
 	while (true)
 	{
-		while ((sign.y == 1 && y >= comp.y) || (y <= comp.y && sign.y == -1))		//x
+		while ((sign.y == 1 && y >= comp.y - error) || (y <= comp.y + error && sign.y == -1))		//x
 		{
-			i++;
-			if (game->maps[(int)comp.y][x + (sign.x == -1) * -1] == '1')
+			if (game->maps[((int)comp.y) / CHUNK_SIZE][x / CHUNK_SIZE + (sign.x == -1) * -1] == '1')
 			{
 				return ((t_fvector2){x, comp.y});
 			}
 			comp.y += step.y;
-			x += sign.x;
-			if (i > 10000)
-				printf("COO BUG : %d %d\n", x + (sign.x == -1) * -1, (int)comp.y);
+			x += sign.x * CHUNK_SIZE;
 		}
-		while ((sign.x == 1 && x >= comp.x) || (x <= comp.x && sign.x == -1))		//y
+		while ((sign.x == 1 && x >= comp.x - error) || (x <= comp.x + error && sign.x == -1))		//y
 		{
-			i++;
-			if (game->maps[y + (sign.y == -1) * -1][(int)comp.x] == '1')
+			if (game->maps[y / CHUNK_SIZE + (sign.y == -1) * -1][((int)comp.x) / CHUNK_SIZE] == '1')
 			{
 				return ((t_fvector2){comp.x, y});
 			}
 			comp.x += step.x;
-			y += sign.y;
-			if (i > 10000)
-				printf("COO BUG : %d %d\n", y + (sign.y == -1) * -1, (int)comp.x);
+			y += sign.y * CHUNK_SIZE;
 		}
-		i++;
-		if (i > 1000)
-		{
-			printf("COO BUG X: %d %f\n", x + (sign.x == -1) * -1, comp.y);	
-			printf("COO BUG Y: %d %f\n", y + (sign.y == -1) * -1, comp.x);
-			// return (t_fvector2){0};
-		}
+		// printf("sign : %d %d\n", sign.x, sign.y);
+		// printf("COO BUG X: %d %f\n", x + (sign.x == -1) * -1, comp.y);
+		// printf("COO BUG Y: %d %f\n\n", y + (sign.y == -1) * -1, comp.x);
 	}
 	return ((t_fvector2){0});
 }
@@ -117,9 +103,16 @@ void	raycasting(t_game *game)
 		if (game->player->angle + angle < 0)
 			game->player->angle = game->player->angle + 360;
 		wall = get_wall_hit(game, game->player->angle + angle);
-		height = HEIGHT_WALL / get_dist(game, wall.x, wall.y, fabsf(angle));
+		height = HEIGHT_WALL / get_dist(game, wall.x, wall.y, angle) * CHUNK_SIZE;
+		// printf("wall : %f, %f, height %f\n", wall.x, wall.y, height);
+		// if (get_dist(game, wall.x, wall.y, fabsf(angle)) < 1)
+		// {
+		// 	x++;
+		// 	continue;
+		// }
 		draw_vert_sprite(game, x + WIN_X / 2.0, wall, height);
 		x++;
 	}
+		// exit(0);
 }
 

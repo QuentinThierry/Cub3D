@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/20 14:44:44 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/22 17:58:02 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@
 #define HEIGHT_WALL 600
 #define MOUV 1
 #define SPEED 50
-#define ROTATION 10
+#define ROTATION 100
 #define MAX_VOLUME 1.0
-#define THREED 0
+#define THREED 1
 
 
 typedef struct s_vector2

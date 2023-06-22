@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/20 14:13:13 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/22 18:40:32 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,19 @@ void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float height)
 	y =  WIN_Y / 2.0 - height / 2.0;
 	y1 = WIN_Y / 2.0 + height / 2.0;
 	if (y < 0)
+		y_img = -y * game->asset->size.y / height;
+	if (y < 0)
 		y = 0;
 	if (y1 > WIN_Y)
 		y1 = WIN_Y;
-	if ((wall.x - (int)wall.x) * game->asset->size.x * CHUNK_SIZE == 0)
-		x_img = (wall.y - (int)wall.y) * game->asset->size.x;
+	wall.y = (int)wall.y;
+	if (fmodf(wall.x, CHUNK_SIZE) * game->asset->size.x == 0)
+		x_img = fmodf(wall.y, CHUNK_SIZE) * game->asset->size.x;
 	else
-		x_img = (wall.x - (int)wall.x) * game->asset->size.x;
+		x_img = fmodf(wall.x, CHUNK_SIZE)* game->asset->size.x;
 	while (y <= y1)
 	{
-		my_mlx_pixel_put(game->image, x, y, get_color_at(game->asset, x_img, (int)y_img));
+		my_mlx_pixel_put(game->image, x, y, get_color_at(game->asset, x_img / CHUNK_SIZE, (int)y_img));
 		y++;
 		y_img += game->asset->size.y / height;
 	}

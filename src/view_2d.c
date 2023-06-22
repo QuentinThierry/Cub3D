@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   view_2d.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:24:03 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/20 16:25:25 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/22 13:31:43 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,51 +15,53 @@
 t_fvector2	get_wall_hit_2d(t_game *game, float angle)
 {
 	t_fvector2	step;
-	t_fvector2	delta;
+	t_vector2	delta;
 	t_fvector2	comp;
 	t_vector2	sign;
+	float		error = 0.001;
 	int		x,y;
 	
 	sign = get_sign(angle);
 	my_mlx_pixel_put(game->image,
 		game->player->pos.x, game->player->pos.y, 0xFF0000);
 	angle = fabs((float)tan(angle * M_PI / 180));
-	
-	x = (int)(game->player->f_real_pos.x) + (sign.x == 1);
-	y = (int)(game->player->f_real_pos.y) + (sign.y == 1);
-	delta.x = fabsf(game->player->f_real_pos.x - (x));
-	delta.y = fabsf(game->player->f_real_pos.y - (y));
+	x = ((game->player->pos.x) / CHUNK_SIZE) * CHUNK_SIZE + (sign.x == 1) * CHUNK_SIZE;
+	y = ((game->player->pos.y) / CHUNK_SIZE) * CHUNK_SIZE + (sign.y == 1) * CHUNK_SIZE;
+	delta.x = abs(game->player->pos.x - (x));
+	delta.y = abs(game->player->pos.y - (y));
 
-	step.x = 1 * angle * sign.x;
-	step.y = 1 / angle * sign.y;
+	step.x = CHUNK_SIZE * angle * sign.x;
+	step.y = CHUNK_SIZE / angle * sign.y;
 	
-	comp.x = game->player->f_real_pos.x + delta.y * angle * sign.x;
-	comp.y = game->player->f_real_pos.y + delta.x / angle * sign.y;
-
+	comp.x = game->player->pos.x + delta.y * angle * sign.x;
+	comp.y = game->player->pos.y + delta.x / angle * sign.y;
 	while (true)
 	{
-		while ((sign.y == 1 && y >= comp.y) || (y <= comp.y && sign.y == -1))		//x
+		while ((sign.y == 1 && y >= comp.y - error) || (y <= comp.y + error && sign.y == -1))		//x
 		{
 			my_mlx_pixel_put(game->image,
-					x * CHUNK_SIZE, (int)(comp.y * CHUNK_SIZE), 0xFF0000);
-			if (game->maps[(int)comp.y][x + (sign.x == -1) * -1] == '1')
+					x, (int)(comp.y), 0xFF0000);
+			if (game->maps[((int)comp.y) / CHUNK_SIZE][x / CHUNK_SIZE + (sign.x == -1) * -1] == '1')
 			{
 				return ((t_fvector2){x, comp.y});
 			}
 			comp.y += step.y;
-			x += sign.x;
+			x += sign.x * CHUNK_SIZE;
 		}
-		while ((sign.x == 1 && x >= comp.x) || (x <= comp.x && sign.x == -1))		//y
+		while ((sign.x == 1 && x >= comp.x - error) || (x <= comp.x + error && sign.x == -1))		//y
 		{
 			my_mlx_pixel_put(game->image,
-					(int)(comp.x * CHUNK_SIZE), y * CHUNK_SIZE, 0x00FF00);
-			if (game->maps[y + (sign.y == -1) * -1][(int)comp.x] == '1')
+					(int)(comp.x), y, 0x00FF00);
+			if (game->maps[y / CHUNK_SIZE + (sign.y == -1) * -1][((int)comp.x) / CHUNK_SIZE] == '1')
 			{
 				return ((t_fvector2){comp.x, y});
 			}
 			comp.x += step.x;
-			y += sign.y;
+			y += sign.y * CHUNK_SIZE;
 		}
+		// printf("sign : %d %d\n", sign.x, sign.y);
+		// printf("COO BUG X: %d %f\n", x + (sign.x == -1) * -1, comp.y);
+		// printf("COO BUG Y: %d %f\n\n", y + (sign.y == -1) * -1, comp.x);
 	}
 	return ((t_fvector2){0});
 }

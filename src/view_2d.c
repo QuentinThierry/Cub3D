@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   view_2d.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:24:03 by jvigny            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/06/20 19:17:29 by jvigny           ###   ########.fr       */
-=======
-/*   Updated: 2023/06/22 13:31:43 by qthierry         ###   ########.fr       */
->>>>>>> f642157281b971703ff9c016cc7e5db1fb10b633
+/*   Updated: 2023/06/23 17:44:12 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +24,11 @@ t_fvector2	get_wall_hit_2d(t_game *game, double angle)
 	sign = get_sign(angle);
 	my_mlx_pixel_put(game->image,
 		game->player->pos.x, game->player->pos.y, 0xFF0000);
-<<<<<<< HEAD
-	angle = fabs(tan(angle * M_PI / 180));
-	// angle = 21.000002;
-	x = (int)(game->player->f_real_pos.x) + (sign.x == 1);
-	y = (int)(game->player->f_real_pos.y) + (sign.y == 1);
-	delta.x = fabs(game->player->f_real_pos.x - (x));
-	delta.y = fabs(game->player->f_real_pos.y - (y));
-=======
 	angle = fabs((float)tan(angle * M_PI / 180));
 	x = ((game->player->pos.x) / CHUNK_SIZE) * CHUNK_SIZE + (sign.x == 1) * CHUNK_SIZE;
 	y = ((game->player->pos.y) / CHUNK_SIZE) * CHUNK_SIZE + (sign.y == 1) * CHUNK_SIZE;
 	delta.x = abs(game->player->pos.x - (x));
 	delta.y = abs(game->player->pos.y - (y));
->>>>>>> f642157281b971703ff9c016cc7e5db1fb10b633
 
 	step.x = CHUNK_SIZE * angle * sign.x;
 	step.y = CHUNK_SIZE / angle * sign.y;

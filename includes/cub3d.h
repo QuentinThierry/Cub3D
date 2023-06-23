@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/23 17:40:00 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/23 17:42:15 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,12 @@
 #define WIN_Y 600
 #define CHUNK_SIZE 50
 #define FOV 60
-#define HEIGHT_WALL 600
+#define HEIGHT_WALL 600*50
 #define MOUV 1
 #define SPEED 50
 #define ROTATION 100
 #define MAX_VOLUME 1.0
 #define THREED 1
-
 
 typedef struct s_vector2
 {

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/20 19:23:24 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/23 17:40:00 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 #define HEIGHT_WALL 600
 #define MOUV 1
 #define SPEED 50
-#define ROTATION 25
+#define ROTATION 100
 #define MAX_VOLUME 1.0
 #define THREED 1
 

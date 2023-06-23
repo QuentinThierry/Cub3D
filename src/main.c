@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/20 19:32:55 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/23 17:40:19 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int main(void)
 		&img_wall.bpp, &img_wall.size_line, &img_wall.endian);
 	game.asset = &img_wall;
 
-	quadrillage(&game);
+	// quadrillage(&game);
 	// raycasting(&game);
 	// mlx_put_image_to_window(game.mlx_ptr, game.win, game.image->img, 0, 0);
 

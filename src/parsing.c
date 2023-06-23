@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/20 18:53:20 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/23 17:40:22 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	**parse_map(char *filename, t_vector2 *map_size)	//change parsing
 	
 	fd = open(filename, O_RDONLY);
 	y = 0;
-	maps = ft_calloc(20, sizeof(char *));
+	maps = ft_calloc(50, sizeof(char *));
 	if (maps == NULL)
 		return (NULL);
 	maps[y] = get_next_line(fd);

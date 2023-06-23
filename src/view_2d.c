@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:24:03 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/23 17:57:19 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/23 18:08:28 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ t_fvector2	get_wall_hit_2d(t_game *game, double angle)
 void	raycasting_2d(t_game *game)
 {
 	int		x;
-	float	height;
 	float	angle;
 	t_fvector2	wall;
 

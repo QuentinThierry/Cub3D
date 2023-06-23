@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/23 17:42:40 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/23 17:51:21 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int main(void)
 	t_game		game;
 
 	putenv("PULSE_LATENCY_MSEC=60");
-	game.maps = parse_map("maps/test1.cub", &game.map_size);
+	game.maps = parse_map("maps/test.cub", &game.map_size);
 	if (game.maps == NULL)
 		return (ft_close(&game), perror("Error"), 1);
 	if (init_mlx(&game) == -1)
@@ -74,7 +74,7 @@ int main(void)
 	if (game.player == NULL)
 		return (ft_close(&game), perror("Error"), 1);
 	
-	img_wall.img = mlx_xpm_file_to_image(game.mlx_ptr,"assets/smiley.xpm", &(img_wall.size.x), &(img_wall.size.y));
+	img_wall.img = mlx_xpm_file_to_image(game.mlx_ptr,"assets/blue.xpm", &(img_wall.size.x), &(img_wall.size.y));
 	img_wall.addr = mlx_get_data_addr(img_wall.img,
 		&img_wall.bpp, &img_wall.size_line, &img_wall.endian);
 	game.asset = &img_wall;

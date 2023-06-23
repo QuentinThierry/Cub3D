@@ -6,27 +6,27 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/23 17:43:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/23 17:59:27 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
 
-double	get_dist(t_game *game, float x, float y, float angle)
+float	get_dist(t_game *game, float x, float y, float angle)
 {
 	t_fvector2	delta;
 
 	delta.x = fabs(x - game->player->f_real_pos.x);
 	delta.y = fabs(y - game->player->f_real_pos.y);
 	return (cos(angle * M_PI / 180) * sqrt((delta.x * delta.x + delta.y * delta.y)));
-	double h = sqrt((delta.x * delta.x + delta.y * delta.y));
-	double c = cos(angle * M_PI / 180);
+	// double h = sqrt((delta.x * delta.x + delta.y * delta.y));
+	// double c = cos(angle * M_PI / 180);
 
-	printf("c : %f\n", c);
+	// printf("c : %f\n", c);
 	
-	my_mlx_pixel_put(game->image, delta.x, (int)(c * CHUNK_SIZE), 0xFF0000);
-	return (c * h);
+	// my_mlx_pixel_put(game->image, delta.x, (int)(c * CHUNK_SIZE), 0xFF0000);
+	// return (c * h);
 	// return ((/*(cos(angle * M_PI / 180)) **/ ));
 	// return (delta.x * cos((FOV / 2.0) * M_PI / 180) + delta.y * sin((FOV / 2.0) * M_PI / 180));
 }
@@ -98,8 +98,8 @@ t_fvector2	get_wall_hit(t_game *game, double angle)
 void	raycasting(t_game *game)
 {
 	int		x;
-	double	height;
-	double	angle;
+	float	height;
+	float	angle;
 	t_fvector2	wall;
 
 	x = - WIN_X / 2.0;

@@ -6,13 +6,13 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:24:03 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/20 16:25:25 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/20 19:17:29 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-t_fvector2	get_wall_hit_2d(t_game *game, float angle)
+t_fvector2	get_wall_hit_2d(t_game *game, double angle)
 {
 	t_fvector2	step;
 	t_fvector2	delta;
@@ -23,12 +23,12 @@ t_fvector2	get_wall_hit_2d(t_game *game, float angle)
 	sign = get_sign(angle);
 	my_mlx_pixel_put(game->image,
 		game->player->pos.x, game->player->pos.y, 0xFF0000);
-	angle = fabs((float)tan(angle * M_PI / 180));
-	
+	angle = fabs(tan(angle * M_PI / 180));
+	// angle = 21.000002;
 	x = (int)(game->player->f_real_pos.x) + (sign.x == 1);
 	y = (int)(game->player->f_real_pos.y) + (sign.y == 1);
-	delta.x = fabsf(game->player->f_real_pos.x - (x));
-	delta.y = fabsf(game->player->f_real_pos.y - (y));
+	delta.x = fabs(game->player->f_real_pos.x - (x));
+	delta.y = fabs(game->player->f_real_pos.y - (y));
 
 	step.x = 1 * angle * sign.x;
 	step.y = 1 / angle * sign.y;
@@ -38,12 +38,15 @@ t_fvector2	get_wall_hit_2d(t_game *game, float angle)
 
 	while (true)
 	{
+		// printf("test : %d\n", (float)y <= comp.y);
 		while ((sign.y == 1 && y >= comp.y) || (y <= comp.y && sign.y == -1))		//x
 		{
 			my_mlx_pixel_put(game->image,
 					x * CHUNK_SIZE, (int)(comp.y * CHUNK_SIZE), 0xFF0000);
 			if (game->maps[(int)comp.y][x + (sign.x == -1) * -1] == '1')
 			{
+				my_mlx_pixel_put(game->image,
+					x * CHUNK_SIZE, (int)(comp.y * CHUNK_SIZE), 0x41FDFE);
 				return ((t_fvector2){x, comp.y});
 			}
 			comp.y += step.y;
@@ -55,11 +58,20 @@ t_fvector2	get_wall_hit_2d(t_game *game, float angle)
 					(int)(comp.x * CHUNK_SIZE), y * CHUNK_SIZE, 0x00FF00);
 			if (game->maps[y + (sign.y == -1) * -1][(int)comp.x] == '1')
 			{
+				my_mlx_pixel_put(game->image,
+					(int)(comp.x * CHUNK_SIZE), y * CHUNK_SIZE, 0x41FDFE);
 				return ((t_fvector2){comp.x, y});
 			}
 			comp.x += step.x;
 			y += sign.y;
 		}
+		// printf("SIGN: %d %d\n", sign.x, sign.y);	
+		// printf("X: %d COMP:%.20f\n", x, comp.x);	
+		// printf("Y: %d COMP:%.20f\n", y, comp.y);
+		// my_mlx_pixel_put(game->image,
+		// 			(int)(comp.x * CHUNK_SIZE), y * CHUNK_SIZE, 0xFFF052);
+		// my_mlx_pixel_put(game->image,
+		// 			x * CHUNK_SIZE, (int)(comp.y * CHUNK_SIZE), 0xFFF052);
 	}
 	return ((t_fvector2){0});
 }

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/20 15:33:20 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/20 18:53:20 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	**parse_map(char *filename, t_vector2 *map_size)	//change parsing
 	}
 	map_size->x = strlen(maps[y - 1]);
 	map_size->y = y;
-	printf("size maps x:%d y : %d\n", map_size->x, map_size->y);
+	// printf("size maps x:%d y : %d\n", map_size->x, map_size->y);
 	close(fd);
 	return (maps);
 }

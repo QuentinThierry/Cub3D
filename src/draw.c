@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/20 14:13:13 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/20 19:21:17 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
 // }
 
 // draw a vertical line on 'x' axis, from y1 up to y2 down from the texture in game->asset
-void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float height)
+void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, double height)
 {
-	int	y, y1;
-	int	x_img;
-	float	y_img = 0;
+	int		y, y1;
+	int		x_img;
+	double	y_img = 0;
 
 	y =  WIN_Y / 2.0 - height / 2.0;
 	y1 = WIN_Y / 2.0 + height / 2.0;

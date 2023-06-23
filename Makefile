@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
+#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/06/20 14:46:56 by jvigny           ###   ########.fr        #
+#    Updated: 2023/06/22 18:47:04 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3d
 
-CC = gcc
-CFLAGS = -g -Wall -Wextra #-Werror
+CC = clang
+CFLAGS = -g -Wall -Wextra#-Werror
 LIBS = -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext -L$(LIBAO_LIB) -lao
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(LIBAO_HEADERS) -I$(HEADERS_DIR)
 
@@ -86,7 +86,7 @@ $(NAME):	$(LIBAO) $(MINILIBX) $(OBJ_DIR) $(OBJ)
 	$(CC) $(CFLAGS) -Wl,-rpath,$(LIBAO_ABS_PATH)lib $(OBJ) $(LIBS) $(INCLUDES) -o $(NAME)
 
 $(OBJ_DIR)%.o:	$(SRC_DIR)%.c $(HEADERS) Makefile
-	@$(CC) $(CFLAGS) -c $(INCLUDES) $(LIBS) $< -o $@
+	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
 	
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)

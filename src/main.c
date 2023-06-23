@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/22 18:15:06 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/06/22 20:44:56 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int main(void)
 	t_game		game;
 
 	putenv("PULSE_LATENCY_MSEC=60");
-	game.maps = parse_map("maps/test.cub", &game.map_size);
+	game.maps = parse_map("maps/test1.cub", &game.map_size);
 	if (game.maps == NULL)
 		return (ft_close(&game), perror("Error"), 1);
 	if (init_mlx(&game) == -1)

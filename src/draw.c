@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/22 18:40:32 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/06/22 21:27:38 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,10 @@ void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
 // draw a vertical line on 'x' axis, from y1 up to y2 down from the texture in game->asset
 void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float height)
 {
-	int	y, y1;
-	int	x_img;
+	float	y, y1;
+	int		x_img;
 	float	y_img = 0;
+	// height = rintf(height);
 
 	y =  WIN_Y / 2.0 - height / 2.0;
 	y1 = WIN_Y / 2.0 + height / 2.0;
@@ -72,15 +73,16 @@ void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float height)
 		y = 0;
 	if (y1 > WIN_Y)
 		y1 = WIN_Y;
+	// printf("height : %f		bas y: %f	haut y:%f	taille : %f\n", height, y , y1, y1 - y);
 	wall.y = (int)wall.y;
 	if (fmodf(wall.x, CHUNK_SIZE) * game->asset->size.x == 0)
 		x_img = fmodf(wall.y, CHUNK_SIZE) * game->asset->size.x;
 	else
 		x_img = fmodf(wall.x, CHUNK_SIZE)* game->asset->size.x;
-	while (y <= y1)
+	while (y < y1)
 	{
-		my_mlx_pixel_put(game->image, x, y, get_color_at(game->asset, x_img / CHUNK_SIZE, (int)y_img));
-		y++;
+		my_mlx_pixel_put(game->image, x, (int)y, get_color_at(game->asset, x_img / CHUNK_SIZE, (int)y_img));
+		y+=1.0;
 		y_img += game->asset->size.y / height;
 	}
 }

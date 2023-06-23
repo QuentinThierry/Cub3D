@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/23 18:08:40 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/23 18:11:21 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 #define WIN_X 600
 #define WIN_Y 600
 #define CHUNK_SIZE 50
-#define FOV 100
+#define FOV 60
 #define HEIGHT_WALL 600*50
 #define MOUV 1
 #define SPEED 50

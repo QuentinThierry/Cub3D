@@ -6,27 +6,22 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/23 18:04:19 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/23 18:11:04 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
 
-float	get_dist(t_game *game, float x, float y, float angle)
+double	get_dist(t_game *game, float x, float y, float angle)
 {
 	t_fvector2	delta;
 
-	delta.x = fabs(x - game->player->f_real_pos.x);
-	delta.y = fabs(y - game->player->f_real_pos.y);
-	// return (cos(angle * M_PI / 180) * sqrt((delta.x * delta.x + delta.y * delta.y)));
+	delta.x = fabsf(x - game->player->pos.x);
+	delta.y = fabsf(y - game->player->pos.y);
 	double h = sqrt((delta.x * delta.x + delta.y * delta.y));
 	double c = cos(angle * M_PI / 180);
 
-	// printf("c : %f\n", c);
-	
-	// my_mlx_pixel_put(game->image, delta.x, (int)(c * CHUNK_SIZE), 0xFF0000);
-	// return (c * h);
 	return (c * h);
 	// return ((/*(cos(angle * M_PI / 180)) **/ ));
 	// return (delta.x * cos((FOV / 2.0) * M_PI / 180) + delta.y * sin((FOV / 2.0) * M_PI / 180));
@@ -47,7 +42,7 @@ t_vector2	get_sign(double angle)
 	return (sign);
 }
 
-t_fvector2	get_wall_hit(t_game *game, double angle)
+t_fvector2	get_wall_hit(t_game *game, float angle)
 {
 	t_fvector2	step;
 	t_vector2	delta;
@@ -56,7 +51,7 @@ t_fvector2	get_wall_hit(t_game *game, double angle)
 	float		error = 0.001;
 	int		x,y;
 	
-	sign = get_sign(angle);
+	sign = get_sign((double)angle);
 	angle = fabs((float)tan(angle * M_PI / 180));
 	x = ((game->player->pos.x) / CHUNK_SIZE) * CHUNK_SIZE + (sign.x == 1) * CHUNK_SIZE;
 	y = ((game->player->pos.y) / CHUNK_SIZE) * CHUNK_SIZE + (sign.y == 1) * CHUNK_SIZE;
@@ -99,14 +94,14 @@ t_fvector2	get_wall_hit(t_game *game, double angle)
 void	raycasting(t_game *game)
 {
 	int		x;
-	float	height;
+	double	height;
 	float	angle;
 	t_fvector2	wall;
 
 	x = - WIN_X / 2.0;
 	while (x <  WIN_X / 2.0)
 	{
-		angle = ((double)x * (FOV / 2.0)) / (WIN_X/ 2.0);
+		angle = ((float)x * (FOV / 2.0)) / (WIN_X/ 2.0);
 		if (game->player->angle + angle >= 360)
 			game->player->angle = game->player->angle - 360;
 		if (game->player->angle + angle < 0)
@@ -127,4 +122,3 @@ void	raycasting(t_game *game)
 	}
 	// exit(0);
 }
-

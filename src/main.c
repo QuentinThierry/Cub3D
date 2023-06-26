@@ -6,31 +6,37 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/27 01:32:57 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/27 01:52:36 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+
+long tot_fps = 0;
+long nb_fps = 0;
 
 #if THREED
 int	on_update(t_game *game)
 {
 	static struct timespec	last_time = {0};
 	struct timespec			cur_time;
+	long					fps;
 
 	bzero(game->image->addr, WIN_X * WIN_Y * 4);
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
 
 	ft_mouv(game->player, game->delta_time);
-	// printf("player x:%f y :%f\n", game->player->f_pos.x,game->player->f_pos.y);
 	raycasting(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
-	// usleep(1000000000);
-	
 	clock_gettime(CLOCK_REALTIME, &cur_time);
 	game->delta_time = (cur_time.tv_sec - last_time.tv_sec + (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
-	printf("%ld\n", (long)(1.0 / game->delta_time));
+	fps = (long)(1.0 / game->delta_time);
+	// printf("%ld\n", fps);
+	tot_fps += fps;
+	nb_fps++;
+	if ((nb_fps % 50) == 0)
+		printf("fps : %ld\n", fps);
 	last_time = cur_time;
 	return (0);
 }
@@ -74,11 +80,12 @@ int main(void)
 		return (ft_close(&game), perror("Error"), 1);
 	game.filename = ft_calloc(4, sizeof(char *));
 	game.filename[0] = strdup("assets/test.xpm");
-	game.filename[1] = strdup("assets/test.xpm");
-	game.filename[2] = strdup("assets/test.xpm");
-	game.filename[3] = strdup("assets/test.xpm");
+	game.filename[1] = strdup("assets/blue.xpm");
+	game.filename[2] = strdup("assets/flower_yellow.xpm");
+	game.filename[3] = strdup("assets/smiley.xpm");
 	if (load_image(&game) == -1)
 		return (ft_close(&game), perror("Error"), 1);
+	
 	// quadrillage(&game);
 	// raycasting(&game);
 	// mlx_put_image_to_window(game.mlx_ptr, game.win, game.image->img, 0, 0);

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/27 01:20:05 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/27 01:41:17 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@
 #define ROTATION 100
 #define MAX_VOLUME 1.0
 #define THREED 1
+#define TO_RADIAN .0174532
+
+extern long tot_fps;
+extern long nb_fps;
 
 enum e_orientation
 {
@@ -58,8 +62,8 @@ typedef struct s_vector2
 
 typedef struct s_fvector2
 {
-	double	x;
-	double	y;
+	float	x;
+	float	y;
 }	t_fvector2;
 
 typedef	struct s_player{
@@ -75,7 +79,7 @@ typedef struct s_image
 {
 	void		*img;
 	char		*addr;
-	int			bpp;
+	int			opp;
 	int			size_line;
 	int			endian;
 	t_vector2	size;
@@ -126,19 +130,19 @@ int	key_release_hook(int key, t_player *player);
 void	ft_mouv(t_player *player, float delta_time);
 void	print_map(char **maps);
 void	my_mlx_pixel_put(t_image *img, int x, int y, int color);
-void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, double height, double angle);
+void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float dist);
 void	draw_vert(t_game *game, int x, int y1, int y2);
 void	quadrillage(t_game *game);
-float	get_wall_dist(t_game *game, double angle);
+float	get_wall_dist(t_game *game, float angle);
 void	raycasting(t_game *game);
 t_player	*find_player(char **maps);
 int	on_update(t_game *game);
 void	move_forward(t_player *player);
-t_vector2	get_sign(double angle);
+t_vector2	get_sign(float angle);
 void	ft_close(t_game *game);
 
 // --------2D--------
-t_fvector2	get_wall_hit_2d(t_game *game, double angle);
+t_fvector2	get_wall_hit_2d(t_game *game, float angle);
 void	raycasting_2d(t_game *game);
 void	quadrillage(t_game *game);
 

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   view_2d.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:24:03 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/23 21:32:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/26 22:33:21 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-double	get_dist(t_game *game, float x, float y, float angle);
+float	get_dist(t_game *game, float x, float y, float angle);
 
-t_fvector2	get_wall_hit_2d(t_game *game, double angle)
+t_fvector2	get_wall_hit_2d(t_game *game, float angle)
 {
 	t_fvector2	step;
 	t_vector2	delta;
@@ -25,7 +25,7 @@ t_fvector2	get_wall_hit_2d(t_game *game, double angle)
 	my_mlx_pixel_put(game->image,
 		game->player->pos.x, game->player->pos.y, 0xFF0000);
 	sign = get_sign(angle);
-	angle = fabs((float)tan(angle * M_PI / 180));
+	angle = fabs((float)tan(angle * TO_RADIAN));
 	x = ((game->player->pos.x) / CHUNK_SIZE) * CHUNK_SIZE + (sign.x == 1) * CHUNK_SIZE;
 	y = ((game->player->pos.y) / CHUNK_SIZE) * CHUNK_SIZE + (sign.y == 1) * CHUNK_SIZE;
 	delta.x = abs(game->player->pos.x - (x));
@@ -76,7 +76,7 @@ void	raycasting_2d(t_game *game)
 		if (game->player->angle + angle < 0)
 			game->player->angle = game->player->angle + 360;
 		wall = get_wall_hit_2d(game, game->player->angle + angle);
-		height =  CHUNK_SIZE / get_dist(game, wall.x, wall.y, angle) * ((WIN_X / 2.0) / (tan((FOV/2.0) * M_PI / 180)));
+		height =  CHUNK_SIZE / get_dist(game, wall.x, wall.y, angle) * ((WIN_X / 2.0) / (tan((FOV/2.0) * TO_RADIAN)));
 		x++;
 	}
 }

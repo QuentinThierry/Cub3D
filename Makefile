@@ -6,14 +6,14 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/06/22 18:47:04 by qthierry         ###   ########.fr        #
+#    Updated: 2023/06/27 00:47:14 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3d
 
-CC = clang
-CFLAGS = -g -Wall -Wextra#-Werror
+CC = gcc
+CFLAGS = -g -Wall -Wextra# -O3#-Werror
 LIBS = -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext -L$(LIBAO_LIB) -lao
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(LIBAO_HEADERS) -I$(HEADERS_DIR)
 

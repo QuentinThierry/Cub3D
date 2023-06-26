@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/23 17:42:37 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/26 22:17:10 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	ft_close(t_game *game)
 		}
 		mlx_destroy_display(game->mlx_ptr);
 	}
+	printf("Moyenne fps : %ld\n", (long)tot_fps / nb_fps);
 	free(game->image);
 	exit(0);
 }

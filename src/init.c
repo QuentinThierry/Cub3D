@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/20 14:26:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/27 01:17:59 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ int	init_mlx(t_game *game)
 	if (game->win == NULL)
 		return (-1);
 	game->image->addr = mlx_get_data_addr(game->image->img,
-		&game->image->bpp, &game->image->size_line, &game->image->endian);
+		&game->image->opp, &game->image->size_line, &game->image->endian);
+	game->image->opp /= 8;
 	if (game->win == NULL)
 		return (-1);
 	// mlx_do_key_autorepeatoff(game->mlx_ptr);

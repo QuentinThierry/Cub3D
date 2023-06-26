@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/23 21:26:30 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/27 01:39:32 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ void	print_map(char **maps)
 	}
 }
 
-unsigned int	get_color_at(t_image *image, int x, int y)
+static inline unsigned int	get_color_at(t_image *image, int x, int y)
 {
 	char	*dst;
 
 	dst = image->addr
-		+ (y * image->size_line + x * image->bpp / 8);
+		+ (y * image->size_line + x * image->opp);
 	return (*(unsigned int *)(dst));
 }
 
@@ -36,54 +36,37 @@ void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
 {
 	char	*dst;
 
-	dst = img->addr + (y * img->size_line + x * (img->bpp / 8));
+	dst = img->addr + (y * img->size_line + x * img->opp);
 	*(unsigned int*)dst = color;
 }
 
-// draw a vertical line on 'x' axis, from y1 up to y2 down
-// void	draw_vert(t_game *game, int x, int y1, int y2)
-// {
-// 	int	y;
-
-// 	y = y1;
-// 	if (y < 0)
-// 		y = 0;
-// 	if (y2 > game->map_size.y)
-// 		y2 = game->map_size.y;
-// 	while (y <= y2)
-// 	{
-// 		my_mlx_pixel_put(game->image, x, y, 0xFF0000);
-// 		y++;
-// 	}
-// }
-
-// draw a vertical line on 'x' axis, from y1 up to y2 down from the texture in game->asset
-void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, double height)
+void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float height)
 {
-	float	y, y1;
+	int		y, y1;
 	int		x_img;
 	float	y_img = 0;
-	// height = rintf(height);
+	float	delta_y_img;
+	float	wallx_mod;
 
-	y =  WIN_Y / 2.0 - height / 2.0;
+	y = WIN_Y / 2.0 - height / 2.0;
 	y1 = WIN_Y / 2.0 + height / 2.0;
+	delta_y_img = game->asset->size.y / height;
 	if (y < 0)
-		y_img = -y * game->asset->size.y / height;
-	if (y < 0)
+	{
+		y_img = -y * delta_y_img;
 		y = 0;
+	}
 	if (y1 > WIN_Y)
 		y1 = WIN_Y;
-
-	// printf("wall.x: %f	wall.y:%f\n",wall.x, wall.y);
-	wall.y = (int)wall.y;
-	if (fmodf(wall.x, CHUNK_SIZE) * game->asset->size.x == 0)
-		x_img = fmodf(wall.y, CHUNK_SIZE) * game->asset->size.x;
+	wallx_mod = fmodf(wall.x, CHUNK_SIZE);
+	if (wallx_mod == 0)
+		x_img = fmodf(wall.y, CHUNK_SIZE) * game->asset->size.x / CHUNK_SIZE;
 	else
-		x_img = fmodf(wall.x, CHUNK_SIZE)* game->asset->size.x;
+		x_img = wallx_mod * game->asset->size.x / CHUNK_SIZE;
 	while (y < y1)
 	{
-		my_mlx_pixel_put(game->image, x, (int)y, get_color_at(game->asset, x_img / CHUNK_SIZE, (int)y_img));
-		y+=1.0;
-		y_img += game->asset->size.y / height;
+		my_mlx_pixel_put(game->image, x, y, get_color_at(game->asset, x_img, y_img));
+		y_img += delta_y_img;
+		y++;
 	}
 }

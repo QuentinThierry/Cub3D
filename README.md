@@ -19,3 +19,11 @@ tar -xf libao
 make
 
 make install
+
+
+
+Dimension of the Projection Plane = WIN_X * WIN_Y units
+Center of the Projection Plane = (WIN_X / 2 , WIN_Y / 2)
+Distance to the Projection Plane = (WIN_X/2.0) / (t(FOV/2.0 in radian))
+Angle between subsequent rays = FOV/WIN_X degree
+

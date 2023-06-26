@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/23 18:11:04 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/23 21:31:51 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,15 @@ double	get_dist(t_game *game, float x, float y, float angle)
 
 	delta.x = fabsf(x - game->player->pos.x);
 	delta.y = fabsf(y - game->player->pos.y);
+	// my_mlx_pixel_put(game->image, x, y, 0xE0E0FF);
 	double h = sqrt((delta.x * delta.x + delta.y * delta.y));
+	// return (h);
 	double c = cos(angle * M_PI / 180);
-
+	// if (game->player->pos.x - x > 0)
+		// return (delta.x / cos(angle * M_PI / 180) - (delta.y / sin(angle * M_PI / 180)));
+	// else
+	// 	return (delta.x / sin(angle * M_PI / 180));
+	// return (h);
 	return (c * h);
 	// return ((/*(cos(angle * M_PI / 180)) **/ ));
 	// return (delta.x * cos((FOV / 2.0) * M_PI / 180) + delta.y * sin((FOV / 2.0) * M_PI / 180));
@@ -83,9 +89,6 @@ t_fvector2	get_wall_hit(t_game *game, float angle)
 			comp.x += step.x;
 			y += sign.y * CHUNK_SIZE;
 		}
-		// printf("sign : %d %d\n", sign.x, sign.y);
-		// printf("COO BUG X: %d %f\n", x + (sign.x == -1) * -1, comp.y);
-		// printf("COO BUG Y: %d %f\n\n", y + (sign.y == -1) * -1, comp.x);
 	}
 	return ((t_fvector2){0});
 }
@@ -101,24 +104,15 @@ void	raycasting(t_game *game)
 	x = - WIN_X / 2.0;
 	while (x <  WIN_X / 2.0)
 	{
-		angle = ((float)x * (FOV / 2.0)) / (WIN_X/ 2.0);
+		angle = atan(x / ((WIN_X / 2.0) / (tan((FOV/2.0) * M_PI / 180))));
+		angle = angle * 180 / M_PI;
 		if (game->player->angle + angle >= 360)
 			game->player->angle = game->player->angle - 360;
 		if (game->player->angle + angle < 0)
 			game->player->angle = game->player->angle + 360;
 		wall = get_wall_hit(game, game->player->angle + angle);
-		height = HEIGHT_WALL / get_dist(game, wall.x, wall.y, angle);
-
-		// printf("height : %f\n", height/ 5);
-		// my_mlx_pixel_put(game->image, x, height / 5, 0xFF0000);
-		// printf("wall : %f, %f, height %f\n", wall.x, wall.y, height);
-		// if (get_dist(game, wall.x, wall.y, fabsf(angle)) < 1)
-		// {
-		// 	x++;
-		// 	continue;
-		// }
+		height = CHUNK_SIZE / get_dist(game, wall.x, wall.y, angle) * ((WIN_X / 2.0) / (tan((FOV/2.0) * M_PI / 180)));
 		draw_vert_sprite(game, x + WIN_X / 2.0, wall, (float)height);
 		x++;
 	}
-	// exit(0);
 }

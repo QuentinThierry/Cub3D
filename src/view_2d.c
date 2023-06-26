@@ -6,11 +6,12 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:24:03 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/23 18:08:28 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/23 21:32:01 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+double	get_dist(t_game *game, float x, float y, float angle);
 
 t_fvector2	get_wall_hit_2d(t_game *game, double angle)
 {
@@ -42,11 +43,7 @@ t_fvector2	get_wall_hit_2d(t_game *game, double angle)
 			my_mlx_pixel_put(game->image,
 					x, (int)(comp.y), 0xFF0000);
 			if (game->maps[((int)comp.y) / CHUNK_SIZE][x / CHUNK_SIZE + (sign.x == -1) * -1] == '1')
-			{
-				// my_mlx_pixel_put(game->image,
-				// 	x, (int)(comp.y), 0x41FDFE);
 				return ((t_fvector2){x, comp.y});
-			}
 			comp.y += step.y;
 			x += sign.x * CHUNK_SIZE;
 		}
@@ -55,24 +52,10 @@ t_fvector2	get_wall_hit_2d(t_game *game, double angle)
 			my_mlx_pixel_put(game->image,
 					(int)(comp.x), y, 0x00FF00);
 			if (game->maps[y / CHUNK_SIZE + (sign.y == -1) * -1][((int)comp.x) / CHUNK_SIZE] == '1')
-			{
-				// my_mlx_pixel_put(game->image,
-				// 	(int)(comp.x), y, 0x41FDFE);
 				return ((t_fvector2){comp.x, y});
-			}
 			comp.x += step.x;
 			y += sign.y * CHUNK_SIZE;
 		}
-		// printf("SIGN: %d %d\n", sign.x, sign.y);	
-		// printf("X: %d COMP:%.20f\n", x, comp.x);	
-		// printf("Y: %d COMP:%.20f\n", y, comp.y);
-		// my_mlx_pixel_put(game->image,
-		// 			(int)(comp.x * CHUNK_SIZE), y * CHUNK_SIZE, 0xFFF052);
-		// my_mlx_pixel_put(game->image,
-		// 			x * CHUNK_SIZE, (int)(comp.y * CHUNK_SIZE), 0xFFF052);
-		// printf("sign : %d %d\n", sign.x, sign.y);
-		// printf("COO BUG X: %d %f\n", x + (sign.x == -1) * -1, comp.y);
-		// printf("COO BUG Y: %d %f\n\n", y + (sign.y == -1) * -1, comp.x);
 	}
 	return ((t_fvector2){0});
 }
@@ -81,6 +64,7 @@ void	raycasting_2d(t_game *game)
 {
 	int		x;
 	float	angle;
+	float	height;
 	t_fvector2	wall;
 
 	x = - game->map_size.x * CHUNK_SIZE / 2.0;
@@ -92,6 +76,7 @@ void	raycasting_2d(t_game *game)
 		if (game->player->angle + angle < 0)
 			game->player->angle = game->player->angle + 360;
 		wall = get_wall_hit_2d(game, game->player->angle + angle);
+		height =  CHUNK_SIZE / get_dist(game, wall.x, wall.y, angle) * ((WIN_X / 2.0) / (tan((FOV/2.0) * M_PI / 180)));
 		x++;
 	}
 }

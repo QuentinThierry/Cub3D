@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/23 18:02:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/23 21:26:30 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, double height)
 		y = 0;
 	if (y1 > WIN_Y)
 		y1 = WIN_Y;
-	// printf("height : %f		bas y: %f	haut y:%f	taille : %f\n", height, y , y1, y1 - y);
+
+	// printf("wall.x: %f	wall.y:%f\n",wall.x, wall.y);
 	wall.y = (int)wall.y;
 	if (fmodf(wall.x, CHUNK_SIZE) * game->asset->size.x == 0)
 		x_img = fmodf(wall.y, CHUNK_SIZE) * game->asset->size.x;

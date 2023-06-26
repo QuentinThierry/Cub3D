@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/23 21:35:23 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/27 00:50:19 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	on_update(t_game *game)
 	
 	clock_gettime(CLOCK_REALTIME, &cur_time);
 	game->delta_time = (cur_time.tv_sec - last_time.tv_sec + (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
-	printf("%ld\n", (long)(1.0 / game->delta_time));
+	// printf("%ld\n", (long)(1.0 / game->delta_time));
 	last_time = cur_time;
 	return (0);
 }
@@ -61,7 +61,6 @@ int	on_update(t_game *game)
 
 int main(void)
 {
-	t_image		img_wall;
 	t_game		game;
 
 	putenv("PULSE_LATENCY_MSEC=60");
@@ -73,12 +72,13 @@ int main(void)
 	game.player = find_player(game.maps);
 	if (game.player == NULL)
 		return (ft_close(&game), perror("Error"), 1);
-	
-	img_wall.img = mlx_xpm_file_to_image(game.mlx_ptr,"assets/chatmignon.xpm", &(img_wall.size.x), &(img_wall.size.y));
-	img_wall.addr = mlx_get_data_addr(img_wall.img,
-		&img_wall.bpp, &img_wall.size_line, &img_wall.endian);
-	game.asset = &img_wall;
-
+	game.filename = ft_calloc(4, sizeof(char *));
+	game.filename[0] = strdup("assets/blue.xpm");
+	game.filename[1] = strdup("assets/flower_yellow.xpm");
+	game.filename[2] = strdup("assets/wood_light.xpm");
+	game.filename[3] = strdup("assets/chatmignon.xpm");
+	if (load_image(&game) == -1)
+		return (ft_close(&game), perror("Error"), 1);
 	// quadrillage(&game);
 	// raycasting(&game);
 	// mlx_put_image_to_window(game.mlx_ptr, game.win, game.image->img, 0, 0);

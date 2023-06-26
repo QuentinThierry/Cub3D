@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/23 21:31:51 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/27 00:47:04 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,8 @@ void	raycasting(t_game *game)
 			game->player->angle = game->player->angle + 360;
 		wall = get_wall_hit(game, game->player->angle + angle);
 		height = CHUNK_SIZE / get_dist(game, wall.x, wall.y, angle) * ((WIN_X / 2.0) / (tan((FOV/2.0) * M_PI / 180)));
-		draw_vert_sprite(game, x + WIN_X / 2.0, wall, (float)height);
+		draw_vert_sprite(game, x + WIN_X / 2.0, wall, (float)height, game->player->angle + angle);
 		x++;
 	}
+	// exit(0);
 }

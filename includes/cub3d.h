@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/23 20:12:27 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/27 00:33:42 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,14 @@
 #define ROTATION 100
 #define MAX_VOLUME 1.0
 #define THREED 1
+
+enum e_orientation
+{
+	e_north = 0,
+	e_east,
+	e_south,
+	e_west
+};
 
 typedef struct s_vector2
 {
@@ -78,11 +86,12 @@ typedef struct s_game
 	t_image		*image;
 	void		*mlx_ptr;
 	void		*win;
-	t_image		*asset;
+	t_image		**tab_images;
 	char		**maps;
 	t_vector2	map_size;
 	t_player	*player;
 	float		delta_time;
+	char		**filename;
 }	t_game;
 
 typedef struct s_sound
@@ -105,8 +114,11 @@ typedef struct	s_sound_thread
 
 // ------ Utils------
 void	*ft_calloc(size_t nmemb, size_t size);
+enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall);
+t_image	*get_asset(t_game	*game, enum e_orientation orient);
 
 int	init_mlx(t_game *game);
+int	load_image(t_game *game);
 char	**parse_map(char *filename, t_vector2 *map_size);
 void parse_wav_file(int fd, ao_sample_format *format, long *data_size);
 int	key_press_hook(int key, t_game *game);
@@ -114,7 +126,7 @@ int	key_release_hook(int key, t_player *player);
 void	ft_mouv(t_player *player, float delta_time);
 void	print_map(char **maps);
 void	my_mlx_pixel_put(t_image *img, int x, int y, int color);
-void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, double dist);
+void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, double height, double angle);
 void	draw_vert(t_game *game, int x, int y1, int y2);
 void	quadrillage(t_game *game);
 float	get_wall_dist(t_game *game, double angle);

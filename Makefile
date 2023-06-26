@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
+#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/06/22 18:47:04 by qthierry         ###   ########.fr        #
+#    Updated: 2023/06/26 23:37:59 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,6 +53,7 @@ SRC_GNL = get_next_line.c\
 SRC_LIST =	$(addprefix $(SOUND), $(SRC_SOUND)) \
 			$(addprefix $(GNL), $(SRC_GNL)) \
 			key_hook.c \
+			utils.c \
 			raycasting.c \
 			draw.c \
 			parsing.c \

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/23 21:26:30 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/27 00:34:04 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,32 +58,31 @@ void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
 // }
 
 // draw a vertical line on 'x' axis, from y1 up to y2 down from the texture in game->asset
-void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, double height)
+void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, double height, double angle)
 {
 	float	y, y1;
 	int		x_img;
 	float	y_img = 0;
-	// height = rintf(height);
+	t_image	*image;
 
+	// printf("wall : %d	%d	%d	wall : %f	%f\n",get_wall_orientation(*(game->player), wall), game->player->pos.x, game->player->pos.y, wall.x, wall.y);
+	image = get_asset(game, get_wall_orientation(*(game->player), wall));
 	y =  WIN_Y / 2.0 - height / 2.0;
 	y1 = WIN_Y / 2.0 + height / 2.0;
 	if (y < 0)
-		y_img = -y * game->asset->size.y / height;
+		y_img = -y * image->size.y / height;
 	if (y < 0)
 		y = 0;
 	if (y1 > WIN_Y)
 		y1 = WIN_Y;
-
-	// printf("wall.x: %f	wall.y:%f\n",wall.x, wall.y);
-	wall.y = (int)wall.y;
-	if (fmodf(wall.x, CHUNK_SIZE) * game->asset->size.x == 0)
-		x_img = fmodf(wall.y, CHUNK_SIZE) * game->asset->size.x;
+	if (fmodf(wall.x, CHUNK_SIZE) * image->size.x == 0)
+		x_img = fmodf(wall.y, CHUNK_SIZE) * image->size.x;
 	else
-		x_img = fmodf(wall.x, CHUNK_SIZE)* game->asset->size.x;
+		x_img = fmodf(wall.x, CHUNK_SIZE) * image->size.x;
 	while (y < y1)
 	{
-		my_mlx_pixel_put(game->image, x, (int)y, get_color_at(game->asset, x_img / CHUNK_SIZE, (int)y_img));
+		my_mlx_pixel_put(game->image, x, (int)y, get_color_at(image, x_img / CHUNK_SIZE, (int)y_img));
 		y+=1.0;
-		y_img += game->asset->size.y / height;
+		y_img += image->size.y / height;
 	}
 }

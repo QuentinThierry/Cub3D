@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/27 00:33:42 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/27 01:20:05 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@
 
 #include <X11/X.h>
 
-#define WIN_X 600
-#define WIN_Y 600
+#define WIN_X 1920
+#define WIN_Y 1080
 #define CHUNK_SIZE 50
 #define FOV 60
 #define HEIGHT_WALL 600*50
@@ -115,7 +115,7 @@ typedef struct	s_sound_thread
 // ------ Utils------
 void	*ft_calloc(size_t nmemb, size_t size);
 enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall);
-t_image	*get_asset(t_game	*game, enum e_orientation orient);
+t_image	*get_image(t_game	*game, enum e_orientation orient);
 
 int	init_mlx(t_game *game);
 int	load_image(t_game *game);

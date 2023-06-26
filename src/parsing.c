@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/27 00:36:34 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/27 00:56:08 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_player	*find_player(char **maps)
 		{	
 			if (maps[index.y][index.x] == 'N')
 			{
-				player->angle = 90;
+				player->angle = 0;
 				player->pos.x = index.x * CHUNK_SIZE + CHUNK_SIZE / 2.0;
 				player->pos.y = index.y * CHUNK_SIZE + CHUNK_SIZE / 2.0;
 				player->f_pos.x = index.x * CHUNK_SIZE + CHUNK_SIZE / 2.0;

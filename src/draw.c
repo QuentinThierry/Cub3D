@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/27 01:59:32 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/27 02:02:15 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float height)
 		x_img = fmodf(wall.y, CHUNK_SIZE) * image->size.x / CHUNK_SIZE;
 	else
 		x_img = wallx_mod * image->size.x / CHUNK_SIZE;
-	printf("x_img : %d	%d	res : %d\n", x_img, image->size.x / CHUNK_SIZE, image->size.x - x_img - 1);
+	// printf("x_img : %d	%d	res : %d\n", x_img, image->size.x / CHUNK_SIZE, image->size.x - x_img - 1);
 	if (orient == e_west || orient == e_south)
 		x_img = image->size.x - x_img - 1;
 	while (y < y1)

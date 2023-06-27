@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/27 02:01:37 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/27 02:05:27 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ int main(void)
 	if (game.player == NULL)
 		return (ft_close(&game), perror("Error"), 1);
 	game.filename = ft_calloc(4, sizeof(char *));
-	game.filename[0] = strdup("assets/smiley.xpm");
-	game.filename[1] = strdup("assets/smiley.xpm");
-	game.filename[2] = strdup("assets/smiley.xpm");
+	game.filename[0] = strdup("assets/test.xpm");
+	game.filename[1] = strdup("assets/blue.xpm");
+	game.filename[2] = strdup("assets/flower_yellow.xpm");
 	game.filename[3] = strdup("assets/smiley.xpm");
 	if (load_image(&game) == -1)
 		return (ft_close(&game), perror("Error"), 1);

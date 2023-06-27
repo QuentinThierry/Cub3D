@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/27 01:59:47 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/27 02:03:18 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,4 @@ void	raycasting(t_game *game)
 		draw_vert_sprite(game, x + WIN_X / 2, wall, height);
 		x++;
 	}
-	// exit(0);
 }

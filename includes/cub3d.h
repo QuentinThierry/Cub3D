@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/27 02:04:45 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/28 00:04:11 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 
 #include <X11/X.h>
 
-#define WIN_X 1920
+#define WIN_X 1080
 #define WIN_Y 1080
 #define CHUNK_SIZE 50
 #define FOV 60
@@ -45,6 +45,7 @@
 
 extern long tot_fps;
 extern long nb_fps;
+extern FILE *file;
 
 enum e_orientation
 {

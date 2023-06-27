@@ -6,18 +6,18 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/27 02:03:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/28 00:04:05 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-
-float	get_dist(t_game *game, float y, float angle)
+float	get_dist(t_game *game, float x, float y, float angle)
 {
 	t_fvector2	delta;
 	float		alpha;
 
+	delta.x = fabsf(x - game->player->pos.x);
 	delta.y = fabsf(y - game->player->pos.y);
 	alpha = game->player->angle + angle;
 	if (alpha >= 360)
@@ -26,8 +26,11 @@ float	get_dist(t_game *game, float y, float angle)
 		alpha = alpha + 360;
 	if (alpha == 0)
 		return (0);
-	float h = delta.y / fabsf(cosf(alpha * TO_RADIAN));
+	// float h = delta.y / fabsf(cosf(alpha * TO_RADIAN));
+	float h = sqrtf((delta.x * delta.x + delta.y * delta.y));
 	float c = cosf(angle * TO_RADIAN);
+	if (h == 0)
+		return (0.1); // anti segfault, to change
 	return (c * h);
 }
 
@@ -54,7 +57,11 @@ t_fvector2	get_wall_hit(t_game *game, float angle)
 	t_vector2	delta;
 	t_vector2	sign;
 	int			x,y;
-	
+
+	// angle = (angle / 100);
+	// angle = (int)(angle * 1000);
+	// angle /= 1000;
+	// fprintf(file, "%f\n", angle);
 	sign = get_sign(angle);
 	angle = fabsf(tanf(angle * TO_RADIAN));
 	x = (game->player->pos.x / CHUNK_SIZE) * CHUNK_SIZE + (sign.x == 1) * CHUNK_SIZE;
@@ -99,17 +106,17 @@ void	raycasting(t_game *game)
 	t_fvector2	wall;
 	float		delta_angle;
 
+	delta_angle = ((WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN)));
 	x = -WIN_X / 2;
 	while (x < WIN_X / 2)
 	{
-		delta_angle = ((WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN)));
 		angle = atanf(x / delta_angle) * 180 / M_PI;
 		if (game->player->angle + angle >= 360)
 			game->player->angle = game->player->angle - 360;
 		if (game->player->angle + angle < 0)
 			game->player->angle = game->player->angle + 360;
 		wall = get_wall_hit(game, game->player->angle + angle);
-		height = CHUNK_SIZE / get_dist(game, wall.y, angle) * delta_angle;		//div par 0 if sin == 0
+		height = CHUNK_SIZE / get_dist(game, wall.x, wall.y, angle) * delta_angle;		//div par 0 if sin == 0
 		draw_vert_sprite(game, x + WIN_X / 2, wall, height);
 		x++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/27 01:50:15 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/27 03:44:48 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,21 @@ void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float height)
 
 	// if (orient == e_west || orient == e_south)
 	// 	x_img = image->size.x - x_img - 1;
+	int		i = 0;
+	while (i < y)
+	{
+		my_mlx_pixel_put(game->image, x, i, 0x880000);
+		i++;
+	}
 	while (y < y1)
 	{
 		my_mlx_pixel_put(game->image, x, y, get_color_at(image, x_img, y_img));
 		y_img += delta_y_img;
 		y++;
+	}
+	while (y1 < WIN_Y)
+	{
+		my_mlx_pixel_put(game->image, x, y1, 0x008800);
+		y1++;
 	}
 }

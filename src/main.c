@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/27 01:52:36 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/27 04:00:15 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,13 @@ int	on_update(t_game *game)
 }
 #endif
 
+FILE *file;
+
 int main(void)
 {
 	t_game		game;
 
+	file = fopen("file", "w");
 	putenv("PULSE_LATENCY_MSEC=60");
 	game.maps = parse_map("maps/test1.cub", &game.map_size);
 	if (game.maps == NULL)
@@ -80,12 +83,12 @@ int main(void)
 		return (ft_close(&game), perror("Error"), 1);
 	game.filename = ft_calloc(4, sizeof(char *));
 	game.filename[0] = strdup("assets/test.xpm");
-	game.filename[1] = strdup("assets/blue.xpm");
+	game.filename[1] = strdup("assets/chatmignon.xpm");
 	game.filename[2] = strdup("assets/flower_yellow.xpm");
 	game.filename[3] = strdup("assets/smiley.xpm");
 	if (load_image(&game) == -1)
 		return (ft_close(&game), perror("Error"), 1);
-	
+	game.player->angle = 90;
 	// quadrillage(&game);
 	// raycasting(&game);
 	// mlx_put_image_to_window(game.mlx_ptr, game.win, game.image->img, 0, 0);

@@ -21,9 +21,6 @@ make
 make install
 
 
-
-Dimension of the Projection Plane = WIN_X * WIN_Y units
-Center of the Projection Plane = (WIN_X / 2 , WIN_Y / 2)
-Distance to the Projection Plane = (WIN_X/2.0) / (t(FOV/2.0 in radian))
-Angle between subsequent rays = FOV/WIN_X degree
-
+bug sur le angle = 0 (sin 0 == 0 donc div par 0)
+<!-- bug de flash de texture sur l'angle  -->
+changer le sqrt dans calcul dist

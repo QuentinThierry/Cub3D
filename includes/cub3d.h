@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/27 01:41:17 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/27 03:44:23 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 
 #include <X11/X.h>
 
-#define WIN_X 1920
+#define WIN_X 1080
 #define WIN_Y 1080
 #define CHUNK_SIZE 50
 #define FOV 60
@@ -45,6 +45,7 @@
 
 extern long tot_fps;
 extern long nb_fps;
+extern FILE *file;
 
 enum e_orientation
 {

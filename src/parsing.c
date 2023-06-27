@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/27 00:56:08 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/28 01:03:09 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,46 @@ t_player	*find_player(char **maps)
 		index.y++;
 	}
 	return (player);
+}
+
+bool	check_filename(char *filename)
+{
+	int len;
+	int	fd;
+
+	len = strlen(filename);
+	if (len < 4)
+		return (false);
+	if (strncmp(filename + (len - 4 ), ".cub", 4) != 0)
+		return (false);
+	fd = open(filename, O_DIRECTORY);
+	if (fd != -1)
+		return (close(fd), false);
+	return (true);
+}
+
+bool	parse_texture(int fd, t_game *game)
+{
+	char *line;
+	
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		// if (line[0] == '\n')
+		
+		line = get_next_line(fd);
+	}
+}
+
+int	parse_file(char *filename, t_game *game)
+{
+	int fd;
+	
+	if (!check_filename(filename))
+		return (perror("Error"), -1);
+	fd = open(filename, O_RDONLY);
+	if (fd == -1)
+		return (perror("Error"), -1);
+	parse_texture(fd, game);
+	return (0);
 }

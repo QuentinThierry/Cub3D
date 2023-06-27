@@ -29,6 +29,7 @@ TO DO:
 -make parsing
 -mouvement depending on the orientation of the player
 -wall collision
+-maps with multipile textures
 -organization of data
 -optimization
 

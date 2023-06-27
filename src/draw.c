@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/28 00:04:36 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/28 00:13:44 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,12 @@ void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
 
 void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float height)
 {
-	int		y, y1;
-	int		x_img;
-	float	y_img = 0;
-	t_image	*image;
+	int					y, y1;
+	int					x_img;
+	float				y_img = 0;
+	t_image				*image;
 	enum e_orientation	orient;
-	float	delta_y_img;
-	float	wallx_mod;
+	float				delta_y_img;
 
 	orient = get_wall_orientation(*(game->player), wall);
 	image = get_image(game, orient);
@@ -62,11 +61,10 @@ void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float height)
 	}
 	if (y1 > WIN_Y)
 		y1 = WIN_Y;
-	wallx_mod = fmodf(wall.x, CHUNK_SIZE);
-	if (wallx_mod == 0)
-		x_img = fmodf(wall.y, CHUNK_SIZE) * image->size.x / CHUNK_SIZE;
+	if (orient == e_north || orient == e_south)
+		x_img = fmodf(wall.x, CHUNK_SIZE) * image->size.x / CHUNK_SIZE;
 	else
-		x_img = wallx_mod * image->size.x / CHUNK_SIZE;
+		x_img = fmodf(wall.y, CHUNK_SIZE) * image->size.x / CHUNK_SIZE;
 	if (orient == e_west || orient == e_south)
 		x_img = image->size.x - x_img - 1;
 	int		i = 0;

@@ -21,9 +21,13 @@ make
 make install
 
 
+TO DO:
 
-Dimension of the Projection Plane = WIN_X * WIN_Y units
-Center of the Projection Plane = (WIN_X / 2 , WIN_Y / 2)
-Distance to the Projection Plane = (WIN_X/2.0) / (t(FOV/2.0 in radian))
-Angle between subsequent rays = FOV/WIN_X degree
-
+-need to fix division by zero when sin(0)
+-fix get_dist return 0
+-fix orientation when we have round coordonee (ex : (3.0 ; 1.0))
+-make parsing
+-mouvement depending on the orientation of the player
+-wall collision
+-organization of data
+-optimization

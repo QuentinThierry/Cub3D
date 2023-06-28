@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/27 03:44:23 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:34:00 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 #define FOV 60
 #define HEIGHT_WALL 600*50
 #define MOUV 1
-#define SPEED 50
+#define SPEED 250
 #define ROTATION 100
 #define MAX_VOLUME 1.0
 #define THREED 1
@@ -45,7 +45,6 @@
 
 extern long tot_fps;
 extern long nb_fps;
-extern FILE *file;
 
 enum e_orientation
 {
@@ -97,6 +96,7 @@ typedef struct s_game
 	t_player	*player;
 	float		delta_time;
 	char		**filename;
+	const float		*constants;
 }	t_game;
 
 typedef struct s_sound

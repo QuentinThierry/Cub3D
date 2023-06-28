@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/27 00:56:08 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/28 00:58:27 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	**parse_map(char *filename, t_vector2 *map_size)	//change parsing
 	
 	fd = open(filename, O_RDONLY);
 	y = 0;
-	maps = ft_calloc(50, sizeof(char *));
+	maps = ft_calloc(500, sizeof(char *));
 	if (maps == NULL)
 		return (NULL);
 	maps[y] = get_next_line(fd);

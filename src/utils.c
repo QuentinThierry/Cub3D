@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/27 00:57:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/28 17:11:15 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall)
 {
-	if (fmodf(wall.x, CHUNK_SIZE) != 0)
+	if ((wall.x - (int)wall.x) != 0)
 	{
-		if (player.pos.y > wall.y)
+		if (player.f_real_pos.y > wall.y)
 			return (e_north);
 		else
 		 	return (e_south);
 	}
 	else
 	{
-		if (player.pos.x > wall.x)
+		if (player.f_real_pos.x > wall.x)
 			return (e_west);
 		else
 		 	return (e_east);

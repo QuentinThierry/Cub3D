@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/27 03:44:48 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:48:43 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float height)
 	t_image	*image;
 	enum e_orientation	orient;
 	float	delta_y_img;
-	float	wallx_mod;
 
 	orient = get_wall_orientation(*(game->player), wall);
 	image = get_image(game, orient);
@@ -62,14 +61,10 @@ void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float height)
 	}
 	if (y1 > WIN_Y)
 		y1 = WIN_Y;
-	wallx_mod = fmodf(wall.x, CHUNK_SIZE);
-	if (wallx_mod == 0)
-		x_img = fmodf(wall.y, CHUNK_SIZE) * image->size.x / CHUNK_SIZE;
+	if (wall.x - (int)wall.x == 0)
+		x_img = (wall.y - (int)wall.y) * image->size.x;
 	else
-		x_img = wallx_mod * image->size.x / CHUNK_SIZE;
-
-	// if (orient == e_west || orient == e_south)
-	// 	x_img = image->size.x - x_img - 1;
+		x_img = (wall.x - (int)wall.x) * image->size.x;
 	int		i = 0;
 	while (i < y)
 	{

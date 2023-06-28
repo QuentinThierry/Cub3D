@@ -24,3 +24,5 @@ make install
 bug sur le angle = 0 (sin 0 == 0 donc div par 0)
 <!-- bug de flash de texture sur l'angle  -->
 changer le sqrt dans calcul dist
+
+rajouter dans la partie bonus `putenv("PULSE_LATENCY_MSEC=60");`

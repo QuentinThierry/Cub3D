@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/29 18:22:23 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/29 19:52:44 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ typedef struct s_game
 	void		*mlx_ptr;
 	void		*win;
 	t_image		**tab_images;
+	unsigned int	floor;
+	unsigned int	ceiling;
 	char		**maps;
 	t_vector2	map_size;
 	t_player	*player;
@@ -142,6 +144,7 @@ int	on_update(t_game *game);
 void	move_forward(t_player *player);
 t_vector2	get_sign(float angle);
 void	ft_close(t_game *game);
+int	parse_file(char *filename, t_game *game);
 
 // --------2D--------
 t_fvector2	get_wall_hit_2d(t_game *game, float angle);

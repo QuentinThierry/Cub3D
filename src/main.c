@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/29 18:28:08 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/29 20:08:12 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,11 @@ int main(int argc, char **argv)
 {
 	t_game	game;
 
-	// if (argc != 2)
-	// 	return (printf("Error\n"), 1);
-	// parse_file(argv[1], &game);
+	if (argc != 2)
+		return (printf("Error : args\n"), 1);
+	game.filename = ft_calloc(4, sizeof(char *));
+	if (parse_file(argv[1], &game) == -1)
+		return (1);
 	game.maps = parse_map("maps/test1.cub", &game.map_size);
 	if (game.maps == NULL)
 		return (ft_close(&game), perror("Error"), 1);
@@ -80,11 +82,10 @@ int main(int argc, char **argv)
 	game.player = find_player(game.maps);
 	if (game.player == NULL)
 		return (ft_close(&game), perror("Error"), 1);
-	game.filename = ft_calloc(4, sizeof(char *));
-	game.filename[0] = strdup("assets/smiley.xpm");
-	game.filename[1] = strdup("assets/smiley.xpm");
-	game.filename[2] = strdup("assets/smiley.xpm");
-	game.filename[3] = strdup("assets/smiley.xpm");
+	// game.filename[0] = strdup("assets/cobble.xpm");
+	// game.filename[1] = strdup("assets/chatmignon.xpm");
+	// game.filename[2] = strdup("assets/flower_yellow.xpm");
+	// game.filename[3] = strdup("assets/smiley.xpm");
 	if (load_image(&game) == -1)
 		return (ft_close(&game), perror("Error"), 1); // ((WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))
 	game.constants = (float[5]){(WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))};

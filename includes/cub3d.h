@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/28 17:34:00 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/06/29 17:59:01 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 #define SPEED 250
 #define ROTATION 100
 #define MAX_VOLUME 1.0
-#define THREED 1
+#define THREED 0
 #define TO_RADIAN .0174532
 
 extern long tot_fps;
@@ -143,7 +143,7 @@ t_vector2	get_sign(float angle);
 void	ft_close(t_game *game);
 
 // --------2D--------
-t_fvector2	get_wall_hit_2d(t_game *game, float angle);
+t_fvector2	get_wall_hit_2d(t_game *game, t_fvector2 ray_dir);
 void	raycasting_2d(t_game *game);
 void	quadrillage(t_game *game);
 

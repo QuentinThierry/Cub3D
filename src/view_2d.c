@@ -6,12 +6,125 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:24:03 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/26 22:33:21 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/06/29 18:42:17 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 float	get_dist(t_game *game, float x, float y, float angle);
+
+#define VECTOR
+#ifdef VECTOR
+
+t_fvector2	get_wall_hit_2d(t_game *game, t_fvector2 ray_dir)
+{
+	t_fvector2	delta_step;
+	t_fvector2	comp;
+	t_vector2	step_map;
+	t_vector2	pos_map;
+
+	printf("ray : %f %f\n", ray_dir.x, ray_dir.y);
+
+	for (int i = 0; i < 1000; i++) {
+		my_mlx_pixel_put(game->image, game->player->pos.x + i * ray_dir.y * 0.01, game->player->pos.y + i * ray_dir.y * 0.01, 0x808080);
+	}
+
+	delta_step.x = fabsf(1 / ray_dir.x);
+	delta_step.y = fabsf(1 / ray_dir.y);
+	printf("delta_step : %f %f\n", delta_step.x, delta_step.y);
+
+	// for (int i = 0; i < 1000; i++) {
+	// 	my_mlx_pixel_put(game->image, game->player->pos.x + i * delta_step.y * 0.01, game->player->pos.y + i * delta_step.y * 0.01, 0xFFFFFF);
+	// }
+
+	pos_map.x = (int)game->player->f_real_pos.x;
+	pos_map.y = (int)game->player->f_real_pos.y;
+
+	printf("pos_map : %d %d\n", pos_map.x, pos_map.y);
+
+	if (ray_dir.x < 0)
+	{
+		step_map.x = -1;
+		comp.x = (game->player->f_real_pos.x - pos_map.x) * delta_step.x;
+	}
+	else
+	{
+		step_map.x = 1;
+		comp.x = (pos_map.x + 1 - game->player->f_real_pos.x) * delta_step.x;
+		// printf("ici %f = (%d + 1 - %f) * %f\n", comp.x, pos_map.x, game->player->f_real_pos.x, delta_step.x);
+	}
+	if (ray_dir.y < 0)
+	{
+		step_map.y = -1;
+		comp.y = (game->player->f_real_pos.y - pos_map.y) * delta_step.y;
+	}
+	else
+	{
+		step_map.y = 1;
+		comp.y = (pos_map.y + 1 - game->player->f_real_pos.y) * delta_step.y;
+		// printf("%f = (%d + 1 - %f) * %f\n", comp.y, pos_map.y, game->player->f_real_pos.y, delta_step.y);
+	}
+
+	comp.x += game->player->f_real_pos.x;
+	comp.y += game->player->f_real_pos.y;
+
+	printf("comp : %f %f\n", comp.x, comp.y);
+
+	my_mlx_pixel_put(game->image, game->player->pos.x, game->player->pos.y, 0xFF0000);
+	while (true)
+	{
+		if (comp.x < comp.y)
+		{
+			printf("comp1 : %f %f\n", comp.x, comp.y);
+			my_mlx_pixel_put(game->image, (pos_map.x) * CHUNK_SIZE, pos_map.y * CHUNK_SIZE, 0x00FF00);
+			if (game->maps[pos_map.y][(int)pos_map.x] == '1')
+			{
+				return ((t_fvector2){comp.x, pos_map.y});
+			}
+			comp.x += delta_step.x;
+			pos_map.x += step_map.x;
+		}
+		else
+		{
+			printf("comp2 : %f %f\n", comp.x, comp.y);
+			my_mlx_pixel_put(game->image, pos_map.x * CHUNK_SIZE, pos_map.y * CHUNK_SIZE, 0xFF0000);
+			if (game->maps[(int)pos_map.y][pos_map.x] == '1')
+			{
+				return ((t_fvector2){pos_map.x, comp.y});
+			}
+			comp.y += delta_step.y;
+			pos_map.y += step_map.y;
+		}
+	}
+	return ((t_fvector2){0});
+}
+
+void	raycasting_2d(t_game *game)
+{
+	int			x;
+	float		point_in_cam;
+	float		height;
+	t_fvector2	wall;
+	t_fvector2	player_dir;
+	t_fvector2	camera_plane;
+	t_fvector2	ray_dir;
+
+	player_dir = (t_fvector2){1, 0};
+	camera_plane = (t_fvector2){0, -1};
+	x = 0;
+	while (x < WIN_X)
+	{
+		point_in_cam = (2 * x / (float)WIN_X) - 1;
+		ray_dir.x = player_dir.x + camera_plane.x * point_in_cam;
+		ray_dir.y = player_dir.y + camera_plane.y * point_in_cam;
+		printf("point : %f\n", point_in_cam);
+		wall = get_wall_hit_2d(game, ray_dir);
+		printf("\n");
+		x++;
+	}
+}
+
+#else
 
 t_fvector2	get_wall_hit_2d(t_game *game, float angle)
 {
@@ -81,6 +194,7 @@ void	raycasting_2d(t_game *game)
 	}
 }
 
+#endif
 void	quadrillage(t_game *game)
 {
 	int	x;

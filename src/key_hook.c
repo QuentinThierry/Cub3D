@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/26 22:17:10 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/06/29 17:55:37 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,33 @@ int	key_release_hook(int key, t_player *player)
 
 void	ft_mouv(t_player *player, float delta_time)
 {
+	// t_vector2 sign;
+
+	// sign = get_sign(player->angle);
 	if (player->dir.y != 0)
 	{
+		// player->f_pos.x += fabs(sin(player->angle * TO_RADIAN)) * SPEED * delta_time * sign.x;
+		// player->f_pos.y += fabs(cos(player->angle * TO_RADIAN)) * SPEED * delta_time * sign.y;
+		// // printf("angle : %d",1);
+		// // player->f_pos.y += SPEED * delta_time * player->dir.y;
+		// player->pos.y = (int)player->f_pos.y;
+		// player->pos.x = (int)player->f_pos.x;
+		// player->f_real_pos.y = player->f_pos.y / CHUNK_SIZE;
+		// player->f_real_pos.x = player->f_pos.x / CHUNK_SIZE;
 		player->f_pos.y += SPEED * delta_time * player->dir.y;
 		player->pos.y = (int)player->f_pos.y;
 		player->f_real_pos.y = player->f_pos.y / CHUNK_SIZE;
 	}
 	if (player->dir.x != 0)
 	{
+		// player->f_pos.x += fabs(sin(player->angle * TO_RADIAN)) * SPEED * delta_time * sign.x;
+		// player->f_pos.y += fabs(cos(player->angle * TO_RADIAN)) * SPEED * delta_time * sign.y;
+		// // printf("angle : %d",1);
+		// // player->f_pos.y += SPEED * delta_time * player->dir.y;
+		// player->pos.y = (int)player->f_pos.y;
+		// player->pos.x = (int)player->f_pos.x;
+		// player->f_real_pos.y = player->f_pos.y / CHUNK_SIZE;
+		// player->f_real_pos.x = player->f_pos.x / CHUNK_SIZE;
 		player->f_pos.x += SPEED * delta_time * player->dir.x;
 		player->pos.x = (int)player->f_pos.x;
 		player->f_real_pos.x = player->f_pos.x / CHUNK_SIZE;

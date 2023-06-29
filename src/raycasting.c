@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/29 17:54:56 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/06/29 18:24:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,19 @@ float	get_dist(t_game *game, float x, float y, float angle)
 
 	delta.x = fabsf(x - game->player->f_real_pos.x);
 	delta.y = fabsf(y - game->player->f_real_pos.y);
-	return (sqrtf((delta.x * delta.x + delta.y * delta.y)));
-	// alpha = game->player->angle + angle;
-	// if (alpha >= 360)
-	// 	alpha = alpha - 360;
-	// else if (alpha < 0)
-	// 	alpha = alpha + 360;
-	// if (alpha == 0)
-	// 	alpha++;
-	// // float h = delta.y / fabsf(cosf(alpha * TO_RADIAN));
-	// float h = sqrtf((delta.x * delta.x + delta.y * delta.y));
-	// float c = cosf(angle * TO_RADIAN);
-	// if (h == 0)
-	// 	return (0.1); // anti segfault, to change
-	// return (c * h);
+	alpha = game->player->angle + angle;
+	if (alpha >= 360)
+		alpha = alpha - 360;
+	else if (alpha < 0)
+		alpha = alpha + 360;
+	if (alpha == 0)
+		alpha++;
+	// float h = delta.y / fabsf(cosf(alpha * TO_RADIAN));
+	float h = sqrtf((delta.x * delta.x + delta.y * delta.y));
+	float c = cosf(angle * TO_RADIAN);
+	if (h == 0)
+		return (0.1); // anti segfault, to change
+	return (c * h);
 }
 
 t_vector2	get_sign(float angle)
@@ -49,97 +48,6 @@ t_vector2	get_sign(float angle)
 		sign.y = -1;
 	return (sign);
 }
-
-#define VECTOR
-#ifdef VECTOR
-
-t_fvector2	get_wall_hit(t_game *game, float plane_dist)
-{
-	t_fvector2	player_dir;
-	t_fvector2	camera_plane;
-	t_fvector2	ray_dir;
-	t_fvector2	delta_step;
-	t_fvector2	comp;
-	t_vector2	step_map;
-	t_vector2	pos_map;
-
-	player_dir = (t_fvector2){1, 0};
-	camera_plane = (t_fvector2){0, 1};
-
-	ray_dir.x = player_dir.x + camera_plane.x * plane_dist;
-	ray_dir.y = player_dir.y + camera_plane.y * plane_dist;
-
-	delta_step.x = (1 / ray_dir.x);
-	delta_step.y = (1 / ray_dir.y);
-
-	pos_map.x = (int)game->player->f_real_pos.x;
-	pos_map.y = (int)game->player->f_real_pos.y;
-
-	if (ray_dir.x < 0)
-	{
-		step_map.x = -1;
-		comp.x = (game->player->f_real_pos.x - pos_map.x) * delta_step.x;
-	}
-	else
-	{
-		step_map.x = 1;
-		comp.x = (pos_map.x + 1 - game->player->f_real_pos.x) * delta_step.x;
-	}
-	if (ray_dir.y < 0)
-	{
-		step_map.y = -1;
-		comp.y = (game->player->f_real_pos.y - pos_map.y) * delta_step.y;
-	}
-	else
-	{
-		step_map.y = 1;
-		comp.y = (pos_map.y + 1 - game->player->f_real_pos.y) * delta_step.y;
-	}
-
-	while (true)
-	{
-		if (comp.x < comp.y)
-		{
-			comp.x += delta_step.x;
-			pos_map.x += step_map.x;
-			if (game->maps[pos_map.y][(int)comp.x])
-			{
-				return ((t_fvector2){comp.x, pos_map.y});
-			}
-		}
-		else
-		{
-			comp.y += delta_step.y;
-			pos_map.y += step_map.y;
-			if (game->maps[(int)comp.y][pos_map.x])
-			{
-				return ((t_fvector2){pos_map.x, comp.y});
-			}
-		}
-	}
-	return ((t_fvector2){0});
-}
-
-void	raycasting(t_game *game)
-{
-	int			x;
-	float		point_in_cam;
-	float		height;
-	t_fvector2	wall;
-
-	x = 0;
-	while (x < WIN_X)
-	{
-		point_in_cam = (2 * x / (float)WIN_X) - 1;
-		wall = get_wall_hit(game, point_in_cam);
-		// printf("wall : %f, %f\n", wall.x, wall.y);
-		height = CHUNK_SIZE / get_dist(game, wall.x, wall.y, x);
-		draw_vert_sprite(game, x, wall, height);
-		x++;
-	}
-}
-
-#else
 
 t_fvector2	get_wall_hit(t_game *game, float angle)
 {
@@ -203,4 +111,3 @@ void	raycasting(t_game *game)
 		x++;
 	}
 }
-#endif

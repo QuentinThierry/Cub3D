@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/29 17:59:01 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/06/29 18:22:23 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@
 #define FOV 60
 #define HEIGHT_WALL 600*50
 #define MOUV 1
-#define SPEED 250
-#define ROTATION 100
+#define SPEED 50
+#define ROTATION 25
 #define MAX_VOLUME 1.0
-#define THREED 0
+#define THREED 1
 #define TO_RADIAN .0174532
 
 extern long tot_fps;
@@ -121,6 +121,7 @@ typedef struct	s_sound_thread
 void	*ft_calloc(size_t nmemb, size_t size);
 enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall);
 t_image	*get_image(t_game	*game, enum e_orientation orient);
+int skip_whitespace(char *str);
 
 int	init_mlx(t_game *game);
 int	load_image(t_game *game);
@@ -143,7 +144,7 @@ t_vector2	get_sign(float angle);
 void	ft_close(t_game *game);
 
 // --------2D--------
-t_fvector2	get_wall_hit_2d(t_game *game, t_fvector2 ray_dir);
+t_fvector2	get_wall_hit_2d(t_game *game, float angle);
 void	raycasting_2d(t_game *game);
 void	quadrillage(t_game *game);
 

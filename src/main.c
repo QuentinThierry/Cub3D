@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/28 22:11:09 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/29 17:57:06 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	on_update(t_game *game)
 	struct timespec			cur_time;
 	long					fps;
 
-	bzero(game->image->addr, WIN_X * WIN_Y * 4);
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
 
@@ -69,9 +68,9 @@ int main(int argc, char **argv)
 {
 	t_game		game;
 
-	// if (argc != 2)
-	// 	return (printf("Error\n"), 1);
-	// parse_file(argv[1], &game);
+	if (argc != 2)
+		return (printf("Error\n"), 1);
+	parse_file(argv[1], &game);
 	game.maps = parse_map("maps/test1.cub", &game.map_size);
 	if (game.maps == NULL)
 		return (ft_close(&game), perror("Error"), 1);

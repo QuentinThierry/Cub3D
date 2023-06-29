@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/27 00:57:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/29 18:04:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,16 @@ enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall)
 t_image	*get_image(t_game	*game, enum e_orientation orient)
 {
 	return (game->tab_images[orient]);
+}
+
+
+int skip_whitespace(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\v' || str[i] == '\n'
+			|| str[i] == '\f' || str[i] == '\r')
+		i++;
+	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/29 20:08:52 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/29 20:18:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ bool	cmp_texture(char *line, t_game *game, int i, bool *is_matching)
 	if (line[i] == 'F')
 		return (*is_matching = true, find_color(line + i + 1, game, 'F'));
 	else if (line[i] == 'C')
-		return (*is_matching = true, find_color(line + i, game, 'C'));
+		return (*is_matching = true, find_color(line + i + 1, game, 'C'));
 	else if (strncmp(line + i, "NO", 2) == 0)
 		return (*is_matching = true, find_texture(game, line + i + 2, e_north));
 	else if (strncmp(line + i, "SO", 2) == 0)
@@ -183,6 +183,7 @@ bool	parse_texture(int fd, t_game *game)
 		if (!cmp_texture(line, game, i, &is_matching) && is_matching == true)
 			return (free(line), false);
 		cpt_texture++;
+		free(line);
 		line = get_next_line(fd);
 	}
 	return (true);

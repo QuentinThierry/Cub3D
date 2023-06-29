@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/29 18:05:20 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/29 18:22:23 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@
 
 extern long tot_fps;
 extern long nb_fps;
-extern FILE *file;
 
 enum e_orientation
 {
@@ -97,6 +96,7 @@ typedef struct s_game
 	t_player	*player;
 	float		delta_time;
 	char		**filename;
+	const float		*constants;
 }	t_game;
 
 typedef struct s_sound

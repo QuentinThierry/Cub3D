@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/29 17:55:37 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/29 18:24:27 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,9 @@ void	ft_mouv(t_player *player, float delta_time)
 		player->f_real_pos.x = player->f_pos.x / CHUNK_SIZE;
 	}
 	if (player->view != 0)
+	{
 		player->angle += ROTATION * delta_time * player->view;
+	}
 }
 
 void	ft_close(t_game *game)

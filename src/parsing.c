@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/29 18:13:59 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/29 18:26:02 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	**parse_map(char *filename, t_vector2 *map_size)	//change parsing
 	
 	fd = open(filename, O_RDONLY);
 	y = 0;
-	maps = ft_calloc(50, sizeof(char *));
+	maps = ft_calloc(500, sizeof(char *));
 	if (maps == NULL)
 		return (NULL);
 	maps[y] = get_next_line(fd);
@@ -85,56 +85,56 @@ bool	check_filename(char *filename)
 	return (true);
 }
 
-bool	find_color(char *str, t_game *game)
-{
-	int	i;
+// bool	find_color(char *str, t_game *game)
+// {
+// 	int	i;
 	
-	i = skip_whitespace(str + 1);
-	while (str[i] != 0)
-	{
+// 	i = skip_whitespace(str + 1);
+// 	while (str[i] != 0)
+// 	{
 		
-	}
-}
+// 	}
+// }
 
-bool	parse_texture(int fd, t_game *game)
-{
-	char	*line;
-	int		i;
-	int		len;
+// bool	parse_texture(int fd, t_game *game)
+// {
+// 	char	*line;
+// 	int		i;
+// 	int		len;
 	
-	line = get_next_line(fd);
-	while (line != NULL)
-	{
-		if (line[0] == '\n')
-		{
-			free(line);
-			continue ;
-		}
-		i = skip_whitespace(line);
-		len = strlen(line + i);
-		if (len > 1)
-			return (false);
-		if (line[i] == 'F')
-			if (!find_color(line + i, game))
-				return (false);
-		else if (line[i] == 'C')
-		else if (strncmp(line[i], "NO", 2) == 0)
-		else if (strncmp(line[i], "SO", 2) == 0)
-		else if (strncmp(line[i], "WE", 2) == 0)
-		else if (strncmp(line[i], "EA", 2) == 0)
-		line = get_next_line(fd);
-	}
-}
+// 	line = get_next_line(fd);
+// 	while (line != NULL)
+// 	{
+// 		if (line[0] == '\n')
+// 		{
+// 			free(line);
+// 			continue ;
+// 		}
+// 		i = skip_whitespace(line);
+// 		len = strlen(line + i);
+// 		if (len > 1)
+// 			return (false);
+// 		if (line[i] == 'F')
+// 			if (!find_color(line + i, game))
+// 				return (false);
+// 		else if (line[i] == 'C')
+// 		else if (strncmp(line[i], "NO", 2) == 0)
+// 		else if (strncmp(line[i], "SO", 2) == 0)
+// 		else if (strncmp(line[i], "WE", 2) == 0)
+// 		else if (strncmp(line[i], "EA", 2) == 0)
+// 		line = get_next_line(fd);
+// 	}
+// }
 
-int	parse_file(char *filename, t_game *game)
-{
-	int fd;
+// int	parse_file(char *filename, t_game *game)
+// {
+// 	int fd;
 	
-	if (!check_filename(filename))
-		return (perror("Error"), -1);
-	fd = open(filename, O_RDONLY);
-	if (fd == -1)
-		return (perror("Error"), -1);
-	parse_texture(fd, game);
-	return (0);
-}
+// 	if (!check_filename(filename))
+// 		return (perror("Error"), -1);
+// 	fd = open(filename, O_RDONLY);
+// 	if (fd == -1)
+// 		return (perror("Error"), -1);
+// 	parse_texture(fd, game);
+// 	return (0);
+// }

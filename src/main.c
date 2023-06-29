@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/29 17:57:06 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/29 18:28:08 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@ int	on_update(t_game *game)
 
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
-
+	
 	ft_mouv(game->player, game->delta_time);
 	raycasting(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
+	
 	clock_gettime(CLOCK_REALTIME, &cur_time);
 	game->delta_time = (cur_time.tv_sec - last_time.tv_sec + (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
 	fps = (long)(1.0 / game->delta_time);
@@ -66,11 +67,11 @@ int	on_update(t_game *game)
 
 int main(int argc, char **argv)
 {
-	t_game		game;
+	t_game	game;
 
-	if (argc != 2)
-		return (printf("Error\n"), 1);
-	parse_file(argv[1], &game);
+	// if (argc != 2)
+	// 	return (printf("Error\n"), 1);
+	// parse_file(argv[1], &game);
 	game.maps = parse_map("maps/test1.cub", &game.map_size);
 	if (game.maps == NULL)
 		return (ft_close(&game), perror("Error"), 1);
@@ -80,12 +81,13 @@ int main(int argc, char **argv)
 	if (game.player == NULL)
 		return (ft_close(&game), perror("Error"), 1);
 	game.filename = ft_calloc(4, sizeof(char *));
-	game.filename[0] = strdup("assets/test.xpm");
-	game.filename[1] = strdup("assets/chatmignon.xpm");
-	game.filename[2] = strdup("assets/flower_yellow.xpm");
+	game.filename[0] = strdup("assets/smiley.xpm");
+	game.filename[1] = strdup("assets/smiley.xpm");
+	game.filename[2] = strdup("assets/smiley.xpm");
 	game.filename[3] = strdup("assets/smiley.xpm");
 	if (load_image(&game) == -1)
-		return (ft_close(&game), perror("Error"), 1);
+		return (ft_close(&game), perror("Error"), 1); // ((WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))
+	game.constants = (float[5]){(WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))};
 	game.player->angle = 90;
 	// quadrillage(&game);
 	// raycasting(&game);

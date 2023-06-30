@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/29 18:35:27 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/30 17:37:32 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float height)
 	int		i = 0;
 	while (i < y)
 	{
-		my_mlx_pixel_put(game->image, x, i, 0x880000);
+		my_mlx_pixel_put(game->image, x, i, game->ceiling);
 		i++;
 	}
 	while (y < y1)
@@ -82,7 +82,7 @@ void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float height)
 	}
 	while (y1 < WIN_Y)
 	{
-		my_mlx_pixel_put(game->image, x, y1, 0x008800);
+		my_mlx_pixel_put(game->image, x, y1, game->floor);
 		y1++;
 	}
 }

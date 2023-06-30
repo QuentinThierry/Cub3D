@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/29 18:24:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/30 17:43:06 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ float	get_dist(t_game *game, float x, float y, float angle)
 	float h = sqrtf((delta.x * delta.x + delta.y * delta.y));
 	float c = cosf(angle * TO_RADIAN);
 	if (h == 0)
-		return (0.1); // anti segfault, to change
+		return (0.1); // anti segfault, (when too close to wall) to change
 	return (c * h);
 }
 
@@ -102,9 +102,9 @@ void	raycasting(t_game *game)
 	{
 		angle = atanf(x / game->constants[0]) * 180 / M_PI;
 		if (game->player->angle + angle >= 360)
-			game->player->angle = game->player->angle - 360;
+			angle = angle - 360;
 		if (game->player->angle + angle < 0)
-			game->player->angle = game->player->angle + 360;
+			angle = angle + 360;
 		wall = get_wall_hit(game, game->player->angle + angle);
 		height = 1 / get_dist(game, wall.x, wall.y, angle) * game->constants[0];		//div par 0 if sin == 0
 		draw_vert_sprite(game, x + WIN_X / 2, wall, height);

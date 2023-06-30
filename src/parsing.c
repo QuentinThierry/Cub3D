@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/30 17:36:20 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/30 17:42:57 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ t_player	*find_player(char **maps)
 		}
 		index.y++;
 	}
+	player->speed = SPEED;
 	return (player);
 }
 

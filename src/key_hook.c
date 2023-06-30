@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/29 18:24:27 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/30 17:42:14 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ int	key_press_hook(int key, t_game *game)
 		game->player->dir.x += 1;
 	if (key == 'a' || key == 'q')
 		game->player->dir.x -= 1;
-
 	if (key == 'w' || key == 'z')
 		game->player->dir.y -= 1;
-
 	if (key == 's')
 		game->player->dir.y += 1;
+	if (key == 65505) // shift
+		game->player->speed += SPRINT_BOOST;
 	return (0);
 }
 
@@ -43,51 +43,45 @@ int	key_release_hook(int key, t_player *player)
 		player->dir.x -= 1;
 	if (key == 'a' || key == 'q')
 		player->dir.x += 1;
-
 	if (key == 'w' || key == 'z')
 		player->dir.y += 1;
-
 	if (key == 's')
 		player->dir.y -= 1;
+	if (key == 65505) // shift
+		player->speed -= SPRINT_BOOST;
 	return (0);
 }
 
-void	ft_mouv(t_player *player, float delta_time)
+void	player_move(t_player *player, float delta_time)
 {
-	// t_vector2 sign;
+	t_fvector2 move_value;
 
-	// sign = get_sign(player->angle);
+	if (player->view != 0)
+		player->angle += ROTATION * delta_time * player->view;
+	move_value.x = 0;
 	if (player->dir.y != 0)
 	{
-		// player->f_pos.x += fabs(sin(player->angle * TO_RADIAN)) * SPEED * delta_time * sign.x;
-		// player->f_pos.y += fabs(cos(player->angle * TO_RADIAN)) * SPEED * delta_time * sign.y;
-		// // printf("angle : %d",1);
-		// // player->f_pos.y += SPEED * delta_time * player->dir.y;
-		// player->pos.y = (int)player->f_pos.y;
-		// player->pos.x = (int)player->f_pos.x;
-		// player->f_real_pos.y = player->f_pos.y / CHUNK_SIZE;
-		// player->f_real_pos.x = player->f_pos.x / CHUNK_SIZE;
-		player->f_pos.y += SPEED * delta_time * player->dir.y;
-		player->pos.y = (int)player->f_pos.y;
-		player->f_real_pos.y = player->f_pos.y / CHUNK_SIZE;
+		move_value.x -= sinf(player->angle * TO_RADIAN) * player->speed * player->dir.y;
+		move_value.y += cosf(player->angle * TO_RADIAN) * player->speed * player->dir.y;
 	}
 	if (player->dir.x != 0)
 	{
-		// player->f_pos.x += fabs(sin(player->angle * TO_RADIAN)) * SPEED * delta_time * sign.x;
-		// player->f_pos.y += fabs(cos(player->angle * TO_RADIAN)) * SPEED * delta_time * sign.y;
-		// // printf("angle : %d",1);
-		// // player->f_pos.y += SPEED * delta_time * player->dir.y;
-		// player->pos.y = (int)player->f_pos.y;
-		// player->pos.x = (int)player->f_pos.x;
-		// player->f_real_pos.y = player->f_pos.y / CHUNK_SIZE;
-		// player->f_real_pos.x = player->f_pos.x / CHUNK_SIZE;
-		player->f_pos.x += SPEED * delta_time * player->dir.x;
-		player->pos.x = (int)player->f_pos.x;
-		player->f_real_pos.x = player->f_pos.x / CHUNK_SIZE;
+		move_value.x += cosf(player->angle * TO_RADIAN) * player->speed * player->dir.x;
+		move_value.y += sinf(player->angle * TO_RADIAN) * player->speed * player->dir.x;
 	}
-	if (player->view != 0)
+	if (player->dir.x != 0 || player->dir.y != 0)
 	{
-		player->angle += ROTATION * delta_time * player->view;
+		move_value.x *= 0.707;
+		move_value.y *= 0.707;
+	}
+	player->f_pos.x += move_value.x * delta_time;
+	player->f_pos.y += move_value.y * delta_time;
+	if (player->dir.x != 0 || player->dir.y != 0)
+	{
+		player->pos.y = (int)player->f_pos.y;
+		player->pos.x = (int)player->f_pos.x;
+		player->f_real_pos.y = player->f_pos.y / CHUNK_SIZE;
+		player->f_real_pos.x = player->f_pos.x / CHUNK_SIZE;
 	}
 }
 

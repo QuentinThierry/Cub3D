@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/29 19:52:44 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/30 17:41:46 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 #define HEIGHT_WALL 600*50
 #define MOUV 1
 #define SPEED 50
+#define SPRINT_BOOST 100
 #define ROTATION 25
 #define MAX_VOLUME 1.0
 #define THREED 1
@@ -73,6 +74,7 @@ typedef	struct s_player{
 	float		angle;
 	t_vector2	dir;
 	int			view;
+	int			speed;
 }	t_player;
 
 typedef struct s_image
@@ -87,17 +89,17 @@ typedef struct s_image
 
 typedef struct s_game
 {
-	t_image		*image;
-	void		*mlx_ptr;
-	void		*win;
-	t_image		**tab_images;
+	t_image			*image;
+	void			*mlx_ptr;
+	void			*win;
+	t_image			**tab_images;
 	unsigned int	floor;
 	unsigned int	ceiling;
-	char		**maps;
-	t_vector2	map_size;
-	t_player	*player;
-	float		delta_time;
-	char		**filename;
+	char			**maps;
+	t_vector2		map_size;
+	t_player		*player;
+	float			delta_time;
+	char			**filename;
 	const float		*constants;
 }	t_game;
 
@@ -131,7 +133,7 @@ char	**parse_map(char *filename, t_vector2 *map_size);
 void parse_wav_file(int fd, ao_sample_format *format, long *data_size);
 int	key_press_hook(int key, t_game *game);
 int	key_release_hook(int key, t_player *player);
-void	ft_mouv(t_player *player, float delta_time);
+void	player_move(t_player *player, float delta_time);
 void	print_map(char **maps);
 void	my_mlx_pixel_put(t_image *img, int x, int y, int color);
 void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float dist);

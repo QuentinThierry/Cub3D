@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/30 17:34:12 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/30 17:42:41 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,23 @@ int	on_update(t_game *game)
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
 	
-	ft_mouv(game->player, game->delta_time);
+
+
+	
+	if (game->player->angle + game->player->angle >= 360)
+		game->player->angle = game->player->angle - 360;
+	if (game->player->angle + game->player->angle < 0)
+		game->player->angle = game->player->angle + 360;
+	player_move(game->player, game->delta_time);
 	raycasting(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
+	
+
+
 	
 	clock_gettime(CLOCK_REALTIME, &cur_time);
 	game->delta_time = (cur_time.tv_sec - last_time.tv_sec + (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
 	fps = (long)(1.0 / game->delta_time);
-	// printf("%ld\n", fps);
 	tot_fps += fps;
 	nb_fps++;
 	if ((nb_fps % 50) == 0)
@@ -85,10 +94,7 @@ int main(int argc, char **argv)
 	if (load_image(&game) == -1)
 		return (ft_close(&game), perror("Error"), 1); // ((WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))
 	game.constants = (float[5]){(WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))};
-	game.player->angle = 90;
-	// quadrillage(&game);
-	// raycasting(&game);
-	// mlx_put_image_to_window(game.mlx_ptr, game.win, game.image->img, 0, 0);
+	game.player->angle = 0;
 
 	mlx_hook(game.win, 02, (1L<<0), key_press_hook, &game);
 	mlx_hook(game.win, 03, (1L<<1), key_release_hook, game.player);

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/30 23:37:59 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/30 23:53:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,24 +56,24 @@ void	remove_new_line(char *str)
 		str[len - 1] = '\0';
 }
 
-t_vector2	get_dimension_maps(char *filename, int nb_line)
+t_vector2	get_dimension_maps(int fd, int nb_line, char *line)
 {
-	int	fd;
+	// int	fd;
 	int	i;
-	char	*line;
+	// char	*line;
 	t_vector2	len;
 
-	i = 0;
-	fd = open(filename, O_RDONLY);
-	if (fd == -1)
-		return ((t_vector2){-1, -1});
-	line = get_next_line(fd);
-	while (line != NULL && i <= nb_line)
-	{
-		free(line);
-		line = get_next_line(fd);
-		i++;
-	}
+	// i = 0;
+	// fd = open(filename, O_RDONLY);
+	// if (fd == -1)
+	// 	return ((t_vector2){-1, -1});
+	// line = get_next_line(fd);
+	// while (line != NULL && i <= nb_line)
+	// {
+	// 	free(line);
+	// 	line = get_next_line(fd);
+	// 	i++;
+	// }
 	len.y = 0;
 	len.x = 0;
 	while (line != NULL)

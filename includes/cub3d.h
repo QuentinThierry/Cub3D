@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/30 23:42:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/01 00:00:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	*ft_calloc(size_t nmemb, size_t size);
 enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall);
 t_image	*get_image(t_game	*game, enum e_orientation orient);
 int skip_whitespace(char *str);
-t_vector2	get_dimension_maps(char *filename, int nb_line);
+t_vector2	get_dimension_maps(int fd, int nb_line, char *line);
 void	remove_new_line(char *str);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 void	printf_texture(t_game *game);
@@ -154,5 +154,6 @@ int	parse_file(char *filename, t_game *game);
 t_fvector2	get_wall_hit_2d(t_game *game, float angle);
 void	raycasting_2d(t_game *game);
 void	quadrillage(t_game *game);
+bool	find_player(t_game *game);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/30 23:43:24 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/30 23:59:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,26 @@ char	**init_map(t_vector2 len)
 	return (res);
 }
 
-bool	parse_map(int fd, char *filename, t_game *game, int i, char *line)
+bool	parse_map(int fd, char *filename, t_game *game, int nb_line, char *line)
 {
 	int		y;
+	int		i;
 	char	**maps;
 	
 	y = 0;
-	game->map_size = get_dimension_maps(filename, i);
+	i = 0;
+	game->map_size = get_dimension_maps(fd, i, line);
 	maps = init_map(game->map_size);
+	fd = open(filename, O_RDONLY);
+	if (fd == -1)
+		return (false);
+	line = get_next_line(fd);
+	while (line != NULL && i < nb_line)
+	{
+		free(line);
+		line = get_next_line(fd);
+		i++;
+	}
 	while (line != NULL && y < game->map_size.y)
 	{
 		remove_new_line(line);
@@ -261,7 +273,7 @@ int	parse_file(char *filename, t_game *game)
 	if (!parse_map(fd, filename, game, i, line))
 		return (-1);
 	close (fd);
-	// if (!find_player(fd, filename, game))
-	// 	return (-1);
+	if (!find_player(game))
+		return (-1);
 	return (0);
 }

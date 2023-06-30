@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/29 19:51:58 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/06/30 18:13:42 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,54 +49,15 @@ t_vector2	get_sign(float angle)
 	return (sign);
 }
 
-t_fvector2	get_wall_hit(t_game *game, float angle)
-{
-	const float	error = 0.0001;
-	t_fvector2	step;
-	t_fvector2	comp;
-	t_fvector2	delta;
-	t_vector2	sign;
-	int			x,y;
-
-	sign = get_sign(angle);
-	angle = fabsf(tanf(angle * TO_RADIAN));
-	x = ((int)game->player->f_real_pos.x) + (sign.x == 1);
-	y = ((int)game->player->f_real_pos.y) + (sign.y == 1);
-	delta.x = fabsf(game->player->f_real_pos.x - x);
-	delta.y = fabsf(game->player->f_real_pos.y - y);
-
-	step.x = 1 * angle * sign.x;
-	step.y = 1 / angle * sign.y;
-	
-	comp.x = game->player->f_real_pos.x + delta.y * angle * sign.x;
-	comp.y = game->player->f_real_pos.y + delta.x / angle * sign.y;
-	while (true)
-	{
-		while ((sign.y == 1 && y >= comp.y - error) || (y <= comp.y + error && sign.y == -1))		//x
-		{
-			if (game->maps[(int)comp.y][x + (sign.x == -1) * -1] == '1')
-				return ((t_fvector2){x, comp.y});
-			comp.y += step.y;
-			x += sign.x;
-		}
-		while ((sign.x == 1 && x >= comp.x - error) || (x <= comp.x + error && sign.x == -1))		//y
-		{
-			if (game->maps[y + (sign.y == -1) * -1][((int)comp.x)] == '1')
-				return ((t_fvector2){comp.x, y});
-			comp.x += step.x;
-			y += sign.y;
-		}
-	}
-	return ((t_fvector2){0});
-}
-
 void	raycasting(t_game *game)
 {
 	int			x;
 	float		height;
 	float		angle;
 	t_fvector2	wall;
-
+	t_fvector2	fpos;
+	
+	fpos = game->player->f_real_pos;
 	x = -WIN_X / 2;
 	while (x < WIN_X / 2)
 	{
@@ -105,9 +66,9 @@ void	raycasting(t_game *game)
 			angle = angle - 360;
 		if (game->player->angle + angle < 0)
 			angle = angle + 360;
-		wall = get_wall_hit(game, game->player->angle + angle);
+		wall = get_wall_hit(fpos, game->maps, game->player->angle + angle);
 		height = 1 / get_dist(game, wall.x, wall.y, angle) * game->constants[0];		//div par 0 if sin == 0
-		draw_vert_sprite(game, x + WIN_X / 2, wall, height);
+		draw_vert(game, x + WIN_X / 2, wall, height);
 		x++;
 	}
 }

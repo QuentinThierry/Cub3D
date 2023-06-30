@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/06/28 17:12:56 by qthierry         ###   ########.fr        #
+#    Updated: 2023/06/30 16:57:35 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,6 +61,7 @@ SRC_LIST =	$(addprefix $(SOUND), $(SRC_SOUND)) \
 			init.c \
 			move.c \
 			view_2d.c \
+			wall_hit.c \
 			main.c
 
 SRC_DIR = ./src/

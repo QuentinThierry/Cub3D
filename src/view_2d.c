@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   view_2d.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:24:03 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/26 22:33:21 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/06/30 23:12:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ void	raycasting_2d(t_game *game)
 {
 	int		x;
 	float	angle;
-	float	height;
-	t_fvector2	wall;
 
 	x = - game->map_size.x * CHUNK_SIZE / 2.0;
 	while (x <  game->map_size.x * CHUNK_SIZE / 2.0)
@@ -75,8 +73,7 @@ void	raycasting_2d(t_game *game)
 			game->player->angle = game->player->angle - 360;
 		if (game->player->angle + angle < 0)
 			game->player->angle = game->player->angle + 360;
-		wall = get_wall_hit_2d(game, game->player->angle + angle);
-		height =  CHUNK_SIZE / get_dist(game, wall.x, wall.y, angle) * ((WIN_X / 2.0) / (tan((FOV/2.0) * TO_RADIAN)));
+		get_wall_hit_2d(game, game->player->angle + angle);
 		x++;
 	}
 }

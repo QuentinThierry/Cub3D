@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
+#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/06/28 17:12:56 by qthierry         ###   ########.fr        #
+#    Updated: 2023/06/30 23:42:01 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3d
 
 CC = gcc
-CFLAGS = -g -Wall -Wextra# -O3#-Werror
+CFLAGS = -g -Wall -Wextra#-Werror
 LIBS = -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext -L$(LIBAO_LIB) -lao
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(LIBAO_HEADERS) -I$(HEADERS_DIR)
 
@@ -61,6 +61,7 @@ SRC_LIST =	$(addprefix $(SOUND), $(SRC_SOUND)) \
 			init.c \
 			move.c \
 			view_2d.c \
+			ft_memcpy.c \
 			main.c
 
 SRC_DIR = ./src/

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/30 17:41:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/30 23:42:18 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,10 +126,13 @@ void	*ft_calloc(size_t nmemb, size_t size);
 enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall);
 t_image	*get_image(t_game	*game, enum e_orientation orient);
 int skip_whitespace(char *str);
+t_vector2	get_dimension_maps(char *filename, int nb_line);
+void	remove_new_line(char *str);
+void	*ft_memcpy(void *dest, const void *src, size_t n);
+void	printf_texture(t_game *game);
 
 int	init_mlx(t_game *game);
 int	load_image(t_game *game);
-char	**parse_map(char *filename, t_vector2 *map_size);
 void parse_wav_file(int fd, ao_sample_format *format, long *data_size);
 int	key_press_hook(int key, t_game *game);
 int	key_release_hook(int key, t_player *player);
@@ -141,7 +144,6 @@ void	draw_vert(t_game *game, int x, int y1, int y2);
 void	quadrillage(t_game *game);
 float	get_wall_dist(t_game *game, float angle);
 void	raycasting(t_game *game);
-t_player	*find_player(char **maps);
 int	on_update(t_game *game);
 void	move_forward(t_player *player);
 t_vector2	get_sign(float angle);

@@ -6,38 +6,51 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/30 17:42:57 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/30 23:43:24 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-char	**parse_map(char *filename, t_vector2 *map_size)	//change parsing
+char	**init_map(t_vector2 len)
 {
-	int	fd;
-	int y;
-	char		**maps = {0};
+	int		i;
+	char **res;
 	
-	fd = open(filename, O_RDONLY);
-	y = 0;
-	maps = ft_calloc(500, sizeof(char *));
-	if (maps == NULL)
+	i = 0;
+	res = ft_calloc(len.y, sizeof(char *));
+	if (res == NULL)
 		return (NULL);
-	maps[y] = get_next_line(fd);
-	while (maps[y] != NULL)
+	while (i < len.y)
 	{
-		maps[y][strlen(maps[y]) - 1] = 0;
-		y++;
-		maps[y] = get_next_line(fd);
+		res[i] = ft_calloc(len.x, sizeof(char));
+		if (res[i] == NULL)
+			return (NULL);
+		i++;
 	}
-	map_size->x = strlen(maps[y - 1]);
-	map_size->y = y;
-	// printf("size maps x:%d y : %d\n", map_size->x, map_size->y);
-	close(fd);
+	return (res);
+}
+
+bool	parse_map(int fd, char *filename, t_game *game, int i, char *line)
+{
+	int		y;
+	char	**maps;
+	
+	y = 0;
+	game->map_size = get_dimension_maps(filename, i);
+	maps = init_map(game->map_size);
+	while (line != NULL && y < game->map_size.y)
+	{
+		remove_new_line(line);
+		ft_memcpy(maps[y], line, strlen(line) - 1);
+		free(line);
+		line = get_next_line(fd);
+		y++;
+	}
 	return (maps);
 }
 
-t_player	*find_player(char **maps)
+bool	find_player(t_game *game)
 {
 	t_player	*player;
 	t_vector2	index;
@@ -46,13 +59,13 @@ t_player	*find_player(char **maps)
 	index.x = 0;
 	player = ft_calloc(1, sizeof(t_player));
 	if (player == NULL)
-		return (NULL);
-	while(maps[index.y] != NULL)
+		return (false);
+	while(index.y < game->map_size.y)
 	{
 		index.x = 0;
-		while(maps[index.y][index.x] != '\0')
+		while(index.x < game->map_size.x)
 		{	
-			if (maps[index.y][index.x] == 'N')
+			if (game->maps[index.y][index.x] == 'N')
 			{
 				player->angle = 0;
 				player->pos.x = index.x * CHUNK_SIZE + CHUNK_SIZE / 2.0;
@@ -67,7 +80,8 @@ t_player	*find_player(char **maps)
 		index.y++;
 	}
 	player->speed = SPEED;
-	return (player);
+	game->player = player;
+	return (true);
 }
 
 bool	check_filename(char *filename)
@@ -176,17 +190,18 @@ bool	cmp_texture(char *line, t_game *game, int i)
 	return (printf("Error : invalid identifier\n"), false);
 }
 
-bool	parse_texture(int fd, t_game *game)
+bool	parse_texture(int fd, t_game *game, int *nb_line, char **rest)
 {
 	char	*line;
 	int		i;
-	int		len;
 	int		cpt_texture;
 	
 	cpt_texture = 0;
+	(*nb_line) = 0;
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
+		(*nb_line)++;
 		// printf("line : %s\n",line);
 		if (line[0] == '\n')
 		{
@@ -195,8 +210,7 @@ bool	parse_texture(int fd, t_game *game)
 			continue ;
 		}
 		i = skip_whitespace(line);
-		len = strlen(line + i);
-		if (len < 1)
+		if (strlen(line + i) < 1)
 			return (printf("Error : Line to short\n"), free(line), false);
 		if (!cmp_texture(line, game, i))
 			return (free(line), false);
@@ -207,7 +221,7 @@ bool	parse_texture(int fd, t_game *game)
 		if (cpt_texture == 6)
 			break ;
 	}
-	free(line);
+	*rest = line;
 	return (true);
 }
 
@@ -224,13 +238,30 @@ void	printf_texture(t_game *game)
 int	parse_file(char *filename, t_game *game)
 {
 	int fd;
+	int i;
+	char	*line;
 	
 	if (!check_filename(filename))
 		return (-1);
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 		return (perror("Error"), -1);
-	if (!parse_texture(fd, game))
+	if (!parse_texture(fd, game, &i, &line))
 		return (-1);
+	// line = get_next_line(fd);
+	// while (line != NULL)
+	// {
+	// 	if (line[0] == '\n')
+	// 	{
+	// 		free(line);
+	// 		line = get_next_line(fd);
+	// 		continue ;
+	// 	}
+	// }
+	if (!parse_map(fd, filename, game, i, line))
+		return (-1);
+	close (fd);
+	// if (!find_player(fd, filename, game))
+	// 	return (-1);
 	return (0);
 }

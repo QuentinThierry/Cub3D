@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/30 17:42:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/30 23:04:32 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	player_move(t_player *player, float delta_time)
 	if (player->view != 0)
 		player->angle += ROTATION * delta_time * player->view;
 	move_value.x = 0;
+	move_value.y = 0;
 	if (player->dir.y != 0)
 	{
 		move_value.x -= sinf(player->angle * TO_RADIAN) * player->speed * player->dir.y;

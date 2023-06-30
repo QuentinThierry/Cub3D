@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sound.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:17:06 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/19 19:51:50 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/06/30 23:04:06 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,8 +137,8 @@ int sound(t_game *game)
 {
 	bool		error;
 	t_sound		sound;
-	t_vector2	listen_pos;
-	t_vector2	emit_pos;
+	// t_vector2	listen_pos;
+	// t_vector2	emit_pos;
 	pthread_t	thread;
 	t_sound_thread	so_thread;
 

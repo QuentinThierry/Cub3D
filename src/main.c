@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/30 17:42:41 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/06/30 23:14:52 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,22 +83,17 @@ int main(int argc, char **argv)
 	game.filename = ft_calloc(4, sizeof(char *));
 	if (parse_file(argv[1], &game) == -1)
 		return (1);
-	game.maps = parse_map("maps/test1.cub", &game.map_size);
-	if (game.maps == NULL)
-		return (ft_close(&game), perror("Error"), 1);
-	if (init_mlx(&game) == -1)
-		return (ft_close(&game), perror("Error"), 1);
-	game.player = find_player(game.maps);
-	if (game.player == NULL)
-		return (ft_close(&game), perror("Error"), 1);
-	if (load_image(&game) == -1)
-		return (ft_close(&game), perror("Error"), 1); // ((WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))
-	game.constants = (float[5]){(WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))};
-	game.player->angle = 0;
+	printf_texture(&game);
+	// if (init_mlx(&game) == -1)
+	// 	return (ft_close(&game), perror("Error"), 1);
+	// if (load_image(&game) == -1)
+	// 	return (ft_close(&game), perror("Error"), 1); // ((WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))
+	// game.constants = (float[5]){(WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))};
+	// game.player->angle = 0;
 
-	mlx_hook(game.win, 02, (1L<<0), key_press_hook, &game);
-	mlx_hook(game.win, 03, (1L<<1), key_release_hook, game.player);
-	mlx_loop_hook(game.mlx_ptr, on_update, &game);
-	mlx_loop(game.mlx_ptr);
+	// mlx_hook(game.win, 02, (1L<<0), key_press_hook, &game);
+	// mlx_hook(game.win, 03, (1L<<1), key_release_hook, game.player);
+	// mlx_loop_hook(game.mlx_ptr, on_update, &game);
+	// mlx_loop(game.mlx_ptr);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/30 17:42:53 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/03 17:27:11 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int	key_press_hook(int key, t_game *game);
 int	key_release_hook(int key, t_player *player);
 void	player_move(t_player *player, float delta_time);
 void	print_map(char **maps);
-void	my_mlx_pixel_put(t_image *img, int x, int y, int color);
+//void	my_mlx_pixel_put(t_image *img, int x, int y, int color);
 void	draw_vert(t_game *game, int x, t_fvector2 wall, float dist);
 void	quadrillage(t_game *game);
 float	get_wall_dist(t_game *game, float angle);

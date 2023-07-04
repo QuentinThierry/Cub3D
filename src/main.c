@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/30 23:57:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/04 10:01:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,16 +84,17 @@ int main(int argc, char **argv)
 	if (parse_file(argv[1], &game) == -1)
 		return (1);
 	printf_texture(&game);
-	if (init_mlx(&game) == -1)
-		return (ft_close(&game), perror("Error"), 1);
-	if (load_image(&game) == -1)
-		return (ft_close(&game), perror("Error"), 1); // ((WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))
-	game.constants = (float[5]){(WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))};
-	game.player->angle = 0;
+	// print_map(&game);
+	// if (init_mlx(&game) == -1)
+	// 	return (ft_close(&game), perror("Error"), 1);
+	// if (load_image(&game) == -1)
+	// 	return (ft_close(&game), perror("Error"), 1); // ((WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))
+	// game.constants = (float[5]){(WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))};
+	// game.player->angle = 0;
 
-	mlx_hook(game.win, 02, (1L<<0), key_press_hook, &game);
-	mlx_hook(game.win, 03, (1L<<1), key_release_hook, game.player);
-	mlx_loop_hook(game.mlx_ptr, on_update, &game);
-	mlx_loop(game.mlx_ptr);
+	// mlx_hook(game.win, 02, (1L<<0), key_press_hook, &game);
+	// mlx_hook(game.win, 03, (1L<<1), key_release_hook, game.player);
+	// mlx_loop_hook(game.mlx_ptr, on_update, &game);
+	// mlx_loop(game.mlx_ptr);
 	return (0);
 }

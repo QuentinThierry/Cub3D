@@ -6,19 +6,20 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/30 17:41:58 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/04 09:22:21 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	print_map(char **maps)
+void	print_map(t_game *game)
 {
 	int y = 0;
 	
-	while(maps[y] != NULL)
+	while(y < game->map_size.y)
 	{
-		printf("%s\n", maps[y]);
+		write(1, game->maps[y], game->map_size.x);
+		write(1, "\n", 1);
 		y++;
 	}
 }

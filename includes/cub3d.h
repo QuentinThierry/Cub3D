@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/01 00:00:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/04 09:20:54 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,6 @@ void parse_wav_file(int fd, ao_sample_format *format, long *data_size);
 int	key_press_hook(int key, t_game *game);
 int	key_release_hook(int key, t_player *player);
 void	player_move(t_player *player, float delta_time);
-void	print_map(char **maps);
 void	my_mlx_pixel_put(t_image *img, int x, int y, int color);
 void	draw_vert_sprite(t_game *game, int x, t_fvector2 wall, float dist);
 void	draw_vert(t_game *game, int x, int y1, int y2);
@@ -149,6 +148,7 @@ void	move_forward(t_player *player);
 t_vector2	get_sign(float angle);
 void	ft_close(t_game *game);
 int	parse_file(char *filename, t_game *game);
+void	print_map(t_game *game);
 
 // --------2D--------
 t_fvector2	get_wall_hit_2d(t_game *game, float angle);

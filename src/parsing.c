@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/30 23:59:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/04 10:03:38 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	**init_map(t_vector2 len)
 	{
 		res[i] = ft_calloc(len.x, sizeof(char));
 		if (res[i] == NULL)
-			return (NULL);
+			return (NULL);		//free tab
 		i++;
 	}
 	return (res);
@@ -40,26 +40,35 @@ bool	parse_map(int fd, char *filename, t_game *game, int nb_line, char *line)
 	y = 0;
 	i = 0;
 	game->map_size = get_dimension_maps(fd, i, line);
+	printf("size x: %d	y: %d\n", game->map_size.x, game->map_size.y);
 	maps = init_map(game->map_size);
+	if (maps == NULL)
+		return (false);
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 		return (false);
 	line = get_next_line(fd);
+	printf(" i: %d		line : '%s'", i, line);
 	while (line != NULL && i < nb_line)
 	{
 		free(line);
 		line = get_next_line(fd);
 		i++;
 	}
+	printf(" i: %d		line : '%s'", i, line);
 	while (line != NULL && y < game->map_size.y)
 	{
 		remove_new_line(line);
-		ft_memcpy(maps[y], line, strlen(line) - 1);
+		printf("line '%s'\n", line);
+		ft_memcpy(maps[y], line, strlen(line));
+		memset(maps[y] + (strlen(line)), ' ', game->map_size.x - strlen(line));
 		free(line);
 		line = get_next_line(fd);
 		y++;
 	}
-	return (maps);
+	free(line);
+	game->maps = maps;
+	return (true);
 }
 
 bool	find_player(t_game *game)
@@ -77,15 +86,23 @@ bool	find_player(t_game *game)
 		index.x = 0;
 		while(index.x < game->map_size.x)
 		{	
-			if (game->maps[index.y][index.x] == 'N')
+			if (game->maps[index.y][index.x] == 'N' || game->maps[index.y][index.x] == 'S'
+					|| game->maps[index.y][index.x] == 'W' || game->maps[index.y][index.x] == 'E')
 			{
-				player->angle = 0;
 				player->pos.x = index.x * CHUNK_SIZE + CHUNK_SIZE / 2.0;
 				player->pos.y = index.y * CHUNK_SIZE + CHUNK_SIZE / 2.0;
 				player->f_pos.x = index.x * CHUNK_SIZE + CHUNK_SIZE / 2.0;
 				player->f_pos.y = index.y * CHUNK_SIZE + CHUNK_SIZE / 2.0;
 				player->f_real_pos.x = index.x + 1 / 2.0;
 				player->f_real_pos.y = index.y + 1 / 2.0;
+				if (game->maps[index.y][index.x] == 'N')
+					player->angle = 0;
+				else if (game->maps[index.y][index.x] == 'E')
+					player->angle = 90;
+				else if (game->maps[index.y][index.x] == 'S')
+					player->angle = 180;
+				else if (game->maps[index.y][index.x] == 'W')
+					player->angle = 270;
 			}
 			index.x++;
 		}
@@ -214,7 +231,7 @@ bool	parse_texture(int fd, t_game *game, int *nb_line, char **rest)
 	while (line != NULL)
 	{
 		(*nb_line)++;
-		// printf("line : %s\n",line);
+		printf("texture line : %s\n",line);
 		if (line[0] == '\n')
 		{
 			free(line);
@@ -260,16 +277,16 @@ int	parse_file(char *filename, t_game *game)
 		return (perror("Error"), -1);
 	if (!parse_texture(fd, game, &i, &line))
 		return (-1);
-	// line = get_next_line(fd);
-	// while (line != NULL)
+	//skip new line
+	printf("lline : '%s'\n", line);
+	// while (line != NULL && line[0] == '\n')
 	// {
-	// 	if (line[0] == '\n')
-	// 	{
-	// 		free(line);
-	// 		line = get_next_line(fd);
-	// 		continue ;
-	// 	}
+	// 	printf("hey\n");
+	// 	free(line);
+	// 	i++;
+	// 	line = get_next_line(fd);
 	// }
+	printf("i : %d		lline : '%s'\n",i, line);
 	if (!parse_map(fd, filename, game, i, line))
 		return (-1);
 	close (fd);

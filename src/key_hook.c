@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/30 23:04:32 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/04 18:30:48 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,22 +84,4 @@ void	player_move(t_player *player, float delta_time)
 		player->f_real_pos.y = player->f_pos.y / CHUNK_SIZE;
 		player->f_real_pos.x = player->f_pos.x / CHUNK_SIZE;
 	}
-}
-
-void	ft_close(t_game *game)
-{
-	if (game->mlx_ptr != NULL)
-	{
-		mlx_do_key_autorepeaton(game->mlx_ptr);
-		if (game->win != NULL)
-		{
-			if (game->image != NULL)
-				mlx_destroy_image(game->mlx_ptr, game->image->img);
-			mlx_destroy_window(game->mlx_ptr, game->win);
-		}
-		mlx_destroy_display(game->mlx_ptr);
-	}
-	printf("Moyenne fps : %ld\n", (long)tot_fps / nb_fps);
-	free(game->image);
-	exit(0);
 }

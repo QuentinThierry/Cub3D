@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/04 18:08:49 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/04 18:38:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,25 @@ t_vector2	get_dimension_maps(int fd, int nb_line, char *line)
 	return (len);
 }
 
-void	free_str(char **str, t_vector2 size)
+void	free_tab(char **str, t_vector2 size)
 {
 	int	i;
-	int	j;
 
 	i = 0;
 	while (i < size.y)
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+}
+
+void	free_str(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != NULL)
 	{
 		free(str[i]);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/04 18:09:03 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/04 18:36:43 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,8 @@ t_vector2	get_dimension_maps(int fd, int nb_line, char *line);
 void	remove_new_line(char *str);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 void	printf_texture(t_game *game);
-void	free_str(char **str, t_vector2 size);
+void	free_tab(char **str, t_vector2 size);
+void	free_str(char **str);
 
 int	init_mlx(t_game *game);
 int	load_image(t_game *game);

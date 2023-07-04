@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/06/30 23:42:01 by jvigny           ###   ########.fr        #
+#    Updated: 2023/07/04 18:35:05 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,6 +62,7 @@ SRC_LIST =	$(addprefix $(SOUND), $(SRC_SOUND)) \
 			move.c \
 			view_2d.c \
 			ft_memcpy.c \
+			ft_close.c \
 			main.c
 
 SRC_DIR = ./src/

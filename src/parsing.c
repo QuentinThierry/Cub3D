@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/04 18:16:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/04 18:37:08 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	**init_map(t_vector2 len)
 	{
 		res[i] = ft_calloc(len.x, sizeof(char));
 		if (res[i] == NULL)
-			return (free_str(res, len), NULL);
+			return (free_tab(res, len), NULL);
 		i++;
 	}
 	return (res);

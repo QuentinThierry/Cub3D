@@ -26,10 +26,11 @@ TO DO:
 -need to fix division by zero when sin(0)
 -fix get_dist return 0
 -fix orientation when we have round coordonee (ex : (3.0 ; 1.0))
--make parsing
+<!-- -make parsing -->
+-make pathfinding for wall
 -mouvement depending on the orientation of the player
 -wall collision
--maps with multipile textures
+<!-- -maps with multiple textures -->
 -organization of data
 -optimization
 

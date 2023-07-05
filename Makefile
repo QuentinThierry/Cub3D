@@ -6,15 +6,15 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/07/06 00:36:01 by jvigny           ###   ########.fr        #
+#    Updated: 2023/07/06 01:07:15 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3d
 
 CC = gcc
-CFLAGS = -g -Wall -Wextra#-Werror
-LIBS = -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext -L$(LIBAO_LIB) -lao -pthread
+CFLAGS += -g -Wall -Wextra# -03#-Werror
+LIBS = -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext -L$(LIBAO_LIB) -lao -lpthread
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(LIBAO_HEADERS) -I$(HEADERS_DIR)
 
 REDIRECT_ERROR = >/dev/null 2>&1
@@ -63,6 +63,7 @@ SRC_LIST =	$(addprefix $(SOUND), $(SRC_SOUND)) \
 			view_2d.c \
 			ft_memcpy.c \
 			ft_close.c \
+			wall_hit.c \
 			main.c
 
 SRC_DIR = ./src/
@@ -84,6 +85,11 @@ run: $(NAME)
 
 vrun: $(NAME)
 	valgrind ./$(NAME)
+
+prun: CFLAGS += -pg
+prun: $(NAME)
+	./$(NAME)
+	gprof cub3d gmon.out > analysis.txt
 
 $(NAME):	$(LIBAO) $(MINILIBX) $(OBJ_DIR) $(OBJ)
 	$(CC) $(CFLAGS) -Wl,-rpath,$(LIBAO_ABS_PATH)lib $(OBJ) $(LIBS) $(INCLUDES) -o $(NAME)

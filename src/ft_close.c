@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/04 18:42:54 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/06 01:09:14 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,6 @@ void	ft_close(t_game *game)
 		}
 		mlx_destroy_display(game->mlx_ptr);
 	}
-	// printf("Moyenne fps : %ld\n", (long)tot_fps / nb_fps);
+	printf("Moyenne fps : %ld\n", (long)tot_fps / nb_fps);
 	exit(0);
 }

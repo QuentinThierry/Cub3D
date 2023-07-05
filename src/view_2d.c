@@ -6,12 +6,20 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:24:03 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/30 23:12:31 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/06 01:05:14 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 float	get_dist(t_game *game, float x, float y, float angle);
+
+static inline void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = img->addr + (y * img->size_line + x * img->opp);
+	*(unsigned int*)dst = color;
+}
 
 t_fvector2	get_wall_hit_2d(t_game *game, float angle)
 {

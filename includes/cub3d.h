@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/06 01:04:25 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/06 01:30:51 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ typedef struct	s_sound_thread
 
 // ------ Utils------
 void	*ft_calloc(size_t nmemb, size_t size);
-enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall);
+enum e_orientation	get_wall_orientation(t_game *game, t_player player, t_fvector2 wall);
 t_image	*get_image(t_game	*game, enum e_orientation orient);
 int skip_whitespace(char *str);
 t_vector2	get_dimension_maps(int fd, int nb_line, char *line);

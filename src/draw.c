@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/06 01:09:02 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/06 01:30:58 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	draw_vert(t_game *game, int x, t_fvector2 wall, float height)
 	int					i = 0;
 	char				*addr;
 
-	orient = get_wall_orientation(*(game->player), wall);
+	orient = get_wall_orientation(game, *(game->player), wall);
 	image = get_image(game, orient);
 	size_line = game->image->size_line;
 	y = WIN_Y / 2.0 - height / 2.0;

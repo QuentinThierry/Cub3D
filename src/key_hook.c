@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/04 18:30:48 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/06 23:14:57 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,10 @@ void	player_move(t_player *player, float delta_time)
 		move_value.x *= 0.707;
 		move_value.y *= 0.707;
 	}
-	player->f_pos.x += move_value.x * delta_time;
-	player->f_pos.y += move_value.y * delta_time;
 	if (player->dir.x != 0 || player->dir.y != 0)
 	{
+		player->f_pos.x += move_value.x * delta_time;
+		player->f_pos.y += move_value.y * delta_time;
 		player->pos.y = (int)player->f_pos.y;
 		player->pos.x = (int)player->f_pos.x;
 		player->f_real_pos.y = player->f_pos.y / CHUNK_SIZE;

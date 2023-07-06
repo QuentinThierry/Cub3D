@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/06 01:04:25 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/06 23:50:52 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 
 #include <X11/X.h>
 
-#define WIN_X 1080
+#define WIN_X 1920
 #define WIN_Y 1080
 #define CHUNK_SIZE 50
 #define FOV 60
@@ -39,7 +39,7 @@
 #define MOUV 1
 #define SPEED 50
 #define SPRINT_BOOST 100
-#define ROTATION 25
+#define ROTATION 75
 #define MAX_VOLUME 1.0
 #define THREED 1
 #define TO_RADIAN .0174532

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 00:14:11 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/07 00:22:54 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,6 @@ enum e_orientation	get_wall_orientation2(t_game *game, t_player player, t_fvecto
 
 	x = wall.x;
 	y = wall.y;
-	if ((wall.x - x) >= 0.99)
-		x += 1;
-	if ((wall.y - y) >= 0.99)
-		y += 1;
 	printf("orientation		%c	%c\n			%c	%c\n\n\n\n\n\n\n\n\n", game->maps[y - 1][x - 1]
 		, game->maps[y - 1][x], game->maps[y][x - 1]
 		, game->maps[y][x]);
@@ -64,8 +60,8 @@ enum e_orientation	get_wall_orientation2(t_game *game, t_player player, t_fvecto
 
 enum e_orientation	get_wall_orientation(t_game *game, t_player player, t_fvector2 wall)
 {
-	// printf("x : %f		y : %f\n", wall.x, wall.y);
-	if (!((wall.x - (int)wall.x) <= 0.0001 || (wall.x - (int)wall.x) >= 0.9999))
+	printf("x : %f		y : %f\n", wall.x, wall.y);
+	if ((wall.x - (int)wall.x) != 0)
 	{
 		if (player.f_real_pos.y > wall.y)
 			return (e_north);
@@ -74,7 +70,7 @@ enum e_orientation	get_wall_orientation(t_game *game, t_player player, t_fvector
 	}
 	else
 	{
-		if ((wall.y - (int)wall.y) <= 0.0001 || (wall.y - (int)wall.y) >= 0.9999)
+		if ((wall.y - (int)wall.y) == 0)
 			return (get_wall_orientation2(game, player, wall));
 		if (player.f_real_pos.x > wall.x)
 			return (e_west);

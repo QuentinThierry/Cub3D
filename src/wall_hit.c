@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/06 02:25:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/07 00:16:16 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ static inline t_fvector2	_get_wall_hit_se(t_fvector2 fpos,
 	step = (t_fvector2){angle, 1 / angle};
 	while (true)
 	{
-		while (map_pos.y >= comp.y - 0.0001)
+		if (map_pos.y >= comp.y)
 		{
 			if (map[(int)comp.y][map_pos.x] == '1')
 				return ((t_fvector2){map_pos.x, comp.y});
 			comp.y += step.y;
 			map_pos.x += 1;
 		}
-		while (map_pos.x >= comp.x - 0.0001)
+		else // (map_pos.x >= comp.x - 0.0001)
 		{
 			if (map[map_pos.y][((int)comp.x)] == '1')
 				return ((t_fvector2){comp.x, map_pos.y});
@@ -57,14 +57,14 @@ static inline t_fvector2	_get_wall_hit_ne(t_fvector2 fpos,
 	step = (t_fvector2){angle, 1 / angle * -1};
 	while (true)
 	{
-		while (map_pos.y <= comp.y + 0.0001)
+		if (map_pos.y <= comp.y)
 		{
 			if (map[(int)comp.y][map_pos.x] == '1')
 				return ((t_fvector2){map_pos.x, comp.y});
 			comp.y += step.y;
 			map_pos.x += 1;
 		}
-		while (map_pos.x >= comp.x - 0.0001)
+		else// (map_pos.x >= comp.x - 0.0001)
 		{
 			if (map[map_pos.y - 1][((int)comp.x)] == '1')
 				return ((t_fvector2){comp.x, map_pos.y});
@@ -88,14 +88,14 @@ static inline t_fvector2	_get_wall_hit_sw(t_fvector2 fpos,
 	step = (t_fvector2){angle * -1, 1 / angle};
 	while (true)
 	{
-		while (map_pos.y >= comp.y - 0.0001)
+		if (map_pos.y >= comp.y)
 		{
 			if (map[(int)comp.y][map_pos.x - 1] == '1')
 				return ((t_fvector2){map_pos.x, comp.y});
 			comp.y += step.y;
 			map_pos.x += -1;
 		}
-		while (map_pos.x <= comp.x + 0.0001)
+		else // (map_pos.x <= comp.x + 0.0001)
 		{
 			if (map[map_pos.y][((int)comp.x)] == '1')
 				return ((t_fvector2){comp.x, map_pos.y});
@@ -119,14 +119,14 @@ static inline t_fvector2	_get_wall_hit_nw(t_fvector2 fpos,
 	step = (t_fvector2){angle * -1, 1 / angle * -1};
 	while (true)
 	{
-		while (map_pos.y <= comp.y + 0.0001)
+		if (map_pos.y <= comp.y)
 		{
 			if (map[(int)comp.y][map_pos.x - 1] == '1')
 				return ((t_fvector2){map_pos.x, comp.y});
 			comp.y += step.y;
 			map_pos.x += -1;
 		}
-		while (map_pos.x <= comp.x + 0.0001)
+		else // (map_pos.x <= comp.x + 0.0001)
 		{
 			if (map[map_pos.y - 1][((int)comp.x)] == '1')
 				return ((t_fvector2){comp.x, map_pos.y});

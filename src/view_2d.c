@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   view_2d.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:24:03 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/06 01:05:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/07 01:02:19 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-float	get_dist(t_game *game, float x, float y, float angle);
+double	get_dist(t_game *game, double x, double y, double angle);
 
 static inline void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
 {
@@ -21,19 +21,19 @@ static inline void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-t_fvector2	get_wall_hit_2d(t_game *game, float angle)
+t_fvector2	get_wall_hit_2d(t_game *game, double angle)
 {
 	t_fvector2	step;
 	t_vector2	delta;
 	t_fvector2	comp;
 	t_vector2	sign;
-	float		error = 0.001;
+	double		error = 0.001;
 	int		x,y;
 	
 	my_mlx_pixel_put(game->image,
 		game->player->pos.x, game->player->pos.y, 0xFF0000);
 	sign = get_sign(angle);
-	angle = fabs((float)tan(angle * TO_RADIAN));
+	angle = fabs((double)tan(angle * TO_RADIAN));
 	x = ((game->player->pos.x) / CHUNK_SIZE) * CHUNK_SIZE + (sign.x == 1) * CHUNK_SIZE;
 	y = ((game->player->pos.y) / CHUNK_SIZE) * CHUNK_SIZE + (sign.y == 1) * CHUNK_SIZE;
 	delta.x = abs(game->player->pos.x - (x));
@@ -71,12 +71,12 @@ t_fvector2	get_wall_hit_2d(t_game *game, float angle)
 void	raycasting_2d(t_game *game)
 {
 	int		x;
-	float	angle;
+	double	angle;
 
 	x = - game->map_size.x * CHUNK_SIZE / 2.0;
 	while (x <  game->map_size.x * CHUNK_SIZE / 2.0)
 	{
-		angle = ((float)x * (FOV / 2.0)) / (game->map_size.x * CHUNK_SIZE / 2.0);
+		angle = ((double)x * (FOV / 2.0)) / (game->map_size.x * CHUNK_SIZE / 2.0);
 		if (game->player->angle + angle >= 360)
 			game->player->angle = game->player->angle - 360;
 		if (game->player->angle + angle < 0)

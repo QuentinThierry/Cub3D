@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/06 23:14:57 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/07 01:02:19 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	key_release_hook(int key, t_player *player)
 	return (0);
 }
 
-void	player_move(t_player *player, float delta_time)
+void	player_move(t_player *player, double delta_time)
 {
 	t_fvector2 move_value;
 

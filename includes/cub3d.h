@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/06 23:50:52 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/07 01:19:09 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@
 
 #include <X11/X.h>
 
-#define WIN_X 1920
-#define WIN_Y 1080
+#define WIN_X 1920 //1920 - 918
+#define WIN_Y 1080 //1080 - 468
 #define CHUNK_SIZE 50
 #define FOV 60
 #define HEIGHT_WALL 600*50
@@ -63,15 +63,15 @@ typedef struct s_vector2
 
 typedef struct s_fvector2
 {
-	float	x;
-	float	y;
+	double	x;
+	double	y;
 }	t_fvector2;
 
 typedef	struct s_player{
 	t_vector2	pos;
 	t_fvector2 	f_pos;
 	t_fvector2 	f_real_pos;
-	float		angle;
+	double		angle;
 	t_vector2	dir;
 	int			view;
 	int			speed;
@@ -98,9 +98,9 @@ typedef struct s_game
 	char			**maps;
 	t_vector2		map_size;
 	t_player		*player;
-	float			delta_time;
+	double			delta_time;
 	char			**filename;
-	const float		*constants;
+	const double		*constants;
 }	t_game;
 
 typedef struct s_sound
@@ -138,22 +138,22 @@ int	load_image(t_game *game);
 void parse_wav_file(int fd, ao_sample_format *format, long *data_size);
 int	key_press_hook(int key, t_game *game);
 int	key_release_hook(int key, t_player *player);
-void	player_move(t_player *player, float delta_time);
+void	player_move(t_player *player, double delta_time);
 //void	my_mlx_pixel_put(t_image *img, int x, int y, int color);
-void	draw_vert(t_game *game, int x, t_fvector2 wall, float dist);
+void	draw_vert(t_game *game, int x, t_fvector2 wall, double dist);
 void	quadrillage(t_game *game);
-float	get_wall_dist(t_game *game, float angle);
+double	get_wall_dist(t_game *game, double angle);
 void	raycasting(t_game *game);
 int	on_update(t_game *game);
 void	move_forward(t_player *player);
-t_vector2	get_sign(float angle);
+t_vector2	get_sign(double angle);
 void	ft_close(t_game *game);
 int	parse_file(char *filename, t_game *game);
 void	print_map(t_game *game);
-t_fvector2	get_wall_hit(t_fvector2 fpos, char **map, float angle);
+t_fvector2	get_wall_hit(t_fvector2 fpos, char **map, double angle);
 
 // --------2D--------
-t_fvector2	get_wall_hit_2d(t_game *game, float angle);
+t_fvector2	get_wall_hit_2d(t_game *game, double angle);
 void	raycasting_2d(t_game *game);
 void	quadrillage(t_game *game);
 bool	find_player(t_game *game);

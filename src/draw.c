@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/06 23:52:23 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/07 01:02:19 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, in
 	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
 }
 
-void	draw_vert(t_game *game, int x, t_fvector2 wall, float height)
+void	draw_vert(t_game *game, int x, t_fvector2 wall, double height)
 {
 	int					y, y1;
 	int					x_img;
-	float				y_img = 0;
+	double				y_img = 0;
 	t_image				*image;
 	enum e_orientation	orient;
-	float				delta_y_img;
+	double				delta_y_img;
 	int					size_line;
 	int					i = 0;
 	char				*addr;

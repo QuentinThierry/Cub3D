@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/06 01:07:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/07 01:35:54 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	on_update(t_game *game)
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
 		
-	ft_mouv(game->player, game->delta_time);
+	player_move(game->player, game->delta_time);
 	quadrillage(game);
 	raycasting_2d(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
@@ -78,6 +78,7 @@ int main(int argc, char **argv)
 {
 	t_game	game;
 
+	game = (t_game){0};
 	if (argc != 2)
 		return (printf("Error : Invalid nubmber of arguments\n"), 1);
 	game.filename = ft_calloc(4, sizeof(char *));
@@ -90,7 +91,7 @@ int main(int argc, char **argv)
 		return (ft_close(&game), perror("Error"), 1);
 	if (load_image(&game) == -1)
 		return (ft_close(&game), perror("Error"), 1); // ((WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))
-	game.constants = (float[5]){(WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))};
+	game.constants = (double[5]){(WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))};
 	game.player->angle = 0;
 
 	mlx_hook(game.win, 02, (1L<<0), key_press_hook, &game);

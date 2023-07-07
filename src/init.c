@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/27 01:45:58 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/07 01:32:46 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ int	init_mlx(t_game *game)
 		size = (t_vector2){WIN_X, WIN_Y};
 	else
 		size = (t_vector2){game->map_size.x * CHUNK_SIZE, game->map_size.y * CHUNK_SIZE};
-	img = ft_calloc(1, sizeof(t_image));
-	if (img == NULL)
+	
+	game->image = ft_calloc(1, sizeof(t_image));;
+	if (game->image == NULL)
 		return (-1);
-	game->image = img;
 	game->mlx_ptr = mlx_init();
 	if (game->mlx_ptr == NULL)
 		return (-1);

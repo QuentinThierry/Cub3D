@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 20:15:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/07 20:28:34 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ void	raycasting(t_game *game);
 int	on_update(t_game *game);
 void	move_forward(t_player *player);
 t_vector2	get_sign(double angle);
-void	ft_close(t_game *game);
+int	ft_close(t_game *game);
 int	parse_file(char *filename, t_game *game);
 void	print_map(t_game *game);
 t_fvector2	get_wall_hit(t_fvector2 fpos, char **map, float angle, t_vector2 map_size);

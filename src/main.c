@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 20:16:21 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/07 20:27:46 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int main(int argc, char **argv)
 
 	mlx_hook(game.win, 02, (1L<<0), key_press_hook, &game);
 	mlx_hook(game.win, 03, (1L<<1), key_release_hook, game.player);
+	mlx_hook(game.win, 17, (1L << 5), ft_close, &game);
 	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	mlx_loop(game.mlx_ptr);
 	return (0);

@@ -6,13 +6,13 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 20:21:16 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/07 20:28:16 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	ft_close(t_game *game)
+int	ft_close(t_game *game)
 {
 	int	i;
 

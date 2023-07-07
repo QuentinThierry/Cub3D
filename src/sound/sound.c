@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sound.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:17:06 by jvigny            #+#    #+#             */
-/*   Updated: 2023/06/30 23:04:06 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/07 01:02:19 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,11 @@ t_sound	init_sound(const char *sound_path, bool *error)
 }
 
 // creer une struct pour chaque son
-bool	play_sound(t_sound_thread *so_thread, float player_angle)
+bool	play_sound(t_sound_thread *so_thread, double player_angle)
 {
 	int				i;
-	float			angle;
-	float			dist;
+	double			angle;
+	double			dist;
 	t_fvector2		volume;
 	t_vector2		delta;
 	t_sound			sound;
@@ -89,7 +89,7 @@ bool	play_sound(t_sound_thread *so_thread, float player_angle)
 	if (delta.x == 0)
 		angle = 90 - (180 * (delta.y < 0));
 	else
-		angle = (float)delta.y / delta.x;
+		angle = (double)delta.y / delta.x;
 	angle = atanf(angle) * 180 / M_PI + 90 + ((delta.x < 0) * 180);
 	angle -= player_angle;
 	if (angle < 0)
@@ -107,10 +107,10 @@ bool	play_sound(t_sound_thread *so_thread, float player_angle)
 	while (i < so_thread->sound.buf_size / 2)
 	{
 		// left
-		((short *)new_buffer)[i] = ((short *)sound.buffer)[i] * (1 - (fabsf(angle - 270) / 180)) * volume.x;
+		((short *)new_buffer)[i] = ((short *)sound.buffer)[i] * (1 - (fabs(angle - 270) / 180)) * volume.x;
 		i++;
 		// right
-		((short *)new_buffer)[i] = ((short *)sound.buffer)[i] * (1 - (fabsf(angle - 90) / 180)) * volume.y;
+		((short *)new_buffer)[i] = ((short *)sound.buffer)[i] * (1 - (fabs(angle - 90) / 180)) * volume.y;
 		i++;
 	}
 	i = ao_play(sound.device, new_buffer, sound.buf_size);

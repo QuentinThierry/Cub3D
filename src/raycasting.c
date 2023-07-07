@@ -6,19 +6,20 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 19:53:43 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/07 20:16:54 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-float	get_dist(t_game *game, float x, float y, float angle)
+double	get_dist(t_game *game, double x, double y, double angle)
 {
 	t_fvector2	delta;
-	float		alpha;
+	double		alpha;
 
-	delta.x = fabsf(x - game->player->f_real_pos.x);
-	delta.y = fabsf(y - game->player->f_real_pos.y);
+	delta.x = fabs(x - game->player->f_real_pos.x);
+	delta.y = fabs(y - game->player->f_real_pos.y);
+
 	alpha = game->player->angle + angle;
 	if (alpha >= 360)
 		alpha = alpha - 360;
@@ -26,15 +27,15 @@ float	get_dist(t_game *game, float x, float y, float angle)
 		alpha = alpha + 360;
 	if (alpha == 0)
 		alpha++;
-	// float h = delta.y / fabsf(cosf(alpha * TO_RADIAN));
-	float h = sqrtf((delta.x * delta.x + delta.y * delta.y));
-	float c = cosf(angle * TO_RADIAN);
+	// double h = delta.y / fabs(cosf(alpha * TO_RADIAN));
+	double h = sqrtf((delta.x * delta.x + delta.y * delta.y));
 	if (h == 0)
 		return (0.1); // anti segfault, (when too close to wall) to change
+	double c = cosf(angle * TO_RADIAN);
 	return (c * h);
 }
 
-t_vector2	get_sign(float angle)
+t_vector2	get_sign(double angle)
 {
 	t_vector2	sign;
 
@@ -52,11 +53,11 @@ t_vector2	get_sign(float angle)
 void	raycasting(t_game *game)
 {
 	int			x;
-	float		height;
-	float		angle;
+	double		height;
+	double		angle;
 	t_fvector2	wall;
 	t_fvector2	fpos;
-	float		dist; 
+	double		dist; 
 	
 	fpos = game->player->f_real_pos;
 	x = -WIN_X / 2;

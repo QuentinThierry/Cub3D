@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 20:37:10 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/07 21:46:46 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@
 #define WIN_X 1920 //1920 - 918
 #define WIN_Y 1080 //1080 - 468
 #define CHUNK_SIZE 50
-#define FOV 60
+#define FOV 80
 #define HEIGHT_WALL 600*50
 #define MOUV 1
-#define SPEED 100	
+#define SPEED 100
 #define SPRINT_BOOST 100
 #define ROTATION 75
 #define MAX_VOLUME 1.0
@@ -93,7 +93,7 @@ typedef struct s_game
 	t_image			**tab_images;
 	unsigned int	floor;
 	unsigned int	ceiling;
-	char			**maps;
+	char			**map;
 	t_vector2		map_size;
 	t_player		*player;
 	double			delta_time;
@@ -106,7 +106,7 @@ void	*ft_calloc(size_t nmemb, size_t size);
 enum e_orientation	get_wall_orientation(t_game *game, t_player player, t_fvector2 wall);
 t_image	*get_image(t_game	*game, enum e_orientation orient);
 int skip_whitespace(char *str);
-t_vector2	get_dimension_maps(int fd, int nb_line, char *line);
+t_vector2	get_dimension_maps(int fd, int nb_line, char *line, bool *error);
 void	remove_new_line(char *str);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 void	printf_texture(t_game *game);
@@ -125,10 +125,11 @@ void		raycasting(t_game *game);
 int			on_update(t_game *game);
 void		move_forward(t_player *player);
 t_vector2	get_sign(double angle);
-int		ft_close(t_game *game);
+int			ft_close(t_game *game);
 int			parse_file(char *filename, t_game *game);
 void		print_map(t_game *game);
 t_fvector2	get_wall_hit(t_fvector2 fpos, char **map, float angle, t_vector2 map_size);
+bool		check_map(t_game *game);
 
 // --------2D--------
 t_fvector2	get_wall_hit_2d(t_game *gavoidme, double angle);

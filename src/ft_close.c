@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_close.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 20:28:16 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/07 21:29:26 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	ft_close(t_game *game)
 	int	i;
 
 	i = 0;
-	if (game->maps != NULL)
-		free_tab(game->maps, game->map_size);
+	if (game->map != NULL)
+		free_tab(game->map, game->map_size);
 	if (game->player != NULL)
 		free(game->player);
 	if (game->filename)

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:24:03 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 01:02:19 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/07 21:29:26 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_fvector2	get_wall_hit_2d(t_game *game, double angle)
 		{
 			my_mlx_pixel_put(game->image,
 					x, (int)(comp.y), 0xFF0000);
-			if (game->maps[((int)comp.y) / CHUNK_SIZE][x / CHUNK_SIZE + (sign.x == -1) * -1] == '1')
+			if (game->map[((int)comp.y) / CHUNK_SIZE][x / CHUNK_SIZE + (sign.x == -1) * -1] == '1')
 				return ((t_fvector2){x, comp.y});
 			comp.y += step.y;
 			x += sign.x * CHUNK_SIZE;
@@ -59,7 +59,7 @@ t_fvector2	get_wall_hit_2d(t_game *game, double angle)
 		{
 			my_mlx_pixel_put(game->image,
 					(int)(comp.x), y, 0x00FF00);
-			if (game->maps[y / CHUNK_SIZE + (sign.y == -1) * -1][((int)comp.x) / CHUNK_SIZE] == '1')
+			if (game->map[y / CHUNK_SIZE + (sign.y == -1) * -1][((int)comp.x) / CHUNK_SIZE] == '1')
 				return ((t_fvector2){comp.x, y});
 			comp.x += step.x;
 			y += sign.y * CHUNK_SIZE;
@@ -98,8 +98,8 @@ void	quadrillage(t_game *game)
 		x = 0;
 		while (x < game->map_size.x * CHUNK_SIZE)
 		{
-			if (game->maps[y][x / CHUNK_SIZE] == '1'
-				|| game->maps[(y-1)][(x-1) / CHUNK_SIZE] == '1')
+			if (game->map[y][x / CHUNK_SIZE] == '1'
+				|| game->map[(y-1)][(x-1) / CHUNK_SIZE] == '1')
 				color = 0x404040;
 			else
 				color = 0x202020;
@@ -114,8 +114,8 @@ void	quadrillage(t_game *game)
 		y = 0;
 		while (y < game->map_size.y * CHUNK_SIZE)
 		{
-			if (game->maps[y / CHUNK_SIZE][x] == '1'
-				|| game->maps[(y-1) / CHUNK_SIZE][(x-1)] == '1')
+			if (game->map[y / CHUNK_SIZE][x] == '1'
+				|| game->map[(y-1) / CHUNK_SIZE][(x-1)] == '1')
 				color = 0x404040;
 			else
 				color = 0x202020;

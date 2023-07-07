@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 20:27:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/07 21:40:51 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ int main(int argc, char **argv)
 	printf_texture(&game);
 	fflush(stdout);
 	print_map(&game);
+	if (!check_map(&game))
+		return (1);
 	if (init_mlx(&game) == -1)
 		return (ft_close(&game), perror("Error"), 1);
 	if (load_image(&game) == -1)

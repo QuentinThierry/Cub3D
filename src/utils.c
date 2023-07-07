@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 19:53:49 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/07 21:54:20 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,18 @@ void	remove_new_line(char *str)
 		str[len - 1] = '\0';
 }
 
-t_vector2	get_dimension_maps(int fd, int nb_line, char *line)
+t_vector2	get_dimension_maps(int fd, int nb_line, char *line, bool *error)
 {
-	int	i;
+	int			i;
 	t_vector2	len;
 
+	*error = false;
 	len.y = 0;
 	len.x = 0;
 	while (line != NULL)
 	{
 		i = skip_whitespace(line);
-		if (line[0] == '\n' || line[0] == '\0' || line[i] == '\0')
+		if (line[0] == '\n' || line[0] == '\0')
 			break;
 		remove_new_line(line);
 		if (len.x < (int)strlen(line))
@@ -77,6 +78,8 @@ t_vector2	get_dimension_maps(int fd, int nb_line, char *line)
 	}
 	while (line != NULL)
 	{
+		if (line[0] != '\n')
+			*error = true;
 		free(line);
 		line = get_next_line(fd);
 	}

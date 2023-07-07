@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 20:16:54 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/07 21:29:26 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,16 @@
 double	get_dist(t_game *game, double x, double y, double angle)
 {
 	t_fvector2	delta;
-	double		alpha;
+	double		res;
 
 	delta.x = fabs(x - game->player->f_real_pos.x);
 	delta.y = fabs(y - game->player->f_real_pos.y);
 
-	alpha = game->player->angle + angle;
-	if (alpha >= 360)
-		alpha = alpha - 360;
-	else if (alpha < 0)
-		alpha = alpha + 360;
-	if (alpha == 0)
-		alpha++;
-	// double h = delta.y / fabs(cosf(alpha * TO_RADIAN));
-	double h = sqrtf((delta.x * delta.x + delta.y * delta.y));
-	if (h == 0)
-		return (0.1); // anti segfault, (when too close to wall) to change
-	double c = cosf(angle * TO_RADIAN);
-	return (c * h);
+	res = sqrt((delta.x * delta.x + delta.y * delta.y))
+				* cos(angle * TO_RADIAN);
+	if (res == 0)
+		return (0.1);
+	return (res);
 }
 
 t_vector2	get_sign(double angle)
@@ -68,7 +60,7 @@ void	raycasting(t_game *game)
 			angle = angle - 360;
 		if (game->player->angle + angle < 0)
 			angle = angle + 360;
-		wall = get_wall_hit(fpos, game->maps, game->player->angle + angle, game->map_size);
+		wall = get_wall_hit(fpos, game->map, game->player->angle + angle, game->map_size);
 		if (wall.x == -1 && wall.y == -1)
 			height = 0;
 		else

@@ -23,21 +23,18 @@ make install
 
 TO DO:
 
--need to fix division by zero when sin(0)
--fix get_dist return 0
+<!-- -need to fix division by zero when sin(0) -->
+<!-- -fix get_dist return 0 -->
 -fix orientation when we have round coordonee (ex : (3.0 ; 1.0))
 <!-- -make parsing -->
 -make pathfinding for wall
--mouvement depending on the orientation of the player
--wall collision
+<!-- -mouvement depending on the orientation of the player -->
 <!-- -maps with multiple textures -->
--organization of data
--optimization
+-check if only one player
 
 
-bug sur le angle = 0 (sin 0 == 0 donc div par 0)
-bug de flash de texture sur l'angle 
-changer le sqrt dans calcul dist
+-wall collision
+<!-- bug sur le angle = 0 (sin 0 == 0 donc div par 0) -->
 <!-- bug de flash de texture sur l'angle  -->
 changer le sqrt dans calcul dist
 

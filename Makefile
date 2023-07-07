@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/07/07 20:00:35 by qthierry         ###   ########.fr        #
+#    Updated: 2023/07/07 21:39:57 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			ft_memcpy.c \
 			ft_close.c \
 			wall_hit.c \
+			check_map.c \
 			main.c
 
 SRC_DIR = ./src/
@@ -63,7 +64,7 @@ all:	$(NAME)
 bonus:	all
 
 run: $(NAME)
-	./$(NAME) maps/couloir.cub
+	./$(NAME) maps/map.cub
 
 # vrun: $(NAME)
 # 	valgrind --leak-check=full --track-fds=yes --trace-children=yes --show-leak-kinds=all --track-origins=yes ./$(NAME)

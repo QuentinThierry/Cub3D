@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 00:20:21 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/07 21:52:03 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,15 @@ bool	parse_map(int fd, char *filename, t_game *game, int nb_line, char *line)
 	int		y;
 	int		i;
 	char	**maps;
+	bool	error;
 	
 	y = 0;
 	i = 0;
-	game->map_size = get_dimension_maps(fd, i, line);
+	game->map_size = get_dimension_maps(fd, i, line, &error);
 	if (game->map_size.x == 0 || game->map_size.y == 0)
 		return (printf("Error : Empty map\n"), false);
+	if (error == true)
+		return (printf("Error : Unknown element in map\n"),false);
 	maps = init_map(game->map_size);
 	if (maps == NULL)
 		return (perror("Error"), false);
@@ -65,7 +68,7 @@ bool	parse_map(int fd, char *filename, t_game *game, int nb_line, char *line)
 		y++;
 	}
 	free(line);
-	game->maps = maps;
+	game->map = maps;
 	return (true);
 }
 
@@ -86,10 +89,10 @@ bool	find_player(t_game *game)
 		index.x = 0;
 		while(index.x < game->map_size.x)
 		{	
-			if (game->maps[index.y][index.x] == 'N'
-				|| game->maps[index.y][index.x] == 'S'
-				|| game->maps[index.y][index.x] == 'W'
-				|| game->maps[index.y][index.x] == 'E')
+			if (game->map[index.y][index.x] == 'N'
+				|| game->map[index.y][index.x] == 'S'
+				|| game->map[index.y][index.x] == 'W'
+				|| game->map[index.y][index.x] == 'E')
 			{
 				is_player = true;
 				player->pos.x = index.x * CHUNK_SIZE + CHUNK_SIZE / 2.0;
@@ -98,15 +101,15 @@ bool	find_player(t_game *game)
 				player->f_pos.y = index.y * CHUNK_SIZE + CHUNK_SIZE / 2.0;
 				player->f_real_pos.x = index.x + 1 / 2.0;
 				player->f_real_pos.y = index.y + 1 / 2.0;
-				if (game->maps[index.y][index.x] == 'N')
+				if (game->map[index.y][index.x] == 'N')
 					player->angle = 0;
-				else if (game->maps[index.y][index.x] == 'E')
+				else if (game->map[index.y][index.x] == 'E')
 					player->angle = 90;
-				else if (game->maps[index.y][index.x] == 'S')
+				else if (game->map[index.y][index.x] == 'S')
 					player->angle = 180;
-				else if (game->maps[index.y][index.x] == 'W')
+				else if (game->map[index.y][index.x] == 'W')
 					player->angle = 270;
-				game->maps[index.y][index.x] = '0';
+				game->map[index.y][index.x] = '0';
 				break ;
 			}
 			index.x++;

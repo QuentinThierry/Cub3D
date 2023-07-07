@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 20:15:51 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/07 21:29:26 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print_map(t_game *game)
 	
 	while(y < game->map_size.y)
 	{
-		write(1, game->maps[y], game->map_size.x);
+		write(1, game->map[y], game->map_size.x);
 		write(1, "\n", 1);
 		y++;
 	}

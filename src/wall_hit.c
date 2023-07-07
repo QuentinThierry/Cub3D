@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wall_hit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/07 20:30:00 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/07 20:39:12 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static inline t_fvector2	_get_wall_hit_ne(t_fvector2 fpos,
 		}
 		else
 		{
-			if ((int)(comp.x) >= map_size.x || map_pos.y < 0)
+			if ((int)(comp.x) >= map_size.x || map_pos.y - 1 < 0)
 				return ((t_fvector2){-1, -1});
 			if (map[map_pos.y - 1][((int)(comp.x))] == '1')
 				return ((t_fvector2){comp.x, map_pos.y});
@@ -98,7 +98,7 @@ static inline t_fvector2	_get_wall_hit_sw(t_fvector2 fpos,
 	{
 		if (map_pos.y >= comp.y)
 		{
-			if (map_pos.x < 0 || (int)(fpos.y) >= map_size.y)
+			if (map_pos.x - 1 < 0 || (int)(fpos.y) >= map_size.y)
 				return ((t_fvector2){-1, -1});
 			if (map[(int)(comp.y)][map_pos.x - 1] == '1')
 				return ((t_fvector2){map_pos.x, comp.y});
@@ -133,7 +133,7 @@ static inline t_fvector2	_get_wall_hit_nw(t_fvector2 fpos,
 	{
 		if (map_pos.y <= comp.y)
 		{
-			if (map_pos.x < 0 || (int)(comp.y) < 0)
+			if (map_pos.x - 1 < 0 || (int)(comp.y) < 0)
 				return ((t_fvector2){-1, -1});
 			if (map[(int)(comp.y)][map_pos.x - 1] == '1')
 				return ((t_fvector2){map_pos.x, comp.y});
@@ -142,7 +142,7 @@ static inline t_fvector2	_get_wall_hit_nw(t_fvector2 fpos,
 		}
 		else
 		{
-			if ((int)(comp.x) < 0 || map_pos.y < 0)
+			if ((int)(comp.x) < 0 || map_pos.y - 1 < 0)
 				return ((t_fvector2){-1, -1});
 			if (map[map_pos.y - 1][((int)(comp.x))] == '1')
 				return ((t_fvector2){comp.x, map_pos.y});

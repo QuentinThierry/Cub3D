@@ -6,16 +6,16 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/07/07 01:03:39 by qthierry         ###   ########.fr        #
+#    Updated: 2023/07/07 20:00:35 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3d
 
 CC = gcc
-CFLAGS += -g -Wall -Wextra# -03#-Werror
-LIBS = -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext -L$(LIBAO_LIB) -lao -lpthread
-INCLUDES = -I$(MINILIBX_HEADERS) -I$(LIBAO_HEADERS) -I$(HEADERS_DIR)
+CFLAGS = -g -Wall -Wextra# -03#-Werror
+LIBS = -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext
+INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR)
 
 REDIRECT_ERROR = >/dev/null 2>&1
 
@@ -24,34 +24,19 @@ MINILIBX_DIR = $(HEADERS_DIR)minilibx-linux/
 MINILIBX_HEADERS = $(MINILIBX_DIR)
 MINILIBX = $(MINILIBX_DIR)libmlx.a
 
-LIBAO_URL = http://downloads.xiph.org/releases/ao/libao-1.2.0.tar.gz
-LIBAO_DIR = $(HEADERS_DIR)libao/
-LIBAO_HEADERS = $(LIBAO_DIR)include/ao/
-LIBAO_LIB = $(LIBAO_DIR)lib/
-LIBAO_TAR = $(HEADERS_DIR)libao.tar
-LIBAO_ABS_PATH = $(shell pwd)/$(LIBAO_DIR)
-LIBAO = $(LIBAO_LIB)/libao.so
-LIBAO_SRC = libao-1.2.0/
-
 RESET_COLOR	:= \033[0m
 RED			:= \033[0;31m
 GREEN		:= \033[0;32m
-
 
 HEADERS_LIST = cub3d.h get_next_line.h
 HEADERS_DIR = ./includes/
 HEADERS = $(addprefix $(HEADERS_DIR), $(HEADERS_LIST))
 
-SOUND = sound/
-SRC_SOUND = \
-			sound.c
-
 GNL = get_next_line/
 SRC_GNL = get_next_line.c\
 			get_next_line_utils.c
 
-SRC_LIST =	$(addprefix $(SOUND), $(SRC_SOUND)) \
-			$(addprefix $(GNL), $(SRC_GNL)) \
+SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			key_hook.c \
 			utils.c \
 			raycasting.c \
@@ -91,32 +76,15 @@ prun: $(NAME)
 	./$(NAME)
 	gprof cub3d gmon.out > analysis.txt
 
-$(NAME):	$(LIBAO) $(MINILIBX) $(OBJ_DIR) $(OBJ)
-	$(CC) $(CFLAGS) -Wl,-rpath,$(LIBAO_ABS_PATH)lib $(OBJ) $(LIBS) $(INCLUDES) -o $(NAME)
+$(NAME):	$(MINILIBX) $(OBJ_DIR) $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBS) $(INCLUDES) -o $(NAME)
 
 $(OBJ_DIR)%.o:	$(SRC_DIR)%.c $(HEADERS) Makefile
 	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
 	
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
-	@mkdir -p $(OBJ_DIR)$(SOUND)
 	@mkdir -p $(OBJ_DIR)$(GNL)
-
-$(LIBAO):
-	@echo "${GREEN}~-~-~-~-~ COMPILING LIBAO ~-~-~-~-${RESET_COLOR}"
-	@echo "   ${GREEN}- Fetching sources...${RESET_COLOR}"
-	@curl -L $(LIBAO_URL) --output $(LIBAO_TAR) $(REDIRECT_ERROR)
-	@echo "   ${GREEN}- Decompressing...${RESET_COLOR}"
-	@tar -xf $(LIBAO_TAR) $(REDIRECT_ERROR)
-	@rm -rf $(LIBAO_TAR) $(REDIRECT_ERROR)
-	@mkdir -p $(LIBAO_ABS_PATH)
-	@echo "   ${GREEN}- Compiling sources...${RESET_COLOR}"
-	@cd $(LIBAO_SRC) && ./configure --prefix=$(LIBAO_ABS_PATH) --exec-prefix=$(LIBAO_ABS_PATH) $(REDIRECT_ERROR)
-	@make -C $(LIBAO_SRC) $(REDIRECT_ERROR)
-	@make -C $(LIBAO_SRC) install $(REDIRECT_ERROR)
-	@echo "   ${GREEN}- Cleaning directory...${RESET_COLOR}"
-	@rm -rf $(LIBAO_SRC)
-	@echo "${GREEN}~ DONE ~\n${RESET_COLOR}"
 
 $(MINILIBX):
 	@echo "${GREEN}~-~-~-~-~ COMPILING MINILIBX ~-~-~-~-~${RESET_COLOR}"
@@ -130,19 +98,14 @@ $(MINILIBX):
 	@make -s -C $(MINILIBX_DIR) all $(REDIRECT_ERROR)
 	@echo "${GREEN}~ DONE ~\n${RESET_COLOR}"
 
-clean_libao:
-	rm -rf $(LIBAO_TAR)
-	rm -rf ./$(LIBAO_SRC)
-
 clean_minilibx:
 	rm -rf $(MINILIBX_DIR)
 
-clean: clean_libao
+clean:
 	rm -rf $(OBJ_DIR)
 
 fclean:	clean clean_minilibx
 	rm -rf $(NAME)
-	rm -rf $(LIBAO_DIR)
 
 re: fclean all
 

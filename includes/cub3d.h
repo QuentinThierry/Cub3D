@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 00:16:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/07 00:32:00 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ t_vector2	get_sign(float angle);
 void	ft_close(t_game *game);
 int	parse_file(char *filename, t_game *game);
 void	print_map(t_game *game);
-t_fvector2	get_wall_hit(t_fvector2 fpos, char **map, float angle);
+t_fvector2	get_wall_hit(t_fvector2 fpos, char **map, float angle, t_vector2 map_size);
 
 // --------2D--------
 t_fvector2	get_wall_hit_2d(t_game *game, float angle);

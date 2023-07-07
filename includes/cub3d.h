@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 19:53:38 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/07 20:29:19 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ typedef struct s_game
 
 // ------ Utils------
 void	*ft_calloc(size_t nmemb, size_t size);
-enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall);
+enum e_orientation	get_wall_orientation(t_game *game, t_player player, t_fvector2 wall);
 t_image	*get_image(t_game	*game, enum e_orientation orient);
 int skip_whitespace(char *str);
 t_vector2	get_dimension_maps(int fd, int nb_line, char *line);
@@ -128,7 +128,7 @@ t_vector2	get_sign(double angle);
 void		ft_close(t_game *game);
 int			parse_file(char *filename, t_game *game);
 void		print_map(t_game *game);
-t_fvector2	get_wall_hit(t_fvector2 fpos, char **map, double angle);
+t_fvector2	get_wall_hit(t_fvector2 fpos, char **map, float angle, t_vector2 map_size);
 
 // --------2D--------
 t_fvector2	get_wall_hit_2d(t_game *game, double angle);

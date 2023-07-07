@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/04 18:37:08 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/07 00:20:21 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ bool	find_player(t_game *game)
 					player->angle = 180;
 				else if (game->maps[index.y][index.x] == 'W')
 					player->angle = 270;
+				game->maps[index.y][index.x] = '0';
 				break ;
 			}
 			index.x++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 01:02:19 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/07 20:15:51 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,28 +46,28 @@ void	draw_vert(t_game *game, int x, t_fvector2 wall, double height)
 	int					i = 0;
 	char				*addr;
 
-	orient = get_wall_orientation(*(game->player), wall);
-	image = get_image(game, orient);
 	size_line = game->image->size_line;
-	delta_y_img = image->size.y / height;
 	y = WIN_Y / 2.0 - (int)(height / 2);
-	height -= (int)(height / 2);
-	y1 = WIN_Y / 2.0 + (int)height;
-	// if (height < 3)
-	// 	printf("y : %d y: %d\n", y , y1);
-	if (y < 0)
+	y1 = WIN_Y / 2.0 + ((int)height - (int)(height / 2));
+	if (height != 0)
 	{
-		y_img = -y * delta_y_img;
-		y = 0;
+		orient = get_wall_orientation(game, *(game->player), wall);
+		image = get_image(game, orient);
+		delta_y_img = image->size.y / height;
+		if (y < 0)
+		{
+			y_img = -y * delta_y_img;
+			y = 0;
+		}
+		if (y1 > WIN_Y)
+			y1 = WIN_Y;
+		if (orient == e_north || orient == e_south)
+			x_img = (wall.x - (int)wall.x) * image->size.x;
+		else
+			x_img = (wall.y - (int)wall.y) * image->size.x;
+		if (orient == e_west || orient == e_south)
+			x_img = image->size.x - x_img - 1;
 	}
-	if (y1 > WIN_Y)
-		y1 = WIN_Y;
-	if (orient == e_north || orient == e_south)
-		x_img = (wall.x - (int)wall.x) * image->size.x;
-	else
-		x_img = (wall.y - (int)wall.y) * image->size.x;
-	if (orient == e_west || orient == e_south)
-		x_img = image->size.x - x_img - 1;
 	
 	addr = game->image->addr;
 	while (i < y)

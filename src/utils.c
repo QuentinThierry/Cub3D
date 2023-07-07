@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 00:13:43 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/07 19:53:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall)
+enum e_orientation	get_wall_orientation(t_game *game, t_player player, t_fvector2 wall)
 {
 	if ((wall.x - (int)wall.x) != 0)
 	{

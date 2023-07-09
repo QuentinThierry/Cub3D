@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 21:27:20 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/07 21:56:25 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/07 23:43:43 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,10 @@ bool	check_map(t_game *game)
 	char	**map;
 	int		x;
 	int		y;
+	int		player;
 
+	player = 0;
 	map = game->map;
-
 	y = 0;
 	while (y < game->map_size.y)
 	{

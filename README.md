@@ -27,10 +27,10 @@ TO DO:
 <!-- -fix get_dist return 0 -->
 -fix orientation when we have round coordonee (ex : (3.0 ; 1.0))
 <!-- -make parsing -->
--make pathfinding for wall
+<!-- -make pathfinding for wall -->
 <!-- -mouvement depending on the orientation of the player -->
 <!-- -maps with multiple textures -->
--check if only one player
+<!-- -check if only one player -->
 
 
 -wall collision

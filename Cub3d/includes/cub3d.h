@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 21:46:46 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/09 21:03:37 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,10 @@
 
 #include <X11/X.h>
 
-#define WIN_X 1920 //1920 - 918
+#define WIN_X 1080 //1920 - 918
 #define WIN_Y 1080 //1080 - 468
 #define CHUNK_SIZE 50
 #define FOV 80
-#define HEIGHT_WALL 600*50
 #define MOUV 1
 #define SPEED 100
 #define SPRINT_BOOST 100

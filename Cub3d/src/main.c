@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 21:40:51 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/09 21:05:50 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int main(int argc, char **argv)
 		return (ft_close(&game), perror("Error"), 1);
 	if (load_image(&game) == -1)
 		return (ft_close(&game), perror("Error"), 1); // ((WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))
-	game.constants = (double[5]){(WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))};
+	game.constants = (double[5]){(WIN_X) / (tan((FOV / 2.0) * TO_RADIAN))};
 
 	mlx_hook(game.win, 02, (1L<<0), key_press_hook, &game);
 	mlx_hook(game.win, 03, (1L<<1), key_release_hook, game.player);

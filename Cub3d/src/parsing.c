@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 21:52:03 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/07 23:45:15 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,14 @@ bool	find_player(t_game *game)
 	{
 		index.x = 0;
 		while(index.x < game->map_size.x)
-		{	
+		{
 			if (game->map[index.y][index.x] == 'N'
 				|| game->map[index.y][index.x] == 'S'
 				|| game->map[index.y][index.x] == 'W'
 				|| game->map[index.y][index.x] == 'E')
 			{
+				if (is_player)
+					return (printf("Error : Too much players\n"), false);
 				is_player = true;
 				player->pos.x = index.x * CHUNK_SIZE + CHUNK_SIZE / 2.0;
 				player->pos.y = index.y * CHUNK_SIZE + CHUNK_SIZE / 2.0;
@@ -110,7 +112,6 @@ bool	find_player(t_game *game)
 				else if (game->map[index.y][index.x] == 'W')
 					player->angle = 270;
 				game->map[index.y][index.x] = '0';
-				break ;
 			}
 			index.x++;
 		}

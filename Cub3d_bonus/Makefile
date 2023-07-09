@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/07/09 23:31:18 by qthierry         ###   ########.fr        #
+#    Updated: 2023/07/10 00:08:20 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ RESET_COLOR	:= \033[0m
 RED			:= \033[0;31m
 GREEN		:= \033[0;32m
 
-HEADERS_LIST = cub3d.h get_next_line.h
+HEADERS_LIST = cub3d_bonus.h get_next_line.h
 HEADERS_DIR = ./includes/
 HEADERS = $(addprefix $(HEADERS_DIR), $(HEADERS_LIST))
 

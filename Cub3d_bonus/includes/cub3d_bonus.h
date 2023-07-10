@@ -32,11 +32,11 @@
 #define WIN_X 1080 //1920 - 918
 #define WIN_Y 1080 //1080 - 468
 #define CHUNK_SIZE 50
-#define FOV 80
+#define FOV 120
 #define MOUV 1
 #define SPEED 100
 #define SPRINT_BOOST 100
-#define ROTATION 75
+#define ROTATION 125
 #define MAX_VOLUME 1.0
 #define THREED 1
 #define TO_RADIAN .0174532
@@ -116,13 +116,12 @@ int			init_mlx(t_game *game);
 int			load_image(t_game *game);
 int			key_press_hook(int key, t_game *game);
 int			key_release_hook(int key, t_player *player);
-void		player_move(t_player *player, double delta_time);
+void		player_move(t_player *player, double delta_time, char **map);
 void		draw_vert(t_game *game, int x, t_fvector2 wall, double dist);
 void		quadrillage(t_game *game);
 double		get_wall_dist(t_game *game, double angle);
 void		raycasting(t_game *game);
 int			on_update(t_game *game);
-void		move_forward(t_player *player);
 t_vector2	get_sign(double angle);
 int			ft_close(t_game *game);
 int			parse_file(char *filename, t_game *game);
@@ -135,5 +134,7 @@ t_fvector2	get_wall_hit_2d(t_game *gavoidme, double angle);
 void		raycasting_2d(t_game *game);
 void		quadrillage(t_game *game);
 bool		find_player(t_game *game);
+
+void	check_colliding(t_player *player, t_fvector2 new_pos, char **map);
 
 #endif

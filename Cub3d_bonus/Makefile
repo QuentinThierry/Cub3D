@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/07/10 00:08:20 by qthierry         ###   ########.fr        #
+#    Updated: 2023/07/10 01:47:31 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,12 +44,12 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			parsing.c \
 			ft_calloc.c \
 			init.c \
-			move.c \
 			view_2d.c \
 			ft_memcpy.c \
 			ft_close.c \
 			wall_hit.c \
 			check_map.c \
+			collisions.c \
 			main.c
 
 SRC_DIR = ./src/

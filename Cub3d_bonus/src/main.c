@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/10 01:21:06 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/11 02:10:21 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,18 @@ int	on_update(t_game *game)
 		clock_gettime(CLOCK_REALTIME, &last_time);
 	
 
-
 	
 	if (game->player->angle + game->player->angle >= 360)
 		game->player->angle = game->player->angle - 360;
 	if (game->player->angle + game->player->angle < 0)
 		game->player->angle = game->player->angle + 360;
-	player_move(game->player, game->delta_time, game->map);
-	
+	player_move(game->player, game->delta_time, game->map, game->map_size);
+	// usleep(100000);
 	raycasting(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
 	
 
 
-	
 	clock_gettime(CLOCK_REALTIME, &cur_time);
 	game->delta_time = (cur_time.tv_sec - last_time.tv_sec + (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
 	fps = (long)(1.0 / game->delta_time);
@@ -75,6 +73,13 @@ int	on_update(t_game *game)
 }
 #endif
 
+int	test(t_game *game)
+{
+	mlx_mouse_move(game->mlx_ptr, game->win, WIN_X/2.0, WIN_Y/2.0);
+	game->player->mouse_pos.x = WIN_X / 2.0;
+	game->player->mouse_pos.y = WIN_Y / 2.0;
+}
+
 int main(int argc, char **argv)
 {
 	t_game	game;
@@ -96,9 +101,15 @@ int main(int argc, char **argv)
 		return (ft_close(&game), perror("Error"), 1); // ((WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))
 	game.constants = (double[5]){(WIN_X) / (tan((FOV / 2.0) * TO_RADIAN))};
 
-	mlx_hook(game.win, 02, (1L<<0), key_press_hook, &game);
-	mlx_hook(game.win, 03, (1L<<1), key_release_hook, game.player);
-	mlx_hook(game.win, 17, (1L << 5), ft_close, &game);
+	mlx_mouse_move(game.mlx_ptr, game.win, WIN_X/2.0, WIN_Y/2.0);
+	game.player->mouse_pos.x = WIN_X / 2.0;
+	game.player->mouse_pos.y = WIN_Y / 2.0;
+	mlx_mouse_hide(game.mlx_ptr, game.win);
+	mlx_hook(game.win, 2, (1L<<0), key_press_hook, &game);
+	mlx_hook(game.win, 3, (1L<<1), key_release_hook, game.player);
+	mlx_hook(game.win, 17, (1L << 8), ft_close, &game);
+	mlx_hook(game.win, 6, (1L << 6), mouse_hook, &game);
+	mlx_hook(game.win, 8, (1L << 5), test, &game);			//if leave the windows move mouse to the center
 	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	mlx_loop(game.mlx_ptr);
 	return (0);

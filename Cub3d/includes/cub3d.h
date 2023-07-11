@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/09 21:03:37 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/11 03:27:19 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,16 @@ enum e_orientation
 	e_east,
 	e_south,
 	e_west
+};
+
+enum e_images
+{
+	e_north_wall,
+	e_east_wall,
+	e_south_wall,
+	e_west_wall,
+	e_ceiling,
+	e_floor
 };
 
 typedef struct s_vector2

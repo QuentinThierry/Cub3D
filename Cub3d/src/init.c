@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 20:21:08 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/11 03:31:45 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,55 @@ int	init_mlx(t_game *game)
 	return (0);
 }
 
+void	fill_rectangle(char *addr, int size_x, int size_y, unsigned int color)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < size_y)
+	{
+		x = 0;
+		while (x < size_x)
+		{
+			*(unsigned int *)addr = color;
+			addr += 4;
+			x++;
+		}
+		y++;
+	}
+}
+
+bool	load_floor_ceiling_img(t_image **tab_image, t_game *game)
+{
+	tab_image[e_ceiling] = ft_calloc(1, sizeof(t_image));
+	if (!tab_image[e_ceiling])
+		return (false);
+	tab_image[e_ceiling]->img = mlx_new_image(game->mlx_ptr, WIN_X, WIN_Y / 2);
+	if (!tab_image[e_ceiling]->img)
+		return (false);
+	tab_image[e_ceiling]->addr = mlx_get_data_addr(tab_image[e_ceiling]->img,
+		&tab_image[e_ceiling]->opp, &tab_image[e_ceiling]->size_line, &tab_image[e_ceiling]->endian);
+	fill_rectangle(tab_image[e_ceiling]->addr, WIN_X, WIN_Y / 2, game->ceiling);
+	tab_image[e_floor] = ft_calloc(1, sizeof(t_image));
+	if (!tab_image[e_floor])
+		return (false);
+	tab_image[e_floor]->img = mlx_new_image(game->mlx_ptr, WIN_X, WIN_Y / 2);
+	if (!tab_image[e_floor]->img)
+		return (false);
+	tab_image[e_floor]->addr = mlx_get_data_addr(tab_image[e_floor]->img,
+		&tab_image[e_floor]->opp, &tab_image[e_floor]->size_line, &tab_image[e_floor]->endian);
+	fill_rectangle(tab_image[e_floor]->addr, WIN_X, WIN_Y / 2, game->floor);
+	return (true);
+}
+
+
 int	load_image(t_game *game)
 {
 	t_image		**tab_image;
 	int			i;
 
-	tab_image = ft_calloc(4, sizeof(t_image *));
+	tab_image = ft_calloc(6, sizeof(t_image *));
 	if (tab_image == NULL)
 		return (-1);
 	i = 0;
@@ -67,6 +110,8 @@ int	load_image(t_game *game)
 		tab_image[i]->opp /= 8;
 		i++;
 	}
+	if (!load_floor_ceiling_img(tab_image, game))
+		return (-1);
 	game->tab_images = tab_image;
 	return (0);
 }

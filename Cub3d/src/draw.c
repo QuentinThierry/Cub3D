@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/09 19:54:09 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/11 03:27:36 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,20 +70,10 @@ void	draw_vert(t_game *game, int x, t_fvector2 wall, double height)
 	}
 	
 	addr = game->image->addr;
-	while (i < y)
-	{
-		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, game->ceiling);
-		i++;
-	}
 	while (y < y1)
 	{
 		my_mlx_pixel_put(addr, size_line, (t_vector2){x, y}, get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}));
 		y_img += delta_y_img;
 		y++;
-	}
-	while (y1 < WIN_Y)
-	{
-		my_mlx_pixel_put(addr, size_line, (t_vector2){x, y1}, game->floor);
-		y1++;
 	}
 }

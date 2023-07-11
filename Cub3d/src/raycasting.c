@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 21:29:26 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/11 03:32:35 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ void	raycasting(t_game *game)
 	t_fvector2	wall;
 	t_fvector2	fpos;
 	double		dist; 
-	
+
+	ft_memcpy(game->image->addr, game->tab_images[e_ceiling]->addr, WIN_X * WIN_Y / 2 * 4);
+	ft_memcpy(game->image->addr + WIN_X * WIN_Y / 2 * 4, game->tab_images[e_floor]->addr, WIN_X * WIN_Y / 2 * 4);
 	fpos = game->player->f_real_pos;
 	x = -WIN_X / 2;
 	while (x < WIN_X / 2)

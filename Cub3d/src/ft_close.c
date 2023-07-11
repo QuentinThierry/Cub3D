@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 21:29:26 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/11 03:34:27 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_close(t_game *game)
 		free_tab(game->filename, (t_vector2){4, 4});
 	if (game->mlx_ptr != NULL)
 	{
-		while (i < 4)
+		while (i < 6)
 		{
 			mlx_destroy_image(game->mlx_ptr, game->tab_images[i]->img);
 			free(game->tab_images[i]);

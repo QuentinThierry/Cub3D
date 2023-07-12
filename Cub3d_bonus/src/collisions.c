@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 01:05:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/11 03:25:20 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/13 01:04:11 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static inline t_fvector2	_get_collision_se(t_fvector2 fpos,
 			if (map_pos.x > new_pos.x)
 				return (new_pos);
 			if (map[(int)(comp.y)][map_pos.x] == '1')
-				return ((t_fvector2){map_pos.x - 0.001, comp.y});
+				return ((t_fvector2){map_pos.x - 0.001, comp.y - (0.001 / fabs(fpos.x - map_pos.x) * fabs(fpos.y - comp.y))});
 			comp.y += step.y;
 			map_pos.x += 1;
 		}
@@ -87,7 +87,7 @@ static inline t_fvector2	_get_collision_se(t_fvector2 fpos,
 			if (map_pos.y > new_pos.y)
 				return (new_pos);
 			if (map[map_pos.y][(int)(comp.x)] == '1')
-				return ((t_fvector2){comp.x, map_pos.y - 0.001});
+				return ((t_fvector2){comp.x - (0.001 / fabs(fpos.y - map_pos.y) * fabs(fpos.x - comp.x)), map_pos.y - 0.001});
 			comp.x += step.x;
 			map_pos.y += 1;
 		}
@@ -115,7 +115,7 @@ static inline t_fvector2	_get_collision_ne(t_fvector2 fpos,
 			if (map_pos.x > new_pos.x)
 				return (new_pos);
 			if (map[(int)(comp.y)][map_pos.x] == '1')
-				return ((t_fvector2){map_pos.x - 0.001, comp.y});
+				return ((t_fvector2){map_pos.x - 0.001, comp.y + (0.001 / fabs(fpos.x - map_pos.x) * fabs(fpos.y - comp.y))});
 			comp.y += step.y;
 			map_pos.x += 1;
 		}
@@ -124,7 +124,7 @@ static inline t_fvector2	_get_collision_ne(t_fvector2 fpos,
 			if (map_pos.y < new_pos.y)
 				return (new_pos);
 			if (map[map_pos.y - 1][((int)(comp.x))] == '1')
-				return ((t_fvector2){comp.x, map_pos.y + 0.001});
+				return ((t_fvector2){comp.x - (0.001 / fabs(fpos.y - map_pos.y) * fabs(fpos.x - comp.x)), map_pos.y + 0.001});
 			comp.x += step.x;
 			map_pos.y += -1;
 		}
@@ -152,7 +152,7 @@ static inline t_fvector2	_get_collision_sw(t_fvector2 fpos,
 			if (map_pos.x < new_pos.x)
 				return (new_pos);
 			if (map[(int)(comp.y)][map_pos.x - 1] == '1')
-				return ((t_fvector2){map_pos.x + 0.001, comp.y});
+				return ((t_fvector2){map_pos.x + 0.001, comp.y - (0.001 / fabs(fpos.x - map_pos.x) * fabs(fpos.y - comp.y))});
 			comp.y += step.y;
 			map_pos.x += -1;
 		}
@@ -161,7 +161,7 @@ static inline t_fvector2	_get_collision_sw(t_fvector2 fpos,
 			if (map_pos.y > new_pos.y)
 				return (new_pos);
 			if (map[map_pos.y][((int)(comp.x))] == '1')
-				return ((t_fvector2){comp.x, map_pos.y - 0.001});
+				return ((t_fvector2){comp.x + (0.001 / fabs(fpos.y - map_pos.y) * fabs(fpos.x - comp.x)), map_pos.y - 0.001});
 			comp.x += step.x;
 			map_pos.y += 1;
 		}
@@ -189,7 +189,7 @@ static inline t_fvector2	_get_collision_nw(t_fvector2 fpos,
 			if (map_pos.x < new_pos.x)
 				return (new_pos);
 			if (map[(int)(comp.y)][map_pos.x - 1] == '1')
-				return ((t_fvector2){map_pos.x + 0.001, comp.y});
+				return ((t_fvector2){map_pos.x + 0.001, comp.y + (0.001 / fabs(fpos.x - map_pos.x) * fabs(fpos.y - comp.y))});
 			comp.y += step.y;
 			map_pos.x += -1;
 		}
@@ -198,7 +198,7 @@ static inline t_fvector2	_get_collision_nw(t_fvector2 fpos,
 			if (map_pos.y < new_pos.y)
 				return (new_pos);
 			if (map[map_pos.y - 1][((int)(comp.x))] == '1')
-				return ((t_fvector2){comp.x, map_pos.y + 0.001});
+				return ((t_fvector2){comp.x + (0.001 / fabs(fpos.y - map_pos.y) * fabs(fpos.x - comp.x)), map_pos.y + 0.001});
 			comp.x += step.x;
 			map_pos.y += -1;
 		}

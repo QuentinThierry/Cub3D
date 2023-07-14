@@ -3,29 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/10 00:08:20 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/14 23:25:11 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-char	**init_map(t_vector2 len)
+t_wall	**init_map(t_vector2 len)
 {
 	int		i;
-	char **res;
+	t_wall **res;
 	
 	i = 0;
-	res = ft_calloc(len.y, sizeof(char *));
+	res = ft_calloc(len.y, sizeof(t_wall *));
 	if (res == NULL)
 		return (NULL);
 	while (i < len.y)
 	{
-		res[i] = ft_calloc(len.x, sizeof(char));
+		res[i] = ft_calloc(len.x, sizeof(t_wall));
 		if (res[i] == NULL)
-			return (free_tab(res, len), NULL);
+			return (free_tab((void *)res, len), NULL);
 		i++;
 	}
 	return (res);
@@ -35,12 +35,12 @@ bool	parse_map(int fd, char *filename, t_game *game, int nb_line, char *line)
 {
 	int		y;
 	int		i;
-	char	**maps;
+	t_wall	**maps;
 	bool	error;
 	
 	y = 0;
 	i = 0;
-	game->map_size = get_dimension_maps(fd, i, line, &error);
+	game->map_size = get_dimension_maps(fd, line, &error);
 	if (game->map_size.x == 0 || game->map_size.y == 0)
 		return (printf("Error : Empty map\n"), false);
 	if (error == true)
@@ -60,10 +60,11 @@ bool	parse_map(int fd, char *filename, t_game *game, int nb_line, char *line)
 	}
 	while (line != NULL && y < game->map_size.y)
 	{
-		remove_new_line(line);
-		ft_memcpy(maps[y], line, strlen(line));
-		memset(maps[y] + (strlen(line)), ' ', game->map_size.x - strlen(line));
-		free(line);
+		ft_fill_wall(line, maps[y], game->map_size);
+		// remove_new_line(line);
+		// ft_memcpy(maps[y], line, strlen(line));
+		// memset(maps[y] + (strlen(line)), ' ', game->map_size.x - strlen(line));
+		// free(line);
 		line = get_next_line(fd);
 		y++;
 	}
@@ -89,10 +90,10 @@ bool	find_player(t_game *game)
 		index.x = 0;
 		while(index.x < game->map_size.x)
 		{
-			if (game->map[index.y][index.x] == 'N'
-				|| game->map[index.y][index.x] == 'S'
-				|| game->map[index.y][index.x] == 'W'
-				|| game->map[index.y][index.x] == 'E')
+			if (game->map[index.y][index.x].symbol == 'N'
+				|| game->map[index.y][index.x].symbol == 'S'
+				|| game->map[index.y][index.x].symbol == 'W'
+				|| game->map[index.y][index.x].symbol == 'E')
 			{
 				if (is_player)
 					return (printf("Error : Too much players\n"), false);
@@ -103,15 +104,15 @@ bool	find_player(t_game *game)
 				player->f_pos.y = index.y * CHUNK_SIZE + CHUNK_SIZE / 2.0;
 				player->f_real_pos.x = index.x + 1 / 2.0;
 				player->f_real_pos.y = index.y + 1 / 2.0;
-				if (game->map[index.y][index.x] == 'N')
+				if (game->map[index.y][index.x].symbol == 'N')
 					player->angle = 0;
-				else if (game->map[index.y][index.x] == 'E')
+				else if (game->map[index.y][index.x].symbol == 'E')
 					player->angle = 90;
-				else if (game->map[index.y][index.x] == 'S')
+				else if (game->map[index.y][index.x].symbol == 'S')
 					player->angle = 180;
-				else if (game->map[index.y][index.x] == 'W')
+				else if (game->map[index.y][index.x].symbol == 'W')
 					player->angle = 270;
-				game->map[index.y][index.x] = '0';
+				game->map[index.y][index.x].symbol = '0';
 			}
 			index.x++;
 		}

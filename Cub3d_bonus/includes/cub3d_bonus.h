@@ -50,7 +50,16 @@ enum e_orientation
 	e_north = 0,
 	e_east,
 	e_south,
-	e_west
+	e_west,
+	e_floor,
+	e_ceiling
+};
+
+enum e_texture
+{
+	e_wall,
+	e_door,
+	e_windows
 };
 
 typedef struct s_vector2
@@ -86,6 +95,19 @@ typedef struct s_image
 	t_vector2	size;
 }	t_image;
 
+typedef struct s_sprite
+{
+	enum e_orientation	texture;
+	int					frame;
+	float				time;
+}	t_sprite;
+
+typedef struct s_wall
+{
+	char		symbol;
+	t_sprite	sprite[6];
+}	t_wall;
+
 typedef struct s_game
 {
 	t_image			*image;
@@ -94,7 +116,7 @@ typedef struct s_game
 	t_image			**tab_images;
 	unsigned int	floor;
 	unsigned int	ceiling;
-	char			**map;
+	t_wall			**map;
 	t_vector2		map_size;
 	t_player		*player;
 	double			delta_time;
@@ -104,23 +126,24 @@ typedef struct s_game
 
 // ------ Utils------
 void	*ft_calloc(size_t nmemb, size_t size);
-enum e_orientation	get_wall_orientation(t_game *game, t_player player, t_fvector2 wall);
+enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall);
 t_image	*get_image(t_game	*game, enum e_orientation orient);
 int skip_whitespace(char *str);
-t_vector2	get_dimension_maps(int fd, int nb_line, char *line, bool *error);
+t_vector2	get_dimension_maps(int fd, char *line, bool *error);
 void	remove_new_line(char *str);
+void	ft_fill_wall(char *line, t_wall *map, t_vector2 map_size);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 void	printf_texture(t_game *game);
-void	free_tab(char **str, t_vector2 size);
+void	free_tab(void **str, t_vector2 size);
 void	free_str(char **str);
 
 int			init_mlx(t_game *game);
 int			load_image(t_game *game);
 int			key_press_hook(int key, t_game *game);
 int			key_release_hook(int key, t_player *player);
-int			mouse_hook(int x, int y, t_game *game);
 int			mouse_leave(t_game *game);
-void		player_move(t_player *player, double delta_time, char **map, t_vector2 map_size);
+int			mouse_hook(int x,int y, t_game *game);
+void		player_move(t_player *player, double delta_time, t_wall **map);
 void		draw_vert(t_game *game, int x, t_fvector2 wall, double dist);
 void		quadrillage(t_game *game);
 double		get_wall_dist(t_game *game, double angle);
@@ -130,7 +153,7 @@ t_vector2	get_sign(double angle);
 int			ft_close(t_game *game);
 int			parse_file(char *filename, t_game *game);
 void		print_map(t_game *game);
-t_fvector2	get_wall_hit(t_fvector2 fpos, char **map, float angle, t_vector2 map_size);
+t_fvector2	get_wall_hit(t_fvector2 fpos, t_wall **map, float angle, t_vector2 map_size);
 bool		check_map(t_game *game);
 
 // --------2D--------
@@ -139,6 +162,6 @@ void		raycasting_2d(t_game *game);
 void		quadrillage(t_game *game);
 bool		find_player(t_game *game);
 
-void	check_colliding(t_player *player, t_fvector2 new_pos, char **map);
+void	check_colliding(t_player *player, t_fvector2 new_pos, t_wall **map);
 
 #endif

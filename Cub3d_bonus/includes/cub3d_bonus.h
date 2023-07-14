@@ -55,13 +55,6 @@ enum e_orientation
 	e_ceiling
 };
 
-enum e_texture
-{
-	e_wall,
-	e_door,
-	e_windows
-};
-
 typedef struct s_vector2
 {
 	int	x;
@@ -130,7 +123,7 @@ enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall);
 t_image	*get_image(t_game	*game, enum e_orientation orient);
 int skip_whitespace(char *str);
 t_vector2	get_dimension_maps(int fd, char *line, bool *error);
-void	remove_new_line(char *str);
+// void	remove_new_line(char *str);
 void	ft_fill_wall(char *line, t_wall *map, t_vector2 map_size);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 void	printf_texture(t_game *game);

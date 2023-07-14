@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/14 23:20:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/15 00:58:15 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ static t_fvector2	_get_wall_hit_se(t_fvector2 fpos,
 				return ((t_fvector2){-1, -1});
 			if (map[(int)(comp.y)][map_pos.x].symbol == '1')
 				return ((t_fvector2){map_pos.x, comp.y});
+			// if (map[(int)(comp.y)][map_pos.x].symbol == 'c')
+			// 	return ((t_fvector2){map_pos.x, comp.y});
 			comp.y += step.y;
 			map_pos.x += 1;
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/14 20:51:49 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/14 23:52:06 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,6 @@ int	on_update(t_game *game)
 }
 #endif
 
-int	test(t_game *game)
-{
-	mlx_mouse_move(game->mlx_ptr, game->win, WIN_X/2.0, WIN_Y/2.0);
-	game->player->mouse_pos.x = WIN_X / 2.0;
-	game->player->mouse_pos.y = WIN_Y / 2.0;
-	return (0);
-}
-
 int main(int argc, char **argv)
 {
 	t_game	game;
@@ -110,7 +102,7 @@ int main(int argc, char **argv)
 	mlx_hook(game.win, 3, (1L<<1), key_release_hook, game.player);
 	mlx_hook(game.win, 17, (1L << 8), ft_close, &game);
 	mlx_hook(game.win, 6, (1L << 6), mouse_hook, &game);
-	mlx_hook(game.win, 8, (1L << 5), test, &game);			//if leave the windows move mouse to the center
+	mlx_hook(game.win, 8, (1L << 5), mouse_leave, &game);
 	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	mlx_loop(game.mlx_ptr);
 	return (0);

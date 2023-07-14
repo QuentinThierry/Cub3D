@@ -50,7 +50,9 @@ enum e_orientation
 	e_north = 0,
 	e_east,
 	e_south,
-	e_west
+	e_west,
+	e_floor,
+	e_ceiling
 };
 
 enum e_texture
@@ -95,15 +97,15 @@ typedef struct s_image
 
 typedef struct s_sprite
 {
-	enum e_texture	texture;
-	int				frame;
-	float			time;
+	enum e_orientation	texture;
+	int					frame;
+	float				time;
 }	t_sprite;
 
 typedef struct s_wall
 {
 	char		symbol;
-	t_sprite	sprite[4];
+	t_sprite	sprite[6];
 }	t_wall;
 
 typedef struct s_game
@@ -139,6 +141,7 @@ int			init_mlx(t_game *game);
 int			load_image(t_game *game);
 int			key_press_hook(int key, t_game *game);
 int			key_release_hook(int key, t_player *player);
+int			mouse_leave(t_game *game);
 int			mouse_hook(int x,int y, t_game *game);
 void		player_move(t_player *player, double delta_time, t_wall **map);
 void		draw_vert(t_game *game, int x, t_fvector2 wall, double dist);

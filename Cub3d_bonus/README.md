@@ -15,7 +15,7 @@ Obligation :
 - [ ] animation (windows + lightning)
 - [x] collision with wall
 - [ ] door close and open
-- [ ] mouv with mouse
+- [x] mouv with mouse
 
 FIX :
 - mouv with mouse

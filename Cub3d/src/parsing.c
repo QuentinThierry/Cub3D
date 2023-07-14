@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 23:45:15 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/11 03:33:05 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ bool	find_color(char *str, t_game *game, char texture)
 	return (true);
 }
 
-bool	find_texture(t_game *game, char *str, enum e_orientation orient)
+bool	find_texture(t_game *game, char *str, enum e_images orient)
 {
 	char *filename;
 	int	i;
@@ -217,13 +217,13 @@ bool	cmp_texture(char *line, t_game *game, int i)
 	else if (next_wsp - i == 2)
 	{
 		if (strncmp(line + i, "NO", 2) == 0)
-			return (find_texture(game, line + i + 2, e_north));
+			return (find_texture(game, line + i + 2, e_north_wall));
 		else if (strncmp(line + i, "SO", 2) == 0)
-			return (find_texture(game, line + i + 2, e_south));
+			return (find_texture(game, line + i + 2, e_south_wall));
 		else if (strncmp(line + i, "WE", 2) == 0)
-			return (find_texture(game, line + i + 2, e_west));
+			return (find_texture(game, line + i + 2, e_west_wall));
 		else if (strncmp(line + i, "EA", 2) == 0)
-			return (find_texture(game, line + i + 2, e_east));
+			return (find_texture(game, line + i + 2, e_east_wall));
 	}
 	return (printf("Error : invalid identifier\n"), false);
 }
@@ -263,10 +263,10 @@ bool	parse_texture(int fd, t_game *game, int *nb_line, char **rest)
 
 void	printf_texture(t_game *game)
 {
-	printf("no : %s\n", game->filename[e_north]);
-	printf("su : %s\n", game->filename[e_south]);
-	printf("ea : %s\n", game->filename[e_east]);
-	printf("we : %s\n", game->filename[e_west]);
+	printf("no : %s\n", game->filename[e_north_wall]);
+	printf("su : %s\n", game->filename[e_south_wall]);
+	printf("ea : %s\n", game->filename[e_east_wall]);
+	printf("we : %s\n", game->filename[e_west_wall]);
 	printf("floor : %x\n", game->floor);
 	printf("ceiling : %x\n", game->ceiling);
 }

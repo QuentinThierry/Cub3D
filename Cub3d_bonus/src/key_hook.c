@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/14 23:23:03 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/14 23:56:53 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,25 +91,22 @@ void	player_move(t_player *player, double delta_time, t_wall **map)
 // 		player->f_real_pos.x = player->f_pos.x / CHUNK_SIZE;
 
 
-int mouse_hook(int x,int y, t_game *game)
+int mouse_hook(int x, int y, t_game *game)
 {
 	game->player->angle -= (double)(game->player->mouse_pos.x - x) / ROTATION_MOUSE;
-	// if (x >= WIN_X || x <= 0)
-	// {
-		// mlx_mouse_move(game->mlx_ptr, game->win, WIN_X/2.0, WIN_Y/2.0);
-	// 	game->player->mouse_pos.x = WIN_X / 2.0;
-	// 	game->player->mouse_pos.y = WIN_Y / 2.0;
-	// }
-	// else if (y >= WIN_Y || y <= 0)
-	// {
-	// 	mlx_mouse_move(game->mlx_ptr, game->win, WIN_X/2.0, WIN_Y/2.0);
-	// 	game->player->mouse_pos.x = WIN_X / 2.0;
-	// 	game->player->mouse_pos.y = WIN_Y / 2.0;
-	// }
-	// else
-	// {
-		game->player->mouse_pos.x = x;
-		game->player->mouse_pos.y = y;
-	// }
+	if (x != WIN_X / 2 || y != WIN_Y / 2)
+	{
+		mlx_mouse_move(game->mlx_ptr, game->win, WIN_X / 2, WIN_Y / 2);
+		game->player->mouse_pos.x = WIN_X / 2;
+		game->player->mouse_pos.y = WIN_Y / 2;
+	}
+	return (0);
+}
+
+int	mouse_leave(t_game *game)
+{
+	mlx_mouse_move(game->mlx_ptr, game->win, WIN_X/2, WIN_Y / 2);
+	game->player->mouse_pos.x = WIN_X / 2;
+	game->player->mouse_pos.y = WIN_Y / 2;
 	return (0);
 }

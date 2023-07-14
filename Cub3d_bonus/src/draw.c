@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/10 00:08:20 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/14 23:29:37 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,16 @@
 void	print_map(t_game *game)
 {
 	int y = 0;
+	int x = 0;
 	
 	while(y < game->map_size.y)
 	{
-		write(1, game->map[y], game->map_size.x);
+		x = 0;
+		while(x < game->map_size.x)
+		{
+			write(1, &(game->map[y][x].symbol), 1);
+			x++;
+		}
 		write(1, "\n", 1);
 		y++;
 	}
@@ -51,7 +57,7 @@ void	draw_vert(t_game *game, int x, t_fvector2 wall, double height)
 	y1 = WIN_Y / 2.0 + ((int)height - (int)(height / 2));
 	if (height != 0)
 	{
-		orient = get_wall_orientation(game, *(game->player), wall);
+		orient = get_wall_orientation(*(game->player), wall);
 		image = get_image(game, orient);
 		delta_y_img = image->size.y / height;
 		if (y < 0)

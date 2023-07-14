@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/10 00:08:20 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/14 23:24:59 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-enum e_orientation	get_wall_orientation(t_game *game, t_player player, t_fvector2 wall)
+enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall)
 {
 	if ((wall.x - (int)wall.x) != 0)
 	{
@@ -56,9 +56,8 @@ void	remove_new_line(char *str)
 		str[len - 1] = '\0';
 }
 
-t_vector2	get_dimension_maps(int fd, int nb_line, char *line, bool *error)
+t_vector2	get_dimension_maps(int fd, char *line, bool *error)
 {
-	int			i;
 	t_vector2	len;
 
 	*error = false;
@@ -66,9 +65,6 @@ t_vector2	get_dimension_maps(int fd, int nb_line, char *line, bool *error)
 	len.x = 0;
 	while (line != NULL)
 	{
-		i = skip_whitespace(line);
-		if (line[0] == '\n' || line[0] == '\0')
-			break;
 		remove_new_line(line);
 		if (len.x < (int)strlen(line))
 			len.x = strlen(line);
@@ -88,7 +84,7 @@ t_vector2	get_dimension_maps(int fd, int nb_line, char *line, bool *error)
 	return (len);
 }
 
-void	free_tab(char **str, t_vector2 size)
+void	free_tab(void **str, t_vector2 size)
 {
 	int	i;
 

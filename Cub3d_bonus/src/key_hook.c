@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/14 20:46:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/14 23:23:03 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	key_release_hook(int key, t_player *player)
 	return (0);
 }
 
-void	player_move(t_player *player, double delta_time, char **map, t_vector2 map_size)
+void	player_move(t_player *player, double delta_time, t_wall **map)
 {
 	t_fvector2 move_value;
 

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/12 23:29:43 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/14 22:56:21 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	raycasting(t_game *game)
 	x = -WIN_X / 2;
 	while (x < WIN_X / 2)
 	{
-		angle = atanf(x / game->constants[0]) * 180 / M_PI;
+		angle = atan(x / game->constants[0]) * 180 / M_PI;
 		if (game->player->angle + angle >= 360)
 			angle = angle - 360;
 		if (game->player->angle + angle < 0)

@@ -6,14 +6,14 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/07/11 00:40:05 by jvigny           ###   ########.fr        #
+#    Updated: 2023/07/14 23:22:24 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3d_bonus
 
 CC = gcc
-CFLAGS = -g -Wall -Wextra# -03#-Werror
+CFLAGS = -g -Wall -Wextra -Werror
 LIBS = -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR)
 
@@ -42,6 +42,7 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			raycasting.c \
 			draw.c \
 			parsing.c \
+			ft_fill_wall.c \
 			ft_calloc.c \
 			init.c \
 			view_2d.c \

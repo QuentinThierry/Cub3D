@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
+#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/07/10 01:47:31 by qthierry         ###   ########.fr        #
+#    Updated: 2023/07/11 00:40:05 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,8 +74,8 @@ vrun: $(NAME)
 
 prun: CFLAGS += -pg
 prun: $(NAME)
-	./$(NAME)
-	gprof cub3d gmon.out > analysis.txt
+	./$(NAME) maps/map.cub
+	gprof $(NAME) gmon.out > analysis.txt
 
 $(NAME):	$(MINILIBX) $(OBJ_DIR) $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBS) $(INCLUDES) -o $(NAME)

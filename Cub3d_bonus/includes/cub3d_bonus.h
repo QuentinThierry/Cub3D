@@ -36,7 +36,8 @@
 #define MOUV 1
 #define SPEED 100
 #define SPRINT_BOOST 100
-#define ROTATION 125
+#define ROTATION_KEYBOARD 125
+#define ROTATION_MOUSE 20
 #define MAX_VOLUME 1.0
 #define THREED 1
 #define TO_RADIAN .0174532
@@ -68,6 +69,7 @@ typedef	struct s_player{
 	t_vector2	pos;
 	t_fvector2 	f_pos;
 	t_fvector2 	f_real_pos;
+	t_vector2 	mouse_pos;
 	double		angle;
 	t_vector2	dir;
 	int			view;
@@ -116,7 +118,8 @@ int			init_mlx(t_game *game);
 int			load_image(t_game *game);
 int			key_press_hook(int key, t_game *game);
 int			key_release_hook(int key, t_player *player);
-void		player_move(t_player *player, double delta_time, char **map);
+int			mouse_hook(int x,int y, t_game *game);
+void		player_move(t_player *player, double delta_time, char **map, t_vector2 map_size);
 void		draw_vert(t_game *game, int x, t_fvector2 wall, double dist);
 void		quadrillage(t_game *game);
 double		get_wall_dist(t_game *game, double angle);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/10 00:08:20 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/12 23:29:43 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ double	get_dist(t_game *game, double x, double y, double angle)
 	res = sqrt((delta.x * delta.x + delta.y * delta.y))
 				* cos(angle * TO_RADIAN);
 	if (res == 0)
-		return (0.1);
+		return (0.01);
 	return (res);
 }
 
@@ -67,8 +67,10 @@ void	raycasting(t_game *game)
 		{
 			dist = get_dist(game, wall.x, wall.y, angle) ;
 			height = 1 / dist * game->constants[0];		//div par 0 if sin == 0
+			// printf("dist : %f	height : %f\n", dist, height);
 		}
 		draw_vert(game, x + WIN_X / 2, wall, height);
 		x++;
 	}
+	// printf("end-----------------------------\n");
 }

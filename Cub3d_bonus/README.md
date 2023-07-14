@@ -13,6 +13,9 @@ ADD :
 Obligation :
 - [ ] minimap
 - [ ] animation (windows + lightning)
-- [X] collision with wall
+- [x] collision with wall
 - [ ] door close and open
 - [ ] mouv with mouse
+
+FIX :
+- mouv with mouse

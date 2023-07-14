@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/11 02:09:43 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/14 20:46:01 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	player_move(t_player *player, double delta_time, char **map, t_vector2 map_
 	{
 		move_value.x = player->f_pos.x + move_value.x * delta_time;
 		move_value.y = player->f_pos.y + move_value.y * delta_time;
-		check_colliding(player, move_value, map, map_size);
+		check_colliding(player, move_value, map);
 	}
 }
 

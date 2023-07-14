@@ -6,26 +6,20 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 01:05:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/13 01:04:11 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/14 20:53:04 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
-t_fvector2	get_collision(t_fvector2 fpos, char **map, t_fvector2 new_pos, t_vector2 map_size);
 
+t_fvector2	get_collision(t_fvector2 fpos, char **map, t_fvector2 new_pos);
 
-void	check_colliding(t_player *player, t_fvector2 new_pos, char **map, t_vector2 map_size)
+void	check_colliding(t_player *player, t_fvector2 new_pos, char **map)
 {
-	t_fvector2 tmp;
-	// if (fabs(player->f_pos.x - new_pos.x) > CHUNK_SIZE)
-	// 	printf("error\n");
-	// if (fabs(player->f_pos.y - new_pos.y) > CHUNK_SIZE)
-	// 	printf("error\n");
-	tmp.x = new_pos.x / CHUNK_SIZE;
-	tmp.y = new_pos.y / CHUNK_SIZE;
-	player->f_real_pos = get_collision(player->f_real_pos, map, tmp, map_size);
-	// printf("player x:%f		y:%f	res	x:%f	y:%f		dest x:%f		y:%f\n"
-	// 		, player->f_real_pos.x, player->f_real_pos.y, res.x, res.y, new_pos.x / CHUNK_SIZE, new_pos.y / CHUNK_SIZE);
+	new_pos.x /= CHUNK_SIZE;
+	new_pos.y /= CHUNK_SIZE;
+	player->f_real_pos = get_collision(player->f_real_pos, map, new_pos);
+	
 	player->f_pos.x = player->f_real_pos.x * CHUNK_SIZE;
 	player->f_pos.y = player->f_real_pos.y * CHUNK_SIZE;
 	player->pos.x = (int)player->f_pos.x;
@@ -56,15 +50,52 @@ void	check_colliding(t_player *player, t_fvector2 new_pos, char **map, t_vector2
 	// player->f_real_pos.x = player->f_pos.x / CHUNK_SIZE;
 	// player->f_real_pos.y = player->f_pos.y / CHUNK_SIZE;
 
+// y= 2.00
+static t_fvector2	slide_wall_x(t_fvector2 fpos, char **map, t_fvector2 dest)
+{
+	int	dir;
+	int	x;
+
+	dir = ((dest.x - fpos.x) > 0) * 2 - 1;
+	x = (int)fpos.x;
+	while ((dest.x - x) * dir > 0)
+	{
+		if (map[(int)fpos.y][x] == '1')
+			return ((t_fvector2){x + (0.0001 * dir * -1) + (dir == -1), fpos.y});
+		x += dir;
+	}
+	if (dir == -1 && map[(int)fpos.y][x] == '1')
+		return ((t_fvector2){x + (0.0001 * dir * -1) + (dir == -1), fpos.y});
+	return ((t_fvector2){dest.x, fpos.y});
+}
+
+static t_fvector2	slide_wall_y(t_fvector2 fpos, char **map, t_fvector2 dest)
+{
+	int	dir;
+	int	y;
+
+	dir = ((dest.y - fpos.y) > 0) * 2 - 1;
+	y = (int)fpos.y;
+	while ((dest.y - y) * dir > 0)
+	{
+		if (map[y][(int)fpos.x] == '1')
+			return ((t_fvector2){fpos.x, y + (0.0001 * dir * -1) + (dir == -1)});
+		y += dir;
+	}
+	if (dir == -1 && map[y][(int)fpos.x] == '1')
+		return ((t_fvector2){fpos.x, y + (0.0001 * dir * -1) + (dir == -1)});
+	return ((t_fvector2){fpos.x, dest.y});
+}
 
 // xy (1, 1)
 static inline t_fvector2	_get_collision_se(t_fvector2 fpos,
-								char **map, t_fvector2 new_pos, t_vector2 map_size)
+								char **map, t_fvector2 new_pos)
 {
 	t_fvector2	step;
 	t_fvector2	comp;
 	t_vector2	map_pos;
 	float		angle;
+	t_fvector2		tmp;
 
 	angle = fabs(fpos.x - new_pos.x) / fabs(fpos.y - new_pos.y);
 	map_pos = (t_vector2){(int)fpos.x + 1, (int)fpos.y + 1};
@@ -78,7 +109,10 @@ static inline t_fvector2	_get_collision_se(t_fvector2 fpos,
 			if (map_pos.x > new_pos.x)
 				return (new_pos);
 			if (map[(int)(comp.y)][map_pos.x] == '1')
-				return ((t_fvector2){map_pos.x - 0.001, comp.y - (0.001 / fabs(fpos.x - map_pos.x) * fabs(fpos.y - comp.y))});
+			{
+				tmp = (t_fvector2){map_pos.x - 0.0001, comp.y - (0.0001 / fabs(fpos.x - map_pos.x) * fabs(fpos.y - comp.y))};
+				return (slide_wall_y(tmp, map, new_pos));
+			}
 			comp.y += step.y;
 			map_pos.x += 1;
 		}
@@ -87,7 +121,10 @@ static inline t_fvector2	_get_collision_se(t_fvector2 fpos,
 			if (map_pos.y > new_pos.y)
 				return (new_pos);
 			if (map[map_pos.y][(int)(comp.x)] == '1')
-				return ((t_fvector2){comp.x - (0.001 / fabs(fpos.y - map_pos.y) * fabs(fpos.x - comp.x)), map_pos.y - 0.001});
+			{
+				tmp = (t_fvector2){comp.x - (0.0001 / fabs(fpos.y - map_pos.y) * fabs(fpos.x - comp.x)), map_pos.y - 0.0001};
+				return (slide_wall_x(tmp, map, new_pos));
+			}
 			comp.x += step.x;
 			map_pos.y += 1;
 		}
@@ -96,12 +133,13 @@ static inline t_fvector2	_get_collision_se(t_fvector2 fpos,
 
 // xy (1, -1)
 static inline t_fvector2	_get_collision_ne(t_fvector2 fpos,
-								char **map, t_fvector2 new_pos, t_vector2 map_size)
+								char **map, t_fvector2 new_pos)
 {
 	t_fvector2	step;
 	t_fvector2	comp;
 	t_vector2	map_pos;
 	float		angle;
+	t_fvector2		tmp;
 
 	angle = fabs(fpos.x - new_pos.x) / fabs(fpos.y - new_pos.y);
 	map_pos = (t_vector2){(int)fpos.x + 1, (int)fpos.y};
@@ -115,7 +153,10 @@ static inline t_fvector2	_get_collision_ne(t_fvector2 fpos,
 			if (map_pos.x > new_pos.x)
 				return (new_pos);
 			if (map[(int)(comp.y)][map_pos.x] == '1')
-				return ((t_fvector2){map_pos.x - 0.001, comp.y + (0.001 / fabs(fpos.x - map_pos.x) * fabs(fpos.y - comp.y))});
+			{
+				tmp = (t_fvector2){map_pos.x - 0.0001, comp.y + (0.0001 / fabs(fpos.x - map_pos.x) * fabs(fpos.y - comp.y))};
+				return (slide_wall_y(tmp, map, new_pos));
+			}
 			comp.y += step.y;
 			map_pos.x += 1;
 		}
@@ -124,7 +165,10 @@ static inline t_fvector2	_get_collision_ne(t_fvector2 fpos,
 			if (map_pos.y < new_pos.y)
 				return (new_pos);
 			if (map[map_pos.y - 1][((int)(comp.x))] == '1')
-				return ((t_fvector2){comp.x - (0.001 / fabs(fpos.y - map_pos.y) * fabs(fpos.x - comp.x)), map_pos.y + 0.001});
+			{
+				tmp = (t_fvector2){comp.x - (0.0001 / fabs(fpos.y - map_pos.y) * fabs(fpos.x - comp.x)), map_pos.y + 0.0001};
+				return (slide_wall_x(tmp, map, new_pos));
+			}
 			comp.x += step.x;
 			map_pos.y += -1;
 		}
@@ -133,12 +177,13 @@ static inline t_fvector2	_get_collision_ne(t_fvector2 fpos,
 
 // xy (-1, 1)
 static inline t_fvector2	_get_collision_sw(t_fvector2 fpos,
-								char **map, t_fvector2 new_pos, t_vector2 map_size)
+								char **map, t_fvector2 new_pos)
 {
 	t_fvector2	step;
 	t_fvector2	comp;
 	t_vector2	map_pos;
 	float		angle;
+	t_fvector2		tmp;
 
 	angle = fabs(fpos.x - new_pos.x) / fabs(fpos.y - new_pos.y);
 	map_pos = (t_vector2){(int)fpos.x, (int)fpos.y + 1};
@@ -152,7 +197,10 @@ static inline t_fvector2	_get_collision_sw(t_fvector2 fpos,
 			if (map_pos.x < new_pos.x)
 				return (new_pos);
 			if (map[(int)(comp.y)][map_pos.x - 1] == '1')
-				return ((t_fvector2){map_pos.x + 0.001, comp.y - (0.001 / fabs(fpos.x - map_pos.x) * fabs(fpos.y - comp.y))});
+			{
+				tmp = (t_fvector2){map_pos.x + 0.0001, comp.y - (0.0001 / fabs(fpos.x - map_pos.x) * fabs(fpos.y - comp.y))};
+				return (slide_wall_y(tmp, map, new_pos));
+			}
 			comp.y += step.y;
 			map_pos.x += -1;
 		}
@@ -161,7 +209,10 @@ static inline t_fvector2	_get_collision_sw(t_fvector2 fpos,
 			if (map_pos.y > new_pos.y)
 				return (new_pos);
 			if (map[map_pos.y][((int)(comp.x))] == '1')
-				return ((t_fvector2){comp.x + (0.001 / fabs(fpos.y - map_pos.y) * fabs(fpos.x - comp.x)), map_pos.y - 0.001});
+			{
+				tmp = (t_fvector2){comp.x + (0.0001 / fabs(fpos.y - map_pos.y) * fabs(fpos.x - comp.x)), map_pos.y - 0.0001};
+				return (slide_wall_x(tmp, map, new_pos));
+			}
 			comp.x += step.x;
 			map_pos.y += 1;
 		}
@@ -176,6 +227,7 @@ static inline t_fvector2	_get_collision_nw(t_fvector2 fpos,
 	t_fvector2	comp;
 	t_vector2	map_pos;
 	float		angle;
+	t_fvector2		tmp;
 
 	angle = fabs(fpos.x - new_pos.x) / fabs(fpos.y - new_pos.y);
 	map_pos = (t_vector2){(int)fpos.x, (int)fpos.y};
@@ -189,7 +241,10 @@ static inline t_fvector2	_get_collision_nw(t_fvector2 fpos,
 			if (map_pos.x < new_pos.x)
 				return (new_pos);
 			if (map[(int)(comp.y)][map_pos.x - 1] == '1')
-				return ((t_fvector2){map_pos.x + 0.001, comp.y + (0.001 / fabs(fpos.x - map_pos.x) * fabs(fpos.y - comp.y))});
+			{
+				tmp = (t_fvector2){map_pos.x + 0.0001, comp.y + (0.0001 / fabs(fpos.x - map_pos.x) * fabs(fpos.y - comp.y))};
+				return (slide_wall_y(tmp, map, new_pos));
+			}
 			comp.y += step.y;
 			map_pos.x += -1;
 		}
@@ -198,14 +253,17 @@ static inline t_fvector2	_get_collision_nw(t_fvector2 fpos,
 			if (map_pos.y < new_pos.y)
 				return (new_pos);
 			if (map[map_pos.y - 1][((int)(comp.x))] == '1')
-				return ((t_fvector2){comp.x + (0.001 / fabs(fpos.y - map_pos.y) * fabs(fpos.x - comp.x)), map_pos.y + 0.001});
+			{
+				tmp = (t_fvector2){comp.x + (0.0001 / fabs(fpos.y - map_pos.y) * fabs(fpos.x - comp.x)), map_pos.y + 0.0001};
+				return (slide_wall_x(tmp, map, new_pos));
+			}
 			comp.x += step.x;
 			map_pos.y += -1;
 		}
 	}
 }
 
-inline t_fvector2	get_collision(t_fvector2 fpos, char **map, t_fvector2 new_pos, t_vector2 map_size)
+inline t_fvector2	get_collision(t_fvector2 fpos, char **map, t_fvector2 new_pos)
 {
 	t_vector2	sign;
 
@@ -220,11 +278,11 @@ inline t_fvector2	get_collision(t_fvector2 fpos, char **map, t_fvector2 new_pos,
 	else
 		sign.y = -1;
 	if (sign.x == 1 && sign.y == 1)
-		return (_get_collision_se(fpos, map, new_pos, map_size));
+		return (_get_collision_se(fpos, map, new_pos));
 	else if (sign.x == 1 && sign.y == -1)
-		return (_get_collision_ne(fpos, map, new_pos, map_size));
+		return (_get_collision_ne(fpos, map, new_pos));
 	else if (sign.x == -1 && sign.y == 1)
-		return (_get_collision_sw(fpos, map, new_pos, map_size));
+		return (_get_collision_sw(fpos, map, new_pos));
 	else
 		return (_get_collision_nw(fpos, map, new_pos));
 	return ((t_fvector2){0});

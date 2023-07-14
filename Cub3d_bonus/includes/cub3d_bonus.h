@@ -138,6 +138,6 @@ void		raycasting_2d(t_game *game);
 void		quadrillage(t_game *game);
 bool		find_player(t_game *game);
 
-void	check_colliding(t_player *player, t_fvector2 new_pos, char **map, t_vector2 map_size);
+void	check_colliding(t_player *player, t_fvector2 new_pos, char **map);
 
 #endif

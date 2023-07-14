@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   wall_hit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/10 00:08:20 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/14 20:54:35 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
 // xy (1, 1)
-static inline t_fvector2	_get_wall_hit_se(t_fvector2 fpos,
+static t_fvector2	_get_wall_hit_se(t_fvector2 fpos,
 								char **map, float angle, t_vector2 map_size)
 {
 	t_fvector2	step;
@@ -48,7 +48,7 @@ static inline t_fvector2	_get_wall_hit_se(t_fvector2 fpos,
 }
 
 // xy (1, -1)
-static inline t_fvector2	_get_wall_hit_ne(t_fvector2 fpos,
+static t_fvector2	_get_wall_hit_ne(t_fvector2 fpos,
 								char **map, float angle, t_vector2 map_size)
 {
 	t_fvector2	step;
@@ -83,7 +83,7 @@ static inline t_fvector2	_get_wall_hit_ne(t_fvector2 fpos,
 }
 
 // xy (-1, 1)
-static inline t_fvector2	_get_wall_hit_sw(t_fvector2 fpos,
+static t_fvector2	_get_wall_hit_sw(t_fvector2 fpos,
 								char **map, float angle, t_vector2 map_size)
 {
 	t_fvector2	step;
@@ -118,7 +118,7 @@ static inline t_fvector2	_get_wall_hit_sw(t_fvector2 fpos,
 }
 
 // xy (-1, -1)
-static inline t_fvector2	_get_wall_hit_nw(t_fvector2 fpos,
+static t_fvector2	_get_wall_hit_nw(t_fvector2 fpos,
 								char **map, double angle)
 {
 	t_fvector2	step;

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/11 02:10:21 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/14 20:51:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int	test(t_game *game)
 	mlx_mouse_move(game->mlx_ptr, game->win, WIN_X/2.0, WIN_Y/2.0);
 	game->player->mouse_pos.x = WIN_X / 2.0;
 	game->player->mouse_pos.y = WIN_Y / 2.0;
+	return (0);
 }
 
 int main(int argc, char **argv)

@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/07/16 00:40:10 by qthierry         ###   ########.fr        #
+#    Updated: 2023/07/16 01:40:52 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			parsing.c \
 			ft_fill_wall.c \
 			ft_calloc.c \
+			ft_realloc.c \
 			init.c \
 			view_2d.c \
 			ft_memcpy.c \

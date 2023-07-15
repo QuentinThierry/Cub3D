@@ -6,33 +6,46 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/15 01:44:34 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/16 01:28:13 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall)
+enum e_orientation	get_wall_orientation(t_fvector2 player, t_fvector2 wall)
 {
 	if ((wall.x - (int)wall.x) != 0)
 	{
-		if (player.f_real_pos.y > wall.y)
-			return (e_north);
-		else
+		if (player.y > wall.y)
 		 	return (e_south);
+		else
+			return (e_north);
 	}
 	else
 	{
-		if (player.f_real_pos.x > wall.x)
-			return (e_west);
-		else
+		if (player.x > wall.x)
 		 	return (e_east);
+		else
+			return (e_west);
 	}
 }
 
-t_image	*get_image(t_game *game, enum e_orientation orient)
+t_image	*get_image(t_game *game, enum e_orientation orient, t_fvector2 wall)
 {
-	return (game->tab_images[orient]);
+	int	index;
+	
+	if (orient == e_south)
+		index = game->map[(int)wall.y - 1][(int)wall.x].sprite[orient].index;
+	else if (orient == e_north || orient == e_west)
+		index = game->map[(int)wall.y][(int)wall.x].sprite[orient].index;
+	if (orient == e_east)
+		index = game->map[(int)wall.y][(int)wall.x - 1].sprite[orient].index;
+	// if (index == -1)
+	// {
+	// 	printf("Error : get image wall %f	%f\n", wall.x, wall.y);
+	// 	exit(1);
+	// }
+	return (&(game->tab_images[index]));
 }
 
 
@@ -67,6 +80,14 @@ bool	check_symbol(char *str)
 	return (true);
 }
 
+/**
+ * @brief Get the dimension of the map in the file
+ * 
+ * @param fd fd to read the map and until the end of the file
+ * @param line last line read in the file with gnl
+ * @param error set on true if error occurs during the function NOT USE FOR THE MOMENT
+ * @return t_vector2 width and lenght of the map
+ */
 t_vector2	get_dimension_maps(int fd, char *line, bool *error)
 {
 	t_vector2	len;
@@ -78,8 +99,8 @@ t_vector2	get_dimension_maps(int fd, char *line, bool *error)
 	{
 		if (line[0] == '\n')
 			break;
-		if (!check_symbol(line))
-			*error = true;
+		// if (!check_symbol(line))
+		// 	*error = true;
 		else if (len.x < (int)strlen(line))
 			len.x = strlen(line);
 		len.y++;
@@ -124,8 +145,62 @@ void	free_str(char **str)
 	free(str);
 }
 
-bool	is_symbol_map(char c)
+/**
+ * @brief return the index of the texture in the filename_tab depending on the symbol
+ * 		and the orientation
+ * 
+ * @param tab 
+ * @param len 
+ * @param symbol 
+ * @param orient 
+ * @return int 
+ */
+int	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient)
 {
-	return (c == ' ' || c == '0' || c == '1' || c == 'o' || c == 'c'
-		|| c == 'N' || c == 'E' || c == 'S' || c == 'W');
+	int i;
+	int	res;
+	
+	i = 0;
+	res = -1;
+	while (i < len)
+	{
+		if (tab[i].symbol == symbol)
+		{
+			if (tab[i].orient == orient)
+				return (i);
+			else if ((orient >= e_north && orient <= e_west) && tab[i].orient == e_wall)
+				res = i;
+		}
+		i++;
+	}
+	return (res);
+}
+
+/**
+ * @brief return true if the symbol is a wall on the table of texture
+ * 
+ * @param symbol 
+ * @param tab 
+ * @param len 
+ * @param error
+ */
+bool	is_wall(char symbol, t_texture *tab, int len, bool *error)
+{
+	int i;
+
+	i = 0;
+	*error = false;
+	while (i < len)
+	{
+		if (tab[i].symbol == symbol)
+		{
+			if (tab[i].orient == e_wall || tab[i].orient == e_north || tab[i].orient == e_south
+					|| tab[i].orient == e_east || tab[i].orient == e_west)
+				return (true);
+			else
+				return (false);
+		}
+		i++;
+	}
+	return (*error = true, false);
 }

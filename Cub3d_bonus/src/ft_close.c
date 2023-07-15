@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/14 23:13:40 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/16 01:24:08 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ int	ft_close(t_game *game)
 	{
 		while (i < 4)
 		{
-			mlx_destroy_image(game->mlx_ptr, game->tab_images[i]->img);
-			free(game->tab_images[i]);
+			mlx_destroy_image(game->mlx_ptr, game->tab_images[i].img);
 			i++;
 		}
 		if (game->image != NULL)

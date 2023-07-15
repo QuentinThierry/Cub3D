@@ -6,13 +6,13 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 21:27:20 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/14 23:38:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/16 00:36:48 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-static bool	_check_sides(t_wall **map, int x, int y, t_vector2 map_size)
+static bool	_check_sides(t_map **map, int x, int y, t_vector2 map_size)
 {
 
 	if (x == 0 || y == 0 || x == map_size.x - 1 || y == map_size.y - 1)
@@ -23,10 +23,13 @@ static bool	_check_sides(t_wall **map, int x, int y, t_vector2 map_size)
 	return (true);
 }
 
-
+/**
+ * @brief verify if the map is properly close
+ * printf the Error
+ */
 bool	check_map(t_game *game)
 {
-	t_wall	**map;
+	t_map	**map;
 	int		x;
 	int		y;
 
@@ -37,7 +40,7 @@ bool	check_map(t_game *game)
 		x = 0;
 		while (x < game->map_size.x)
 		{
-			if (map[y][x].symbol == '0' || map[y][x].symbol == 'c' || map[y][x].symbol == 'o')
+			if (map[y][x].is_wall == false && map[y][x].symbol != ' ')
 			{
 				if (!_check_sides(map, x, y, game->map_size))
 					return (printf("Error : Map not closed\n"), false);

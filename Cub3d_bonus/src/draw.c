@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/14 23:29:37 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/16 01:27:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,16 @@ void	print_map(t_game *game)
 		x = 0;
 		while(x < game->map_size.x)
 		{
+			write(1, "|", 1);
 			write(1, &(game->map[y][x].symbol), 1);
+			printf("%d",game->map[y][x].sprite[e_north].index);
+			printf("%d",game->map[y][x].sprite[e_east].index);
+			printf("%d",game->map[y][x].sprite[e_south].index);
+			printf("%d",game->map[y][x].sprite[e_west].index);
+			printf("%d",game->map[y][x].sprite[e_down].index);
+			printf("%d",game->map[y][x].sprite[e_up].index);
+			fflush(stdout);
+			write(1, "|", 1);
 			x++;
 		}
 		write(1, "\n", 1);
@@ -57,8 +66,8 @@ void	draw_vert(t_game *game, int x, t_fvector2 wall, double height)
 	y1 = WIN_Y / 2.0 + ((int)height - (int)(height / 2));
 	if (height != 0)
 	{
-		orient = get_wall_orientation(*(game->player), wall);
-		image = get_image(game, orient);
+		orient = get_wall_orientation(game->player->f_real_pos, wall);
+		image = get_image(game, orient, wall);
 		delta_y_img = image->size.y / height;
 		if (y < 0)
 		{
@@ -78,7 +87,7 @@ void	draw_vert(t_game *game, int x, t_fvector2 wall, double height)
 	addr = game->image->addr;
 	while (i < y)
 	{
-		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, game->ceiling);
+		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, 0xFF0000);
 		i++;
 	}
 	while (y < y1)
@@ -89,7 +98,7 @@ void	draw_vert(t_game *game, int x, t_fvector2 wall, double height)
 	}
 	while (y1 < WIN_Y)
 	{
-		my_mlx_pixel_put(addr, size_line, (t_vector2){x, y1}, game->floor);
+		my_mlx_pixel_put(addr, size_line, (t_vector2){x, y1}, 0x00FF00);
 		y1++;
 	}
 }

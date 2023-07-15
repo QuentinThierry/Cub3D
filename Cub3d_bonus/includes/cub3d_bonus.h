@@ -50,9 +50,7 @@ enum e_orientation
 	e_north = 0,
 	e_east,
 	e_south,
-	e_west,
-	e_floor,
-	e_ceiling
+	e_west
 };
 
 enum e_texture

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/15 02:04:31 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/15 18:38:01 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,6 +216,8 @@ bool	cmp_texture(char *line, t_game *game, int i, bool *is_end)
 			return (find_color(line + i + 1, game, 'C'));
 		else if (line[i] == 'c')
 			return (find_texture(game, line + i + 1, e_door_close));
+		else if (line[i] == 'o')
+			return (find_texture(game, line + i + 1, e_door_open));
 	}
 	else if (next_wsp - i == 2)
 	{
@@ -229,7 +231,7 @@ bool	cmp_texture(char *line, t_game *game, int i, bool *is_end)
 			return (find_texture(game, line + i + 2, e_east_wall));
 	}
 	else if (next_wsp - i == 3)
-		if (strncmp(line + i, "MAP\n", 4) == 0)
+		if (strncmp(line + i, "MAP\n", 4) == 0 || strncmp(line + i, "MAP\0", 4) == 0)
 			return (*is_end = true, true);
 	return (printf("Error : invalid identifier\n"), false);
 }
@@ -296,7 +298,7 @@ int	parse_file(char *filename, t_game *game)
 		line = get_next_line(fd);
 	}
 	if (line == NULL)
-		return (-1);
+		return (printf("Error : Empty map\n"), -1);
 	if (!parse_map(fd, filename, game, i, line))
 		return (-1);
 	close (fd);

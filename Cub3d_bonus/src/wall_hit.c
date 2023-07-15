@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/15 23:29:32 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/16 00:36:48 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // xy (1, 1)
 static t_fvector2	_get_wall_hit_se(t_fvector2 fpos,
-								t_wall **map, float angle, t_vector2 map_size)
+								t_map **map, float angle, t_vector2 map_size)
 {
 	t_fvector2	step;
 	t_fvector2	comp;
@@ -53,7 +53,7 @@ static t_fvector2	_get_wall_hit_se(t_fvector2 fpos,
 
 // xy (1, -1)
 static t_fvector2	_get_wall_hit_ne(t_fvector2 fpos,
-								t_wall **map, float angle, t_vector2 map_size)
+								t_map **map, float angle, t_vector2 map_size)
 {
 	t_fvector2	step;
 	t_fvector2	comp;
@@ -92,7 +92,7 @@ static t_fvector2	_get_wall_hit_ne(t_fvector2 fpos,
 
 // xy (-1, 1)
 static t_fvector2	_get_wall_hit_sw(t_fvector2 fpos,
-								t_wall **map, float angle, t_vector2 map_size)
+								t_map **map, float angle, t_vector2 map_size)
 {
 	t_fvector2	step;
 	t_fvector2	comp;
@@ -131,7 +131,7 @@ static t_fvector2	_get_wall_hit_sw(t_fvector2 fpos,
 
 // xy (-1, -1)
 static t_fvector2	_get_wall_hit_nw(t_fvector2 fpos,
-								t_wall **map, double angle)
+								t_map **map, double angle)
 {
 	t_fvector2	step;
 	t_fvector2	comp;
@@ -168,7 +168,7 @@ static t_fvector2	_get_wall_hit_nw(t_fvector2 fpos,
 	}
 }
 
-inline t_fvector2	get_wall_hit(t_fvector2 fpos, t_wall **map, float angle, t_vector2 map_size)
+inline t_fvector2	get_wall_hit(t_fvector2 fpos, t_map **map, float angle, t_vector2 map_size)
 {
 	t_vector2	sign;
 

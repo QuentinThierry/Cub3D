@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/15 23:23:32 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/16 01:09:22 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,14 @@ bool	check_symbol(char *str)
 	return (true);
 }
 
+/**
+ * @brief Get the dimension of the map in the file
+ * 
+ * @param fd fd to read the map and until the end of the file
+ * @param line last line read in the file with gnl
+ * @param error set on true if error occurs during the function NOT USE FOR THE MOMENT
+ * @return t_vector2 width and lenght of the map
+ */
 t_vector2	get_dimension_maps(int fd, char *line, bool *error)
 {
 	t_vector2	len;
@@ -137,12 +145,16 @@ void	free_str(char **str)
 	free(str);
 }
 
-bool	is_symbol_map(char c)
-{
-	return (c == ' ' || c == '0' || c == '1' || c == 'o' || c == 'c'
-		|| c == 'N' || c == 'E' || c == 'S' || c == 'W');
-}
-
+/**
+ * @brief return the index of the texture in the filename_tab depending on the symbol
+ * 		and the orientation
+ * 
+ * @param tab 
+ * @param len 
+ * @param symbol 
+ * @param orient 
+ * @return int 
+ */
 int	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient)
 {
 	int i;
@@ -156,23 +168,30 @@ int	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient
 		{
 			if (tab[i].orient == orient)
 				return (i);
-			else if ((orient == e_down || orient == e_up) && tab[i].orient == e_none)
-				res = i;
+			// else if ((orient == e_down || orient == e_up) && tab[i].orient == e_none)
+			// 	res = i;
 			else if ((orient >= e_north && orient <= e_west) && tab[i].orient == e_wall)
 				res = i;
 		}
 		i++;
 	}
-	if (res == -1)
-		return (orient);
 	return (res);
 }
 
-bool	is_wall(char symbol, t_texture *tab, int len)
+/**
+ * @brief return true if the symbol is a wall on the table of texture
+ * 
+ * @param symbol 
+ * @param tab 
+ * @param len 
+ * @param error
+ */
+bool	is_wall(char symbol, t_texture *tab, int len, bool *error)
 {
 	int i;
 
 	i = 0;
+	*error = false;
 	while (i < len)
 	{
 		if (tab[i].symbol == symbol)
@@ -185,5 +204,5 @@ bool	is_wall(char symbol, t_texture *tab, int len)
 		}
 		i++;
 	}
-	return (false);
+	return (*error = true, false);
 }

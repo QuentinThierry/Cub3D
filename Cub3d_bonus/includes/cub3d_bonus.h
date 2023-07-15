@@ -110,13 +110,17 @@ typedef struct s_sprite
 	float			time;
 }	t_sprite;
 
-typedef struct s_wall
+// Use to sock the map
+typedef struct s_map
 {
 	char		symbol;
 	bool		is_wall;
 	t_sprite	sprite[6];
-}	t_wall;
+}	t_map;
 
+/**
+ * @brief use to sock the texture during the parsing
+ */
 typedef struct s_texture
 {
 	char				*filename;
@@ -132,7 +136,7 @@ typedef struct s_game
 	t_image			**tab_images;
 	t_texture		*filename;
 	int				nb_sprite;
-	t_wall			**map;
+	t_map			**map;
 	t_vector2		map_size;
 	t_player		*player;
 	double			delta_time;
@@ -142,16 +146,20 @@ typedef struct s_game
 // ------ Utils------
 void	*ft_calloc(size_t nmemb, size_t size);
 void	*ft_realloc(void *ptr, size_t prev_size, size_t new_size);
+void	*ft_memcpy(void *dest, const void *src, size_t n);
+void	free_tab(void **str, t_vector2 size);
+void	free_str(char **str);
+
+// -------Parsing-------
+bool			parse_file(char *filename, t_game *game);
+
+
 enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall);
 t_image	*get_image(t_game	*game, enum e_orientation orient, t_fvector2 wall);
 int skip_whitespace(char *str);
 t_vector2	get_dimension_maps(int fd, char *line, bool *error);
-// void	remove_new_line(char *str);
-void	ft_fill_wall(t_game *game, char *line, t_wall *map, t_vector2 map_size);
-void	*ft_memcpy(void *dest, const void *src, size_t n);
+bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size);
 void	printf_texture(t_game *game);
-void	free_tab(void **str, t_vector2 size);
-void	free_str(char **str);
 bool	is_symbol_map(char c);
 
 int			init_mlx(t_game *game);
@@ -160,7 +168,7 @@ int			key_press_hook(int key, t_game *game);
 int			key_release_hook(int key, t_player *player);
 int			mouse_leave(t_game *game);
 int			mouse_hook(int x,int y, t_game *game);
-void		player_move(t_player *player, double delta_time, t_wall **map);
+void		player_move(t_player *player, double delta_time, t_map **map);
 void		draw_vert(t_game *game, int x, t_fvector2 wall, double dist);
 void		quadrillage(t_game *game);
 double		get_wall_dist(t_game *game, double angle);
@@ -168,9 +176,8 @@ void		raycasting(t_game *game);
 int			on_update(t_game *game);
 t_vector2	get_sign(double angle);
 int			ft_close(t_game *game);
-int			parse_file(char *filename, t_game *game);
 void		print_map(t_game *game);
-t_fvector2	get_wall_hit(t_fvector2 fpos, t_wall **map, float angle, t_vector2 map_size);
+t_fvector2	get_wall_hit(t_fvector2 fpos, t_map **map, float angle, t_vector2 map_size);
 bool		check_map(t_game *game);
 
 // --------2D--------
@@ -179,9 +186,9 @@ void		raycasting_2d(t_game *game);
 void		quadrillage(t_game *game);
 bool		find_player(t_game *game);
 
-void	check_colliding(t_player *player, t_fvector2 new_pos, t_wall **map);
+void	check_colliding(t_player *player, t_fvector2 new_pos, t_map **map);
 
 int		fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient);
-bool	is_wall(char symbol, t_texture *tab, int len);
+bool	is_wall(char symbol, t_texture *tab, int len, bool *error);
 
 #endif

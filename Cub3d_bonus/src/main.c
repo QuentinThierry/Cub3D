@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/15 22:25:06 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/16 00:34:34 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 	if (game.filename == NULL)
 		return (1);
 	game.nb_sprite = e_total;
-	if (parse_file(argv[1], &game) == -1)
+	if (!parse_file(argv[1], &game))
 		return (1);
 	printf_texture(&game);
 	fflush(stdout);
@@ -92,9 +92,9 @@ int main(int argc, char **argv)
 	if (!check_map(&game))
 		return (1);
 	if (init_mlx(&game) == -1)
-		return (ft_close(&game), perror("Error"), 1);
+		return (perror("Error"), ft_close(&game), 1);
 	if (load_image(&game) == -1)
-		return (ft_close(&game), perror("Error"), 1); // ((WIN_X / 2.0) / (tanf((FOV / 2.0) * TO_RADIAN))
+		return (perror("Error"), ft_close(&game), 1);
 	game.constants = (double[5]){(WIN_X) / (tan((FOV / 2.0) * TO_RADIAN))};
 
 	mlx_mouse_move(game.mlx_ptr, game.win, WIN_X/2.0, WIN_Y/2.0);

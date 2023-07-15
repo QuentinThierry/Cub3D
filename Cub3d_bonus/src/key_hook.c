@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/14 23:56:53 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/16 00:36:48 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	key_release_hook(int key, t_player *player)
 	return (0);
 }
 
-void	player_move(t_player *player, double delta_time, t_wall **map)
+void	player_move(t_player *player, double delta_time, t_map **map)
 {
 	t_fvector2 move_value;
 

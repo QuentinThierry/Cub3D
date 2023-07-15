@@ -6,15 +6,15 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 01:05:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/15 23:28:25 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/16 00:36:48 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-t_fvector2	get_collision(t_fvector2 fpos, t_wall **map, t_fvector2 new_pos);
+t_fvector2	get_collision(t_fvector2 fpos, t_map **map, t_fvector2 new_pos);
 
-void	check_colliding(t_player *player, t_fvector2 new_pos, t_wall **map)
+void	check_colliding(t_player *player, t_fvector2 new_pos, t_map **map)
 {
 	new_pos.x /= CHUNK_SIZE;
 	new_pos.y /= CHUNK_SIZE;
@@ -51,7 +51,7 @@ void	check_colliding(t_player *player, t_fvector2 new_pos, t_wall **map)
 	// player->f_real_pos.y = player->f_pos.y / CHUNK_SIZE;
 
 // y= 2.00
-static t_fvector2	slide_wall_x(t_fvector2 fpos, t_wall **map, t_fvector2 dest)
+static t_fvector2	slide_wall_x(t_fvector2 fpos, t_map **map, t_fvector2 dest)
 {
 	int	dir;
 	int	x;
@@ -69,7 +69,7 @@ static t_fvector2	slide_wall_x(t_fvector2 fpos, t_wall **map, t_fvector2 dest)
 	return ((t_fvector2){dest.x, fpos.y});
 }
 
-static t_fvector2	slide_wall_y(t_fvector2 fpos, t_wall **map, t_fvector2 dest)
+static t_fvector2	slide_wall_y(t_fvector2 fpos, t_map **map, t_fvector2 dest)
 {
 	int	dir;
 	int	y;
@@ -89,7 +89,7 @@ static t_fvector2	slide_wall_y(t_fvector2 fpos, t_wall **map, t_fvector2 dest)
 
 // xy (1, 1)
 static inline t_fvector2	_get_collision_se(t_fvector2 fpos,
-								t_wall **map, t_fvector2 new_pos)
+								t_map **map, t_fvector2 new_pos)
 {
 	t_fvector2	step;
 	t_fvector2	comp;
@@ -133,7 +133,7 @@ static inline t_fvector2	_get_collision_se(t_fvector2 fpos,
 
 // xy (1, -1)
 static inline t_fvector2	_get_collision_ne(t_fvector2 fpos,
-								t_wall **map, t_fvector2 new_pos)
+								t_map **map, t_fvector2 new_pos)
 {
 	t_fvector2	step;
 	t_fvector2	comp;
@@ -177,7 +177,7 @@ static inline t_fvector2	_get_collision_ne(t_fvector2 fpos,
 
 // xy (-1, 1)
 static inline t_fvector2	_get_collision_sw(t_fvector2 fpos,
-								t_wall **map, t_fvector2 new_pos)
+								t_map **map, t_fvector2 new_pos)
 {
 	t_fvector2	step;
 	t_fvector2	comp;
@@ -221,7 +221,7 @@ static inline t_fvector2	_get_collision_sw(t_fvector2 fpos,
 
 // xy (-1, -1)
 static inline t_fvector2	_get_collision_nw(t_fvector2 fpos,
-								t_wall **map, t_fvector2 new_pos)
+								t_map **map, t_fvector2 new_pos)
 {
 	t_fvector2	step;
 	t_fvector2	comp;
@@ -263,7 +263,7 @@ static inline t_fvector2	_get_collision_nw(t_fvector2 fpos,
 	}
 }
 
-inline t_fvector2	get_collision(t_fvector2 fpos, t_wall **map, t_fvector2 new_pos)
+inline t_fvector2	get_collision(t_fvector2 fpos, t_map **map, t_fvector2 new_pos)
 {
 	t_vector2	sign;
 

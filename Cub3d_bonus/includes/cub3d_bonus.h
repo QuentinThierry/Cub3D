@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d_bonus.h                                            :+:      :+:    :+:   */
+/*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/09 21:03:37 by qthierry         ###   ########.fr       */
+/*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
+/*   Updated: 2023/07/16 01:02:16 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@
 
 #include <X11/X.h>
 
-#define WIN_X 1080 //1920 - 918
-#define WIN_Y 1080 //1080 - 468
+#define WIN_X 1000 //1920 - 918
+#define WIN_Y 1000 //1080 - 468
 #define CHUNK_SIZE 50
 #define FOV 120
 #define MOUV 1
@@ -41,6 +41,14 @@
 #define MAX_VOLUME 1.0
 #define THREED 1
 #define TO_RADIAN .0174532
+#define TRANSPARENT_PXL 0x00FF00
+
+// MINIMAP
+// Reprensents the minimap padding equals to a percentage of the total window
+#define MINIMAP_PAD 0.05
+
+// Represents the minimap size equals to a percentage of the total window
+#define MINIMAP_SIZE 0.25
 
 extern long tot_fps;
 extern long nb_fps;
@@ -112,6 +120,15 @@ typedef struct s_wall
 	t_sprite	sprite[6];
 }	t_wall;
 
+typedef struct s_minimap
+{
+	t_image		*img;
+	t_vector2	mmap_pos;
+	t_vector2	mmap_size;
+	int			*bounds;
+
+}	t_minimap;
+
 typedef struct s_game
 {
 	t_image			*image;
@@ -123,24 +140,27 @@ typedef struct s_game
 	t_wall			**map;
 	t_vector2		map_size;
 	t_player		*player;
+	t_minimap		*minimap;
 	double			delta_time;
 	char			**filename;
 	const double	*constants;
 }	t_game;
 
 // ------ Utils------
-void	*ft_calloc(size_t nmemb, size_t size);
+void		*ft_calloc(size_t nmemb, size_t size);
 enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall);
-t_image	*get_image(t_game	*game, enum e_orientation orient);
-int skip_whitespace(char *str);
+t_image		*get_image(t_game	*game, enum e_orientation orient);
+int			skip_whitespace(char *str);
 t_vector2	get_dimension_maps(int fd, char *line, bool *error);
-// void	remove_new_line(char *str);
-void	ft_fill_wall(char *line, t_wall *map, t_vector2 map_size);
-void	*ft_memcpy(void *dest, const void *src, size_t n);
-void	printf_texture(t_game *game);
-void	free_tab(void **str, t_vector2 size);
-void	free_str(char **str);
-bool	is_symbol_map(char c);
+void		ft_fill_wall(char *line, t_wall *map, t_vector2 map_size);
+void		*ft_memcpy(void *dest, const void *src, size_t n);
+void		printf_texture(t_game *game);
+void		free_tab(void **str, t_vector2 size);
+void		free_str(char **str);
+bool		is_symbol_map(char c);
+
+// init.c
+void	init_mouse(t_game *game);
 
 int			init_mlx(t_game *game);
 int			load_image(t_game *game);
@@ -169,7 +189,12 @@ bool		find_player(t_game *game);
 
 void		check_colliding(t_player *player, t_fvector2 new_pos, t_wall **map);
 
+// image_operations.c
+void	draw_image_on_image_alpha(t_image *dest, t_image *src, t_vector2 offset_dest);
+
 // Minimap
-void		draw_minimap(t_game *game);
+void	draw_minimap(t_game *game);
+void	generate_minimap_bounds(t_game *game);
+bool	init_minimap(t_game *game);
 
 #endif

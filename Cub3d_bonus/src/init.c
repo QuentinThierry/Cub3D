@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/15 01:40:35 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/15 22:16:35 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,19 @@ int	init_mlx(t_game *game)
 		return (-1);
 	game->image->addr = mlx_get_data_addr(game->image->img,
 		&game->image->opp, &game->image->size_line, &game->image->endian);
+	game->image->size = size;
 	game->image->opp /= 8;
 	if (game->win == NULL)
 		return (-1);
 	return (0);
+}
+
+void	init_mouse(t_game *game)
+{
+	mlx_mouse_move(game->mlx_ptr, game->win, WIN_X / 2, WIN_Y / 2);
+	game->player->mouse_pos.x = WIN_X / 2;
+	game->player->mouse_pos.y = WIN_Y / 2;
+	mlx_mouse_hide(game->mlx_ptr, game->win);
 }
 
 int	load_image(t_game *game)

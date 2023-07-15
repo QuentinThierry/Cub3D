@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/15 01:37:51 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/15 22:25:06 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int	on_update(t_game *game)
 	fps = (long)(1.0 / game->delta_time);
 	tot_fps += fps;
 	nb_fps++;
-	if ((nb_fps % 50) == 0)
-		printf("fps : %ld\n", fps);
+	// if ((nb_fps % 50) == 0)
+	// 	printf("fps : %ld\n", fps);
 	last_time = cur_time;
 	return (0);
 }
@@ -80,7 +80,10 @@ int main(int argc, char **argv)
 	game = (t_game){0};
 	if (argc != 2)
 		return (printf("Error : Invalid nubmber of arguments\n"), 1);
-	game.filename = ft_calloc(e_total, sizeof(char *));
+	game.filename = ft_calloc(e_total, sizeof(t_texture));
+	if (game.filename == NULL)
+		return (1);
+	game.nb_sprite = e_total;
 	if (parse_file(argv[1], &game) == -1)
 		return (1);
 	printf_texture(&game);

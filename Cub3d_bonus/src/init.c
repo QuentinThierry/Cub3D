@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/15 01:40:35 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/15 20:13:29 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ int	load_image(t_game *game)
 	t_image		**tab_image;
 	int			i;
 
-	tab_image = ft_calloc(e_total, sizeof(t_image *));
+	tab_image = ft_calloc(game->nb_sprite, sizeof(t_image *));
 	if (tab_image == NULL)
 		return (-1);
 	i = 0;
-	while (i < e_total)
+	while (i < game->nb_sprite)
 	{
-		if (game->filename[i] == NULL)
+		if (game->filename[i].filename == NULL)
 		{
 			i++;
 			continue ;
@@ -60,7 +60,7 @@ int	load_image(t_game *game)
 		tab_image[i] = ft_calloc(1, sizeof(t_image));
 		if (tab_image[i] == NULL)
 			return (-1);
-		tab_image[i]->img = mlx_xpm_file_to_image(game->mlx_ptr, game->filename[i],
+		tab_image[i]->img = mlx_xpm_file_to_image(game->mlx_ptr, game->filename[i].filename,
 			 &(tab_image[i]->size.x), &(tab_image[i]->size.y));
 		if (tab_image[i]->img == NULL)
 			return (-1);

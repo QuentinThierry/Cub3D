@@ -50,7 +50,11 @@ enum e_orientation
 	e_north = 0,
 	e_east,
 	e_south,
-	e_west
+	e_west,
+	e_down,
+	e_up,
+	e_wall,
+	e_none
 };
 
 enum e_texture
@@ -59,8 +63,8 @@ enum e_texture
 	e_east_wall,
 	e_south_wall,
 	e_west_wall,
-	e_floor_wall,
-	e_ceiling_wall,
+	e_floor,
+	e_ceiling,
 	e_door_close,
 	e_door_open,
 	e_total
@@ -101,7 +105,7 @@ typedef struct s_image
 
 typedef struct s_sprite
 {
-	enum e_texture	texture;
+	int				index;
 	int				frame;
 	float			time;
 }	t_sprite;
@@ -109,8 +113,16 @@ typedef struct s_sprite
 typedef struct s_wall
 {
 	char		symbol;
+	bool		is_wall;
 	t_sprite	sprite[6];
 }	t_wall;
+
+typedef struct s_texture
+{
+	char				*filename;
+	enum e_orientation	orient;
+	char				symbol;
+}	t_texture;
 
 typedef struct s_game
 {
@@ -118,24 +130,24 @@ typedef struct s_game
 	void			*mlx_ptr;
 	void			*win;
 	t_image			**tab_images;
-	unsigned int	floor;
-	unsigned int	ceiling;
+	t_texture		*filename;
+	int				nb_sprite;
 	t_wall			**map;
 	t_vector2		map_size;
 	t_player		*player;
 	double			delta_time;
-	char			**filename;
 	const double	*constants;
 }	t_game;
 
 // ------ Utils------
 void	*ft_calloc(size_t nmemb, size_t size);
+void	*ft_realloc(void *ptr, size_t prev_size, size_t new_size);
 enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall);
-t_image	*get_image(t_game	*game, enum e_orientation orient);
+t_image	*get_image(t_game	*game, enum e_orientation orient, t_fvector2 wall);
 int skip_whitespace(char *str);
 t_vector2	get_dimension_maps(int fd, char *line, bool *error);
 // void	remove_new_line(char *str);
-void	ft_fill_wall(char *line, t_wall *map, t_vector2 map_size);
+void	ft_fill_wall(t_game *game, char *line, t_wall *map, t_vector2 map_size);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 void	printf_texture(t_game *game);
 void	free_tab(void **str, t_vector2 size);
@@ -168,5 +180,8 @@ void		quadrillage(t_game *game);
 bool		find_player(t_game *game);
 
 void	check_colliding(t_player *player, t_fvector2 new_pos, t_wall **map);
+
+int		fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient);
+bool	is_wall(char symbol, t_texture *tab, int len);
 
 #endif

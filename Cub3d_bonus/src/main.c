@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/14 23:57:00 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/15 00:52:20 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	on_update(t_game *game)
 	if (game->player->angle + game->player->angle < 0)
 		game->player->angle = game->player->angle + 360;
 	player_move(game->player, game->delta_time, game->map);
-	// usleep(100000);
 	raycasting(game);
+	draw_minimap(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
 	
 
@@ -101,7 +101,7 @@ int main(int argc, char **argv)
 	mlx_hook(game.win, 2, (1L<<0), key_press_hook, &game);
 	mlx_hook(game.win, 3, (1L<<1), key_release_hook, game.player);
 	mlx_hook(game.win, 17, (1L << 8), ft_close, &game);
-	mlx_hook(game.win, 6, (1L << 6), mouse_hook, &game);
+	mlx_hook(game.win, 6, (1L << 6) | (1L << 2) , mouse_hook, &game);
 	mlx_hook(game.win, 8, (1L << 5), mouse_leave, &game);
 	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	mlx_loop(game.mlx_ptr);

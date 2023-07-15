@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
+#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/07/14 23:22:24 by jvigny           ###   ########.fr        #
+#    Updated: 2023/07/15 18:43:06 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3d_bonus
 
 CC = gcc
-CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra #-O3#-Werror
 LIBS = -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR)
 
@@ -51,6 +51,7 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			wall_hit.c \
 			check_map.c \
 			collisions.c \
+			minimap.c \
 			main.c
 
 SRC_DIR = ./src/

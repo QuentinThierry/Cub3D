@@ -6,24 +6,24 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 01:09:22 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/16 01:28:13 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall)
+enum e_orientation	get_wall_orientation(t_fvector2 player, t_fvector2 wall)
 {
 	if ((wall.x - (int)wall.x) != 0)
 	{
-		if (player.f_real_pos.y > wall.y)
+		if (player.y > wall.y)
 		 	return (e_south);
 		else
 			return (e_north);
 	}
 	else
 	{
-		if (player.f_real_pos.x > wall.x)
+		if (player.x > wall.x)
 		 	return (e_east);
 		else
 			return (e_west);
@@ -45,7 +45,7 @@ t_image	*get_image(t_game *game, enum e_orientation orient, t_fvector2 wall)
 	// 	printf("Error : get image wall %f	%f\n", wall.x, wall.y);
 	// 	exit(1);
 	// }
-	return (game->tab_images[index]);
+	return (&(game->tab_images[index]));
 }
 
 
@@ -168,8 +168,6 @@ int	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient
 		{
 			if (tab[i].orient == orient)
 				return (i);
-			// else if ((orient == e_down || orient == e_up) && tab[i].orient == e_none)
-			// 	res = i;
 			else if ((orient >= e_north && orient <= e_west) && tab[i].orient == e_wall)
 				res = i;
 		}

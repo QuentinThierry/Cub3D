@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 00:39:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/16 01:27:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	draw_vert(t_game *game, int x, t_fvector2 wall, double height)
 	y1 = WIN_Y / 2.0 + ((int)height - (int)(height / 2));
 	if (height != 0)
 	{
-		orient = get_wall_orientation(*(game->player), wall);
+		orient = get_wall_orientation(game->player->f_real_pos, wall);
 		image = get_image(game, orient, wall);
 		delta_y_img = image->size.y / height;
 		if (y < 0)

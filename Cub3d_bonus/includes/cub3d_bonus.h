@@ -53,8 +53,7 @@ enum e_orientation
 	e_west,
 	e_down,
 	e_up,
-	e_wall,
-	e_none
+	e_wall
 };
 
 enum e_texture
@@ -133,7 +132,7 @@ typedef struct s_game
 	t_image			*image;
 	void			*mlx_ptr;
 	void			*win;
-	t_image			**tab_images;
+	t_image			*tab_images;
 	t_texture		*filename;
 	int				nb_sprite;
 	t_map			**map;
@@ -144,51 +143,55 @@ typedef struct s_game
 }	t_game;
 
 // ------ Utils------
-void	*ft_calloc(size_t nmemb, size_t size);
-void	*ft_realloc(void *ptr, size_t prev_size, size_t new_size);
-void	*ft_memcpy(void *dest, const void *src, size_t n);
-void	free_tab(void **str, t_vector2 size);
-void	free_str(char **str);
+void		*ft_calloc(size_t nmemb, size_t size);
+void		*ft_realloc(void *ptr, size_t prev_size, size_t new_size);
+void		*ft_memcpy(void *dest, const void *src, size_t n);
+void		free_tab(void **str, t_vector2 size);
+void		free_str(char **str);
 
 // -------Parsing-------
-bool			parse_file(char *filename, t_game *game);
-
-
-enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall);
-t_image	*get_image(t_game	*game, enum e_orientation orient, t_fvector2 wall);
-int skip_whitespace(char *str);
+bool		parse_file(char *filename, t_game *game);
+int			fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient);
 t_vector2	get_dimension_maps(int fd, char *line, bool *error);
-bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size);
-void	printf_texture(t_game *game);
-bool	is_symbol_map(char c);
+bool		is_wall(char symbol, t_texture *tab, int len, bool *error);
+int			skip_whitespace(char *str);
+bool		ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size);
+bool		find_player(t_game *game);
+bool		check_map(t_game *game);
 
+// -------Print--------
+void		printf_texture(t_game *game);
+void		print_map(t_game *game);
+
+// -------Init---------
 int			init_mlx(t_game *game);
 int			load_image(t_game *game);
+
+// -------Hook---------
 int			key_press_hook(int key, t_game *game);
 int			key_release_hook(int key, t_player *player);
 int			mouse_leave(t_game *game);
 int			mouse_hook(int x,int y, t_game *game);
+int			on_update(t_game *game);
 void		player_move(t_player *player, double delta_time, t_map **map);
-void		draw_vert(t_game *game, int x, t_fvector2 wall, double dist);
-void		quadrillage(t_game *game);
+void		check_colliding(t_player *player, t_fvector2 new_pos, t_map **map);
+
+// -------Raycasting-----
+t_fvector2	get_wall_hit(t_fvector2 fpos, t_map **map, float angle, t_vector2 map_size);
 double		get_wall_dist(t_game *game, double angle);
 void		raycasting(t_game *game);
-int			on_update(t_game *game);
 t_vector2	get_sign(double angle);
+
+
+enum e_orientation	get_wall_orientation(t_fvector2 player, t_fvector2 wall);
+t_image		*get_image(t_game	*game, enum e_orientation orient, t_fvector2 wall);
 int			ft_close(t_game *game);
-void		print_map(t_game *game);
-t_fvector2	get_wall_hit(t_fvector2 fpos, t_map **map, float angle, t_vector2 map_size);
-bool		check_map(t_game *game);
 
 // --------2D--------
+void		draw_vert(t_game *game, int x, t_fvector2 wall, double dist);
+void		quadrillage(t_game *game);
 t_fvector2	get_wall_hit_2d(t_game *gavoidme, double angle);
 void		raycasting_2d(t_game *game);
 void		quadrillage(t_game *game);
-bool		find_player(t_game *game);
-
-void	check_colliding(t_player *player, t_fvector2 new_pos, t_map **map);
-
-int		fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient);
-bool	is_wall(char symbol, t_texture *tab, int len, bool *error);
 
 #endif

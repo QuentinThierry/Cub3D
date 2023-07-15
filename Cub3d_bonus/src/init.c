@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/15 20:13:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/16 01:23:20 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ int	init_mlx(t_game *game)
 
 int	load_image(t_game *game)
 {
-	t_image		**tab_image;
+	t_image		*tab_image;
 	int			i;
 
-	tab_image = ft_calloc(game->nb_sprite, sizeof(t_image *));
+	tab_image = ft_calloc(game->nb_sprite, sizeof(t_image));
 	if (tab_image == NULL)
 		return (-1);
 	i = 0;
@@ -57,18 +57,18 @@ int	load_image(t_game *game)
 			i++;
 			continue ;
 		}
-		tab_image[i] = ft_calloc(1, sizeof(t_image));
-		if (tab_image[i] == NULL)
+		// tab_image[i] = ft_calloc(1, sizeof(t_image));
+		// if (tab_image[i] == NULL)
+		// 	return (-1);
+		tab_image[i].img = mlx_xpm_file_to_image(game->mlx_ptr, game->filename[i].filename,
+			 &(tab_image[i].size.x), &(tab_image[i].size.y));
+		if (tab_image[i].img == NULL)
 			return (-1);
-		tab_image[i]->img = mlx_xpm_file_to_image(game->mlx_ptr, game->filename[i].filename,
-			 &(tab_image[i]->size.x), &(tab_image[i]->size.y));
-		if (tab_image[i]->img == NULL)
+		tab_image[i].addr = mlx_get_data_addr(tab_image[i].img,
+			&tab_image[i].opp, &tab_image[i].size_line, &tab_image[i].endian);
+		if (tab_image[i].addr == NULL)
 			return (-1);
-		tab_image[i]->addr = mlx_get_data_addr(tab_image[i]->img,
-			&tab_image[i]->opp, &tab_image[i]->size_line, &tab_image[i]->endian);
-		if (tab_image[i]->addr == NULL)
-			return (-1);
-		tab_image[i]->opp /= 8;
+		tab_image[i].opp /= 8;
 		i++;
 	}
 	game->tab_images = tab_image;

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/14 23:24:59 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/15 01:44:34 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,24 @@ int skip_whitespace(char *str)
 	return (i);
 }
 
-void	remove_new_line(char *str)
+bool	check_symbol(char *str)
 {
 	int	len;
+	int	i;
 
+	i = 0;
 	len = strlen(str);
-	if (len >= 1 && str[len - 1] == '\n')
-		str[len - 1] = '\0';
+	while (i < len)
+	{
+		if (i == len - 1 && str[len - 1] == '\n')
+			str[len - 1] = '\0';
+		else if (!(str[i] == ' ' || str[i] == '0' || str[i] == '1' || str[i] == 'o'
+				|| str[i] == 'c' || str[i] == 'N' || str[i] == 'E'
+				|| str[i] == 'S' || str[i] == 'W'))
+			return (false);
+		i++;
+	}
+	return (true);
 }
 
 t_vector2	get_dimension_maps(int fd, char *line, bool *error)
@@ -65,8 +76,11 @@ t_vector2	get_dimension_maps(int fd, char *line, bool *error)
 	len.x = 0;
 	while (line != NULL)
 	{
-		remove_new_line(line);
-		if (len.x < (int)strlen(line))
+		if (line[0] == '\n')
+			break;
+		if (!check_symbol(line))
+			*error = true;
+		else if (len.x < (int)strlen(line))
 			len.x = strlen(line);
 		len.y++;
 		free(line);
@@ -108,4 +122,10 @@ void	free_str(char **str)
 		i++;
 	}
 	free(str);
+}
+
+bool	is_symbol_map(char c)
+{
+	return (c == ' ' || c == '0' || c == '1' || c == 'o' || c == 'c'
+		|| c == 'N' || c == 'E' || c == 'S' || c == 'W');
 }

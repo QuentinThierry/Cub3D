@@ -18,3 +18,5 @@ Obligation :
 - [x] mouv with mouse
 
 FIX :
+- parsing, when search len of map need to suppr whitespace at the end
+<!-- - stop parsing if not valid caracteron the map -->

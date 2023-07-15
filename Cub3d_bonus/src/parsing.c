@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/14 23:25:11 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/15 02:04:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ bool	find_color(char *str, t_game *game, char texture)
 	return (true);
 }
 
-bool	find_texture(t_game *game, char *str, enum e_orientation orient)
+bool	find_texture(t_game *game, char *str, enum e_texture orient)
 {
 	char *filename;
 	int	i;
@@ -203,7 +203,7 @@ int	find_next_wsp(char *line , int i)
 	return (i);
 }
 
-bool	cmp_texture(char *line, t_game *game, int i)
+bool	cmp_texture(char *line, t_game *game, int i, bool *is_end)
 {
 	int	next_wsp;
 
@@ -214,18 +214,23 @@ bool	cmp_texture(char *line, t_game *game, int i)
 			return (find_color(line + i + 1, game, 'F'));
 		else if (line[i] == 'C')
 			return (find_color(line + i + 1, game, 'C'));
+		else if (line[i] == 'c')
+			return (find_texture(game, line + i + 1, e_door_close));
 	}
 	else if (next_wsp - i == 2)
 	{
 		if (strncmp(line + i, "NO", 2) == 0)
-			return (find_texture(game, line + i + 2, e_north));
+			return (find_texture(game, line + i + 2, e_north_wall));
 		else if (strncmp(line + i, "SO", 2) == 0)
-			return (find_texture(game, line + i + 2, e_south));
+			return (find_texture(game, line + i + 2, e_south_wall));
 		else if (strncmp(line + i, "WE", 2) == 0)
-			return (find_texture(game, line + i + 2, e_west));
+			return (find_texture(game, line + i + 2, e_west_wall));
 		else if (strncmp(line + i, "EA", 2) == 0)
-			return (find_texture(game, line + i + 2, e_east));
+			return (find_texture(game, line + i + 2, e_east_wall));
 	}
+	else if (next_wsp - i == 3)
+		if (strncmp(line + i, "MAP\n", 4) == 0)
+			return (*is_end = true, true);
 	return (printf("Error : invalid identifier\n"), false);
 }
 
@@ -233,9 +238,9 @@ bool	parse_texture(int fd, t_game *game, int *nb_line, char **rest)
 {
 	char	*line;
 	int		i;
-	int		cpt_texture;
-	
-	cpt_texture = 0;
+	bool	is_end;
+
+	is_end = false;
 	(*nb_line) = 0;
 	line = get_next_line(fd);
 	while (line != NULL)
@@ -250,12 +255,11 @@ bool	parse_texture(int fd, t_game *game, int *nb_line, char **rest)
 		i = skip_whitespace(line);
 		if (strlen(line + i) < 1)
 			return (printf("Error : Line to short\n"), free(line), false);
-		if (!cmp_texture(line, game, i))
+		if (!cmp_texture(line, game, i, &is_end))
 			return (free(line), false);
-		cpt_texture++;
 		free(line);
 		line = get_next_line(fd);
-		if (cpt_texture == 6)
+		if (is_end == true)
 			break ;
 	}
 	*rest = line;

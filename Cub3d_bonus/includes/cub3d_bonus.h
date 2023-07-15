@@ -55,6 +55,19 @@ enum e_orientation
 	e_ceiling
 };
 
+enum e_texture
+{
+	e_north_wall = 0,
+	e_east_wall,
+	e_south_wall,
+	e_west_wall,
+	e_floor_wall,
+	e_ceiling_wall,
+	e_door_close,
+	e_door_open,
+	e_total
+};
+
 typedef struct s_vector2
 {
 	int	x;
@@ -90,9 +103,9 @@ typedef struct s_image
 
 typedef struct s_sprite
 {
-	enum e_orientation	texture;
-	int					frame;
-	float				time;
+	enum e_texture	texture;
+	int				frame;
+	float			time;
 }	t_sprite;
 
 typedef struct s_wall
@@ -129,6 +142,7 @@ void	*ft_memcpy(void *dest, const void *src, size_t n);
 void	printf_texture(t_game *game);
 void	free_tab(void **str, t_vector2 size);
 void	free_str(char **str);
+bool	is_symbol_map(char c);
 
 int			init_mlx(t_game *game);
 int			load_image(t_game *game);

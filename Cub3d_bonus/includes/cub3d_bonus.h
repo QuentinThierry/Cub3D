@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/16 02:24:05 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/16 02:35:28 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@
 #define TRANSPARENT_PXL 0x00FF00
 
 // MINIMAP
-// Reprensents the minimap padding equals to a percentage of the total window
+// Represents the minimap padding equals to a percentage of the total window
 #define MINIMAP_PAD 0.05
 
 // Represents the minimap size equals to a percentage of the total window

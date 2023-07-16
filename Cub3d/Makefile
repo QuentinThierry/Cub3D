@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/07/09 23:29:18 by qthierry         ###   ########.fr        #
+#    Updated: 2023/07/16 22:07:49 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,11 +45,11 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			ft_calloc.c \
 			init.c \
 			move.c \
-			view_2d.c \
 			ft_memcpy.c \
 			ft_close.c \
 			wall_hit.c \
 			check_map.c \
+			bettermlx.c \
 			main.c
 
 SRC_DIR = ./src/
@@ -70,7 +70,7 @@ run: $(NAME)
 # 	valgrind --leak-check=full --track-fds=yes --trace-children=yes --show-leak-kinds=all --track-origins=yes ./$(NAME)
 
 vrun: $(NAME)
-	valgrind ./$(NAME) maps/map.cub
+	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) maps/map.cub
 
 prun: CFLAGS += -pg
 prun: $(NAME)

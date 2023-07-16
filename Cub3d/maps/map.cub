@@ -1,7 +1,7 @@
-NO ./Cub3d/assets/smiley.xpm
-SO ./Cub3d/assets/smiley.xpm
-WE ./Cub3d/assets/smiley.xpm
-EA ./Cub3d/assets/smiley.xpm
+NO ./assets/smiley.xpm
+SO ./assets/cobble.xpm
+WE ./assets/smiley.xpm
+EA ./assets/cobble.xpm
 F 255,25,25
 C 25,255,25
 

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/11 03:27:19 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/16 22:02:47 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@
 #define SPRINT_BOOST 100
 #define ROTATION 75
 #define MAX_VOLUME 1.0
-#define THREED 1
 #define TO_RADIAN .0174532
 
 extern long tot_fps;
@@ -100,8 +99,8 @@ typedef struct s_game
 	void			*mlx_ptr;
 	void			*win;
 	t_image			**tab_images;
-	unsigned int	floor;
-	unsigned int	ceiling;
+	unsigned int	floor_color;
+	unsigned int	ceiling_color;
 	char			**map;
 	t_vector2		map_size;
 	t_player		*player;
@@ -119,11 +118,11 @@ t_vector2	get_dimension_maps(int fd, int nb_line, char *line, bool *error);
 void	remove_new_line(char *str);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 void	printf_texture(t_game *game);
-void	free_tab(char **str, t_vector2 size);
+void	free_tab(char **str, int sizey);
 void	free_str(char **str);
 
-int			init_mlx(t_game *game);
-int			load_image(t_game *game);
+bool		init_mlx(t_game *game);
+bool		load_image(t_game *game);
 int			key_press_hook(int key, t_game *game);
 int			key_release_hook(int key, t_player *player);
 void		player_move(t_player *player, double delta_time);
@@ -140,10 +139,16 @@ void		print_map(t_game *game);
 t_fvector2	get_wall_hit(t_fvector2 fpos, char **map, float angle, t_vector2 map_size);
 bool		check_map(t_game *game);
 
+// bettermlx.c
+void	bettermlx_get_data_addr(t_image *image, t_vector2 size);
+
 // --------2D--------
 t_fvector2	get_wall_hit_2d(t_game *gavoidme, double angle);
 void		raycasting_2d(t_game *game);
 void		quadrillage(t_game *game);
 bool		find_player(t_game *game);
+
+// ------Init.c -------
+bool	init_all(t_game *game);
 
 #endif

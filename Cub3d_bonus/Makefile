@@ -6,14 +6,14 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/07/16 01:40:52 by qthierry         ###   ########.fr        #
+#    Updated: 2023/07/16 02:20:25 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3d_bonus
 
 CC = gcc
-CFLAGS = -g -Wall -Wextra #-fsanitize=address#-O3#-Werror
+CFLAGS = -g -Wall -Wextra #-O3#-fsanitize=address#-Werror
 LIBS = -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR)
 

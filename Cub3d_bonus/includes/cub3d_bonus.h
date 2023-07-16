@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/16 01:40:20 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/16 02:24:05 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <stdint.h>
 
 #include "minilibx-linux/mlx.h"
+#include "minilibx-linux/mlx_int.h"
 #include "get_next_line.h"
 
 #include <X11/X.h>
@@ -138,8 +139,8 @@ typedef struct s_texture
 typedef struct s_minimap
 {
 	t_image		*img;
-	t_vector2	mmap_pos;
-	t_vector2	mmap_size;
+	t_vector2	pos;
+	t_vector2	size;
 	int			*bounds;
 
 }	t_minimap;

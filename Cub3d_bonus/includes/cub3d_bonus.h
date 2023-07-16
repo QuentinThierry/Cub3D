@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/16 02:13:59 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/16 02:36:20 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ typedef struct s_map
  * @brief use to stock the texture during the parsing
  *
  *	During the parsing we can find :
+ *	char *			char **
  * - filename
  * - directory	-> filename / s
  *				-> directory	-> config

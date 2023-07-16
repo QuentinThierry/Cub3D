@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 01:40:39 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/16 02:26:19 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,13 @@ int main(int argc, char **argv)
 		return (printf("Error : Invalid nubmber of arguments\n"), 1);
 	game.filename = ft_calloc(e_total, sizeof(t_texture));
 	if (game.filename == NULL)
-		return (1);
+		return (perror("Error"), 1);
 	game.nb_sprite = e_total;
 	if (!parse_file(argv[1], &game))
 		return (1);
-	printf_texture(&game);
-	fflush(stdout);
-	print_map(&game);
+	// printf_texture(&game);
+	// fflush(stdout);
+	// print_map(&game);
 	if (!check_map(&game))
 		return (1);
 	if (init_mlx(&game) == -1)
@@ -95,13 +95,13 @@ int main(int argc, char **argv)
 		return (perror("Error"), ft_close(&game), 1);
 	game.constants = (double[5]){(WIN_X) / (tan((FOV / 2.0) * TO_RADIAN))};
 
-	init_minimap(&game);
-	// init_mouse(&game);
+	// init_minimap(&game);
+	init_mouse(&game);
 	mlx_hook(game.win, 2, (1L<<0), key_press_hook, &game);
 	mlx_hook(game.win, 3, (1L<<1), key_release_hook, game.player);
 	mlx_hook(game.win, 17, (1L << 8), ft_close, &game);
-	// mlx_hook(game.win, 6, (1L << 6) | (1L << 2) , mouse_hook, &game);
-	// mlx_hook(game.win, 8, (1L << 5), mouse_leave, &game);
+	mlx_hook(game.win, 6, (1L << 6) | (1L << 2) , mouse_hook, &game);
+	mlx_hook(game.win, 8, (1L << 5), mouse_leave, &game);
 	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	mlx_loop(game.mlx_ptr);
 	return (0);

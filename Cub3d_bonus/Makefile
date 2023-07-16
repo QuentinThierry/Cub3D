@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
+#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/07/16 01:40:52 by qthierry         ###   ########.fr        #
+#    Updated: 2023/07/16 01:54:12 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			raycasting.c \
 			draw.c \
 			parsing.c \
+			parse_texture.c \
 			ft_fill_wall.c \
 			ft_calloc.c \
 			ft_realloc.c \
@@ -54,6 +55,7 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			collisions.c \
 			minimap.c \
 			image_operations.c \
+			print.c \
 			main.c
 
 SRC_DIR = ./src/

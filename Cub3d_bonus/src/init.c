@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 01:40:35 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/16 02:27:14 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,11 @@ int	load_image(t_game *game)
 	t_image		*tab_image;
 	int			i;
 
-	tab_image = ft_calloc(game->nb_sprite, sizeof(t_image));
-	if (tab_image == NULL)
+	game->tab_images = ft_calloc(game->nb_sprite, sizeof(t_image));
+	if (game->tab_images == NULL)
 		return (-1);
 	i = 0;
+	tab_image = game->tab_images;
 	while (i < game->nb_sprite)
 	{
 		if (game->filename[i].filename == NULL)
@@ -80,6 +81,5 @@ int	load_image(t_game *game)
 		tab_image[i].opp /= 8;
 		i++;
 	}
-	game->tab_images = tab_image;
 	return (0);
 }

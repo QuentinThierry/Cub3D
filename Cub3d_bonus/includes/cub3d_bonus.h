@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/16 01:40:20 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/16 02:13:59 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,12 @@ typedef struct s_map
 
 /**
  * @brief use to stock the texture during the parsing
+ *
+ *	During the parsing we can find :
+ * - filename
+ * - directory	-> filename / s
+ *				-> directory	-> config
+ *								-> filenames
  */
 typedef struct s_texture
 {
@@ -176,6 +182,7 @@ int			skip_whitespace(char *str);
 bool		ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size);
 bool		find_player(t_game *game);
 bool		check_map(t_game *game);
+bool		parse_texture(int fd, t_game *game, int *nb_line, char **rest);
 
 // -------Print--------
 void		printf_texture(t_game *game);
@@ -184,6 +191,7 @@ void		print_map(t_game *game);
 // -------Init---------
 int			init_mlx(t_game *game);
 int			load_image(t_game *game);
+void		init_mouse(t_game *game);
 
 // -------Hook---------
 int			key_press_hook(int key, t_game *game);

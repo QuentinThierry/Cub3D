@@ -1,0 +1,171 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_texture.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
+/*   Updated: 2023/07/16 01:52:54 by jvigny           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/cub3d_bonus.h"
+
+/**
+ * @brief complete the tab of filename with the new texture name, its orientation,
+ *		its symbol on the map
+ * 		malloc the tab and the filename
+ * @param game struct to add the texture
+ * @param str name of the texture to add
+ * @param index offset on the tab to add the texture
+ * @param orient orientation of the texture
+ * @return true On success
+ * @return false ERROR, error already print
+ */
+static bool	_find_texture(t_game *game, char *str, int index, enum e_orientation orient)
+{
+	char *filename;
+	int	i;
+	int	len;
+
+	if (index >= game->nb_sprite)
+	{
+		game->filename = ft_realloc(game->filename
+			, sizeof(t_texture) * game->nb_sprite, sizeof(t_texture) * (index + 1));
+		if (game->filename == NULL)
+			return (perror("Error"), false);
+		game->nb_sprite = index + 1;
+	}
+	i = skip_whitespace(str);
+	if (str[i] == '\0')
+		return (printf("Error : Empty texture\n"), false);
+	len = strlen(str + i);
+	if (len >= 1 && str[i + len - 1] == '\n')
+		str[i + len - 1] = '\0';
+	filename = strdup(str + i);
+	if (filename == NULL)
+		return (printf("Error : malloc failed\n"),false);
+	game->filename[index].filename = filename;
+	game->filename[index].orient = orient;
+	if (index >= e_door_close)
+		game->filename[index].symbol = *(str - 1);
+	else if (index == e_floor || index == e_ceiling)
+		game->filename[index].symbol = '0';
+	else
+		game->filename[index].symbol = '1';
+	return (true);
+}
+
+/**
+ * @brief return the index of the next whitespace or the '\0' if none has been find
+ */
+static int	_find_next_wsp(char *line , int i)
+{
+	while (line[i] != '\0' && !(line[i] == ' ' || line[i] == '\t'
+			|| line[i] == '\v' || line[i] == '\n' || line[i] == '\f'
+			|| line[i] == '\r'))
+		i++;
+	return (i);
+}
+
+/**
+ * @brief compare the identifier of the texture to assign at the right place
+ * 
+ * @param line string with the identifier + texture separate by a space
+ * @param game struct to add the texture
+ * @param i index to the begin of the indentifier
+ * @param is_end if the world "MAP" is find is_end is set at true
+ * @return true On success
+ * @return false ERROR, error already print
+ */
+static bool	_cmp_texture(char *line, t_game *game, int i, bool *is_end)
+{
+	int	next_wsp;
+
+	next_wsp = _find_next_wsp(line, i);
+	if (next_wsp - i == 1)
+	{
+		if (line[i] == 'F')
+			return (_find_texture(game, line + i + 1, e_floor, e_down));
+		else if (line[i] == 'C')
+			return (_find_texture(game, line + i + 1, e_ceiling, e_up));
+		else if (line[i] == 'c')
+			return (_find_texture(game, line + i + 1, e_door_close, e_wall));
+		else if (line[i] == 'o')
+			return (_find_texture(game, line + i + 1, e_door_open, e_wall));
+		else
+		 	return (_find_texture(game, line + i + 1, game->nb_sprite, e_wall));
+	}
+	else if (next_wsp - i == 2)
+	{
+		if (strncmp(line + i, "NO", 2) == 0)
+			return (_find_texture(game, line + i + 2, e_north_wall, e_north));
+		else if (strncmp(line + i, "SO", 2) == 0)
+			return (_find_texture(game, line + i + 2, e_south_wall, e_south));
+		else if (strncmp(line + i, "WE", 2) == 0)
+			return (_find_texture(game, line + i + 2, e_west_wall, e_west));
+		else if (strncmp(line + i, "EA", 2) == 0)
+			return (_find_texture(game, line + i + 2, e_east_wall, e_east));
+	}
+	else if (next_wsp - i == 3)
+	{
+		if (strncmp(line + i, "MAP\n", 4) == 0 || strncmp(line + i, "MAP\0", 4) == 0)
+			return (*is_end = true, true);
+		if (strncmp(line + i, "N_", 2) == 0)
+			return (_find_texture(game, line + i + 3, game->nb_sprite, e_north));
+		else if (strncmp(line + i, "S_", 2) == 0)
+			return (_find_texture(game, line + i + 3, game->nb_sprite, e_south));
+		else if (strncmp(line + i, "W_", 2) == 0)
+			return (_find_texture(game, line + i + 3, game->nb_sprite, e_west));
+		else if (strncmp(line + i, "E_", 2) == 0)
+			return (_find_texture(game, line + i + 3, game->nb_sprite, e_east));
+		else if (strncmp(line + i, "F_", 2) == 0)
+			return (_find_texture(game, line + i + 3, game->nb_sprite, e_down));
+		else if (strncmp(line + i, "C_", 2) == 0)
+			return (_find_texture(game, line + i + 3, game->nb_sprite, e_up));
+	}
+	return (printf("Error : invalid identifier\n"), false);
+}
+
+/**
+ * @brief Parse the first part of the file that contain the name of the texture
+ * 
+ * @param fd of the file, not -1
+ * @param game struct to add the texture
+ * @param nb_line pointer to the number of lines, that will be read
+ * @param rest pointer to the last string, that will be read
+ * @return true On sucess
+ * @return false ERROR, error already print
+ */
+bool	parse_texture(int fd, t_game *game, int *nb_line, char **rest)
+{
+	char	*line;
+	int		i;
+	bool	is_end;
+
+	is_end = false;
+	(*nb_line) = 0;
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		(*nb_line)++;
+		if (line[0] == '\n')
+		{
+			free(line);
+			line = get_next_line(fd);
+			continue ;
+		}
+		i = skip_whitespace(line);
+		if (strlen(line + i) < 1)
+			return (printf("Error : Line to short\n"), free(line), false);
+		if (!_cmp_texture(line, game, i, &is_end))
+			return (free(line), false);
+		free(line);
+		line = get_next_line(fd);
+		if (is_end == true)
+			break ;
+	}
+	*rest = line;
+	return (true);
+}

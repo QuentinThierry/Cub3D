@@ -137,20 +137,20 @@ t_sound	init_sound(const char *sound_path, bool *error)
 	bzero(&sound, sizeof(t_sound));
 	fd = open(sound_path, O_RDONLY);
 	if (fd < 0)
-		return (perror("Error1"), *error = true, (t_sound){0});
+		return (perror("Error"), *error = true, (t_sound){0});
 	parse_wav_file(fd, &sound.format, &sound.buf_size);
 	if (sound.buf_size == 0)
-		return (close(fd), perror("Error2"), *error = true, (t_sound){0});
+		return (close(fd), perror("Error"), *error = true, (t_sound){0});
 	sound.buffer = calloc(sound.buf_size, sizeof(char));
 	if (!sound.buffer)
-		return (close(fd), perror("Error3"), *error = true, (t_sound){0});
+		return (close(fd), perror("Error"), *error = true, (t_sound){0});
 	if (read(fd, sound.buffer, sound.buf_size) <= 0)
-		return (free(sound.buffer), close(fd), perror("Error4"), *error = true, (t_sound){0});
+		return (free(sound.buffer), close(fd), perror("Error"), *error = true, (t_sound){0});
 	driver = ao_default_driver_id();
 	printf("driver : %d\n", driver);
 	sound.device = ao_open_live(driver, &sound.format, NULL);
 	if (!sound.device)
-		return (free(sound.buffer), close(fd), perror("Error5"), *error = true, (t_sound){0});
+		return (free(sound.buffer), close(fd), perror("Error"), *error = true, (t_sound){0});
 	close(fd);
 	return (sound);
 }
@@ -198,7 +198,7 @@ bool	play_sound(t_sound_thread *so_thread, double player_angle)
 	}
 	i = ao_play(sound.device, new_buffer, sound.buf_size);
 	if (i == 0)
-		return (perror("Error7"), false);
+		return (perror("Error"), false);
 	return (true);
 }
 
@@ -230,7 +230,7 @@ int sound(t_game *game)
 
 	sound = init_sound("assets/sounds/app.wav", &error);
 	if (error == true)
-		return (perror("truc1"), 1);
+		return (perror("Error"), 1);
 	so_thread = (t_sound_thread)
 	{
 		sound,

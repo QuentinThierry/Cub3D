@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/17 21:41:00 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/17 22:03:27 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,13 @@ bool	is_wall(char symbol, t_texture *tab, int len, bool *error)
 	return (*error = true, false);
 }
 
+/**
+ * @brief Get the number of different texture without the "config.cfg"
+ * 
+ * @param texture 
+ * @param len 
+ * @return int 
+ */
 int	get_len_texture(t_texture *texture, int len)
 {
 	int i;

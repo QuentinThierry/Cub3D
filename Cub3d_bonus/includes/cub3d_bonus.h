@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/17 21:35:49 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/17 21:54:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,13 +136,12 @@ typedef struct s_map
  *				-> directory / s	-> config
  *									-> filenames
  */
-
 typedef struct s_animation
 {
 	char	**filename;
 	int		nb_sprite;
-	int		time_sprite;
-	int		time_animation;
+	// int		time_sprite;
+	// int		time_animation;
 	
 }	t_animation;
 

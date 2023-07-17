@@ -6,12 +6,20 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/17 21:40:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/17 22:04:32 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
+/**
+ * @brief read the config file and stock the usefull information
+ * 
+ * @param animation 
+ * @param index 
+ * @return true 
+ * @return false 
+ */
 bool	ft_read_config(t_animation *animation, int index)
 {
 	int		fd;
@@ -21,10 +29,10 @@ bool	ft_read_config(t_animation *animation, int index)
 	fd = open(animation->filename[index], O_RDONLY);
 	if (fd == -1)
 		return (perror("Error"), false);
-	buffer = get_next_line(fd);
-	animation->time_sprite = ft_atoi(buffer);
-	buffer = get_next_line(fd);
-	animation->time_animation = ft_atoi(buffer);
+	// buffer = get_next_line(fd);
+	// animation->time_sprite = ft_atoi(buffer);
+	// buffer = get_next_line(fd);
+	// animation->time_animation = ft_atoi(buffer);
 	while (buffer != NULL)
 		buffer = get_next_line(fd);
 	close(fd);
@@ -43,6 +51,14 @@ void	swap(char **str, int a, int b)
 	str[b] = tmp;
 }
 
+/**
+ * @brief sort the filenames of animation by alphbetic order and return if
+ *		"config.cfg" is present
+ * 
+ * @param anim 
+ * @return true 
+ * @return false 
+ */
 bool	sort_animation(t_animation *anim)
 {
 	int		i;
@@ -77,6 +93,17 @@ bool	sort_animation(t_animation *anim)
 	return (has_config);
 }
 
+/**
+ * @brief read directory to parse the animation find in the file.
+ *		Skip hidden files and directories
+ * 		Malloc tab of animation and animation's filename
+ *
+ * @param dir 
+ * @param texture 
+ * @param dirname 
+ * @return true 
+ * @return false 
+ */
 bool	ft_read_anim(DIR *dir, t_texture *texture, char *dirname)
 {
 	struct dirent	*buffer;
@@ -84,7 +111,7 @@ bool	ft_read_anim(DIR *dir, t_texture *texture, char *dirname)
 	bool			add_slash;
 	bool			has_config;
 
-	printf(" ANIM %d : %s\n",texture->nb_animation, dirname);
+	// printf(" ANIM %d : %s\n",texture->nb_animation, dirname);
 	texture->animation = ft_realloc(texture->animation
 		, sizeof(t_animation) * (texture->nb_animation)
 		,sizeof(t_animation) * (texture->nb_animation + 1));
@@ -102,7 +129,7 @@ bool	ft_read_anim(DIR *dir, t_texture *texture, char *dirname)
 			buffer = readdir(dir);
 			continue ;
 		}
-		printf(" ANIM %d: filename :%s\n",texture->nb_animation, buffer->d_name);
+		// printf(" ANIM %d: filename :%s\n",texture->nb_animation, buffer->d_name);
 		filename = ft_strjoin_slash(dirname, buffer->d_name, add_slash);
 		if (filename == NULL)
 			return (perror("Error"), closedir(dir), false);
@@ -126,6 +153,16 @@ bool	ft_read_anim(DIR *dir, t_texture *texture, char *dirname)
 	return (has_config);
 }
 
+/**
+ * @brief read directory to add each filename find or call an other function for
+ *		animation's directory. Skip hidden files and directories
+ * 		Malloc filname_d's texture
+ *
+ * @param dir 
+ * @param texture 
+ * @return true 
+ * @return false 
+ */
 bool	ft_read_dir(DIR *dir, t_texture *texture)
 {
 	struct dirent	*buffer;
@@ -133,7 +170,7 @@ bool	ft_read_dir(DIR *dir, t_texture *texture)
 	char			*filename;
 	bool			add_slash;
 
-	printf(" DIR : %s\n", texture->filename);
+	// printf(" DIR : %s\n", texture->filename);
 	texture->nb_file = 0;
 	if (strlen(texture->filename) > 0 && texture->filename[strlen(texture->filename) - 1] == '/')
 		add_slash = false;
@@ -147,7 +184,7 @@ bool	ft_read_dir(DIR *dir, t_texture *texture)
 			buffer = readdir(dir);
 			continue ;
 		}
-		printf(" DIR : filename : %s\n", buffer->d_name);
+		// printf(" DIR : filename : %s\n", buffer->d_name);
 		filename = ft_strjoin_slash(texture->filename, buffer->d_name, add_slash);
 		if (filename == NULL)
 			return (perror("Error"), closedir(dir), false);

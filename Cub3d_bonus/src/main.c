@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/17 19:55:04 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/17 21:29:44 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	on_update(t_game *game)
 	raycasting(game);
 	draw_minimap(game);
 
-	draw_rotated_image(game->image, game->minimap->img, (t_vector2){0, 0}, -game->player->angle * TO_RADIAN);
+	// draw_rotated_image(game->image, game->minimap->img, (t_vector2){0, 0}, -game->player->angle * TO_RADIAN);
 
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
 

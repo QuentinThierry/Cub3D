@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/17 19:11:46 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/17 21:20:53 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ typedef struct s_texture
 typedef struct s_minimap
 {
 	t_image		*img;
+	t_image		*buffer_img;
 	t_vector2	pos;
 	t_vector2	size;
 	int			*bounds;

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 01:09:48 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/17 18:28:10 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 		else
 		{
 			if (error == true)
-				return (printf("Error : invalid caracter in the map\n"), false);
+				return (printf("Error : invalid caracter in the map %s\n", line), false);
 			map[i].is_wall = false;
 			map[i].sprite[e_north].index = -1;
 			map[i].sprite[e_east].index = -1;

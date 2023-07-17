@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:07:06 by jvigny            #+#    #+#             */
-/*   Updated: 2022/11/24 10:59:23 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/17 15:51:52 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*get_next_line(int fd)
 		len = find_end_line(line.next, line.len_buf);
 		if (len == -1)
 		{
-			res = ft_strjoin(&line, line.next, res);
+			res = ft_strjoin_gnl(&line, line.next, res);
 			line.next = NULL;
 			res = fill_result(&line, fd, res, len);
 		}

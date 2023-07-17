@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 01:28:13 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/17 19:10:51 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,6 @@ t_image	*get_image(t_game *game, enum e_orientation orient, t_fvector2 wall)
 		index = game->map[(int)wall.y][(int)wall.x].sprite[orient].index;
 	if (orient == e_east)
 		index = game->map[(int)wall.y][(int)wall.x - 1].sprite[orient].index;
-	// if (index == -1)
-	// {
-	// 	printf("Error : get image wall %f	%f\n", wall.x, wall.y);
-	// 	exit(1);
-	// }
 	return (&(game->tab_images[index]));
 }
 
@@ -203,4 +198,32 @@ bool	is_wall(char symbol, t_texture *tab, int len, bool *error)
 		i++;
 	}
 	return (*error = true, false);
+}
+
+int	get_len_texture(t_texture *texture, int len)
+{
+	int i;
+	int j;
+	int x;
+	int	res;
+
+	res = 0;
+	i = 0;
+	while (i < len)
+	{
+		if (texture[i].filename != NULL)
+			res++;
+		else
+		{
+			res += texture[i].nb_file;
+			j = 0;
+			while (j < texture[i].nb_animation)
+			{
+				res += texture[i].animation[j].nb_sprite;
+				j++;
+			}
+		}
+		i++;
+	}
+	return (res);
 }

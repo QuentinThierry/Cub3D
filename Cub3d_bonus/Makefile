@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/07/16 01:54:12 by jvigny           ###   ########.fr        #
+#    Updated: 2023/07/17 16:44:06 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,8 @@ SRC_GNL = get_next_line.c\
 
 SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			key_hook.c \
+			ft_strjoin.c \
+			ft_atoi.c \
 			utils.c \
 			raycasting.c \
 			draw.c \

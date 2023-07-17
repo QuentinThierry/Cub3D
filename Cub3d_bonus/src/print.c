@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 01:49:26 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/17 19:47:58 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,37 @@
 void	printf_texture(t_game *game)
 {
 	int i = 0;
+	int j;
+	int x;
 	while (i < game->nb_sprite)
 	{
-		printf("texture %s	char : %c	orientation : %d	index : %d\n"
-				, game->filename[i].filename, game->filename[i].symbol, game->filename[i].orient, i);
+		if (game->filename[i].filename != NULL)
+			printf("texture %s	char : %c	orientation : %d	index : %d\n"
+				, game->filename[i].filename, game->filename[i].symbol
+				, game->filename[i].orient, i);
+		else
+		{
+			j = 0;
+			printf("char : %c	orientation : %d	index : %d\n"
+				, game->filename[i].symbol
+				, game->filename[i].orient, i);
+			while (j < game->filename[i].nb_file)
+			{
+				printf("	dir :texture %s\n", game->filename[i].filename_d[j]);
+				j++;
+			}
+			j = 0;
+			while (j < game->filename[i].nb_animation)
+			{
+				x = 0;
+				while (x < game->filename[i].animation[j].nb_sprite)
+				{
+					printf("	anim %d :texture %s\n",j, game->filename[i].animation[j].filename[x]);
+					x++;
+				}
+				j++;
+			}
+		}
 		i++;
 	}
 }

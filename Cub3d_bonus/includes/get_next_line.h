@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:07:09 by jvigny            #+#    #+#             */
-/*   Updated: 2022/11/24 10:58:48 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/17 15:51:27 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct s_line
 char	*get_next_line(int fd);
 ssize_t	find_end_line(char const *str, ssize_t len);
 char	*fill_result(t_line *line, int fd, char *res, ssize_t len);
-char	*ft_strjoin(t_line *line, char *begin, char *res);
+char	*ft_strjoin_gnl(t_line *line, char *begin, char *res);
 char	*exception(t_line *line, char *res, ssize_t len);
 
 #endif

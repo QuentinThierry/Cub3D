@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 01:53:36 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/17 18:51:52 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ bool	parse_file(char *filename, t_game *game)
 	}
 	if (line == NULL)
 		return (close(fd), printf("Error : Empty map\n"), false);
+	// printf("'%s'", line);
 	if (!parse_map(fd, filename, game, i, line))
 		return (close(fd), false);
 	close(fd);

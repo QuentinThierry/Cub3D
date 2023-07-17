@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 02:27:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/17 20:11:48 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,36 +50,69 @@ void	init_mouse(t_game *game)
 	mlx_mouse_hide(game->mlx_ptr, game->win);
 }
 
-int	load_image(t_game *game)
+bool	load_image(void *mlx_ptr, t_image *tab_img, int	i, char *filename)
+{
+	printf("name : %s\n", filename);
+	tab_img[i].img = mlx_xpm_file_to_image(mlx_ptr, filename,
+			&(tab_img[i].size.x), &(tab_img[i].size.y));
+	if (tab_img[i].img == NULL)
+		return (false);
+	tab_img[i].addr = mlx_get_data_addr(tab_img[i].img,
+		&tab_img[i].opp, &tab_img[i].size_line, &tab_img[i].endian);
+	if (tab_img[i].addr == NULL)
+		return (false);
+	tab_img[i].opp /= 8;
+	return (true);
+}
+
+
+bool	load_image_tab(t_game *game)
 {
 	t_image		*tab_image;
 	int			i;
+	int			j;
+	int			h;
+	int			index;
 
-	game->tab_images = ft_calloc(game->nb_sprite, sizeof(t_image));
+	h = get_len_texture(game->filename, game->nb_sprite);
+	game->tab_images = ft_calloc(h, sizeof(t_image));
 	if (game->tab_images == NULL)
 		return (-1);
 	i = 0;
+	index = 0;
 	tab_image = game->tab_images;
 	while (i < game->nb_sprite)
 	{
-		if (game->filename[i].filename == NULL)
+		if (game->filename[i].filename != NULL)
 		{
-			i++;
-			continue ;
+			if (!load_image(game->mlx_ptr, tab_image, index, game->filename[i].filename))
+				return (false);
 		}
-		// tab_image[i] = ft_calloc(1, sizeof(t_image));
-		// if (tab_image[i] == NULL)
-		// 	return (-1);
-		tab_image[i].img = mlx_xpm_file_to_image(game->mlx_ptr, game->filename[i].filename,
-			 &(tab_image[i].size.x), &(tab_image[i].size.y));
-		if (tab_image[i].img == NULL)
-			return (-1);
-		tab_image[i].addr = mlx_get_data_addr(tab_image[i].img,
-			&tab_image[i].opp, &tab_image[i].size_line, &tab_image[i].endian);
-		if (tab_image[i].addr == NULL)
-			return (-1);
-		tab_image[i].opp /= 8;
+		else
+		{
+			j = 0;
+			while (j < game->filename[i].nb_file)
+			{
+				if (!load_image(game->mlx_ptr, tab_image, index, game->filename[i].filename_d[j]))
+					return (false);
+				j++;
+				index++;
+			}
+			j = 0;
+			while (j < game->filename[i].nb_animation)
+			{
+				h = 0;
+				while (h < game->filename[i].animation[j].nb_sprite)
+				{
+					if (!load_image(game->mlx_ptr, tab_image, index, game->filename[i].animation[j].filename[h]))
+						return (false);
+					index++;
+					h++;
+				}
+				j++;
+			}
+		}
 		i++;
 	}
-	return (0);
+	return (true);
 }

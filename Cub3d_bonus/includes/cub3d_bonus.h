@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/16 02:35:28 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/17 19:11:46 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,7 @@ void		print_map(t_game *game);
 // -------Init---------
 int			init_mlx(t_game *game);
 int			load_image(t_game *game);
+void		init_mouse(t_game *game);
 
 // -------Hook---------
 int			key_press_hook(int key, t_game *game);
@@ -220,5 +221,6 @@ void	draw_image_on_image_alpha(t_image *dest, t_image *src, t_vector2 offset_des
 void	draw_minimap(t_game *game);
 void	generate_minimap_bounds(t_game *game);
 bool	init_minimap(t_game *game);
+void	draw_rotated_image(t_image *img_dest, t_image *img_src, t_vector2 pos, float angle);
 
 #endif

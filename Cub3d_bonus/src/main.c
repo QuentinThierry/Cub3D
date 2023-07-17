@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 01:48:04 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/17 19:20:49 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	on_update(t_game *game)
 		clock_gettime(CLOCK_REALTIME, &last_time);
 	
 
-	
 	if (game->player->angle + game->player->angle >= 360)
 		game->player->angle = game->player->angle - 360;
 	if (game->player->angle + game->player->angle < 0)
@@ -34,6 +33,9 @@ int	on_update(t_game *game)
 	player_move(game->player, game->delta_time, game->map);
 	raycasting(game);
 	draw_minimap(game);
+
+	draw_rotated_image(game->image, game->minimap->img, (t_vector2){0, 0}, -game->player->angle * TO_RADIAN);
+
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
 
 	clock_gettime(CLOCK_REALTIME, &cur_time);
@@ -41,8 +43,8 @@ int	on_update(t_game *game)
 	fps = (long)(1.0 / game->delta_time);
 	tot_fps += fps;
 	nb_fps++;
-	// if ((nb_fps % 50) == 0)
-	// 	printf("fps : %ld\n", fps);
+	if ((nb_fps % 50) == 0)
+		printf("fps : %ld\n", fps);
 	last_time = cur_time;
 	return (0);
 }

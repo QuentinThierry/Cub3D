@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 00:30:38 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/16 02:43:23 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/17 19:20:24 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,16 @@ void	draw_rectangle(t_image *image, t_vector2 pos, t_vector2 size, unsigned int 
 	while (y < size.y)
 	{
 		x = 0;
-		while (x < size.x)
+		while (x < size.x / 2)
 		{
 			my_mlx_pixel_put(addr,
 				size_line, (t_vector2){pos.x + x, pos.y + y}, color);
+			x++;
+		}
+		while (x < size.x)
+		{
+			my_mlx_pixel_put(addr,
+				size_line, (t_vector2){pos.x + x, pos.y + y}, 0x0000FF);
 			x++;
 		}
 		y++;
@@ -84,10 +90,6 @@ void	draw_minimap(t_game *game)
 	draw_rectangle(minimap->img, (t_vector2){0,0}, minimap->size, 0xFF0000);
 	draw_minimap_on_main_image(minimap, game->image);
 }
-
-
-
-
 
 void	generate_minimap_bounds(t_game *game)
 {
@@ -161,4 +163,44 @@ bool	init_minimap(t_game *game)
 	minimap->img->opp /= 8;
 	minimap->img->size = minimap->size;
 	return (true);
+}
+
+static inline unsigned int	get_color_at(char *addr, int size_line, t_vector2 pos)
+{
+	return (*(int *)(addr + (pos.y * size_line + pos.x * 4)));
+}
+
+void	draw_rotated_image(t_image *img_dest, t_image *img_src, t_vector2 pos, float angle)
+{
+	int				x;
+	int				y;
+	t_vector2		old_pos;
+	t_vector2		image_size_div2;
+	double			cos_angle;
+	double			sin_angle;
+
+	image_size_div2.x = img_src->size.x / 2;
+	image_size_div2.y = img_src->size.y / 2;
+	cos_angle = cos(angle);
+	sin_angle = sin(angle);
+	y = 0;
+	while (y < img_src->size.y)
+	{
+		x = 0;
+		while (x < img_src->size.x)
+		{
+			old_pos.x = (x - image_size_div2.x) * cos_angle - (y - image_size_div2.y) * sin_angle;
+			old_pos.y = (x - image_size_div2.x) * sin_angle + (y - image_size_div2.y) * cos_angle;
+			if (old_pos.x + image_size_div2.x < img_src->size.x && old_pos.x + image_size_div2.x > 0
+				&& old_pos.y + image_size_div2.y < img_src->size.y && old_pos.y + image_size_div2.y > 0)
+			{
+				my_mlx_pixel_put(
+					img_dest->addr, img_dest->size_line,
+					(t_vector2){(int)x + pos.x, (int)y + pos.y},
+					*(int *)(img_src->addr + ((old_pos.y + image_size_div2.y) * img_src->size_line + (old_pos.x + image_size_div2.x) * 4)));
+			}
+			x++;
+		}
+		y++;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/17 20:10:47 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/17 21:35:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,7 @@ int			skip_whitespace(char *str);
 bool		ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size);
 bool		find_player(t_game *game);
 bool		check_map(t_game *game);
+bool	ft_read_config(t_animation *animation, int index);
 bool		parse_texture(int fd, t_game *game, int *nb_line, char **rest);
 
 // -------Print--------
@@ -245,8 +246,8 @@ void		quadrillage(t_game *game);
 void	draw_image_on_image_alpha(t_image *dest, t_image *src, t_vector2 offset_dest);
 
 // Minimap
-void	draw_minimap(t_game *game);
-void	generate_minimap_bounds(t_game *game);
-bool	init_minimap(t_game *game);
+// void	draw_minimap(t_game *game);
+// void	generate_minimap_bounds(t_game *game);
+// bool	init_minimap(t_game *game);
 
 #endif

@@ -6,18 +6,19 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/17 20:05:33 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/17 21:40:01 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-bool	ft_read_config(t_animation *animation, char *filename)
+bool	ft_read_config(t_animation *animation, int index)
 {
 	int		fd;
 	char	*buffer;
 	
-	fd = open(filename, O_RDONLY);
+	printf("'%s'\n",animation->filename[index]);
+	fd = open(animation->filename[index], O_RDONLY);
 	if (fd == -1)
 		return (perror("Error"), false);
 	buffer = get_next_line(fd);
@@ -27,6 +28,9 @@ bool	ft_read_config(t_animation *animation, char *filename)
 	while (buffer != NULL)
 		buffer = get_next_line(fd);
 	close(fd);
+	animation->nb_sprite--;
+	free(animation->filename[animation->nb_sprite]);
+	animation->filename[animation->nb_sprite] = NULL;
 	return (true);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/17 20:10:36 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/17 21:39:42 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	on_update(t_game *game)
 		game->player->angle = game->player->angle + 360;
 	player_move(game->player, game->delta_time, game->map);
 	raycasting(game);
-	draw_minimap(game);
+	// draw_minimap(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
 
 	clock_gettime(CLOCK_REALTIME, &cur_time);

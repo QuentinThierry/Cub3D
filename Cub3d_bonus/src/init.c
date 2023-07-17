@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/17 20:11:48 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/17 21:36:14 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ bool	load_image(void *mlx_ptr, t_image *tab_img, int	i, char *filename)
 	return (true);
 }
 
-
 bool	load_image_tab(t_game *game)
 {
 	t_image		*tab_image;
@@ -102,13 +101,14 @@ bool	load_image_tab(t_game *game)
 			while (j < game->filename[i].nb_animation)
 			{
 				h = 0;
-				while (h < game->filename[i].animation[j].nb_sprite)
+				while (h < game->filename[i].animation[j].nb_sprite - 1)
 				{
 					if (!load_image(game->mlx_ptr, tab_image, index, game->filename[i].animation[j].filename[h]))
 						return (false);
 					index++;
 					h++;
 				}
+				ft_read_config(&(game->filename[i].animation[j]), h);
 				j++;
 			}
 		}

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/17 19:10:51 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/17 21:41:00 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,6 @@ int	get_len_texture(t_texture *texture, int len)
 {
 	int i;
 	int j;
-	int x;
 	int	res;
 
 	res = 0;
@@ -219,7 +218,7 @@ int	get_len_texture(t_texture *texture, int len)
 			j = 0;
 			while (j < texture[i].nb_animation)
 			{
-				res += texture[i].animation[j].nb_sprite;
+				res += texture[i].animation[j].nb_sprite - 1;
 				j++;
 			}
 		}

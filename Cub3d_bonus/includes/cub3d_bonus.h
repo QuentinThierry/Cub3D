@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/17 21:20:53 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/24 19:20:44 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@
 #define TRANSPARENT_PXL 0x00FF00
 
 // MINIMAP
+#define MMAP_CHUNK 20
 // Represents the minimap padding equals to a percentage of the total window
 #define MINIMAP_PAD 0.05
 
@@ -53,6 +54,8 @@
 
 extern long tot_fps;
 extern long nb_fps;
+
+typedef u_int32_t t_pixel32;
 
 enum e_orientation
 {
@@ -140,6 +143,7 @@ typedef struct s_minimap
 {
 	t_image		*img;
 	t_image		*buffer_img;
+	t_image		*background_image;
 	t_vector2	pos;
 	t_vector2	size;
 	int			*bounds;
@@ -217,6 +221,12 @@ void		quadrillage(t_game *game);
 
 // image_operations.c
 void	draw_image_on_image_alpha(t_image *dest, t_image *src, t_vector2 offset_dest);
+
+// bettermlx.c
+t_image	*resize_img(void *mlx, t_image *src,
+					t_vector2 dst_size, t_vector2 src_size);
+t_image	*btmlx_xpm_file_to_image(void *mlx, char *path,
+			t_vector2 dst_size);
 
 // Minimap
 void	draw_minimap(t_game *game);

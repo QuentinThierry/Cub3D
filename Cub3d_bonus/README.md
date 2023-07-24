@@ -21,6 +21,7 @@ FIX :
 - parsing, when search len of map need to suppr whitespace at the end
 - line with only white space return error ?
 <!-- - stop parsing if not valid caracter on the map -->
+- makefile
 
 
 Minimap : 

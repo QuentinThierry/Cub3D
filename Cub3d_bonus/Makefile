@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/07/24 15:58:02 by jvigny           ###   ########.fr        #
+#    Updated: 2023/07/24 19:41:25 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,6 +54,7 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			collisions.c \
 			minimap.c \
 			image_operations.c \
+			bettermlx.c \
 			main.c
 
 SRC_DIR = ./src/

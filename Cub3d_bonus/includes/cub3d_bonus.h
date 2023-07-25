@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/24 19:20:44 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/24 21:29:22 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,25 @@
 # include <time.h>
 # include <stdint.h>
 
-#include "minilibx-linux/mlx.h"
-#include "minilibx-linux/mlx_int.h"
-#include "get_next_line.h"
+# include "minilibx-linux/mlx.h"
+# include "minilibx-linux/mlx_int.h"
+# include "get_next_line.h"
 
-#include <X11/X.h>
+# include <X11/X.h>
 
-#define WIN_X 1000 //1920 - 918
-#define WIN_Y 1000 //1080 - 468
-#define CHUNK_SIZE 50
-#define FOV 120
-#define MOUV 1
-#define SPEED 100
-#define SPRINT_BOOST 100
-#define ROTATION_KEYBOARD 125
-#define ROTATION_MOUSE 20
-#define MAX_VOLUME 1.0
-#define THREED 1
-#define TO_RADIAN .0174532
-#define TRANSPARENT_PXL 0x00FF00
+# define WIN_X 1000 //1920 - 918
+# define WIN_Y 1000 //1080 - 468
+# define CHUNK_SIZE 50
+# define FOV 120
+# define MOUV 1
+# define SPEED 100
+# define SPRINT_BOOST 100
+# define ROTATION_KEYBOARD 125
+# define ROTATION_MOUSE 20
+# define MAX_VOLUME 1.0
+# define THREED 1
+# define TO_RADIAN .0174532
+# define TRANSPARENT_PXL 0x00FF00
 
 // MINIMAP
 #define MMAP_CHUNK 20
@@ -51,6 +51,8 @@
 
 // Represents the minimap size equals to a percentage of the total window
 #define MINIMAP_SIZE 0.25
+
+#define PATH_MMAP_PLAYER "../assets/minimap_player.xpm"
 
 extern long tot_fps;
 extern long nb_fps;
@@ -141,11 +143,12 @@ typedef struct s_texture
 
 typedef struct s_minimap
 {
-	t_image		*img;
+	t_image		*image;
 	t_image		*buffer_img;
-	t_image		*background_image;
-	t_vector2	pos;
-	t_vector2	size;
+	t_image		*back_img;
+	t_image		*player_img;
+	// t_vector2	pos;
+	// t_vector2	size;
 	int			*bounds;
 
 }	t_minimap;
@@ -165,6 +168,9 @@ typedef struct s_game
 	double			delta_time;
 	const double	*constants;
 }	t_game;
+
+extern const t_vector2	g_minimap_pos;
+extern const t_vector2	g_minimap_size;
 
 // ------ Utils------
 void		*ft_calloc(size_t nmemb, size_t size);
@@ -223,8 +229,7 @@ void		quadrillage(t_game *game);
 void	draw_image_on_image_alpha(t_image *dest, t_image *src, t_vector2 offset_dest);
 
 // bettermlx.c
-t_image	*resize_img(void *mlx, t_image *src,
-					t_vector2 dst_size, t_vector2 src_size);
+t_image	*btmlx_new_image(void *mlx_ptr, t_vector2 size);
 t_image	*btmlx_xpm_file_to_image(void *mlx, char *path,
 			t_vector2 dst_size);
 

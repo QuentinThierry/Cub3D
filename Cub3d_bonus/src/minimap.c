@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 00:30:38 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/24 18:37:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/24 21:28:02 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,23 +73,23 @@ void	draw_grid(t_minimap *minimap)
 	t_pixel32 color = 0xFF;
 	
 	y = 0;
-	while (y < minimap->size.y)
+	while (y < g_minimap_size.y)
 	{
 		x = 0;
-		while (x < minimap->size.x)
+		while (x < g_minimap_size.x)
 		{
-			my_mlx_pixel_put(minimap->background_image->addr, minimap->background_image->size_line, (t_vector2){x, y}, color);
+			my_mlx_pixel_put(minimap->back_img->addr, minimap->back_img->size_line, (t_vector2){x, y}, color);
 			x += MMAP_CHUNK;
 		}
 		y++;
 	}
 	x = 0;
-	while (x < minimap->size.x)
+	while (x < g_minimap_size.x)
 	{
 		y = 0;
-		while (y < minimap->size.y)
+		while (y < g_minimap_size.y)
 		{
-			my_mlx_pixel_put(minimap->background_image->addr, minimap->background_image->size_line, (t_vector2){x, y}, color);
+			my_mlx_pixel_put(minimap->back_img->addr, minimap->back_img->size_line, (t_vector2){x, y}, color);
 			y += MMAP_CHUNK;
 		}
 		x++;
@@ -118,10 +118,10 @@ void	draw_rectangular_minimap(t_game *game)
 				color = 0x505050;
 			else
 				color = 0x808080;
-			draw_rectangle(minimap->img,
+			draw_rectangle(minimap->image,
 			(t_vector2){
-			(x - game->player->f_real_pos.x) * MMAP_CHUNK + minimap->size.x / 2.0,
-			(y - game->player->f_real_pos.y) * MMAP_CHUNK + minimap->size.y / 2.0},
+			(x - game->player->f_real_pos.x) * MMAP_CHUNK + g_minimap_size.x / 2.0,
+			(y - game->player->f_real_pos.y) * MMAP_CHUNK + g_minimap_size.y / 2.0},
 			(t_vector2){MMAP_CHUNK, MMAP_CHUNK}, color);
 			x++;
 		}
@@ -144,8 +144,8 @@ static void	draw_minimap_buf_on_main_image(t_minimap *mmap, t_image *image)
 	int			i;
 
 	y = 0;
-	i = mmap->img->size.y / 2 - 1;
-	dest_pos = (t_vector2){mmap->pos.x, mmap->pos.y};
+	i = mmap->image->size.y / 2 - 1;
+	dest_pos = (t_vector2){g_minimap_pos.x, g_minimap_pos.y};
 
 	// while (y < mmap->img->size.y)
 	// {
@@ -176,11 +176,12 @@ static void	draw_minimap_buf_on_main_image(t_minimap *mmap, t_image *image)
 // draw player on the main image, after rotation
 void	mmap_draw_player(t_game *game)
 {
-	my_mlx_pixel_put(game->image->addr, game->image->size_line,
+	draw_image_on_image_alpha(game->image, game->minimap->player_img,
 		(t_vector2){
-		game->minimap->pos.x + game->minimap->size.x / 2 - 1,
-		game->minimap->pos.y + game->minimap->size.y / 2 - 1},
-		0xFF0000);
+		g_minimap_pos.x + g_minimap_size.x / 2
+			- game->minimap->player_img->size.x / 2,
+		g_minimap_pos.y + g_minimap_size.y / 2
+			- game->minimap->player_img->size.x / 2});
 }
 
 void	draw_minimap(t_game *game)
@@ -190,10 +191,10 @@ void	draw_minimap(t_game *game)
 	minimap = game->minimap;
 	if (!minimap)
 		return ;
-	ft_memcpy(minimap->img->addr, minimap->background_image->addr,
-		minimap->size.x * minimap->size.y * 4);
+	ft_memcpy(minimap->image->addr, minimap->back_img->addr,
+		g_minimap_size.x * g_minimap_size.y * 4);
 	draw_rectangular_minimap(game);
-	draw_rotated_image(minimap->buffer_img, minimap->img, (t_vector2){0, 0}, game->player->angle * TO_RADIAN);
+	draw_rotated_image(minimap->buffer_img, minimap->image, (t_vector2){}, game->player->angle * TO_RADIAN);
 	draw_minimap_buf_on_main_image(minimap, game->image);
 	mmap_draw_player(game);
 }
@@ -207,7 +208,7 @@ void	generate_minimap_bounds(t_game *game)
 
 	minimap = game->minimap;
 	x = 0;
-	y = minimap->size.x / 2.0;
+	y = g_minimap_size.x / 2.0;
 	p = 1 - y;
 	while (x <= y)
 	{
@@ -222,8 +223,8 @@ void	generate_minimap_bounds(t_game *game)
 			x++;
 			p = p - 2 * y + 2 * x + 1;
 		}
-		minimap->bounds[minimap->size.x / 2 - x] = y;
-		minimap->bounds[minimap->size.x / 2 - y] = x;
+		minimap->bounds[g_minimap_size.x / 2 - x] = y;
+		minimap->bounds[g_minimap_size.x / 2 - y] = x;
 	}
 }
 
@@ -250,17 +251,10 @@ bool	generate_background_image(t_game *game)
 {
 	t_image *bck_image;
 
-	game->minimap->background_image = ft_calloc(1, sizeof(t_image));
-	bck_image = game->minimap->background_image;
+	bck_image = btmlx_new_image(game->mlx_ptr, g_minimap_size);
 	if (!bck_image)
 		return (false);
-	bck_image->img
-		= mlx_new_image(game->mlx_ptr, game->minimap->size.x, game->minimap->size.y);
-	if (!bck_image->img)
-		return (false);
-	bck_image->addr = mlx_get_data_addr(bck_image->img, &bck_image->opp, &bck_image->size_line, &bck_image->endian);
-	bck_image->opp /= 8;
-	bck_image->size = game->minimap->size;
+	game->minimap->back_img = bck_image;
 	fill_rectangle(bck_image->addr, bck_image->size, 0x808080);
 	return (true);
 }
@@ -274,45 +268,50 @@ bool	init_minimap(t_game *game)
 	if (!game->minimap)
 		return (false);
 	minimap = game->minimap;
-	if (WIN_X < WIN_Y)
-	{
-		minimap->size = (t_vector2){WIN_X * MINIMAP_SIZE, WIN_X * MINIMAP_SIZE};
-		minimap->pos = (t_vector2)
-		{WIN_X * MINIMAP_PAD,
-		WIN_X - minimap->size.y - WIN_X * MINIMAP_PAD};
-	}
-	else
-	{
-		minimap->size = (t_vector2){WIN_Y * MINIMAP_SIZE, WIN_Y * MINIMAP_SIZE};
-		minimap->pos = (t_vector2)
-		{WIN_Y * MINIMAP_PAD,
-		WIN_Y - minimap->size.y - WIN_Y * MINIMAP_PAD};
-	}
-	minimap->bounds =
-		ft_calloc(minimap->size.y / 2, sizeof(int));
+
+	// minimap->size =
+	// (t_vector2)
+	// {
+	// 	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_SIZE,
+	// 	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_SIZE
+	// };
+	// minimap->pos =
+	// (t_vector2)
+	// {
+	// 	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_PAD,
+	// 	(((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) - g_minimap_size.y -
+	// 	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y)) * MINIMAP_PAD
+	// };
+	
+	// if (WIN_X < WIN_Y)
+	// {
+	// 	minimap->size = (t_vector2){WIN_X * MINIMAP_SIZE, WIN_X * MINIMAP_SIZE};
+	// 	minimap->pos = (t_vector2)
+	// 	{WIN_X * MINIMAP_PAD,
+	// 	WIN_X - minimap->size.y - WIN_X * MINIMAP_PAD};
+	// }
+	// else
+	// {
+	// 	minimap->size = (t_vector2){WIN_Y * MINIMAP_SIZE, WIN_Y * MINIMAP_SIZE};
+	// 	minimap->pos = (t_vector2)
+	// 	{WIN_Y * MINIMAP_PAD,
+	// 	WIN_Y - minimap->size.y - WIN_Y * MINIMAP_PAD};
+	// }
+	minimap->bounds = ft_calloc(g_minimap_size.y / 2, sizeof(int));
 	if (!minimap->bounds)
 		return (false);
 	generate_minimap_bounds(game);
-	minimap->img = ft_calloc(1, sizeof(t_image));
-	if (!minimap->img)
+	minimap->image = btmlx_new_image(game->mlx_ptr, g_minimap_size);
+	if (!minimap->image)
 		return (false);
-	minimap->img->img = mlx_new_image(game->mlx_ptr,
-		minimap->size.x, minimap->size.y);
-	if (!minimap->img->img)
+	minimap->buffer_img = btmlx_new_image(game->mlx_ptr, g_minimap_size);
+	if (!minimap->image)
 		return (false);
-	minimap->img->addr = mlx_get_data_addr(minimap->img->img, &minimap->img->opp, &minimap->img->size_line, &minimap->img->endian);
-	minimap->img->opp /= 8;
-	minimap->img->size = minimap->size;
-	minimap->buffer_img = ft_calloc(1, sizeof(t_image));
-	if (!minimap->buffer_img)
-		return (false);
-	minimap->buffer_img->img = mlx_new_image(game->mlx_ptr, minimap->size.x, minimap->size.y);
-	if (!minimap->buffer_img->img)
-		return (false);
-	minimap->buffer_img->addr = mlx_get_data_addr(minimap->buffer_img->img, &minimap->buffer_img->opp, &minimap->buffer_img->size_line, &minimap->buffer_img->endian);
-	minimap->buffer_img->opp /= 8;
-	minimap->buffer_img->size = minimap->size;
 	generate_background_image(game);
+
+	minimap->player_img = btmlx_xpm_file_to_image(game->mlx_ptr, "assets/minimap_player.xpm", (t_vector2){15, 15});
+	if (!minimap->player_img->img)
+		return (false);
 	return (true);
 }
 

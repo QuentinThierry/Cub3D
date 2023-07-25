@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/24 19:22:48 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/24 21:33:19 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,22 @@
 
 long tot_fps = 0;
 long nb_fps = 0;
+
+const t_vector2	g_minimap_size =
+(t_vector2)
+{
+	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_SIZE,
+	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_SIZE
+};
+
+const t_vector2	g_minimap_pos = 
+(t_vector2)
+{
+	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_PAD,
+	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) - 
+	(((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_SIZE) -
+	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_PAD
+};
 
 #if THREED
 int	on_update(t_game *game)
@@ -93,7 +109,6 @@ int main(int argc, char **argv)
 	if (load_image(&game) == -1)
 		return (perror("Error"), ft_close(&game), 1);
 	game.constants = (double[5]){(WIN_X) / (tan((FOV / 2.0) * TO_RADIAN))};
-
 	init_minimap(&game);
 	// init_mouse(&game);
 	mlx_hook(game.win, 2, (1L<<0), key_press_hook, &game);

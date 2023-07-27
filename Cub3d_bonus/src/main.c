@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/27 18:04:38 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/27 19:47:41 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,22 @@
 
 long tot_fps = 0;
 long nb_fps = 0;
+
+const t_vector2	g_minimap_size =
+(t_vector2)
+{
+	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_SIZE,
+	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_SIZE
+};
+
+const t_vector2	g_minimap_pos = 
+(t_vector2)
+{
+	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_PAD,
+	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) - 
+	(((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_SIZE) -
+	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_PAD
+};
 
 #if THREED
 int	on_update(t_game *game)
@@ -24,8 +40,6 @@ int	on_update(t_game *game)
 
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
-	clock_gettime(CLOCK_REALTIME, &(game->time));
-
 	
 	if (game->player->angle + game->player->angle >= 360)
 		game->player->angle = game->player->angle - 360;
@@ -33,7 +47,8 @@ int	on_update(t_game *game)
 		game->player->angle = game->player->angle + 360;
 	player_move(game->player, game->delta_time, game->map);
 	raycasting(game);
-	// draw_minimap(game);
+	draw_minimap(game);
+
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
 
 	clock_gettime(CLOCK_REALTIME, &cur_time);
@@ -42,8 +57,8 @@ int	on_update(t_game *game)
 	fps = (long)(1.0 / game->delta_time);
 	tot_fps += fps;
 	nb_fps++;
-	// if ((nb_fps % 50) == 0)
-	// 	printf("fps : %ld\n", fps);
+	if ((nb_fps % 50) == 0)
+		printf("fps : %ld\n", fps);
 	last_time = cur_time;
 	return (0);
 }
@@ -96,8 +111,7 @@ int main(int argc, char **argv)
 		return (perror("Error"), ft_close(&game), 1);
 	free_filename(&game);
 	game.constants = (double[5]){(WIN_X) / (tan((FOV / 2.0) * TO_RADIAN))};
-
-	// // init_minimap(&game);
+	init_minimap(&game);
 	init_mouse(&game);
 	mlx_hook(game.win, 2, (1L<<0), key_press_hook, &game);
 	mlx_hook(game.win, 3, (1L<<1), key_release_hook, game.player);

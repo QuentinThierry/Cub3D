@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 21:54:20 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/16 22:03:05 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,12 @@ t_vector2	get_dimension_maps(int fd, int nb_line, char *line, bool *error)
 	return (len);
 }
 
-void	free_tab(char **str, t_vector2 size)
+void	free_tab(char **str, int sizey)
 {
 	int	i;
 
 	i = 0;
-	while (i < size.y)
+	while (i < sizey)
 	{
 		free(str[i]);
 		i++;

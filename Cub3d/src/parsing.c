@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/11 03:33:05 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/16 22:02:52 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	**init_map(t_vector2 len)
 	{
 		res[i] = ft_calloc(len.x, sizeof(char));
 		if (res[i] == NULL)
-			return (free_tab(res, len), NULL);
+			return (free_tab(res, len.y), NULL);
 		i++;
 	}
 	return (res);
@@ -170,9 +170,9 @@ bool	find_color(char *str, t_game *game, char texture)
 	if (nb_color != 3 || str[i] != '\0')
 		return (printf("Error : Wrong format of color\n"), false);
 	if (texture == 'F')
-		game->floor = color;
+		game->floor_color = color;
 	else
-		game->ceiling = color;
+		game->ceiling_color = color;
 	return (true);
 }
 
@@ -267,8 +267,8 @@ void	printf_texture(t_game *game)
 	printf("su : %s\n", game->filename[e_south_wall]);
 	printf("ea : %s\n", game->filename[e_east_wall]);
 	printf("we : %s\n", game->filename[e_west_wall]);
-	printf("floor : %x\n", game->floor);
-	printf("ceiling : %x\n", game->ceiling);
+	printf("floor : %x\n", game->floor_color);
+	printf("ceiling : %x\n", game->ceiling_color);
 }
 
 int	parse_file(char *filename, t_game *game)

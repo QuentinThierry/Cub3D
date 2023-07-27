@@ -23,3 +23,8 @@ FIX :
 - Need to read directory for animation
 - Check if multiple definition of a texture incompatible
 <!-- - stop parsing if not valid caracter on the map -->
+- makefile
+
+
+Minimap : 
+- if screen is too small, do not draw minimap

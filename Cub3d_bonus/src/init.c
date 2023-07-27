@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/27 18:06:07 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/27 19:47:17 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	init_mlx(t_game *game)
 		return (-1);
 	game->image->addr = mlx_get_data_addr(game->image->img,
 		&game->image->opp, &game->image->size_line, &game->image->endian);
+	if (game->image->opp != 32)
+		return (-1); // If mlx returns a number of plane different that 4, stop the program
 	game->image->size = size;
 	game->image->opp /= 8;
 	if (game->win == NULL)

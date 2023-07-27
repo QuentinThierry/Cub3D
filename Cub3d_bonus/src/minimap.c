@@ -3,55 +3,186 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 00:30:38 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/16 01:36:53 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/24 21:28:02 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, int color)
+static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, t_pixel32 color)
 {
 	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
 }
 
-void	draw_horiz_line(t_image *image, int y, int x1, int x2)
+static inline void	my_mlx_pixel_put_sec(t_image *image, t_vector2 pos, t_pixel32 color)
 {
-	while (x1 < x2)
-		my_mlx_pixel_put(image->addr, image->size_line, (t_vector2){x1++, y}, 0xFF0000);
+	if (pos.y < 0 || pos.x < 0 || pos.x >= image->size.x || pos.y >= image->size.y)
+	{
+		return ;
+	}
+	*(int*)(image->addr + (pos.y * image->size_line + pos.x * 4)) = color;
 }
 
-void	draw_rectangle(t_image *image, t_vector2 pos, t_vector2 size, unsigned int color)
-{
-	int		x;
-	int		y;
-	char	*addr;
-	int		size_line;
 
-	addr = image->addr;
-	size_line = image->size_line;
-	y = 0;
-	while (y < size.y)
+void	draw_horiz_line(t_image *image, t_vector2 origin, int len, t_pixel32 color)
+{
+	int	i;
+
+	i = 0;
+	while (i < len)
 	{
-		x = 0;
-		while (x < size.x)
+		if (origin.x + i >= image->size.x || origin.x + i < 0)
+			return ;
+		my_mlx_pixel_put(image->addr, image->size_line, (t_vector2){
+		origin.x + i, origin.y}, color);
+		i++;
+	}
+}
+
+static inline unsigned int	get_color_at(char *addr, int size_line, t_vector2 pos)
+{
+	return (*(int *)(addr + (pos.y * size_line + pos.x * 4)));
+}
+
+void	draw_rectangle(t_image *image, t_vector2 pos, t_vector2 size, t_pixel32 color)
+{
+	int	x;
+	int	y;
+	
+	y = pos.y;
+	while (y < size.y + pos.y)
+	{
+		x = pos.x;
+		while (x < size.x + pos.x)
 		{
-			my_mlx_pixel_put(addr,
-				size_line, (t_vector2){pos.x + x, pos.y + y}, color);
+			my_mlx_pixel_put_sec(image, (t_vector2){x, y}, color);
 			x++;
 		}
 		y++;
 	}
 }
 
-void	cpy_line(t_image *dest, t_image *src, t_vector2 dest_pos, t_vector2 size)
-{
 
+void	draw_grid(t_minimap *minimap)
+{
+	int	x;
+	int	y;
+	t_pixel32 color = 0xFF;
 	
+	y = 0;
+	while (y < g_minimap_size.y)
+	{
+		x = 0;
+		while (x < g_minimap_size.x)
+		{
+			my_mlx_pixel_put(minimap->back_img->addr, minimap->back_img->size_line, (t_vector2){x, y}, color);
+			x += MMAP_CHUNK;
+		}
+		y++;
+	}
+	x = 0;
+	while (x < g_minimap_size.x)
+	{
+		y = 0;
+		while (y < g_minimap_size.y)
+		{
+			my_mlx_pixel_put(minimap->back_img->addr, minimap->back_img->size_line, (t_vector2){x, y}, color);
+			y += MMAP_CHUNK;
+		}
+		x++;
+	}
 }
 
+void	draw_rectangular_minimap(t_game *game)
+{
+	int			x;
+	int			y;
+	t_pixel32	color;
+	const t_map **map = (const t_map **)game->map;
+	const t_minimap *minimap = (const t_minimap *)game->minimap;
+
+	y = game->player->f_real_pos.y - 7;
+	while (y < game->player->f_real_pos.y + 7 && y < game->map_size.y)
+	{
+		if (y < 0)
+			y = 0;
+		x = game->player->f_real_pos.x - 7;
+		while (x < game->player->f_real_pos.x + 7 && x < game->map_size.x - 1)
+		{
+			if (x < 0)
+				x = 0;
+			if (map[y][x].is_wall)
+				color = 0x505050;
+			else
+				color = 0x808080;
+			draw_rectangle(minimap->image,
+			(t_vector2){
+			(x - game->player->f_real_pos.x) * MMAP_CHUNK + g_minimap_size.x / 2.0,
+			(y - game->player->f_real_pos.y) * MMAP_CHUNK + g_minimap_size.y / 2.0},
+			(t_vector2){MMAP_CHUNK, MMAP_CHUNK}, color);
+			x++;
+		}
+		y++;
+	}
+}
+
+
+
+
+
+
+
+
+
+static void	draw_minimap_buf_on_main_image(t_minimap *mmap, t_image *image)
+{
+	t_vector2	dest_pos;
+	int			y;
+	int			i;
+
+	y = 0;
+	i = mmap->image->size.y / 2 - 1;
+	dest_pos = (t_vector2){g_minimap_pos.x, g_minimap_pos.y};
+
+	// while (y < mmap->img->size.y)
+	// {
+	// 	ft_memcpy(image->addr + y * image->size_line, 
+	// 	mmap->img->addr + y * mmap->background_image->size_line, mmap->size.x * 4);
+	// 	y++;
+	// }
+	
+	while (y < mmap->buffer_img->size.y / 2)
+	{
+		ft_memcpy(
+			image->addr + (dest_pos.y + y)
+				* image->size_line + dest_pos.x * 4 + (mmap->buffer_img->size.x / 2 * 4) - mmap->bounds[y] * 4,
+			mmap->buffer_img->addr + y * mmap->buffer_img->size_line + (mmap->buffer_img->size.x / 2 * 4) - mmap->bounds[y] * 4,
+			mmap->bounds[y] * 4 * 2
+		);
+		ft_memcpy(
+			image->addr + (dest_pos.y + y + mmap->buffer_img->size.y / 2)
+				* image->size_line + dest_pos.x * 4 + (mmap->buffer_img->size.x / 2 * 4) - mmap->bounds[i] * 4,
+			mmap->buffer_img->addr + (y + mmap->buffer_img->size.y / 2) * mmap->buffer_img->size_line + (mmap->buffer_img->size.x / 2 * 4) - mmap->bounds[i] * 4,
+			mmap->bounds[i] * 4 * 2
+		);
+		i--;
+		y++;
+	}
+}
+
+// draw player on the main image, after rotation
+void	mmap_draw_player(t_game *game)
+{
+	draw_image_on_image_alpha(game->image, game->minimap->player_img,
+		(t_vector2){
+		g_minimap_pos.x + g_minimap_size.x / 2
+			- game->minimap->player_img->size.x / 2,
+		g_minimap_pos.y + g_minimap_size.y / 2
+			- game->minimap->player_img->size.x / 2});
+}
 
 void	draw_minimap(t_game *game)
 {
@@ -60,61 +191,24 @@ void	draw_minimap(t_game *game)
 	minimap = game->minimap;
 	if (!minimap)
 		return ;
-	// printf("%d %d\n", minimap->mmap_size.x, minimap->mmap_size.y);
-	draw_rectangle(minimap->img, (t_vector2){0,0}, minimap->mmap_size, 0xFF0000);
-
-	// printf("%#x\n", *(unsigned int*)(minimap->img->addr + 16));
-
-	// int x, y;
-
-	// y = 0;
-	// while (y < minimap->mmap_size.y)
-	// {
-	// 	x = 0;
-	// 	while (x < minimap->mmap_size.x)
-	// 	{
-	// 		if (x > minimap->bounds[y])
-	// 			my_mlx_pixel_put(minimap->img->addr, minimap->img->size_line, (t_vector2){x, y}, TRANSPARENT_PXL);
-	// 		x++;
-	// 	}
-	// 	y++;
-	// }
-	t_vector2	dest_pos;
-	int			y;
-
-	y = 0;
-	while (y < minimap->mmap_size.y / 2)
-	{
-		printf("%d\n", minimap->bounds[y]);
-		dest_pos = (t_vector2){minimap->mmap_pos.x, minimap->mmap_pos.y};
-		ft_memcpy(
-			game->image->addr + (dest_pos.y + y) * game->image->size_line + dest_pos.x * 4,
-			minimap->img->addr + y * minimap->img->size_line + minimap->bounds[y] * 4,
-			minimap->bounds[y]
-			// 0
-		);
-		y++;
-	}
-
-	// draw_image_on_image_alpha(game->image, minimap->img, (t_vector2){10, 10});
+	ft_memcpy(minimap->image->addr, minimap->back_img->addr,
+		g_minimap_size.x * g_minimap_size.y * 4);
+	draw_rectangular_minimap(game);
+	draw_rotated_image(minimap->buffer_img, minimap->image, (t_vector2){}, game->player->angle * TO_RADIAN);
+	draw_minimap_buf_on_main_image(minimap, game->image);
+	mmap_draw_player(game);
 }
-
-
-
-
 
 void	generate_minimap_bounds(t_game *game)
 {
 	int		x;
 	int		y;
 	int		p;
-
 	t_minimap	*minimap;
 
 	minimap = game->minimap;
-
 	x = 0;
-	y = minimap->mmap_size.x / 2.0;
+	y = g_minimap_size.x / 2.0;
 	p = 1 - y;
 	while (x <= y)
 	{
@@ -129,13 +223,42 @@ void	generate_minimap_bounds(t_game *game)
 			x++;
 			p = p - 2 * y + 2 * x + 1;
 		}
-		minimap->bounds[minimap->mmap_size.x / 2 - x] = y;
-		minimap->bounds[minimap->mmap_size.x / 2 - y] = x;
+		minimap->bounds[g_minimap_size.x / 2 - x] = y;
+		minimap->bounds[g_minimap_size.x / 2 - y] = x;
 	}
-	// for (int i = 0; i < minimap->mmap_size.y / 2; i++) {
-	// 	printf("%d\n", minimap->bounds[i]);
-	// }
 }
+
+static void	fill_rectangle(char *addr, t_vector2 size, unsigned int color)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < size.y)
+	{
+		x = 0;
+		while (x < size.x)
+		{
+			*(unsigned int *)addr = color;
+			addr += 4;
+			x++;
+		}
+		y++;
+	}
+}
+
+bool	generate_background_image(t_game *game)
+{
+	t_image *bck_image;
+
+	bck_image = btmlx_new_image(game->mlx_ptr, g_minimap_size);
+	if (!bck_image)
+		return (false);
+	game->minimap->back_img = bck_image;
+	fill_rectangle(bck_image->addr, bck_image->size, 0x808080);
+	return (true);
+}
+
 
 bool	init_minimap(t_game *game)
 {
@@ -145,34 +268,84 @@ bool	init_minimap(t_game *game)
 	if (!game->minimap)
 		return (false);
 	minimap = game->minimap;
-	if (WIN_X < WIN_Y)
-	{
-		minimap->mmap_size = (t_vector2){WIN_X * MINIMAP_SIZE, WIN_X * MINIMAP_SIZE};
-		minimap->mmap_pos = (t_vector2)
-		{WIN_X * MINIMAP_PAD,
-		WIN_X - minimap->mmap_size.y - WIN_X * MINIMAP_PAD};
-	}
-	else
-	{
-		minimap->mmap_size = (t_vector2){WIN_Y * MINIMAP_SIZE, WIN_Y * MINIMAP_SIZE};
-		minimap->mmap_pos = (t_vector2)
-		{WIN_Y * MINIMAP_PAD,
-		WIN_Y - minimap->mmap_size.y - WIN_Y * MINIMAP_PAD};
-	}
-	minimap->bounds =
-		ft_calloc(minimap->mmap_size.y / 8, sizeof(int));
+
+	// minimap->size =
+	// (t_vector2)
+	// {
+	// 	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_SIZE,
+	// 	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_SIZE
+	// };
+	// minimap->pos =
+	// (t_vector2)
+	// {
+	// 	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_PAD,
+	// 	(((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) - g_minimap_size.y -
+	// 	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y)) * MINIMAP_PAD
+	// };
+	
+	// if (WIN_X < WIN_Y)
+	// {
+	// 	minimap->size = (t_vector2){WIN_X * MINIMAP_SIZE, WIN_X * MINIMAP_SIZE};
+	// 	minimap->pos = (t_vector2)
+	// 	{WIN_X * MINIMAP_PAD,
+	// 	WIN_X - minimap->size.y - WIN_X * MINIMAP_PAD};
+	// }
+	// else
+	// {
+	// 	minimap->size = (t_vector2){WIN_Y * MINIMAP_SIZE, WIN_Y * MINIMAP_SIZE};
+	// 	minimap->pos = (t_vector2)
+	// 	{WIN_Y * MINIMAP_PAD,
+	// 	WIN_Y - minimap->size.y - WIN_Y * MINIMAP_PAD};
+	// }
+	minimap->bounds = ft_calloc(g_minimap_size.y / 2, sizeof(int));
 	if (!minimap->bounds)
 		return (false);
 	generate_minimap_bounds(game);
-	minimap->img = ft_calloc(1, sizeof(t_image));
-	if (!minimap->img)
+	minimap->image = btmlx_new_image(game->mlx_ptr, g_minimap_size);
+	if (!minimap->image)
 		return (false);
-	minimap->img->img = mlx_new_image(game->mlx_ptr,
-		minimap->mmap_size.x, minimap->mmap_size.y);
-	if (!minimap->img->img)
+	minimap->buffer_img = btmlx_new_image(game->mlx_ptr, g_minimap_size);
+	if (!minimap->image)
 		return (false);
-	minimap->img->addr = mlx_get_data_addr(minimap->img->img, &minimap->img->opp, &minimap->img->size_line, &minimap->img->endian);
-	minimap->img->opp /= 8;
-	minimap->img->size = minimap->mmap_size;
+	generate_background_image(game);
+
+	minimap->player_img = btmlx_xpm_file_to_image(game->mlx_ptr, "assets/minimap_player.xpm", (t_vector2){15, 15});
+	if (!minimap->player_img->img)
+		return (false);
 	return (true);
+}
+
+void	draw_rotated_image(t_image *img_dest, t_image *img_src, t_vector2 pos, float angle)
+{
+	int				x;
+	int				y;
+	t_vector2		old_pos;
+	t_vector2		image_size_div2;
+	double			cos_angle;
+	double			sin_angle;
+
+	image_size_div2.x = img_src->size.x / 2;
+	image_size_div2.y = img_src->size.y / 2;
+	cos_angle = cos(angle);
+	sin_angle = sin(angle);
+	y = 0;
+	while (y < img_src->size.y)
+	{
+		x = 0;
+		while (x < img_src->size.x)
+		{
+			old_pos.x = (x - image_size_div2.x) * cos_angle - (y - image_size_div2.y) * sin_angle;
+			old_pos.y = (x - image_size_div2.x) * sin_angle + (y - image_size_div2.y) * cos_angle;
+			if (old_pos.x + image_size_div2.x < img_src->size.x && old_pos.x + image_size_div2.x >= 0
+				&& old_pos.y + image_size_div2.y < img_src->size.y && old_pos.y + image_size_div2.y >= 0)
+			{
+				my_mlx_pixel_put(
+					img_dest->addr, img_dest->size_line,
+					(t_vector2){(int)x + pos.x, (int)y + pos.y},
+					*(int *)(img_src->addr + ((old_pos.y + image_size_div2.y) * img_src->size_line + (old_pos.x + image_size_div2.x) * 4)));
+			}
+			x++;
+		}
+		y++;
+	}
 }

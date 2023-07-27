@@ -6,14 +6,14 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/07/27 17:25:01 by jvigny           ###   ########.fr        #
+#    Updated: 2023/07/27 19:48:06 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3d_bonus
 
 CC = gcc
-CFLAGS = -g -Wall -Wextra #-fsanitize=address#-O3#-Werror
+CFLAGS = -g -Wall -Wextra #-O3#-fsanitize=address#-Werror
 LIBS = -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR)
 
@@ -61,6 +61,7 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			image_operations.c \
 			print.c \
 			free.c \
+			bettermlx.c \
 			main.c
 
 SRC_DIR = ./src/
@@ -75,17 +76,17 @@ all:	$(NAME)
 bonus:	all
 
 run: $(NAME)
-	./$(NAME) maps/map.cub
+	./$(NAME) maps/map_test.cub
 
 # vrun: $(NAME)
 # 	valgrind --leak-check=full --track-fds=yes --trace-children=yes --show-leak-kinds=all --track-origins=yes ./$(NAME)
 
 vrun: $(NAME)
-	valgrind ./$(NAME) maps/map.cub
+	valgrind ./$(NAME) maps/map_test.cub
 
 prun: CFLAGS += -pg
 prun: $(NAME)
-	./$(NAME) maps/map.cub
+	./$(NAME) maps/map_test.cub
 	gprof $(NAME) gmon.out > analysis.txt
 
 $(NAME):	$(MINILIBX) $(OBJ_DIR) $(OBJ)

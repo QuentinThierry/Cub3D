@@ -1,7 +1,7 @@
 NO ./assets/smiley.xpm
 SO ./assets/cobble.xpm
-WE ./assets/blue.xpm
-EA ./assets/wood_light.xpm
+WE ./assets/smiley.xpm
+EA ./assets/cobble.xpm
 F 220,100,0
 C 225,30,0
 1111111111111111111111111111111111

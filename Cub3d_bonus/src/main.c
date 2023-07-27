@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/27 17:53:58 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/27 18:04:38 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ int main(int argc, char **argv)
 	game.nb_file = e_total;
 	if (!parse_file(argv[1], &game))
 		return (1);
-	printf_texture(&game);
-	fflush(stdout);
-	print_map(&game);
+	// printf_texture(&game);
+	// fflush(stdout);
+	// print_map(&game);
 	if (!check_map(&game))
 		return (1);
 	if (init_mlx(&game) == -1)

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/27 17:24:52 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/27 18:05:00 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ bool	find_player(t_game *game)
 				|| game->map[index.y][index.x].symbol == 'W'
 				|| game->map[index.y][index.x].symbol == 'E')
 			{
-				printf("find player : %c\n", game->map[index.y][index.x].symbol);
+				// printf("find player : %c\n", game->map[index.y][index.x].symbol);
 				if (is_player)
 					return (printf("Error : Too much players\n"), false);
 				is_player = true;

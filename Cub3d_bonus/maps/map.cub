@@ -1,15 +1,15 @@
-NO ./assets/cobble.xpm
-SO ./assets/smiley.xpm
-WE ./assets/cobble.xpm
-EA ./assets/smiley.xpm
+NO ./assets/wall_red_wood.xpm
+SO ./assets/griffure.xpm
+WE ./assets/wallpaper_torn_sale.xpm
+EA ./assets/red_wall_paint_happy_women.xpm
 F ./assets/smiley.xpm
 C ./assets/smiley.xpm
 
-c ./assets/door.xpm
-o ./assets/door.xpm
-t ./assets/red_wall_paint_happy_women.xpm
-S_t ./assets/chatmignon.xpm
-W_t ./assets/tressombre.xpm
+c ./assets/door
+o ./assets/smiley.xpm
+t ./assets/smiley.xpm
+S_t ./assets/cobble.xpm
+W_t ./assets/chatmignon.xpm
 F_F ./assets/smiley.xpm
 
 MAP

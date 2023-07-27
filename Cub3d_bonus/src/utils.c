@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/17 22:03:27 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/27 17:19:17 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ bool	check_symbol(char *str)
 	int	i;
 
 	i = 0;
-	len = strlen(str);
+	len = ft_strlen(str);
 	while (i < len)
 	{
 		if (i == len - 1 && str[len - 1] == '\n')
@@ -96,8 +96,8 @@ t_vector2	get_dimension_maps(int fd, char *line, bool *error)
 			break;
 		// if (!check_symbol(line))
 		// 	*error = true;
-		else if (len.x < (int)strlen(line))
-			len.x = strlen(line);
+		else if (len.x < (int)ft_strlen(line))
+			len.x = ft_strlen(line);
 		len.y++;
 		free(line);
 		line = get_next_line(fd);
@@ -114,30 +114,27 @@ t_vector2	get_dimension_maps(int fd, char *line, bool *error)
 	return (len);
 }
 
-void	free_tab(void **str, t_vector2 size)
+t_sprite	random_texture(t_texture *texture, int index, int len)
 {
+	int	nb;
+	int	size;
 	int	i;
 
+	size = 0;
 	i = 0;
-	while (i < size.y)
+	while (i < index)
 	{
-		free(str[i]);
+		size += texture[i].total;
 		i++;
 	}
-	free(str);
-}
-
-void	free_str(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != NULL)
-	{
-		free(str[i]);
-		i++;
-	}
-	free(str);
+	// printf("- %d(%d) -", size, index);
+	if (!texture->filename)
+		return ((t_sprite){size, -1, 0});
+	nb = texture->nb_file + texture->nb_animation;
+	//random 0 -> nb exclu
+	if (nb < texture->nb_file)
+		return ((t_sprite){size, -1, 0});
+	return ((t_sprite){size, 0, 0});
 }
 
 /**
@@ -150,10 +147,10 @@ void	free_str(char **str)
  * @param orient 
  * @return int 
  */
-int	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient)
+t_sprite	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient)
 {
-	int i;
 	int	res;
+	int	i;
 	
 	i = 0;
 	res = -1;
@@ -162,13 +159,13 @@ int	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient
 		if (tab[i].symbol == symbol)
 		{
 			if (tab[i].orient == orient)
-				return (i);
+				return (random_texture(tab, i, len));
 			else if ((orient >= e_north && orient <= e_west) && tab[i].orient == e_wall)
 				res = i;
 		}
 		i++;
 	}
-	return (res);
+	return (random_texture(tab, res, len));
 }
 
 /**
@@ -232,4 +229,14 @@ int	get_len_texture(t_texture *texture, int len)
 		i++;
 	}
 	return (res);
+}
+
+int	ft_strlen(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }

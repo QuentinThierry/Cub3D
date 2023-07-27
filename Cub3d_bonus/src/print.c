@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/17 19:47:58 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/27 16:59:24 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,18 @@ void	printf_texture(t_game *game)
 	int i = 0;
 	int j;
 	int x;
-	while (i < game->nb_sprite)
+	while (i < game->nb_file)
 	{
 		if (game->filename[i].filename != NULL)
-			printf("texture %s	char : %c	orientation : %d	index : %d\n"
+			printf("texture %s	char : %c	orientation : %d	index : %d		total : %d\n"
 				, game->filename[i].filename, game->filename[i].symbol
-				, game->filename[i].orient, i);
+				, game->filename[i].orient, i, game->filename[i].total);
 		else
 		{
 			j = 0;
-			printf("char : %c	orientation : %d	index : %d\n"
+			printf("char : %c	orientation : %d	index : %d	total : %d\n"
 				, game->filename[i].symbol
-				, game->filename[i].orient, i);
+				, game->filename[i].orient, i, game->filename[i].total);
 			while (j < game->filename[i].nb_file)
 			{
 				printf("	dir :texture %s\n", game->filename[i].filename_d[j]);

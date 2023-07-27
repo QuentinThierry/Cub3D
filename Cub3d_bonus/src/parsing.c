@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/17 18:51:52 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/27 17:24:52 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_map	**init_map(t_vector2 len)
 	{
 		res[i] = ft_calloc(len.x, sizeof(t_map));
 		if (res[i] == NULL)
-			return (perror("Error"), free_tab((void *)res, len), NULL);
+			return (perror("Error"), free_tab((void *)res, len.y), NULL);
 		i++;
 	}
 	return (res);
@@ -115,6 +115,7 @@ bool	find_player(t_game *game)
 				|| game->map[index.y][index.x].symbol == 'W'
 				|| game->map[index.y][index.x].symbol == 'E')
 			{
+				printf("find player : %c\n", game->map[index.y][index.x].symbol);
 				if (is_player)
 					return (printf("Error : Too much players\n"), false);
 				is_player = true;
@@ -157,10 +158,10 @@ bool	check_filename(char *filename)
 	int len;
 	int	fd;
 
-	len = strlen(filename);
+	len = ft_strlen(filename);
 	if (len < 4)
 		return (printf("Error : Wrong name of file\n"), false);
-	if (strncmp(filename + (len - 4 ), ".cub", 4) != 0)
+	if (ft_strncmp(filename + (len - 4 ), ".cub", 4) != 0)
 		return (printf("Error : Wrong name of file\n"), false);
 	fd = open(filename, O_DIRECTORY);
 	if (fd != -1)

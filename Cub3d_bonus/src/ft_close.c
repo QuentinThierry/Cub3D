@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 02:28:55 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/27 17:00:19 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,15 @@ int	ft_close(t_game *game)
 
 	i = 0;
 	if (game->map != NULL)
-		free_tab((void *)game->map, game->map_size);
+		free_tab((void *)game->map, game->map_size.y);
 	if (game->player != NULL)
 		free(game->player);
-	if (game->filename)
-	{
-		while (i < game->nb_sprite)
-		{
-			free(game->filename[i].filename);
-			i++;
-		}
-		free(game->filename);
-	}
+	if (game->filename != NULL)
+		free_filename(game);
 	if (game->mlx_ptr != NULL)
 	{
 		i = 0;
-		while (i < game->nb_sprite)
+		while (i < game->nb_images)
 		{
 			if (game->tab_images[i].img != NULL)
 				mlx_destroy_image(game->mlx_ptr, game->tab_images[i].img);
@@ -45,7 +38,7 @@ int	ft_close(t_game *game)
 			mlx_destroy_image(game->mlx_ptr, game->image->img);
 			free(game->image);
 		}
-		if (game->win)
+		if (game->win != NULL)
 			mlx_destroy_window(game->mlx_ptr, game->win);
 		mlx_destroy_display(game->mlx_ptr);
 		free(game->mlx_ptr);

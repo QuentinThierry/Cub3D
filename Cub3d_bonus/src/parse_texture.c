@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/17 22:04:32 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/27 12:52:37 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	swap(char **str, int a, int b)
 
 /**
  * @brief sort the filenames of animation by alphbetic order and return if
- *		"config.cfg" is present
+ *		"config.cfg" is present. "config.cfg" will have the first position
  * 
  * @param anim 
  * @return true 
@@ -72,17 +72,17 @@ bool	sort_animation(t_animation *anim)
 		if (strlen(anim->filename[i]) >= 10 && strcmp(anim->filename[i]
 			+ (strlen(anim->filename[i]) - 10) , "config.cfg") == 0)
 		{
-			swap(anim->filename, i, anim->nb_sprite - 1);
+			swap(anim->filename, i, 0);
 			has_config = true;
 			break ;
 		}
 		i++;
 	}
-	i = 0;
-	while (i + 1 < anim->nb_sprite - 1)
+	i = 1;
+	while (i + 1 < anim->nb_sprite)
 	{
-		j = 0;
-		while (j + 1< anim->nb_sprite - 1)
+		j = 1;
+		while (j + 1 < anim->nb_sprite)
 		{
 			if (strcmp(anim->filename[j], anim->filename[j + 1]) > 0)
 				swap(anim->filename, j, j + 1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/24 21:29:22 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/27 19:42:20 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@
 # define TRANSPARENT_PXL 0x00FF00
 
 // MINIMAP
-#define MMAP_CHUNK 20
+#define MMAP_CHUNK 10
 // Represents the minimap padding equals to a percentage of the total window
 #define MINIMAP_PAD 0.05
 
@@ -147,8 +147,6 @@ typedef struct s_minimap
 	t_image		*buffer_img;
 	t_image		*back_img;
 	t_image		*player_img;
-	// t_vector2	pos;
-	// t_vector2	size;
 	int			*bounds;
 
 }	t_minimap;
@@ -168,9 +166,6 @@ typedef struct s_game
 	double			delta_time;
 	const double	*constants;
 }	t_game;
-
-extern const t_vector2	g_minimap_pos;
-extern const t_vector2	g_minimap_size;
 
 // ------ Utils------
 void		*ft_calloc(size_t nmemb, size_t size);

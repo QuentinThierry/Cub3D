@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/27 17:27:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/27 17:53:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,14 +174,15 @@ typedef struct s_game
 	void			*mlx_ptr;
 	void			*win;
 	t_image			*tab_images;
+	int				nb_images;
 	t_texture		*filename;
 	int				nb_file;
-	int				nb_images;
 	t_map			**map;
 	t_vector2		map_size;
 	t_player		*player;
 	t_minimap		*minimap;
 	double			delta_time;
+	struct timespec	time;
 	const double	*constants;
 }	t_game;
 

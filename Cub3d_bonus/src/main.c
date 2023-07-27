@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/27 16:59:24 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/27 17:53:58 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	on_update(t_game *game)
 
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
-	
+	clock_gettime(CLOCK_REALTIME, &(game->time));
 
 	
 	if (game->player->angle + game->player->angle >= 360)
@@ -37,7 +37,8 @@ int	on_update(t_game *game)
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
 
 	clock_gettime(CLOCK_REALTIME, &cur_time);
-	game->delta_time = (cur_time.tv_sec - last_time.tv_sec + (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
+	game->delta_time = (cur_time.tv_sec - last_time.tv_sec
+			+ (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
 	fps = (long)(1.0 / game->delta_time);
 	tot_fps += fps;
 	nb_fps++;

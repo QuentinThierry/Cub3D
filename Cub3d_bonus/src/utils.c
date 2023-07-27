@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/27 17:19:17 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/27 18:01:21 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,18 @@ enum e_orientation	get_wall_orientation(t_fvector2 player, t_fvector2 wall)
 
 t_image	*get_image(t_game *game, enum e_orientation orient, t_fvector2 wall)
 {
-	int	index;
+	t_sprite img;
 	
 	if (orient == e_south)
-		index = game->map[(int)wall.y - 1][(int)wall.x].sprite[orient].index;
+		img = game->map[(int)wall.y - 1][(int)wall.x].sprite[orient];
 	else if (orient == e_north || orient == e_west)
-		index = game->map[(int)wall.y][(int)wall.x].sprite[orient].index;
+		img = game->map[(int)wall.y][(int)wall.x].sprite[orient];
 	if (orient == e_east)
-		index = game->map[(int)wall.y][(int)wall.x - 1].sprite[orient].index;
-	return (&(game->tab_images[index]));
+		img = game->map[(int)wall.y][(int)wall.x - 1].sprite[orient];
+	if (img.frame != -1)// && img.time + game->tab_images[img.index].time_animation > game.time)
+		return (&(game->tab_images[img.index]));		//animation
+	else
+		return (&(game->tab_images[img.index]));
 }
 
 

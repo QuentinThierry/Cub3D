@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:06:58 by jvigny            #+#    #+#             */
-/*   Updated: 2022/11/24 11:19:55 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/17 15:51:47 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*fill_result(t_line *line, int fd, char *res, ssize_t len)
 		{
 			line->next = NULL;
 			line->len_buf = line->ret;
-			res = ft_strjoin(line, line->buffer, res);
+			res = ft_strjoin_gnl(line, line->buffer, res);
 		}
 		else
 		{
@@ -48,13 +48,13 @@ char	*fill_result(t_line *line, int fd, char *res, ssize_t len)
 			if (len + 1 >= line->ret)
 				line->next = NULL;
 			line->len_buf = len + 1;
-			res = ft_strjoin(line, line->buffer, res);
+			res = ft_strjoin_gnl(line, line->buffer, res);
 		}
 	}
 	return (res);
 }
 
-char	*ft_strjoin(t_line *line, char *begin, char *res)
+char	*ft_strjoin_gnl(t_line *line, char *begin, char *res)
 {
 	char	*res_f;
 	ssize_t	len;
@@ -86,7 +86,7 @@ char	*ft_strjoin(t_line *line, char *begin, char *res)
 char	*exception(t_line *line, char *res, ssize_t len)
 {
 	line->len_buf = len + 1;
-	res = ft_strjoin(line, line->next, res);
+	res = ft_strjoin_gnl(line, line->next, res);
 	line->next = line->next + len + 1;
 	if (line->next >= line->buffer + line->ret)
 		line->next = NULL;

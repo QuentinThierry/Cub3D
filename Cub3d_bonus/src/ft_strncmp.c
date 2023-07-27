@@ -1,33 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/08 18:04:11 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/27 17:21:47 by jvigny           ###   ########.fr       */
+/*   Created: 2022/10/15 13:52:48 by jvigny            #+#    #+#             */
+/*   Updated: 2023/07/27 17:26:45 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-char	*ft_strdup(const char *s)
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	char	*res;
-	size_t	len;
 	size_t	i;
 
 	i = 0;
-	len = ft_strlen((char *)s);
-	res = ft_calloc(sizeof(char), len + 1);
-	if (res == 0)
-		return (0);
-	while (i < len)
-	{
-		res[i] = s[i];
+	while (i < n && s1[i] != 0 && (unsigned char)s1[i] == (unsigned char)s2[i])
 		i++;
-	}
-	res[i] = 0;
-	return (res);
+	if (i == n)
+		return (0);
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while (s1[i] != 0 && (unsigned char)s1[i] == (unsigned char)s2[i])
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }

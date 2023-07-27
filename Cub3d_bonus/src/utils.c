@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 01:28:13 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/27 18:01:21 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,18 @@ enum e_orientation	get_wall_orientation(t_fvector2 player, t_fvector2 wall)
 
 t_image	*get_image(t_game *game, enum e_orientation orient, t_fvector2 wall)
 {
-	int	index;
+	t_sprite img;
 	
 	if (orient == e_south)
-		index = game->map[(int)wall.y - 1][(int)wall.x].sprite[orient].index;
+		img = game->map[(int)wall.y - 1][(int)wall.x].sprite[orient];
 	else if (orient == e_north || orient == e_west)
-		index = game->map[(int)wall.y][(int)wall.x].sprite[orient].index;
+		img = game->map[(int)wall.y][(int)wall.x].sprite[orient];
 	if (orient == e_east)
-		index = game->map[(int)wall.y][(int)wall.x - 1].sprite[orient].index;
-	// if (index == -1)
-	// {
-	// 	printf("Error : get image wall %f	%f\n", wall.x, wall.y);
-	// 	exit(1);
-	// }
-	return (&(game->tab_images[index]));
+		img = game->map[(int)wall.y][(int)wall.x - 1].sprite[orient];
+	if (img.frame != -1)// && img.time + game->tab_images[img.index].time_animation > game.time)
+		return (&(game->tab_images[img.index]));		//animation
+	else
+		return (&(game->tab_images[img.index]));
 }
 
 
@@ -66,7 +64,7 @@ bool	check_symbol(char *str)
 	int	i;
 
 	i = 0;
-	len = strlen(str);
+	len = ft_strlen(str);
 	while (i < len)
 	{
 		if (i == len - 1 && str[len - 1] == '\n')
@@ -101,8 +99,8 @@ t_vector2	get_dimension_maps(int fd, char *line, bool *error)
 			break;
 		// if (!check_symbol(line))
 		// 	*error = true;
-		else if (len.x < (int)strlen(line))
-			len.x = strlen(line);
+		else if (len.x < (int)ft_strlen(line))
+			len.x = ft_strlen(line);
 		len.y++;
 		free(line);
 		line = get_next_line(fd);
@@ -119,30 +117,27 @@ t_vector2	get_dimension_maps(int fd, char *line, bool *error)
 	return (len);
 }
 
-void	free_tab(void **str, t_vector2 size)
+t_sprite	random_texture(t_texture *texture, int index, int len)
 {
+	int	nb;
+	int	size;
 	int	i;
 
+	size = 0;
 	i = 0;
-	while (i < size.y)
+	while (i < index)
 	{
-		free(str[i]);
+		size += texture[i].total;
 		i++;
 	}
-	free(str);
-}
-
-void	free_str(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != NULL)
-	{
-		free(str[i]);
-		i++;
-	}
-	free(str);
+	// printf("- %d(%d) -", size, index);
+	if (!texture->filename)
+		return ((t_sprite){size, -1, 0});
+	nb = texture->nb_file + texture->nb_animation;
+	//random 0 -> nb exclu
+	if (nb < texture->nb_file)
+		return ((t_sprite){size, -1, 0});
+	return ((t_sprite){size, 0, 0});
 }
 
 /**
@@ -155,10 +150,10 @@ void	free_str(char **str)
  * @param orient 
  * @return int 
  */
-int	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient)
+t_sprite	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient)
 {
-	int i;
 	int	res;
+	int	i;
 	
 	i = 0;
 	res = -1;
@@ -167,13 +162,13 @@ int	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient
 		if (tab[i].symbol == symbol)
 		{
 			if (tab[i].orient == orient)
-				return (i);
+				return (random_texture(tab, i, len));
 			else if ((orient >= e_north && orient <= e_west) && tab[i].orient == e_wall)
 				res = i;
 		}
 		i++;
 	}
-	return (res);
+	return (random_texture(tab, res, len));
 }
 
 /**
@@ -203,4 +198,48 @@ bool	is_wall(char symbol, t_texture *tab, int len, bool *error)
 		i++;
 	}
 	return (*error = true, false);
+}
+
+/**
+ * @brief Get the number of different texture without the "config.cfg"
+ * 
+ * @param texture 
+ * @param len 
+ * @return int 
+ */
+int	get_len_texture(t_texture *texture, int len)
+{
+	int i;
+	int j;
+	int	res;
+
+	res = 0;
+	i = 0;
+	while (i < len)
+	{
+		if (texture[i].filename != NULL)
+			res++;
+		else
+		{
+			res += texture[i].nb_file;
+			j = 0;
+			while (j < texture[i].nb_animation)
+			{
+				res += texture[i].animation[j].nb_sprite - 1;
+				j++;
+			}
+		}
+		i++;
+	}
+	return (res);
+}
+
+int	ft_strlen(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 01:05:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/16 00:36:48 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/27 17:15:46 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,30 +25,6 @@ void	check_colliding(t_player *player, t_fvector2 new_pos, t_map **map)
 	player->pos.x = (int)player->f_pos.x;
 	player->pos.y = (int)player->f_pos.y;
 }
-
-	// if (map[(int)(player->f_pos.y / CHUNK_SIZE)][(int)(new_pos.x / CHUNK_SIZE)] == '1')
-	// {
-	// 	if (player->f_pos.x - new_pos.x <= 0)
-	// 		player->f_pos.x = ((int)(new_pos.x / CHUNK_SIZE)) * CHUNK_SIZE - 0.1;
-	// 	else
-	// 		player->f_pos.x = ((int)(new_pos.x / CHUNK_SIZE) + 1) * CHUNK_SIZE + 0.1;
-	// }
-	// else
-	// 	player->f_pos.x = new_pos.x;
-	// if (map[(int)(new_pos.y / CHUNK_SIZE)][(int)(player->f_pos.x / CHUNK_SIZE)] == '1')
-	// {
-	// 	if (player->f_pos.y - new_pos.y <= 0)
-	// 		player->f_pos.y = ((int)(new_pos.y / CHUNK_SIZE)) * CHUNK_SIZE - 0.1;
-	// 	else
-	// 		player->f_pos.y = ((int)(new_pos.y / CHUNK_SIZE) + 1) * CHUNK_SIZE + 0.1;
-	// }
-	// else
-	// 	player->f_pos.y = new_pos.y;
-
-	// player->pos.x = (int)player->f_pos.x;
-	// player->pos.y = (int)player->f_pos.y;
-	// player->f_real_pos.x = player->f_pos.x / CHUNK_SIZE;
-	// player->f_real_pos.y = player->f_pos.y / CHUNK_SIZE;
 
 // y= 2.00
 static t_fvector2	slide_wall_x(t_fvector2 fpos, t_map **map, t_fvector2 dest)

@@ -6,38 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 01:27:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/27 18:02:36 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
-
-void	print_map(t_game *game)
-{
-	int y = 0;
-	int x = 0;
-	
-	while(y < game->map_size.y)
-	{
-		x = 0;
-		while(x < game->map_size.x)
-		{
-			write(1, "|", 1);
-			write(1, &(game->map[y][x].symbol), 1);
-			printf("%d",game->map[y][x].sprite[e_north].index);
-			printf("%d",game->map[y][x].sprite[e_east].index);
-			printf("%d",game->map[y][x].sprite[e_south].index);
-			printf("%d",game->map[y][x].sprite[e_west].index);
-			printf("%d",game->map[y][x].sprite[e_down].index);
-			printf("%d",game->map[y][x].sprite[e_up].index);
-			fflush(stdout);
-			write(1, "|", 1);
-			x++;
-		}
-		write(1, "\n", 1);
-		y++;
-	}
-}
 
 static inline unsigned int	get_color_at(char *addr, int size_line, t_vector2 pos)
 {
@@ -87,7 +60,7 @@ void	draw_vert(t_game *game, int x, t_fvector2 wall, double height)
 	addr = game->image->addr;
 	while (i < y)
 	{
-		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, 0xFF0000);
+		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, 0x666666);
 		i++;
 	}
 	while (y < y1)
@@ -98,7 +71,7 @@ void	draw_vert(t_game *game, int x, t_fvector2 wall, double height)
 	}
 	while (y1 < WIN_Y)
 	{
-		my_mlx_pixel_put(addr, size_line, (t_vector2){x, y1}, 0x00FF00);
+		my_mlx_pixel_put(addr, size_line, (t_vector2){x, y1}, 0x222222);
 		y1++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/27 19:42:20 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/27 19:56:13 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <math.h>
 # include <time.h>
 # include <stdint.h>
+# include <dirent.h>
 
 # include "minilibx-linux/mlx.h"
 # include "minilibx-linux/mlx_int.h"
@@ -114,6 +115,9 @@ typedef struct s_image
 	int			size_line;
 	int			endian;
 	t_vector2	size;
+	int			time_sprite;
+	int			time_animation;
+	int			nb_total_frame;
 }	t_image;
 
 typedef struct s_sprite
@@ -133,12 +137,32 @@ typedef struct s_map
 
 /**
  * @brief use to stock the texture during the parsing
+ *
+ *	During the parsing we can find :
+ *	char *							t_animation *
+ * - filename
+ * - directory	-> filename / s
+ *				-> directory / s	-> config
+ *									-> filenames
  */
+typedef struct s_animation
+{
+	char	**filename;
+	int		nb_sprite;
+	int		time_sprite;
+	int		time_animation;
+}	t_animation;
+
 typedef struct s_texture
 {
-	char				*filename;
-	enum e_orientation	orient;
-	char				symbol;
+	char				*filename;				//file
+	char				**filename_d;		//dir
+	t_animation			*animation;			//dir
+	int					nb_file;			//dir
+	int					nb_animation;		//dir
+	int					total;					//all
+	enum e_orientation	orient;					//all
+	char				symbol;					//all
 }	t_texture;
 
 typedef struct s_minimap
@@ -157,32 +181,45 @@ typedef struct s_game
 	void			*mlx_ptr;
 	void			*win;
 	t_image			*tab_images;
+	int				nb_images;
 	t_texture		*filename;
-	int				nb_sprite;
+	int				nb_file;
 	t_map			**map;
 	t_vector2		map_size;
 	t_player		*player;
 	t_minimap		*minimap;
 	double			delta_time;
+	struct timespec	time;
 	const double	*constants;
 }	t_game;
 
 // ------ Utils------
+char		*ft_strdup(const char *s);
+int			ft_strlen(char *str);
+int			ft_strcmp(const char *s1, const char *s2);
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
 void		*ft_calloc(size_t nmemb, size_t size);
 void		*ft_realloc(void *ptr, size_t prev_size, size_t new_size);
 void		*ft_memcpy(void *dest, const void *src, size_t n);
-void		free_tab(void **str, t_vector2 size);
+void		free_filename(t_game *game);
+void		free_tab(void **str, int size);
 void		free_str(char **str);
+char		*ft_strjoin(char *str, char *str1);
+char		*ft_strjoin_slash(char *str, char *str1, bool add_slash);
+int			ft_atoi(const char *str);
+int			get_len_texture(t_texture *texture, int len);
 
 // -------Parsing-------
 bool		parse_file(char *filename, t_game *game);
-int			fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient);
+t_sprite	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient);
 t_vector2	get_dimension_maps(int fd, char *line, bool *error);
 bool		is_wall(char symbol, t_texture *tab, int len, bool *error);
 int			skip_whitespace(char *str);
 bool		ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size);
 bool		find_player(t_game *game);
 bool		check_map(t_game *game);
+bool		ft_read_config(t_animation *animation, int index);
+bool		parse_texture(int fd, t_game *game, int *nb_line, char **rest);
 
 // -------Print--------
 void		printf_texture(t_game *game);
@@ -190,7 +227,7 @@ void		print_map(t_game *game);
 
 // -------Init---------
 int			init_mlx(t_game *game);
-int			load_image(t_game *game);
+bool		load_image_tab(t_game *game);
 void		init_mouse(t_game *game);
 
 // -------Hook---------

@@ -1,11 +1,11 @@
-NO ./assets/wall_red_wood.xpm
-SO ./assets/griffure.xpm
-WE ./assets/wallpaper_torn_sale.xpm
-EA ./assets/red_wall_paint_happy_women.xpm
+NO ./assets/smiley.xpm
+SO ./assets/smiley.xpm
+WE ./assets/smiley.xpm
+EA ./assets/smiley.xpm
 F ./assets/smiley.xpm
 C ./assets/smiley.xpm
 
-c ./assets/door
+c ./assets/smiley.xpm
 o ./assets/smiley.xpm
 t ./assets/smiley.xpm
 S_t ./assets/cobble.xpm

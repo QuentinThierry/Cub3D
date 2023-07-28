@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 00:36:48 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/28 15:58:59 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,39 +16,47 @@ int	key_press_hook(int key, t_game *game)
 {
 	if (key == 65307 ) // esc
 		ft_close(game);
-	if (key == 65361) // left rrow
+	else if (key == 65361) // left rrow
 		game->player->view -= 1;
-	if (key == 65363) // right arrow
+	else if (key == 65363) // right arrow
 		game->player->view += 1;
-	if (key == 'd')
+	else if (key == 'd')
 		game->player->dir.x += 1;
-	if (key == 'a' || key == 'q')
+	else if (key == 'a' || key == 'q')
 		game->player->dir.x -= 1;
-	if (key == 'w' || key == 'z')
+	else if (key == 'w' || key == 'z')
 		game->player->dir.y -= 1;
-	if (key == 's')
+	else if (key == 's')
 		game->player->dir.y += 1;
-	if (key == 65505) // shift
+	else if (key == 65505) // shift
 		game->player->speed += SPRINT_BOOST;
+	else if (key == '-' || key == 65453)
+		game->minimap->zoom_dir -= 1;
+	else if (key == '=' || key == '+' || key == 65451)
+		game->minimap->zoom_dir += 1;
 	return (0);
 }
 
-int	key_release_hook(int key, t_player *player)
+int	key_release_hook(int key, t_game *game)
 {
 	if (key == 65361) // left rrow
-		player->view += 1;
+		game->player->view += 1;
 	if (key == 65363) // right arrow
-		player->view -= 1;
+		game->player->view -= 1;
 	if (key == 'd')
-		player->dir.x -= 1;
+		game->player->dir.x -= 1;
 	if (key == 'a' || key == 'q')
-		player->dir.x += 1;
+		game->player->dir.x += 1;
 	if (key == 'w' || key == 'z')
-		player->dir.y += 1;
+		game->player->dir.y += 1;
 	if (key == 's')
-		player->dir.y -= 1;
+		game->player->dir.y -= 1;
 	if (key == 65505) // shift
-		player->speed -= SPRINT_BOOST;
+		game->player->speed -= SPRINT_BOOST;
+	else if (key == '-' || key == 65453)
+		game->minimap->zoom_dir += 1;
+	else if (key == '=' || key == '+' || key == 65451)
+		game->minimap->zoom_dir -= 1;
 	return (0);
 }
 
@@ -83,14 +91,6 @@ void	player_move(t_player *player, double delta_time, t_map **map)
 	}
 }
 
-// 		player->f_pos.x += move_value.x * delta_time;
-// 		player->f_pos.y += move_value.y * delta_time;
-// 		player->pos.y = (int)player->f_pos.y;
-// 		player->pos.x = (int)player->f_pos.x;
-// 		player->f_real_pos.y = player->f_pos.y / CHUNK_SIZE;
-// 		player->f_real_pos.x = player->f_pos.x / CHUNK_SIZE;
-
-
 int mouse_hook(int x, int y, t_game *game)
 {
 	game->player->angle -= (double)(game->player->mouse_pos.x - x) / ROTATION_MOUSE;
@@ -105,7 +105,7 @@ int mouse_hook(int x, int y, t_game *game)
 
 int	mouse_leave(t_game *game)
 {
-	mlx_mouse_move(game->mlx_ptr, game->win, WIN_X/2, WIN_Y / 2);
+	mlx_mouse_move(game->mlx_ptr, game->win, WIN_X / 2, WIN_Y / 2);
 	game->player->mouse_pos.x = WIN_X / 2;
 	game->player->mouse_pos.y = WIN_Y / 2;
 	return (0);

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
+#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/07/27 19:48:06 by jvigny           ###   ########.fr        #
+#    Updated: 2023/07/28 16:21:41 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,17 +76,17 @@ all:	$(NAME)
 bonus:	all
 
 run: $(NAME)
-	./$(NAME) maps/map_test.cub
+	./$(NAME) maps/map.cub
 
 # vrun: $(NAME)
 # 	valgrind --leak-check=full --track-fds=yes --trace-children=yes --show-leak-kinds=all --track-origins=yes ./$(NAME)
 
 vrun: $(NAME)
-	valgrind ./$(NAME) maps/map_test.cub
+	valgrind ./$(NAME) maps/map.cub
 
 prun: CFLAGS += -pg
 prun: $(NAME)
-	./$(NAME) maps/map_test.cub
+	./$(NAME) maps/map.cub
 	gprof $(NAME) gmon.out > analysis.txt
 
 $(NAME):	$(MINILIBX) $(OBJ_DIR) $(OBJ)

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/27 19:56:13 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/28 16:24:30 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,11 @@
 # define TRANSPARENT_PXL 0x00FF00
 
 // MINIMAP
-#define MMAP_CHUNK 10
+#define MMAP_CHUNK 20
+#define ZOOM_SPEED 10
+#define ZOOM_OFFSET 20
+#define MAX_ZOOM 20
+#define MIN_ZOOM -10
 // Represents the minimap padding equals to a percentage of the total window
 #define MINIMAP_PAD 0.05
 
@@ -156,10 +160,10 @@ typedef struct s_animation
 typedef struct s_texture
 {
 	char				*filename;				//file
-	char				**filename_d;		//dir
-	t_animation			*animation;			//dir
-	int					nb_file;			//dir
-	int					nb_animation;		//dir
+	char				**filename_d;			//dir
+	t_animation			*animation;				//dir
+	int					nb_file;				//dir
+	int					nb_animation;			//dir
 	int					total;					//all
 	enum e_orientation	orient;					//all
 	char				symbol;					//all
@@ -172,6 +176,8 @@ typedef struct s_minimap
 	t_image		*back_img;
 	t_image		*player_img;
 	int			*bounds;
+	int			zoom_dir;
+	float		zoom;
 
 }	t_minimap;
 
@@ -232,7 +238,7 @@ void		init_mouse(t_game *game);
 
 // -------Hook---------
 int			key_press_hook(int key, t_game *game);
-int			key_release_hook(int key, t_player *player);
+int			key_release_hook(int key, t_game *game);
 int			mouse_leave(t_game *game);
 int			mouse_hook(int x,int y, t_game *game);
 int			on_update(t_game *game);
@@ -266,6 +272,7 @@ t_image	*btmlx_xpm_file_to_image(void *mlx, char *path,
 			t_vector2 dst_size);
 
 // Minimap
+void	zoom_hook_handle(t_minimap *minimap, double delta_time);
 void	draw_minimap(t_game *game);
 void	generate_minimap_bounds(t_game *game);
 bool	init_minimap(t_game *game);

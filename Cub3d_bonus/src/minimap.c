@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 00:30:38 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/27 19:43:15 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/07/28 16:21:09 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,37 +81,6 @@ void	draw_rectangle(t_image *image, t_vector2 pos, t_vector2 size, t_pixel32 col
 	}
 }
 
-
-void	draw_grid(t_minimap *minimap)
-{
-	int	x;
-	int	y;
-	t_pixel32 color = 0xFF;
-	
-	y = 0;
-	while (y < g_minimap_size.y)
-	{
-		x = 0;
-		while (x < g_minimap_size.x)
-		{
-			my_mlx_pixel_put(minimap->back_img->addr, minimap->back_img->size_line, (t_vector2){x, y}, color);
-			x += MMAP_CHUNK;
-		}
-		y++;
-	}
-	x = 0;
-	while (x < g_minimap_size.x)
-	{
-		y = 0;
-		while (y < g_minimap_size.y)
-		{
-			my_mlx_pixel_put(minimap->back_img->addr, minimap->back_img->size_line, (t_vector2){x, y}, color);
-			y += MMAP_CHUNK;
-		}
-		x++;
-	}
-}
-
 void	draw_rectangular_minimap(t_game *game)
 {
 	int			x;
@@ -119,14 +88,15 @@ void	draw_rectangular_minimap(t_game *game)
 	t_pixel32	color;
 	const t_map **map = (const t_map **)game->map;
 	const t_minimap *minimap = (const t_minimap *)game->minimap;
+	const int	show_case_range = g_minimap_size.x / MMAP_CHUNK / 2 + 1;
 
-	y = game->player->f_real_pos.y - 7;
-	while (y < game->player->f_real_pos.y + 7 && y < game->map_size.y)
+	y = game->player->f_real_pos.y - (show_case_range - (minimap->zoom / 2 - ZOOM_OFFSET));
+	while (y < game->player->f_real_pos.y + (show_case_range - (minimap->zoom / 2 - ZOOM_OFFSET)) && y < game->map_size.y)
 	{
 		if (y < 0)
 			y = 0;
-		x = game->player->f_real_pos.x - 7;
-		while (x < game->player->f_real_pos.x + 7 && x < game->map_size.x - 1)
+		x = game->player->f_real_pos.x - (show_case_range - (minimap->zoom / 2 - ZOOM_OFFSET));
+		while (x < game->player->f_real_pos.x + (show_case_range - (minimap->zoom / 2 - ZOOM_OFFSET)) && x < game->map_size.x - 1)
 		{
 			if (x < 0)
 				x = 0;
@@ -136,9 +106,9 @@ void	draw_rectangular_minimap(t_game *game)
 				color = 0x808080;
 			draw_rectangle(minimap->image,
 			(t_vector2){
-			(x - game->player->f_real_pos.x) * MMAP_CHUNK + g_minimap_size.x / 2.0,
-			(y - game->player->f_real_pos.y) * MMAP_CHUNK + g_minimap_size.y / 2.0},
-			(t_vector2){MMAP_CHUNK, MMAP_CHUNK}, color);
+			(x - game->player->f_real_pos.x) * (MMAP_CHUNK + (int)minimap->zoom - ZOOM_OFFSET) + g_minimap_size.x / 2.0,
+			(y - game->player->f_real_pos.y) * (MMAP_CHUNK + (int)minimap->zoom - ZOOM_OFFSET) + g_minimap_size.y / 2.0},
+			(t_vector2){MMAP_CHUNK + minimap->zoom - ZOOM_OFFSET, MMAP_CHUNK + minimap->zoom - ZOOM_OFFSET}, color);
 			x++;
 		}
 		y++;
@@ -198,6 +168,14 @@ void	mmap_draw_player(t_game *game)
 			- game->minimap->player_img->size.x / 2,
 		g_minimap_pos.y + g_minimap_size.y / 2
 			- game->minimap->player_img->size.x / 2});
+}
+
+void	zoom_hook_handle(t_minimap *minimap, double delta_time)
+{
+	if (minimap->zoom_dir >= 1 && minimap->zoom - ZOOM_OFFSET < MAX_ZOOM)
+		minimap->zoom += delta_time * ZOOM_SPEED;
+	else if (minimap->zoom_dir <= -1 && minimap->zoom - ZOOM_OFFSET > MIN_ZOOM)
+		minimap->zoom -= delta_time * ZOOM_SPEED;
 }
 
 void	draw_minimap(t_game *game)
@@ -284,35 +262,6 @@ bool	init_minimap(t_game *game)
 	if (!game->minimap)
 		return (false);
 	minimap = game->minimap;
-
-	// minimap->size =
-	// (t_vector2)
-	// {
-	// 	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_SIZE,
-	// 	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_SIZE
-	// };
-	// minimap->pos =
-	// (t_vector2)
-	// {
-	// 	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_PAD,
-	// 	(((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) - g_minimap_size.y -
-	// 	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y)) * MINIMAP_PAD
-	// };
-	
-	// if (WIN_X < WIN_Y)
-	// {
-	// 	minimap->size = (t_vector2){WIN_X * MINIMAP_SIZE, WIN_X * MINIMAP_SIZE};
-	// 	minimap->pos = (t_vector2)
-	// 	{WIN_X * MINIMAP_PAD,
-	// 	WIN_X - minimap->size.y - WIN_X * MINIMAP_PAD};
-	// }
-	// else
-	// {
-	// 	minimap->size = (t_vector2){WIN_Y * MINIMAP_SIZE, WIN_Y * MINIMAP_SIZE};
-	// 	minimap->pos = (t_vector2)
-	// 	{WIN_Y * MINIMAP_PAD,
-	// 	WIN_Y - minimap->size.y - WIN_Y * MINIMAP_PAD};
-	// }
 	minimap->bounds = ft_calloc(g_minimap_size.y / 2, sizeof(int));
 	if (!minimap->bounds)
 		return (false);
@@ -328,6 +277,7 @@ bool	init_minimap(t_game *game)
 	minimap->player_img = btmlx_xpm_file_to_image(game->mlx_ptr, "assets/minimap_player.xpm", (t_vector2){15, 15});
 	if (!minimap->player_img->img)
 		return (false);
+	minimap->zoom = ZOOM_OFFSET;
 	return (true);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/27 18:05:00 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/30 14:28:53 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,7 @@ bool	parse_file(char *filename, t_game *game)
 	int i;
 	char	*line;
 	
+	srand(time(0));
 	if (!check_filename(filename))
 		return (false);
 	fd = open(filename, O_RDONLY);

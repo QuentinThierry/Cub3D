@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/27 18:01:21 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/30 14:43:46 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,27 +117,29 @@ t_vector2	get_dimension_maps(int fd, char *line, bool *error)
 	return (len);
 }
 
-t_sprite	random_texture(t_texture *texture, int index, int len)
+t_sprite	random_texture(t_texture *texture_tab, int index)
 {
 	int	nb;
 	int	size;
 	int	i;
+	int	random;
 
 	size = 0;
 	i = 0;
 	while (i < index)
 	{
-		size += texture[i].total;
+		size += texture_tab[i].total;
 		i++;
 	}
-	// printf("- %d(%d) -", size, index);
-	if (!texture->filename)
+	if (texture_tab[index].filename != NULL)
 		return ((t_sprite){size, -1, 0});
-	nb = texture->nb_file + texture->nb_animation;
-	//random 0 -> nb exclu
-	if (nb < texture->nb_file)
-		return ((t_sprite){size, -1, 0});
-	return ((t_sprite){size, 0, 0});
+	nb = texture_tab[index].nb_file + texture_tab[index].nb_animation;
+	random = 0;
+	if (nb > 1)
+		random = rand() % nb;
+	if (random < texture_tab[index].nb_file)
+		return ((t_sprite){size + random, -1, 0});
+	return ((t_sprite){size + random, 0, 0});
 }
 
 /**
@@ -162,13 +164,13 @@ t_sprite	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation o
 		if (tab[i].symbol == symbol)
 		{
 			if (tab[i].orient == orient)
-				return (random_texture(tab, i, len));
+				return (random_texture(tab, i));
 			else if ((orient >= e_north && orient <= e_west) && tab[i].orient == e_wall)
 				res = i;
 		}
 		i++;
 	}
-	return (random_texture(tab, res, len));
+	return (random_texture(tab, res));
 }
 
 /**

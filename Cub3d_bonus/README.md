@@ -11,7 +11,7 @@ ADD :
 
 
 Obligation :
-- [ ] minimap
+- [x] minimap
 - [ ] animation (windows + lightning)
 - [x] collision with wall
 - [ ] door close and open
@@ -20,7 +20,7 @@ Obligation :
 FIX :
 - parsing, when search len of map need to suppr whitespace at the end
 - line with only white space return error ?
-- Need to read directory for animation
+<!-- - Need to read directory for animation -->
 - Check if multiple definition of a texture incompatible
 <!-- - stop parsing if not valid caracter on the map -->
 - makefile

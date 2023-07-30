@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/27 19:47:17 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/30 17:19:00 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ bool	load_image(void *mlx_ptr, t_image *img, char *filename, t_animation *anim)
 	if (anim == NULL)
 		return (true);
 	img->time_animation = anim->time_animation;
-	img->time_sprite = anim->time_sprite;
+	img->time_frame = anim->time_sprite;
 	img->nb_total_frame = anim->nb_sprite - 1;
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/30 14:59:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/30 16:16:18 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	on_update(t_game *game)
 
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
+	clock_gettime(CLOCK_REALTIME, &game->time);
 	
 	if (game->player->angle + game->player->angle >= 360)
 		game->player->angle = game->player->angle - 360;
@@ -85,9 +86,9 @@ int main(int argc, char **argv)
 	game.nb_file = e_total;
 	if (!parse_file(argv[1], &game))
 		return (1);
-	// printf_texture(&game);
-	// fflush(stdout);
-	// print_map(&game);
+	printf_texture(&game);
+	fflush(stdout);
+	print_map(&game);
 	if (!check_map(&game))
 		return (1);
 	if (init_mlx(&game) == -1)

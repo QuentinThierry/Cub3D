@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/30 14:56:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/30 16:41:41 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ typedef struct s_image
 	int			size_line;
 	int			endian;
 	t_vector2	size;
-	int			time_sprite;
+	int			time_frame;
 	int			time_animation;
 	int			nb_total_frame;
 }	t_image;
@@ -128,7 +128,7 @@ typedef struct s_sprite
 {
 	int				index;
 	int				frame;
-	float			time;
+	struct timespec	time;
 }	t_sprite;
 
 // Use to stock the map

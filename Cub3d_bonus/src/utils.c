@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/30 14:43:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/30 18:30:59 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,57 @@ enum e_orientation	get_wall_orientation(t_fvector2 player, t_fvector2 wall)
 	}
 }
 
+static void	update_anim(struct timespec	*time, t_sprite *sprite, t_image *img)
+{
+	long	delta;
+	int		n_time;
+
+	delta = (sprite->time.tv_sec - time->tv_sec) / 1000
+			+ (sprite->time.tv_sec - time->tv_sec) * 1000;
+	if (sprite->frame == img->nb_total_frame && delta > img->time_animation)
+	{
+		sprite->frame = 0;
+		sprite->time.tv_sec = (img->time_animation / 1000);
+		sprite->time.tv_nsec = (img->time_animation * 1000);
+		delta = (sprite->time.tv_sec - time->tv_sec) / 1000
+				+ (sprite->time.tv_sec - time->tv_sec) * 1000;
+	}
+	n_time = delta % (img->time_frame * img->nb_total_frame + img->time_animation);
+	if (n_time > 0)
+	{
+		sprite->time.tv_sec = ((img->time_frame * img->nb_total_frame
+				+ img->time_animation) / 1000) * n_time;
+		sprite->time.tv_nsec = ((img->time_frame * img->nb_total_frame
+				+ img->time_animation) * 1000) * n_time;
+		delta = (sprite->time.tv_sec - time->tv_sec) / 1000
+			+ (sprite->time.tv_sec - time->tv_sec) * 1000;
+		n_time = delta % img->time_frame;
+	}
+	if (n_time >= img->nb_total_frame - sprite->frame)
+	{
+		sprite->frame = img->nb_total_frame;
+		sprite->time.tv_sec = (img->time_frame / 1000) * (img->nb_total_frame - sprite->frame);
+		sprite->time.tv_nsec = (img->time_frame * 1000) * (img->nb_total_frame - sprite->frame);
+		delta = (sprite->time.tv_sec - time->tv_sec) / 1000
+			+ (sprite->time.tv_sec - time->tv_sec) * 1000;
+		if (delta > img->time_animation)
+		{
+			sprite->frame = 0;
+			sprite->time.tv_sec = (img->time_animation / 1000);
+			sprite->time.tv_nsec = (img->time_animation * 1000);
+		}
+		delta = (sprite->time.tv_sec - time->tv_sec) / 1000
+			+ (sprite->time.tv_sec - time->tv_sec) * 1000;
+		n_time = delta % img->time_frame;
+	}
+	if (n_time < img->nb_total_frame - sprite->frame)
+	{
+		sprite->frame = (sprite->frame + n_time) % img->nb_total_frame;
+		sprite->time.tv_sec = (img->time_frame / 1000) * n_time;
+		sprite->time.tv_nsec = (img->time_frame * 1000) * n_time;
+	};
+}
+
 t_image	*get_image(t_game *game, enum e_orientation orient, t_fvector2 wall)
 {
 	t_sprite img;
@@ -40,10 +91,20 @@ t_image	*get_image(t_game *game, enum e_orientation orient, t_fvector2 wall)
 		img = game->map[(int)wall.y][(int)wall.x].sprite[orient];
 	if (orient == e_east)
 		img = game->map[(int)wall.y][(int)wall.x - 1].sprite[orient];
-	if (img.frame != -1)// && img.time + game->tab_images[img.index].time_animation > game.time)
-		return (&(game->tab_images[img.index]));		//animation
-	else
+	if (img.frame == -1)
 		return (&(game->tab_images[img.index]));
+	else		//animation
+	{
+		if (img.time.tv_nsec == 0 && img.time.tv_nsec == 0)
+		{
+			img.time = game->time;
+			return (&(game->tab_images[img.index + img.frame]));
+		}
+		else if (img.time.tv_sec + (game->tab_images[img.index].time_frame / 1000) < game->time.tv_sec
+			|| img.time.tv_nsec + (game->tab_images[img.index].time_frame * 1000) < game->time.tv_nsec)
+			update_anim(&game->time, &img, &game->tab_images[img.index]);
+		return (&(game->tab_images[img.index + img.frame]));
+	}
 }
 
 
@@ -117,61 +178,7 @@ t_vector2	get_dimension_maps(int fd, char *line, bool *error)
 	return (len);
 }
 
-t_sprite	random_texture(t_texture *texture_tab, int index)
-{
-	int	nb;
-	int	size;
-	int	i;
-	int	random;
 
-	size = 0;
-	i = 0;
-	while (i < index)
-	{
-		size += texture_tab[i].total;
-		i++;
-	}
-	if (texture_tab[index].filename != NULL)
-		return ((t_sprite){size, -1, 0});
-	nb = texture_tab[index].nb_file + texture_tab[index].nb_animation;
-	random = 0;
-	if (nb > 1)
-		random = rand() % nb;
-	if (random < texture_tab[index].nb_file)
-		return ((t_sprite){size + random, -1, 0});
-	return ((t_sprite){size + random, 0, 0});
-}
-
-/**
- * @brief return the index of the texture in the filename_tab depending on the symbol
- * 		and the orientation
- * 
- * @param tab 
- * @param len 
- * @param symbol 
- * @param orient 
- * @return int 
- */
-t_sprite	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient)
-{
-	int	res;
-	int	i;
-	
-	i = 0;
-	res = -1;
-	while (i < len)
-	{
-		if (tab[i].symbol == symbol)
-		{
-			if (tab[i].orient == orient)
-				return (random_texture(tab, i));
-			else if ((orient >= e_north && orient <= e_west) && tab[i].orient == e_wall)
-				res = i;
-		}
-		i++;
-	}
-	return (random_texture(tab, res));
-}
 
 /**
  * @brief return true if the symbol is a wall on the table of texture

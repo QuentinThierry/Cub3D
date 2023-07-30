@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/27 19:53:58 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/07/30 14:56:46 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,10 @@
 
 // MINIMAP
 #define MMAP_CHUNK 20
+#define ZOOM_SPEED 10
+#define ZOOM_OFFSET 20
+#define MAX_ZOOM 20
+#define MIN_ZOOM -10
 // Represents the minimap padding equals to a percentage of the total window
 #define MINIMAP_PAD 0.05
 
@@ -156,10 +160,10 @@ typedef struct s_animation
 typedef struct s_texture
 {
 	char				*filename;				//file
-	char				**filename_d;		//dir
-	t_animation			*animation;			//dir
-	int					nb_file;			//dir
-	int					nb_animation;		//dir
+	char				**filename_d;			//dir
+	t_animation			*animation;				//dir
+	int					nb_file;				//dir
+	int					nb_animation;			//dir
 	int					total;					//all
 	enum e_orientation	orient;					//all
 	char				symbol;					//all
@@ -171,9 +175,9 @@ typedef struct s_minimap
 	t_image		*buffer_img;
 	t_image		*back_img;
 	t_image		*player_img;
-	// t_vector2	pos;
-	// t_vector2	size;
 	int			*bounds;
+	int			zoom_dir;
+	float		zoom;
 
 }	t_minimap;
 
@@ -194,9 +198,6 @@ typedef struct s_game
 	struct timespec	time;
 	const double	*constants;
 }	t_game;
-
-extern const t_vector2	g_minimap_pos;
-extern const t_vector2	g_minimap_size;
 
 // ------ Utils------
 char		*ft_strdup(const char *s);
@@ -237,7 +238,7 @@ void		init_mouse(t_game *game);
 
 // -------Hook---------
 int			key_press_hook(int key, t_game *game);
-int			key_release_hook(int key, t_player *player);
+int			key_release_hook(int key, t_game *game);
 int			mouse_leave(t_game *game);
 int			mouse_hook(int x,int y, t_game *game);
 int			on_update(t_game *game);
@@ -271,6 +272,7 @@ t_image	*btmlx_xpm_file_to_image(void *mlx, char *path,
 			t_vector2 dst_size);
 
 // Minimap
+void	zoom_hook_handle(t_minimap *minimap, double delta_time);
 void	draw_minimap(t_game *game);
 void	generate_minimap_bounds(t_game *game);
 bool	init_minimap(t_game *game);

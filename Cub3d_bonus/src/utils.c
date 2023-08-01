@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/30 18:30:59 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/01 16:13:10 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,84 +29,6 @@ enum e_orientation	get_wall_orientation(t_fvector2 player, t_fvector2 wall)
 			return (e_west);
 	}
 }
-
-static void	update_anim(struct timespec	*time, t_sprite *sprite, t_image *img)
-{
-	long	delta;
-	int		n_time;
-
-	delta = (sprite->time.tv_sec - time->tv_sec) / 1000
-			+ (sprite->time.tv_sec - time->tv_sec) * 1000;
-	if (sprite->frame == img->nb_total_frame && delta > img->time_animation)
-	{
-		sprite->frame = 0;
-		sprite->time.tv_sec = (img->time_animation / 1000);
-		sprite->time.tv_nsec = (img->time_animation * 1000);
-		delta = (sprite->time.tv_sec - time->tv_sec) / 1000
-				+ (sprite->time.tv_sec - time->tv_sec) * 1000;
-	}
-	n_time = delta % (img->time_frame * img->nb_total_frame + img->time_animation);
-	if (n_time > 0)
-	{
-		sprite->time.tv_sec = ((img->time_frame * img->nb_total_frame
-				+ img->time_animation) / 1000) * n_time;
-		sprite->time.tv_nsec = ((img->time_frame * img->nb_total_frame
-				+ img->time_animation) * 1000) * n_time;
-		delta = (sprite->time.tv_sec - time->tv_sec) / 1000
-			+ (sprite->time.tv_sec - time->tv_sec) * 1000;
-		n_time = delta % img->time_frame;
-	}
-	if (n_time >= img->nb_total_frame - sprite->frame)
-	{
-		sprite->frame = img->nb_total_frame;
-		sprite->time.tv_sec = (img->time_frame / 1000) * (img->nb_total_frame - sprite->frame);
-		sprite->time.tv_nsec = (img->time_frame * 1000) * (img->nb_total_frame - sprite->frame);
-		delta = (sprite->time.tv_sec - time->tv_sec) / 1000
-			+ (sprite->time.tv_sec - time->tv_sec) * 1000;
-		if (delta > img->time_animation)
-		{
-			sprite->frame = 0;
-			sprite->time.tv_sec = (img->time_animation / 1000);
-			sprite->time.tv_nsec = (img->time_animation * 1000);
-		}
-		delta = (sprite->time.tv_sec - time->tv_sec) / 1000
-			+ (sprite->time.tv_sec - time->tv_sec) * 1000;
-		n_time = delta % img->time_frame;
-	}
-	if (n_time < img->nb_total_frame - sprite->frame)
-	{
-		sprite->frame = (sprite->frame + n_time) % img->nb_total_frame;
-		sprite->time.tv_sec = (img->time_frame / 1000) * n_time;
-		sprite->time.tv_nsec = (img->time_frame * 1000) * n_time;
-	};
-}
-
-t_image	*get_image(t_game *game, enum e_orientation orient, t_fvector2 wall)
-{
-	t_sprite img;
-	
-	if (orient == e_south)
-		img = game->map[(int)wall.y - 1][(int)wall.x].sprite[orient];
-	else if (orient == e_north || orient == e_west)
-		img = game->map[(int)wall.y][(int)wall.x].sprite[orient];
-	if (orient == e_east)
-		img = game->map[(int)wall.y][(int)wall.x - 1].sprite[orient];
-	if (img.frame == -1)
-		return (&(game->tab_images[img.index]));
-	else		//animation
-	{
-		if (img.time.tv_nsec == 0 && img.time.tv_nsec == 0)
-		{
-			img.time = game->time;
-			return (&(game->tab_images[img.index + img.frame]));
-		}
-		else if (img.time.tv_sec + (game->tab_images[img.index].time_frame / 1000) < game->time.tv_sec
-			|| img.time.tv_nsec + (game->tab_images[img.index].time_frame * 1000) < game->time.tv_nsec)
-			update_anim(&game->time, &img, &game->tab_images[img.index]);
-		return (&(game->tab_images[img.index + img.frame]));
-	}
-}
-
 
 int skip_whitespace(char *str)
 {

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 16:34:46 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/30 16:35:06 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/01 19:29:58 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ static t_sprite	random_texture(t_texture *texture_tab, int index)
 		return ((t_sprite){size + random, -1, 0});
 	size += random;
 	random = rand() % (texture_tab[index].animation->nb_sprite - 1);
-	return ((t_sprite){size + random, 0, 0});
+	printf("random frame : %d\n", random);
+	return ((t_sprite){size, random, 0});
 }
 
 /**

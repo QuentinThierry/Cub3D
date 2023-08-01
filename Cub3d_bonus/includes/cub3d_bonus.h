@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/30 16:41:41 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/01 19:29:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,9 +126,9 @@ typedef struct s_image
 
 typedef struct s_sprite
 {
-	int				index;
-	int				frame;
-	struct timespec	time;
+	int			index;
+	int			frame;		// -1 -> not a animation
+	long int	time;
 }	t_sprite;
 
 // Use to stock the map
@@ -195,7 +195,7 @@ typedef struct s_game
 	t_player		*player;
 	t_minimap		*minimap;
 	double			delta_time;
-	struct timespec	time;
+	long int		time;
 	const double	*constants;
 }	t_game;
 
@@ -277,5 +277,7 @@ void	draw_minimap(t_game *game);
 void	generate_minimap_bounds(t_game *game);
 bool	init_minimap(t_game *game);
 void	draw_rotated_image(t_image *img_dest, t_image *img_src, t_vector2 pos, float angle);
+
+long int	time_to_long(struct timespec *time);
 
 #endif

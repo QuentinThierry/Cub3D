@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/30 16:16:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/01 19:29:08 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,13 @@ int	on_update(t_game *game)
 {
 	static struct timespec	last_time = {0};
 	struct timespec			cur_time;
+	struct timespec			time;
 	long					fps;
 
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
-	clock_gettime(CLOCK_REALTIME, &game->time);
+	clock_gettime(CLOCK_REALTIME, &time);
+	game->time = time_to_long(&time);
 	
 	if (game->player->angle + game->player->angle >= 360)
 		game->player->angle = game->player->angle - 360;

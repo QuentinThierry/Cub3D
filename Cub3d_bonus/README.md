@@ -24,7 +24,7 @@ FIX :
 - Check if multiple definition of a texture incompatible
 <!-- - stop parsing if not valid caracter on the map -->
 - makefile
-
+- doors on side of map
 
 Minimap : 
 - if screen is too small, do not draw minimap

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wall_hit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/16 00:36:48 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/03 19:24:37 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,15 @@ static t_fvector2	_get_wall_hit_se(t_fvector2 fpos,
 			if (map_pos.x >= map_size.x || (int)(comp.y) >= map_size.y)
 				return ((t_fvector2){-1, -1});
 			if (map[(int)(comp.y)][map_pos.x].is_wall == true)
-				return ((t_fvector2){map_pos.x, comp.y});
-			// if (map[(int)(comp.y)][map_pos.x].symbol == 'c')
-			// 	return ((t_fvector2){map_pos.x, comp.y});
+			{
+				if (map[(int)(comp.y)][map_pos.x].symbol == 'c')
+				{
+					if (comp.y + step.y / 2 < (int)comp.y + map[(int)(comp.y)][map_pos.x].door_percent / 100.f)
+						return ((t_fvector2){map_pos.x + 0.5, comp.y + step.y / 2});
+				}
+				else
+					return ((t_fvector2){map_pos.x, comp.y});
+			}
 			comp.y += step.y;
 			map_pos.x += 1;
 		}
@@ -42,9 +48,15 @@ static t_fvector2	_get_wall_hit_se(t_fvector2 fpos,
 			if ((int)(comp.x) >= map_size.x || map_pos.y >= map_size.y)
 				return ((t_fvector2){-1, -1});
 			if (map[map_pos.y][(int)(comp.x)].is_wall == true)
-				return ((t_fvector2){comp.x, map_pos.y});
-			// if (map[map_pos.y][(int)(comp.x)].symbol == 'c')
-			// 	return ((t_fvector2){comp.x, map_pos.y});
+			{
+				if (map[map_pos.y][(int)(comp.x)].symbol == 'c')
+				{
+					if (comp.x + step.x / 2 < (int)comp.x + map[map_pos.y][(int)(comp.x)].door_percent / 100.f)
+						return ((t_fvector2){comp.x + step.x / 2, map_pos.y + 0.5});
+				}
+				else
+					return ((t_fvector2){comp.x, map_pos.y});
+			}
 			comp.x += step.x;
 			map_pos.y += 1;
 		}

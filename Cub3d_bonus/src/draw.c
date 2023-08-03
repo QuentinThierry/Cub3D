@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/27 18:02:36 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/03 19:45:51 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,18 @@ void	draw_vert(t_game *game, int x, t_fvector2 wall, double height)
 	if (height != 0)
 	{
 		orient = get_wall_orientation(game->player->f_real_pos, wall);
+		if (game->map[(int)wall.y][(int)wall.x].symbol == 'c')
+			orient = e_west;
+		if (orient == e_east)
+			printf("east\n");
+		if (orient == e_north)
+			printf("north\n");
+		if (orient == e_south)
+			printf("south\n");
+		if (orient == e_west)
+			printf("west\n");
 		image = get_image(game, orient, wall);
+
 		delta_y_img = image->size.y / height;
 		if (y < 0)
 		{

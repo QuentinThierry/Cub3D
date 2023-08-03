@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/01 19:29:31 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/03 17:46:26 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@
 # define ROTATION_KEYBOARD 125
 # define ROTATION_MOUSE 20
 # define MAX_VOLUME 1.0
-# define THREED 1
 # define TO_RADIAN .0174532
 # define TRANSPARENT_PXL 0x00FF00
 
@@ -137,6 +136,7 @@ typedef struct s_map
 	char		symbol;
 	bool		is_wall;
 	t_sprite	sprite[6];
+	int			door_percent;
 }	t_map;
 
 /**
@@ -178,7 +178,6 @@ typedef struct s_minimap
 	int			*bounds;
 	int			zoom_dir;
 	float		zoom;
-
 }	t_minimap;
 
 typedef struct s_game

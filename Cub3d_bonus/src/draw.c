@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/03 19:45:51 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/04 14:32:02 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, in
 	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
 }
 
-void	draw_vert(t_game *game, int x, t_fvector2 wall, double height)
+void	draw_vert(t_game *game, int x, t_ray ray, double height)
 {
 	int					y, y1;
 	int					x_img;
@@ -39,19 +39,8 @@ void	draw_vert(t_game *game, int x, t_fvector2 wall, double height)
 	y1 = WIN_Y / 2.0 + ((int)height - (int)(height / 2));
 	if (height != 0)
 	{
-		orient = get_wall_orientation(game->player->f_real_pos, wall);
-		if (game->map[(int)wall.y][(int)wall.x].symbol == 'c')
-			orient = e_west;
-		if (orient == e_east)
-			printf("east\n");
-		if (orient == e_north)
-			printf("north\n");
-		if (orient == e_south)
-			printf("south\n");
-		if (orient == e_west)
-			printf("west\n");
-		image = get_image(game, orient, wall);
-
+		orient = ray.orient;
+		image = get_image(game, orient, (t_fvector2){ray.hit.x, ray.hit.y});
 		delta_y_img = image->size.y / height;
 		if (y < 0)
 		{
@@ -61,9 +50,9 @@ void	draw_vert(t_game *game, int x, t_fvector2 wall, double height)
 		if (y1 > WIN_Y)
 			y1 = WIN_Y;
 		if (orient == e_north || orient == e_south)
-			x_img = (wall.x - (int)wall.x) * image->size.x;
+			x_img = (ray.hit.x - (int)ray.hit.x) * image->size.x;
 		else
-			x_img = (wall.y - (int)wall.y) * image->size.x;
+			x_img = (ray.hit.y - (int)ray.hit.y) * image->size.x;
 		if (orient == e_west || orient == e_south)
 			x_img = image->size.x - x_img - 1;
 	}

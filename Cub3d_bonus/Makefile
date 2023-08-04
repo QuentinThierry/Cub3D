@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/08/03 15:11:00 by qthierry         ###   ########.fr        #
+#    Updated: 2023/08/04 14:00:33 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,6 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			ft_realloc.c \
 			ft_strdup.c \
 			init.c \
-			view_2d.c \
 			ft_memcpy.c \
 			ft_close.c \
 			wall_hit.c \

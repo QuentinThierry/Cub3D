@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/01 16:13:10 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/04 14:34:54 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,19 @@ int skip_whitespace(char *str)
 	return (i);
 }
 
-bool	check_symbol(char *str)
+void remove_end_whitespace(char *str)
 {
-	int	len;
 	int	i;
 
-	i = 0;
-	len = ft_strlen(str);
-	while (i < len)
-	{
-		if (i == len - 1 && str[len - 1] == '\n')
-			str[len - 1] = '\0';
-		else if (!(str[i] == ' ' || str[i] == '0' || str[i] == '1' || str[i] == 'o'
-				|| str[i] == 'c' || str[i] == 'N' || str[i] == 'E'
-				|| str[i] == 'S' || str[i] == 'W'))
-			return (false);
-		i++;
-	}
-	return (true);
+	i = ft_strlen(str) - 1;
+	if (i <= 0)
+		return ;
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\v' || str[i] == '\n'
+			|| str[i] == '\f' || str[i] == '\r')
+		i--;
+	if (i + 1 < ft_strlen(str))
+		str[i + 1] = '\0';
+	return ;
 }
 
 /**
@@ -80,9 +75,8 @@ t_vector2	get_dimension_maps(int fd, char *line, bool *error)
 	{
 		if (line[0] == '\n')
 			break;
-		// if (!check_symbol(line))
-		// 	*error = true;
-		else if (len.x < (int)ft_strlen(line))
+		remove_end_whitespace(line);
+		if (len.x < (int)ft_strlen(line))
 			len.x = ft_strlen(line);
 		len.y++;
 		free(line);

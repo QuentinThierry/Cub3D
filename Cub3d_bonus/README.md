@@ -12,13 +12,13 @@ ADD :
 
 Obligation :
 - [x] minimap
-- [ ] animation (windows + lightning)
+- [x] animation (windows + lightning)
 - [x] collision with wall
 - [ ] door close and open
 - [x] mouv with mouse
 
 FIX :
-- parsing, when search len of map need to suppr whitespace at the end
+<!-- - parsing, when search len of map need to suppr whitespace at the end -->
 - line with only white space return error ?
 <!-- - Need to read directory for animation -->
 - Check if multiple definition of a texture incompatible

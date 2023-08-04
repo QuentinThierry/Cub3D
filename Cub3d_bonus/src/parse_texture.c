@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/30 16:27:28 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/04 15:02:20 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,25 @@ bool	ft_read_dir(DIR *dir, t_texture *texture)
 	return (true);
 }
 
+bool	is_existing(t_game *game, int index, char symbol, enum e_orientation orient)
+{
+	int i;
+
+	i = 0;
+	if (index == e_floor || index == e_ceiling)
+		symbol = '0';
+	else if (index < e_floor)
+		symbol = '1';
+	while (i < game->nb_file)
+	{
+		if (game->filename[i].symbol == symbol && game->filename[i].orient == orient)
+			return (true);
+		i++;
+	}
+	return (false);
+	
+}
+
 /**
  * @brief complete the tab of filename with the new texture name, its orientation,
  *		its symbol on the map
@@ -245,6 +264,8 @@ static bool	_find_texture(t_game *game, char *str, int index, enum e_orientation
 	int		i;
 	int		len;
 
+	if (is_existing(game, index, *(str - 1), orient))
+		return (printf("Error : Multiples definition of a texture\n"), false);
 	if (index >= game->nb_file)
 	{
 		game->filename = ft_realloc(game->filename
@@ -261,7 +282,7 @@ static bool	_find_texture(t_game *game, char *str, int index, enum e_orientation
 		str[i + len - 1] = '\0';
 	filename = ft_strdup(str + i);
 	if (filename == NULL)
-		return (printf("Error : malloc failed\n"),false);
+		return (printf("Error : malloc failed\n"), false);
 	game->filename[index].filename = filename;
 	game->filename[index].orient = orient;
 	game->filename[index].nb_file = 1;

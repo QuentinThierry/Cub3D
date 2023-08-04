@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_image.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:13:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/01 20:44:59 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/04 20:06:00 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,11 @@ t_image	*get_image(t_game *game, enum e_orientation orient, t_fvector2 wall)
 {
 	t_sprite *img;
 	
+	if (orient == e_south)
+		wall.y += 0.5;
+	if (orient == e_east)
+		wall.x += 0.5;
+
 	if (orient == e_south)
 		img = &(game->map[(int)wall.y - 1][(int)wall.x].sprite[orient]);
 	else if (orient == e_north || orient == e_west)

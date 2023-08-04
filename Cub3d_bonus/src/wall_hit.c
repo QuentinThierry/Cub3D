@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/04 14:31:38 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/04 20:57:40 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ static t_ray	_get_wall_hit_se(t_fvector2 fpos,
 			{
 				if (map[(int)(comp.y)][map_pos.x].symbol == 'c')
 				{
-					if (comp.y + step.y / 2 < (int)comp.y + map[(int)(comp.y)][map_pos.x].door_percent / 100.f)
+					if (comp.y + step.y / 2 < (int)comp.y + map[(int)(comp.y)][map_pos.x].door_percent / 100.f
+						&& comp.y + step.y / 2 >= (int)comp.y)
 						return ((t_ray){{map_pos.x + 0.5, comp.y + step.y / 2}, e_west});
 				}
 				else
@@ -51,7 +52,8 @@ static t_ray	_get_wall_hit_se(t_fvector2 fpos,
 			{
 				if (map[map_pos.y][(int)(comp.x)].symbol == 'c')
 				{
-					if (comp.x + step.x / 2 < (int)comp.x + map[map_pos.y][(int)(comp.x)].door_percent / 100.f)
+					if (comp.x + step.x / 2 < (int)comp.x + map[map_pos.y][(int)(comp.x)].door_percent / 100.f
+						&& comp.x + step.x / 2 >= (int)comp.x)
 						return ((t_ray){{comp.x + step.x / 2, map_pos.y + 0.5}, e_north});
 				}
 				else
@@ -79,12 +81,19 @@ static t_ray	_get_wall_hit_ne(t_fvector2 fpos,
 	{
 		if (map_pos.y <= comp.y)
 		{
-			if (map_pos.x >= map_size.x || (int)(comp.y) < 0)
+			if (map_pos.x >= map_size.x || (int)(comp.y) >= map_size.y)
 				return ((t_ray){{-1, -1}, -1});
 			if (map[(int)(comp.y)][map_pos.x].is_wall == true)
-				return ((t_ray){{map_pos.x, comp.y}, e_west});
-			// if (map[(int)(comp.y)][map_pos.x].symbol == 'c')
-			// 	return ((t_fvector2){map_pos.x, comp.y});
+			{
+				if (map[(int)(comp.y)][map_pos.x].symbol == 'c')
+				{
+					if (comp.y + step.y / 2 < (int)comp.y + map[(int)(comp.y)][map_pos.x].door_percent / 100.f
+						&& comp.y + step.y / 2 >= (int)comp.y)
+						return ((t_ray){{map_pos.x + 0.5, comp.y + step.y / 2}, e_west});
+				}
+				else
+					return ((t_ray){{map_pos.x, comp.y}, e_west});
+			}
 			comp.y += step.y;
 			map_pos.x += 1;
 		}
@@ -93,9 +102,17 @@ static t_ray	_get_wall_hit_ne(t_fvector2 fpos,
 			if ((int)(comp.x) >= map_size.x || map_pos.y - 1 < 0)
 				return ((t_ray){{-1, -1}, -1});
 			if (map[map_pos.y - 1][((int)(comp.x))].is_wall == true)
-				return ((t_ray){{comp.x, map_pos.y}, e_south});
-			// if (map[map_pos.y - 1][((int)(comp.x))].symbol == 'c')
-			// 	return ((t_fvector2){comp.x, map_pos.y});
+			{
+				if (map[map_pos.y - 1][(int)(comp.x)].symbol == 'c')
+				{
+					if (comp.x + step.x / 2 < (int)comp.x + map[map_pos.y - 1][(int)(comp.x)].door_percent / 100.f
+						&& comp.x + step.x / 2 < (int)comp.x + 1)
+							return ((t_ray){{comp.x + step.x / 2, map_pos.y - 0.5}, e_south});
+				}
+				else
+					return ((t_ray){{comp.x, map_pos.y}, e_south});
+			}
+
 			comp.x += step.x;
 			map_pos.y += -1;
 		}
@@ -121,20 +138,34 @@ static t_ray	_get_wall_hit_sw(t_fvector2 fpos,
 			if (map_pos.x - 1 < 0 || (int)(fpos.y) >= map_size.y)
 				return ((t_ray){{-1, -1}, -1});
 			if (map[(int)(comp.y)][map_pos.x - 1].is_wall == true)
-				return ((t_ray){{map_pos.x, comp.y}, e_east});
-			// if (map[(int)(comp.y)][map_pos.x - 1].symbol == 'c')
-			// 	return ((t_fvector2){map_pos.x, comp.y});
+			{
+				if (map[(int)(comp.y)][map_pos.x - 1].symbol == 'c')
+				{
+					if (comp.y + step.y / 2 < (int)comp.y + map[(int)(comp.y)][map_pos.x - 1].door_percent / 100.f
+						&& comp.y + step.y / 2 < (int)comp.y + 1)
+						return ((t_ray){{map_pos.x - 0.5, comp.y + step.y / 2}, e_east});
+				}
+				else
+					return ((t_ray){{map_pos.x, comp.y}, e_east});
+			}
 			comp.y += step.y;
-			map_pos.x += -1;
+			map_pos.x -= 1;
 		}
 		else
 		{
-			if ((int)(comp.x) < 0 || map_pos.y >= map_size.y)
+			if ((int)(comp.x) >= map_size.x || map_pos.y >= map_size.y)
 				return ((t_ray){{-1, -1}, -1});
-			if (map[map_pos.y][((int)(comp.x))].is_wall == true)
-				return ((t_ray){{comp.x, map_pos.y}, e_north});
-			// if (map[map_pos.y][((int)(comp.x))].symbol == 'c')
-			// 	return ((t_fvector2){comp.x, map_pos.y});
+			if (map[map_pos.y][(int)(comp.x)].is_wall == true)
+			{
+				if (map[map_pos.y][(int)(comp.x)].symbol == 'c')
+				{
+					if (comp.x + step.x / 2 < (int)comp.x + map[map_pos.y][(int)(comp.x)].door_percent / 100.f
+						&& comp.x + step.x / 2 >= (int)comp.x)
+						return ((t_ray){{comp.x + step.x / 2, map_pos.y + 0.5}, e_north});
+				}
+				else
+					return ((t_ray){{comp.x, map_pos.y}, e_north});
+			}
 			comp.x += step.x;
 			map_pos.y += 1;
 		}
@@ -161,20 +192,35 @@ static t_ray	_get_wall_hit_nw(t_fvector2 fpos,
 			if (map_pos.x - 1 < 0 || (int)(comp.y) < 0)
 				return ((t_ray){{-1, -1}, -1});
 			if (map[(int)(comp.y)][map_pos.x - 1].is_wall == true)
-				return ((t_ray){{map_pos.x, comp.y}, e_east});
-			// if (map[(int)(comp.y)][map_pos.x - 1].symbol == 'c')
-			// 	return ((t_fvector2){map_pos.x, comp.y});
+			{
+				if (map[(int)(comp.y)][map_pos.x - 1].symbol == 'c')
+				{
+					if (comp.y + step.y / 2 < (int)comp.y + map[(int)(comp.y)][map_pos.x - 1].door_percent / 100.f
+						&& comp.y + step.y / 2 >= (int)comp.y)
+						return ((t_ray){{map_pos.x - 0.5, comp.y + step.y / 2}, e_east});
+				}
+				else
+					return ((t_ray){{map_pos.x, comp.y}, e_east});
+			}
 			comp.y += step.y;
-			map_pos.x += -1;
+			map_pos.x -= 1;
 		}
 		else
 		{
 			if ((int)(comp.x) < 0 || map_pos.y - 1 < 0)
 				return ((t_ray){{-1, -1}, -1});
 			if (map[map_pos.y - 1][((int)(comp.x))].is_wall == true)
-				return ((t_ray){{comp.x, map_pos.y}, e_south});
-			// if (map[map_pos.y - 1][((int)(comp.x))].symbol == 'c')
-			// 	return ((t_fvector2){comp.x, map_pos.y});
+			{
+				if (map[map_pos.y - 1][(int)(comp.x)].symbol == 'c')
+				{
+					if (comp.x + step.x / 2 < (int)comp.x + map[map_pos.y - 1][(int)(comp.x)].door_percent / 100.f
+						&& comp.x + step.x / 2 >= (int)comp.x)
+							return ((t_ray){{comp.x + step.x / 2, map_pos.y - 0.5}, e_south});
+				}
+				else
+					return ((t_ray){{comp.x, map_pos.y}, e_south});
+			}
+
 			comp.x += step.x;
 			map_pos.y += -1;
 		}

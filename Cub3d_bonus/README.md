@@ -8,7 +8,7 @@ ADD :
 - [ ] objects
 - [ ] exit + enigmes
 - [ ] random events (lightning, planks cracks, little girl)
-
+- [ ] menu settings
 
 Obligation :
 - [x] minimap

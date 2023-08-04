@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/04 14:32:02 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/04 21:02:11 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,16 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	{
 		orient = ray.orient;
 		image = get_image(game, orient, (t_fvector2){ray.hit.x, ray.hit.y});
+		// image = &game->tab_images[0];
 		delta_y_img = image->size.y / height;
+		// if (orient == e_north)
+		// 	printf("north\n");
+		// if (orient == e_east)
+		// 	printf("east\n");
+		// if (orient == e_west)
+		// 	printf("west\n");
+		// if (orient == e_south)
+		// 	printf("south\n");
 		if (y < 0)
 		{
 			y_img = -y * delta_y_img;
@@ -53,10 +62,11 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 			x_img = (ray.hit.x - (int)ray.hit.x) * image->size.x;
 		else
 			x_img = (ray.hit.y - (int)ray.hit.y) * image->size.x;
+		// if (game->map[(int)ray.hit.y][(int)ray.hit.x].symbol == 'c')
+		// 	x_img -= ((float)game->map[(int)ray.hit.y][(int)ray.hit.x].door_percent / 100) * image->size.x - image->size.x;
 		if (orient == e_west || orient == e_south)
 			x_img = image->size.x - x_img - 1;
 	}
-	
 	addr = game->image->addr;
 	while (i < y)
 	{

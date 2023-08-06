@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/03 17:46:20 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/06 16:48:23 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	key_press_hook(int key, t_game *game)
 				{
 					printf("%d\n", game->map[y][x].door_percent);
 					game->map[y][x].door_percent--;
+					if (game->map[y][x].door_percent < 0)
+						game->map[y][x].door_percent = 0;
 				}
 			}
 		}
@@ -58,6 +60,8 @@ int	key_press_hook(int key, t_game *game)
 				{
 					printf("%d\n", game->map[y][x].door_percent);
 					game->map[y][x].door_percent++;
+					if (game->map[y][x].door_percent > 90)
+						game->map[y][x].door_percent = 90;
 				}
 			}
 		}

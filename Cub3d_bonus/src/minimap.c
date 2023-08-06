@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 00:30:38 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/28 16:21:09 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/06 15:43:52 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	draw_rectangular_minimap(t_game *game)
 		if (y < 0)
 			y = 0;
 		x = game->player->f_real_pos.x - (show_case_range - (minimap->zoom / 2 - ZOOM_OFFSET));
-		while (x < game->player->f_real_pos.x + (show_case_range - (minimap->zoom / 2 - ZOOM_OFFSET)) && x < game->map_size.x - 1)
+		while (x < game->player->f_real_pos.x + (show_case_range - (minimap->zoom / 2 - ZOOM_OFFSET)) && x < game->map_size.x)
 		{
 			if (x < 0)
 				x = 0;

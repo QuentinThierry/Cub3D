@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/03 17:22:34 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/06 22:30:18 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ int	ft_close(t_game *game)
 		mlx_destroy_display(game->mlx_ptr);
 		free(game->mlx_ptr);
 	}
+
+	pthread_mutex_lock(&game->sound_end_mut);
+	game->sound_end = 1;
+	pthread_mutex_unlock(&game->sound_end_mut);
+	pthread_join(game->sound_thread, NULL);
 	printf("Moyenne fps : %ld\n", (long)tot_fps / nb_fps);
 	exit(0);
 }

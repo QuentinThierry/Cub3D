@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/06 15:02:17 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/06 22:19:43 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int main(int argc, char **argv)
 {
 	t_game	game;
 
+	putenv("PULSE_LATENCY_MSEC=60");
 	game = (t_game){0};
 	if (argc != 2)
 		return (printf("Error : Invalid nubmber of arguments\n"), 1);
@@ -75,6 +76,9 @@ int main(int argc, char **argv)
 	free_filename(&game);
 	game.constants = (double[5]){(WIN_X) / (tan((FOV / 2.0) * TO_RADIAN))};
 	init_minimap(&game);
+	
+	game.sound_end_mut = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
+	pthread_create(&game.sound_thread, NULL, (void *)sound_manager_thr, &game);
 	// init_mouse(&game);
 	// mlx_do_key_autorepeatoff(game.mlx_ptr);
 	mlx_hook(game.win, 2, (1L<<0), key_press_hook, &game);

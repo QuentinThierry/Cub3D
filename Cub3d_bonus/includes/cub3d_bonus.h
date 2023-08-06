@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/06 15:00:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/06 22:40:00 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@
 # include <time.h>
 # include <stdint.h>
 # include <dirent.h>
+# include <pthread.h>
+# include <signal.h>
+# include "libao/include/ao/ao.h"
 
 # include "minilibx-linux/mlx.h"
 # include "minilibx-linux/mlx_int.h"
@@ -187,6 +190,24 @@ typedef struct s_minimap
 	float		zoom;
 }	t_minimap;
 
+// --------------SOUND-------------------
+typedef struct s_sound
+{
+	ao_device			*device;
+	ao_sample_format	format;
+	char				*buffer;
+	long				buf_size;
+}	t_sound;
+
+typedef struct	s_sound_thread
+{
+	t_sound			sound;
+	int				player_angle;
+	t_vector2		emitter_pos;
+	t_vector2		listener_pos;
+	pthread_mutex_t	mut_play_sound;
+}	t_sound_thread;
+
 typedef struct s_game
 {
 	t_image			*image;
@@ -203,7 +224,14 @@ typedef struct s_game
 	double			delta_time;
 	long int		time;
 	const double	*constants;
+	bool			sound_end;
+	pthread_mutex_t	sound_end_mut;
+	pthread_t		sound_thread;
 }	t_game;
+
+// sound
+void		parse_wav_file(int fd, ao_sample_format *format, long *data_size);
+void		*sound_manager_thr(t_game *game);
 
 // ------ Utils------
 char		*ft_strdup(const char *s);

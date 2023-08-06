@@ -1,12 +1,12 @@
 NO ./assets/smiley.xpm
-SO ./assets/chatmignon.xpm
-WE ./assets/door.xpm
-EA ./assets/tressombre.xpm
+SO ./assets/smiley.xpm
+WE ./assets/smiley.xpm
+EA ./assets/smiley.xpm
 F ./assets/smiley.xpm
 C ./assets/smiley.xpm
 
-c ./assets/cobble.xpm
-o ./assets/cobble.xpm
+c ./assets/smiley.xpm
+o ./assets/smiley.xpm
 
 MAP
 111111111111111111

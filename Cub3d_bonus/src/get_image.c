@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:13:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/04 14:12:04 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/06 15:02:00 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,11 @@ t_image	*get_image(t_game *game, enum e_orientation orient, t_fvector2 wall)
 	t_sprite	*sprite;
 	t_image		*image;
 	
+	if (orient == e_south)
+		wall.y += 0.5;
+	if (orient == e_east)
+		wall.x += 0.5;
+
 	if (orient == e_south)
 		sprite = &(game->map[(int)wall.y - 1][(int)wall.x].sprite[orient]);
 	else if (orient == e_north || orient == e_west)

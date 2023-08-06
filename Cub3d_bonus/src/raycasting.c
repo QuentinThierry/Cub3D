@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/28 14:43:26 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/04 20:01:18 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	raycasting(t_game *game)
 	int			x;
 	double		height;
 	double		angle;
-	t_fvector2	wall;
+	t_ray		ray;
 	t_fvector2	fpos;
 	double		dist; 
 	
@@ -60,17 +60,17 @@ void	raycasting(t_game *game)
 			angle = angle - 360;
 		if (game->player->angle + angle < 0)
 			angle = angle + 360;
-		wall = get_wall_hit(fpos, game->map, game->player->angle + angle, game->map_size);
-		if (wall.x == -1 && wall.y == -1)
+		ray = get_wall_hit(fpos, game->map, game->player->angle + angle, game->map_size);
+		// printf("wall : %f %f\n", wall.x, wall.y);
+		if (ray.hit.x == -1)
 			height = 0;
 		else
 		{
-			dist = get_dist(game, wall.x, wall.y, angle) ;
+			dist = get_dist(game, ray.hit.x, ray.hit.y, angle) ;
 			height = 1 / dist * game->constants[0];		//div par 0 if sin == 0
 			// printf("dist : %f	height : %f\n", dist, height);
 		}
-		draw_vert(game, x + WIN_X / 2, wall, height);
+		draw_vert(game, x + WIN_X / 2, ray, height);
 		x++;
 	}
-	// printf("end-----------------------------\n");
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/30 17:19:00 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/03 12:26:15 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,23 @@
 
 int	init_mlx(t_game *game)
 {
-	t_vector2	size;
-	
-	if (THREED)
-		size = (t_vector2){WIN_X, WIN_Y};
-	else
-		size = (t_vector2){game->map_size.x * CHUNK_SIZE, game->map_size.y * CHUNK_SIZE};
-	
-	game->image = ft_calloc(1, sizeof(t_image));
+		game->image = ft_calloc(1, sizeof(t_image));
 	if (game->image == NULL)
 		return (-1);
 	game->mlx_ptr = mlx_init();
 	if (game->mlx_ptr == NULL)
 		return (-1);
-	game->win = mlx_new_window(game->mlx_ptr, size.x, size.y, "cub3d");
+	game->win = mlx_new_window(game->mlx_ptr, WIN_X, WIN_Y, "cub3d");
 	if (game->win == NULL)
 		return (-1);
-	game->image->img = mlx_new_image(game->mlx_ptr, size.x, size.y);
+	game->image->img = mlx_new_image(game->mlx_ptr, WIN_X, WIN_Y);
 	if (game->win == NULL)
 		return (-1);
 	game->image->addr = mlx_get_data_addr(game->image->img,
 		&game->image->opp, &game->image->size_line, &game->image->endian);
 	if (game->image->opp != 32)
 		return (-1); // If mlx returns a number of plane different that 4, stop the program
-	game->image->size = size;
+	game->image->size = (t_vector2){WIN_X, WIN_Y};
 	game->image->opp /= 8;
 	if (game->win == NULL)
 		return (-1);

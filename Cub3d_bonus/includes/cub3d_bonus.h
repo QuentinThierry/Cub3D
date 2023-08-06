@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/04 14:50:10 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/06 15:00:53 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@
 # define ROTATION_KEYBOARD 125
 # define ROTATION_MOUSE 20
 # define MAX_VOLUME 1.0
-# define THREED 1
 # define TO_RADIAN .0174532
 # define TRANSPARENT_PXL 0x00FF00
 
@@ -100,7 +99,14 @@ typedef struct s_fvector2
 	double	y;
 }	t_fvector2;
 
-typedef	struct s_player{
+typedef struct s_ray
+{
+	t_fvector2			hit;
+	enum e_orientation	orient;
+}	t_ray;
+
+typedef	struct s_player
+{
 	t_vector2	pos;
 	t_fvector2 	f_pos;
 	t_fvector2 	f_real_pos;
@@ -137,6 +143,7 @@ typedef struct s_map
 	char		symbol;
 	bool		is_wall;
 	t_sprite	sprite[6];
+	int			door_percent;
 }	t_map;
 
 /**
@@ -178,7 +185,6 @@ typedef struct s_minimap
 	int			*bounds;
 	int			zoom_dir;
 	float		zoom;
-
 }	t_minimap;
 
 typedef struct s_game
@@ -246,7 +252,7 @@ void		player_move(t_player *player, double delta_time, t_map **map);
 void		check_colliding(t_player *player, t_fvector2 new_pos, t_map **map);
 
 // -------Raycasting-----
-t_fvector2	get_wall_hit(t_fvector2 fpos, t_map **map, float angle, t_vector2 map_size);
+t_ray		get_wall_hit(t_fvector2 fpos, t_map **map, float angle, t_vector2 map_size);
 double		get_wall_dist(t_game *game, double angle);
 void		raycasting(t_game *game);
 t_vector2	get_sign(double angle);
@@ -256,12 +262,8 @@ enum e_orientation	get_wall_orientation(t_fvector2 player, t_fvector2 wall);
 t_image		*get_image(t_game	*game, enum e_orientation orient, t_fvector2 wall);
 int			ft_close(t_game *game);
 
-// --------2D--------
-void		draw_vert(t_game *game, int x, t_fvector2 wall, double dist);
-void		quadrillage(t_game *game);
-t_fvector2	get_wall_hit_2d(t_game *gavoidme, double angle);
-void		raycasting_2d(t_game *game);
-void		quadrillage(t_game *game);
+// draw
+void	draw_vert(t_game *game, int x, t_ray ray, double height);
 
 // image_operations.c
 void	draw_image_on_image_alpha(t_image *dest, t_image *src, t_vector2 offset_dest);

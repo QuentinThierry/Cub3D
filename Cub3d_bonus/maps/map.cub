@@ -5,11 +5,11 @@ EA ./assets/anim
 F ./assets/smiley.xpm
 C ./assets/smiley.xpm
 
-c ./assets/smiley.xpm
-o ./assets/smiley.xpm
+c ./assets/cobble.xpm
+o ./assets/chatmignon.xpm
 t ./assets/smiley.xpm
-S_t ./assets/cobble.xpm
-W_t ./assets/chatmignon.xpm
+S_t ./assets/smiley.xpm
+W_t ./assets/smiley.xpm
 F_F ./assets/smiley.xpm
 
 MAP

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/28 15:58:59 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:46:20 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,34 @@ int	key_press_hook(int key, t_game *game)
 		game->minimap->zoom_dir -= 1;
 	else if (key == '=' || key == '+' || key == 65451)
 		game->minimap->zoom_dir += 1;
+	else if (key == 'i')
+	{
+		for (int y = 0; y < game->map_size.y; y++)
+		{
+			for (int x = 0; x < game->map_size.x; x++)
+			{
+				if (game->map[y][x].symbol == 'c')
+				{
+					printf("%d\n", game->map[y][x].door_percent);
+					game->map[y][x].door_percent--;
+				}
+			}
+		}
+	}
+	else if (key == 'o')
+	{
+		for (int y = 0; y < game->map_size.y; y++)
+		{
+			for (int x = 0; x < game->map_size.x; x++)
+			{
+				if (game->map[y][x].symbol == 'c')
+				{
+					printf("%d\n", game->map[y][x].door_percent);
+					game->map[y][x].door_percent++;
+				}
+			}
+		}
+	}
 	return (0);
 }
 

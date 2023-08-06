@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/08/04 14:16:33 by jvigny           ###   ########.fr        #
+#    Updated: 2023/08/06 15:02:32 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,6 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			ft_realloc.c \
 			ft_strdup.c \
 			init.c \
-			view_2d.c \
 			ft_memcpy.c \
 			ft_close.c \
 			wall_hit.c \
@@ -78,17 +77,17 @@ all:	$(NAME)
 bonus:	all
 
 run: $(NAME)
-	./$(NAME) maps/map.cub
+	./$(NAME) maps/map_test.cub
 
 # vrun: $(NAME)
 # 	valgrind --leak-check=full --track-fds=yes --trace-children=yes --show-leak-kinds=all --track-origins=yes ./$(NAME)
 
 vrun: $(NAME)
-	valgrind ./$(NAME) maps/map.cub
+	valgrind ./$(NAME) maps/map_test.cub
 
 prun: CFLAGS += -pg
 prun: $(NAME)
-	./$(NAME) maps/map.cub
+	./$(NAME) maps/map_test.cub
 	gprof $(NAME) gmon.out > analysis.txt
 
 $(NAME):	$(MINILIBX) $(OBJ_DIR) $(OBJ)

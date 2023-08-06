@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_fill_wall.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/27 17:19:17 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/03 12:29:50 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			map[i].is_wall = true;
 			if (line[i] == 'o')
 				map[i].is_wall = false;
+			if (line[i] == 'c')
+				map[i].door_percent = 100;
 			map[i].sprite[e_north] = fill_texture(game->filename, game->nb_file, line[i], e_north);
 			map[i].sprite[e_east] = fill_texture(game->filename, game->nb_file, line[i], e_east);
 			map[i].sprite[e_south] = fill_texture(game->filename, game->nb_file, line[i], e_south);

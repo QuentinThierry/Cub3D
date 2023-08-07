@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/07 22:26:56 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/07 23:27:44 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,21 @@ static t_ray	_get_wall_hit_se(t_fvector2 fpos,
 				{
 					if (comp.y + step.y / 2 < (int)comp.y + 1)
 					{
+						float door_angle = (float)map[(int)(comp.y)][map_pos.x].door_percent;
 						// if (comp.y + step.y / 2 < (int)comp.y + 0.5)
-							r = (comp.y + step.y / 2) - (int)comp.y;
+							// r = (comp.y + step.y / 2) - (int)comp.y;
 						// else
-							// r = (int)(comp.y + 1) - (comp.y + step.y / 2);
+							r = (int)(comp.y + 1) - (comp.y + step.y / 2);
 						// float add = (r * tan((float)map[(int)(comp.y)][map_pos.x].door_percent * TO_RADIAN));
-						float c = (r * sin((float)map[(int)(comp.y)][map_pos.x].door_percent * TO_RADIAN))
-							/ sin((180 - (float)map[(int)(comp.y)][map_pos.x].door_percent - (180 - d)) * TO_RADIAN);
+						float c = (r * sin(door_angle * TO_RADIAN))
+							/ sin((180 - door_angle - (180 - d)) * TO_RADIAN);
+						float a = (r * sin((180 - d) * TO_RADIAN))
+							/ sin((180 - door_angle - (180 - d)) * TO_RADIAN);
 						float h = sin((180 - d) * TO_RADIAN) * c;
 						float b = cos((180 - d) * TO_RADIAN) * c;
-						printf("r	: %f	angle : %d	h : %f	b : %f	c : %f\n", r, map[(int)(comp.y)][map_pos.x].door_percent
+						printf("r  : %f	angle : %d	h : %f	b : %f	c : %f\n", r, map[(int)(comp.y)][map_pos.x].door_percent
 								, h, b, c);
-						if (1 * sin((float)map[(int)(comp.y)][map_pos.x].door_percent * TO_RADIAN) >= b
-							&& 1 * cos((float)map[(int)(comp.y)][map_pos.x].door_percent * TO_RADIAN) >= h)
+						if (a < 0.5)
 						{
 							return ((t_ray){{map_pos.x + 0.5 + h, comp.y + step.y / 2 + b}, e_west});
 						}

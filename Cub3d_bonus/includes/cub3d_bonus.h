@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/08 16:05:44 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/08 17:22:26 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,7 +281,8 @@ bool	init_minimap(t_game *game);
 void	draw_rotated_image(t_image *img_dest, t_image *img_src, t_vector2 pos, float angle);
 
 // ------------ Door ----------
-t_fvector2	door_hit(t_fvector2 hit, float step, float door_angle, float player_angle);
+t_fvector2	door_hit_ver(t_fvector2 hit, float step, float door_angle, float player_angle);
+t_fvector2	door_hit_hor(t_fvector2 hit, float step, float door_angle, float player_angle);
 
 long int	time_to_long(struct timespec *time);
 

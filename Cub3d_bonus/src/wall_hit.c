@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/08 16:02:09 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/08 17:17:40 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static t_ray	_get_wall_hit_se(t_fvector2 fpos,
 			{
 				if (map[(int)(comp.y)][map_pos.x].symbol == 'c')
 				{
-					door = door_hit((t_fvector2){map_pos.x, comp.y}, step.y
+					door = door_hit_ver((t_fvector2){map_pos.x, comp.y}, step.y
 						, (float)map[(int)(comp.y)][map_pos.x].door_percent, player_angle);
 					if (door.x != -1)
 						return ((t_ray){door, e_west});
@@ -55,14 +55,14 @@ static t_ray	_get_wall_hit_se(t_fvector2 fpos,
 				return ((t_ray){{-1, -1}, -1});
 			if (map[map_pos.y][(int)(comp.x)].is_wall == true)
 			{
-				// if (map[map_pos.y][(int)(comp.x)].symbol == 'c')
-				// {
-				// 	door = door_hit((t_fvector2){comp.x, map_pos.y}, step.x
-				// 		, (float)map[map_pos.y][(int)comp.x].door_percent, player_angle);
-				// 	if (door.x != -1)
-				// 		return ((t_ray){door, e_north});
-				// }
-				// else
+				if (map[map_pos.y][(int)(comp.x)].symbol == 'c')
+				{
+					door = door_hit_hor((t_fvector2){comp.x, map_pos.y}, step.x
+						, (float)map[map_pos.y][(int)comp.x].door_percent, player_angle);
+					if (door.x != -1)
+						return ((t_ray){door, e_north});
+				}
+				else
 					return ((t_ray){{comp.x, map_pos.y}, e_north});
 			}
 			comp.x += step.x;

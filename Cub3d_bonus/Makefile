@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/08/06 15:02:32 by jvigny           ###   ########.fr        #
+#    Updated: 2023/08/08 15:38:40 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,6 +63,7 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			print.c \
 			free.c \
 			bettermlx.c \
+			door.c \
 			main.c
 
 SRC_DIR = ./src/

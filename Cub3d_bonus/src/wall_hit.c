@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/08 15:44:38 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/08 15:52:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static t_ray	_get_wall_hit_se(t_fvector2 fpos,
 	t_fvector2	step;
 	t_fvector2	comp;
 	t_vector2	map_pos;
-	float		r;
+	t_fvector2	door;
 
 	map_pos = (t_vector2){(int)fpos.x + 1, (int)fpos.y + 1};
 	comp.x = fpos.x + fabs(fpos.y - map_pos.y) * angle;
@@ -35,36 +35,10 @@ static t_ray	_get_wall_hit_se(t_fvector2 fpos,
 			{
 				if (map[(int)(comp.y)][map_pos.x].symbol == 'c')
 				{
-					if (comp.y + step.y / 2 < (int)comp.y + 1)
-					{
-						float door_angle = (float)map[(int)(comp.y)][map_pos.x].door_percent;
-						if (comp.y + step.y / 2 < (int)comp.y + 0.5)
-						{
-							r = (comp.y + step.y / 2) - (int)comp.y;
-							if (door_angle >= 180 - d)
-							{
-								comp.y += step.y;
-								map_pos.x += 1;
-								continue ;
-							}
-						}
-						else
-						{
-							r = (int)(comp.y + 1) - (comp.y + step.y / 2);
-							d = 180 - d;
-						}
-						float a = (r * sin(d * TO_RADIAN))
-							/ sin((180 - door_angle - d) * TO_RADIAN);
-						float h = sin(door_angle * TO_RADIAN) * a;
-						float b = cos(door_angle * TO_RADIAN) * a;
-						if (a < 0.5)
-						{
-							if (comp.y + step.y / 2 < (int)comp.y + 0.5)
-								return ((t_ray){{map_pos.x + 0.5 + h, (int)comp.y + b}, e_west});
-							else
-								return ((t_ray){{map_pos.x + 0.5 + h, (int)comp.y + 1 - b}, e_west});
-						}
-					}
+					door = door_hit((t_fvector2){map_pos.x, comp.y}, step.y
+						, (float)map[(int)(comp.y)][map_pos.x].door_percent, d);
+					if (door.x != -1)
+						return ((t_ray){door, e_west});
 				}
 				else
 					return ((t_ray){{map_pos.x, comp.y}, e_west});

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/08 15:53:37 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/08 16:06:02 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_fvector2	door_hit(t_fvector2 hit, float step, float door_angle, float player_a
 		{
 			r = (hit.y + step / 2) - (int)hit.y;
 			if (door_angle >= 180 - player_angle)
-				return ((t_fvector2){-1});
+				return ((t_fvector2){-1, -1});
 		}
 		else
 		{
@@ -42,5 +42,5 @@ t_fvector2	door_hit(t_fvector2 hit, float step, float door_angle, float player_a
 				return ((t_fvector2){hit.x + 0.5 + h, (int)hit.y + 1 - b});
 		}
 	}
-	return ((t_fvector2){-1});
+	return ((t_fvector2){-1, -1});
 }

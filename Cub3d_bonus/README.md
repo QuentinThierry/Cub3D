@@ -23,8 +23,10 @@ FIX :
 <!-- - Need to read directory for animation -->
 - Check if multiple definition of a texture incompatible
 <!-- - stop parsing if not valid caracter on the map -->
+- Segfault when no default sprites for symbol in map
 - makefile
 - doors on side of map
+- security on exiting the map is broken
 
 Minimap : 
 - if screen is too small, do not draw minimap

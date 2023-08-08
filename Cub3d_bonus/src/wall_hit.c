@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/08 17:17:40 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/08 19:00:51 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static t_ray	_get_wall_hit_se(t_fvector2 fpos,
 			{
 				if (map[(int)(comp.y)][map_pos.x].symbol == 'c')
 				{
-					door = door_hit_ver((t_fvector2){map_pos.x, comp.y}, step.y
+					door = door_hit_ver_se((t_fvector2){map_pos.x, comp.y}, step.y
 						, (float)map[(int)(comp.y)][map_pos.x].door_percent, player_angle);
 					if (door.x != -1)
 						return ((t_ray){door, e_west});
@@ -57,7 +57,7 @@ static t_ray	_get_wall_hit_se(t_fvector2 fpos,
 			{
 				if (map[map_pos.y][(int)(comp.x)].symbol == 'c')
 				{
-					door = door_hit_hor((t_fvector2){comp.x, map_pos.y}, step.x
+					door = door_hit_hor_se((t_fvector2){comp.x, map_pos.y}, step.x
 						, (float)map[map_pos.y][(int)comp.x].door_percent, player_angle);
 					if (door.x != -1)
 						return ((t_ray){door, e_north});
@@ -77,8 +77,11 @@ static t_ray	_get_wall_hit_ne(t_fvector2 fpos,
 {
 	t_fvector2	step;
 	t_fvector2	comp;
+	t_fvector2	door;
 	t_vector2	map_pos;
+	float		player_angle;
 
+	player_angle = angle;
 	angle = fabs(tan(angle * TO_RADIAN));
 	map_pos = (t_vector2){(int)fpos.x + 1, (int)fpos.y};
 	comp.x = fpos.x + fabs(fpos.y - map_pos.y) * angle;
@@ -92,13 +95,14 @@ static t_ray	_get_wall_hit_ne(t_fvector2 fpos,
 				return ((t_ray){{-1, -1}, -1});
 			if (map[(int)(comp.y)][map_pos.x].is_wall == true)
 			{
-				// if (map[(int)(comp.y)][map_pos.x].symbol == 'c')
-				// {
-				// 	if (comp.y + step.y / 2 < (int)comp.y + map[(int)(comp.y)][map_pos.x].door_percent / 100.f
-				// 		&& comp.y + step.y / 2 >= (int)comp.y)
-				// 		return ((t_ray){{map_pos.x + 0.5, comp.y + step.y / 2}, e_west});
-				// }
-				// else
+				if (map[(int)(comp.y)][map_pos.x].symbol == 'c')
+				{
+					door = door_hit_ver_ne((t_fvector2){map_pos.x, comp.y}, step.y
+						, (float)map[(int)(comp.y)][map_pos.x].door_percent, player_angle);
+					if (door.x != -1)
+						return ((t_ray){door, e_west});
+				}
+				else
 					return ((t_ray){{map_pos.x, comp.y}, e_west});
 			}
 			comp.y += step.y;
@@ -110,13 +114,14 @@ static t_ray	_get_wall_hit_ne(t_fvector2 fpos,
 				return ((t_ray){{-1, -1}, -1});
 			if (map[map_pos.y - 1][((int)(comp.x))].is_wall == true)
 			{
-				// if (map[map_pos.y - 1][(int)(comp.x)].symbol == 'c')
-				// {
-				// 	if (comp.x + step.x / 2 < (int)comp.x + map[map_pos.y - 1][(int)(comp.x)].door_percent / 100.f
-				// 		&& comp.x + step.x / 2 < (int)comp.x + 1)
-				// 			return ((t_ray){{comp.x + step.x / 2, map_pos.y - 0.5}, e_south});
-				// }
-				// else
+				if (map[map_pos.y - 1][(int)(comp.x)].symbol == 'c')
+				{
+					door = door_hit_hor_ne((t_fvector2){comp.x, map_pos.y}, step.x
+						, (float)map[map_pos.y - 1][(int)comp.x].door_percent, player_angle);
+					if (door.x != -1)
+						return ((t_ray){door, e_south});
+				}
+				else
 					return ((t_ray){{comp.x, map_pos.y}, e_south});
 			}
 
@@ -132,8 +137,11 @@ static t_ray	_get_wall_hit_sw(t_fvector2 fpos,
 {
 	t_fvector2	step;
 	t_fvector2	comp;
+	t_fvector2	door;
 	t_vector2	map_pos;
+	float		player_angle;
 
+	player_angle = angle;
 	angle = fabs(tan(angle * TO_RADIAN));
 	map_pos = (t_vector2){(int)fpos.x, (int)fpos.y + 1};
 	comp.x = fpos.x + fabs(fpos.y - map_pos.y) * angle * -1;
@@ -147,13 +155,14 @@ static t_ray	_get_wall_hit_sw(t_fvector2 fpos,
 				return ((t_ray){{-1, -1}, -1});
 			if (map[(int)(comp.y)][map_pos.x - 1].is_wall == true)
 			{
-				// if (map[(int)(comp.y)][map_pos.x - 1].symbol == 'c')
-				// {
-				// 	if (comp.y + step.y / 2 < (int)comp.y + map[(int)(comp.y)][map_pos.x - 1].door_percent / 100.f
-				// 		&& comp.y + step.y / 2 < (int)comp.y + 1)
-				// 		return ((t_ray){{map_pos.x - 0.5, comp.y + step.y / 2}, e_east});
-				// }
-				// else
+				if (map[(int)(comp.y)][map_pos.x - 1].symbol == 'c')
+				{
+					door = door_hit_ver_sw((t_fvector2){map_pos.x, comp.y}, step.y
+						, (float)map[(int)(comp.y)][map_pos.x - 1].door_percent, player_angle);
+					if (door.x != -1)
+						return ((t_ray){door, e_east});
+				}
+				else
 					return ((t_ray){{map_pos.x, comp.y}, e_east});
 			}
 			comp.y += step.y;
@@ -165,13 +174,14 @@ static t_ray	_get_wall_hit_sw(t_fvector2 fpos,
 				return ((t_ray){{-1, -1}, -1});
 			if (map[map_pos.y][(int)(comp.x)].is_wall == true)
 			{
-				// if (map[map_pos.y][(int)(comp.x)].symbol == 'c')
-				// {
-				// 	if (comp.x + step.x / 2 < (int)comp.x + map[map_pos.y][(int)(comp.x)].door_percent / 100.f
-				// 		&& comp.x + step.x / 2 >= (int)comp.x)
-				// 		return ((t_ray){{comp.x + step.x / 2, map_pos.y + 0.5}, e_north});
-				// }
-				// else
+				if (map[map_pos.y][(int)(comp.x)].symbol == 'c')
+				{
+					door = door_hit_hor_sw((t_fvector2){comp.x, map_pos.y}, step.x
+						, (float)map[map_pos.y][(int)comp.x].door_percent, player_angle);
+					if (door.x != -1)
+						return ((t_ray){door, e_north});
+				}
+				else
 					return ((t_ray){{comp.x, map_pos.y}, e_north});
 			}
 			comp.x += step.x;
@@ -186,8 +196,11 @@ static t_ray	_get_wall_hit_nw(t_fvector2 fpos,
 {
 	t_fvector2	step;
 	t_fvector2	comp;
+	t_fvector2	door;
 	t_vector2	map_pos;
+	float		player_angle;
 
+	player_angle = angle;
 	angle = fabs(tan(angle * TO_RADIAN));
 	map_pos = (t_vector2){(int)fpos.x, (int)fpos.y};
 	comp.x = fpos.x + fabs(fpos.y - map_pos.y) * angle * -1;
@@ -202,13 +215,14 @@ static t_ray	_get_wall_hit_nw(t_fvector2 fpos,
 				return ((t_ray){{-1, -1}, -1});
 			if (map[(int)(comp.y)][map_pos.x - 1].is_wall == true)
 			{
-				// if (map[(int)(comp.y)][map_pos.x - 1].symbol == 'c')
-				// {
-				// 	if (comp.y + step.y / 2 < (int)comp.y + map[(int)(comp.y)][map_pos.x - 1].door_percent / 100.f
-				// 		&& comp.y + step.y / 2 >= (int)comp.y)
-				// 		return ((t_ray){{map_pos.x - 0.5, comp.y + step.y / 2}, e_east});
-				// }
-				// else
+				if (map[(int)(comp.y)][map_pos.x - 1].symbol == 'c')
+				{
+					door = door_hit_ver_nw((t_fvector2){map_pos.x, comp.y}, step.y
+						, (float)map[(int)(comp.y)][map_pos.x - 1].door_percent, player_angle);
+					if (door.x != -1)
+						return ((t_ray){door, e_east});
+				}
+				else
 					return ((t_ray){{map_pos.x, comp.y}, e_east});
 			}
 			comp.y += step.y;
@@ -220,13 +234,14 @@ static t_ray	_get_wall_hit_nw(t_fvector2 fpos,
 				return ((t_ray){{-1, -1}, -1});
 			if (map[map_pos.y - 1][((int)(comp.x))].is_wall == true)
 			{
-				// if (map[map_pos.y - 1][(int)(comp.x)].symbol == 'c')
-				// {
-				// 	if (comp.x + step.x / 2 < (int)comp.x + map[map_pos.y - 1][(int)(comp.x)].door_percent / 100.f
-				// 		&& comp.x + step.x / 2 >= (int)comp.x)
-				// 			return ((t_ray){{comp.x + step.x / 2, map_pos.y - 0.5}, e_south});
-				// }
-				// else
+				if (map[map_pos.y - 1][(int)(comp.x)].symbol == 'c')
+				{
+					door = door_hit_hor_nw((t_fvector2){comp.x, map_pos.y}, step.x
+						, (float)map[map_pos.y - 1][(int)comp.x].door_percent, player_angle);
+					if (door.x != -1)
+						return ((t_ray){door, e_south});
+				}
+				else
 					return ((t_ray){{comp.x, map_pos.y}, e_south});
 			}
 

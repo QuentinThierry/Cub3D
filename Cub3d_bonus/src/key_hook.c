@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/06 16:48:23 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/09 18:29:36 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	key_press_hook(int key, t_game *game)
 {
+	t_fvector2 pos;
+
 	if (key == 65307 ) // esc
 		ft_close(game);
 	else if (key == 65361) // left rrow
@@ -36,35 +38,47 @@ int	key_press_hook(int key, t_game *game)
 		game->minimap->zoom_dir += 1;
 	else if (key == 'i')
 	{
-		for (int y = 0; y < game->map_size.y; y++)
+		pos = game->player->f_real_pos;
+		if (game->map[(int)pos.y + 1][(int)pos.x].symbol == 'o'
+			&& game->map[(int)pos.y + 1][(int)pos.x].door_percent == 90)
 		{
-			for (int x = 0; x < game->map_size.x; x++)
-			{
-				if (game->map[y][x].symbol == 'c')
-				{
-					printf("%d\n", game->map[y][x].door_percent);
-					game->map[y][x].door_percent--;
-					if (game->map[y][x].door_percent < 0)
-						game->map[y][x].door_percent = 0;
-				}
-			}
+			game->map[(int)pos.y + 1][(int)pos.x].door_percent--;
+			game->map[(int)pos.y + 1][(int)pos.x].is_wall = true;
+		}
+		if (game->map[(int)pos.y - 1][(int)pos.x].symbol == 'o'
+			&& game->map[(int)pos.y - 1][(int)pos.x].door_percent == 90)
+		{
+			game->map[(int)pos.y - 1][(int)pos.x].door_percent--;
+			game->map[(int)pos.y - 1][(int)pos.x].is_wall = true;
+		}
+		if (game->map[(int)pos.y][(int)pos.x + 1].symbol == 'o'
+			&& game->map[(int)pos.y][(int)pos.x + 1].door_percent == 90)
+		{
+			game->map[(int)pos.y][(int)pos.x + 1].door_percent--;
+			game->map[(int)pos.y][(int)pos.x + 1].is_wall = true;
+		}
+		if (game->map[(int)pos.y][(int)pos.x - 1].symbol == 'o'
+			&& game->map[(int)pos.y][(int)pos.x - 1].door_percent == 90)
+		{
+			game->map[(int)pos.y][(int)pos.x - 1].door_percent--;
+			game->map[(int)pos.y][(int)pos.x - 1].is_wall = true;
 		}
 	}
 	else if (key == 'o')
 	{
-		for (int y = 0; y < game->map_size.y; y++)
-		{
-			for (int x = 0; x < game->map_size.x; x++)
-			{
-				if (game->map[y][x].symbol == 'c')
-				{
-					printf("%d\n", game->map[y][x].door_percent);
-					game->map[y][x].door_percent++;
-					if (game->map[y][x].door_percent > 90)
-						game->map[y][x].door_percent = 90;
-				}
-			}
-		}
+		pos = game->player->f_real_pos;
+		if (game->map[(int)pos.y + 1][(int)pos.x].symbol == 'c'
+			&& game->map[(int)pos.y + 1][(int)pos.x].door_percent == 0)
+			game->map[(int)pos.y + 1][(int)pos.x].door_percent++;
+		if (game->map[(int)pos.y - 1][(int)pos.x].symbol == 'c'
+			&& game->map[(int)pos.y - 1][(int)pos.x].door_percent == 0)
+			game->map[(int)pos.y - 1][(int)pos.x].door_percent++;
+		if (game->map[(int)pos.y][(int)pos.x + 1].symbol == 'c'
+			&& game->map[(int)pos.y][(int)pos.x + 1].door_percent == 0)
+			game->map[(int)pos.y][(int)pos.x + 1].door_percent++;
+		if (game->map[(int)pos.y][(int)pos.x - 1].symbol == 'c'
+			&& game->map[(int)pos.y][(int)pos.x - 1].door_percent == 0)
+			game->map[(int)pos.y][(int)pos.x - 1].door_percent++;
 	}
 	return (0);
 }

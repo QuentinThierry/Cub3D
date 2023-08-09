@@ -6,11 +6,47 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/08 19:06:33 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/09 21:50:18 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
+
+void	open_door(t_vector2 map_size, t_map **map)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < map_size.y)
+	{
+		j = 0;
+		while (j < map_size.x)
+		{
+			if (map[i][j].symbol == 'c' && map[i][j].door_percent != 0)
+			{
+				map[i][j].door_percent++;
+				if (map[i][j].door_percent >= 90)
+				{
+					map[i][j].symbol = 'o';
+					map[i][j].is_wall = false;
+					map[i][j].door_percent = 90;
+				}
+			}
+			if (map[i][j].symbol == 'o' && map[i][j].door_percent != 90)
+			{
+				map[i][j].door_percent--;
+				if (map[i][j].door_percent <= 0)
+				{
+					map[i][j].symbol = 'c';
+					map[i][j].door_percent = 0;
+				}
+			}
+			j++;
+		}
+		i++;
+	}
+}
 
 // xy (1, 1)
 t_fvector2	door_hit_ver_se(t_fvector2 hit, float step, float door_angle,
@@ -21,6 +57,8 @@ t_fvector2	door_hit_ver_se(t_fvector2 hit, float step, float door_angle,
 
 	if (hit.y + step / 2 >= (int)hit.y + 1)
 		return ((t_fvector2){-1, -1});
+	if (door_angle == 0)
+		return ((t_fvector2){hit.x + 0.5, hit.y + step / 2});
 	if (hit.y + step / 2 < (int)hit.y + 0.5)
 	{
 		r = (hit.y + step / 2) - (int)hit.y;
@@ -50,6 +88,8 @@ t_fvector2	door_hit_hor_se(t_fvector2 hit, float step, float door_angle, float p
 
 	if (hit.x + step / 2 >= (int)hit.x + 1)
 		return ((t_fvector2){-1, -1});
+	if (door_angle == 0)
+		return ((t_fvector2){hit.x + step / 2, hit.y + 0.5});
 	player_angle -= 90;
 	if (hit.x + step / 2 < (int)hit.x + 0.5)
 	{
@@ -80,6 +120,8 @@ t_fvector2	door_hit_ver_ne(t_fvector2 hit, float step, float door_angle,
 
 	if (hit.y + step / 2 <= (int)hit.y)
 		return ((t_fvector2){-1, -1});
+	if (door_angle == 0)
+		return ((t_fvector2){hit.x + 0.5, hit.y + step / 2});
 	if (hit.y + step / 2 < (int)hit.y + 0.5)
 	{
 		r = (hit.y + step / 2) - (int)hit.y;
@@ -109,6 +151,8 @@ t_fvector2	door_hit_hor_ne(t_fvector2 hit, float step, float door_angle, float p
 
 	if (hit.x + step / 2 >= (int)hit.x + 1)
 		return ((t_fvector2){-1, -1});
+	if (door_angle == 0)
+		return ((t_fvector2){hit.x + step / 2, hit.y - 0.5});
 	if (hit.x + step / 2 < (int)hit.x + 0.5)
 	{
 		player_angle = 90 + player_angle;
@@ -142,6 +186,8 @@ t_fvector2	door_hit_ver_sw(t_fvector2 hit, float step, float door_angle,
 
 	if (hit.y + step / 2 > (int)hit.y + 1)
 		return ((t_fvector2){-1, -1});
+	if (door_angle == 0)
+		return ((t_fvector2){hit.x - 0.5, hit.y + step / 2});
 	if (hit.y + step / 2 < (int)hit.y + 0.5)
 	{
 		r = (hit.y + step / 2) - (int)hit.y;
@@ -172,6 +218,8 @@ t_fvector2	door_hit_hor_sw(t_fvector2 hit, float step, float door_angle, float p
 
 	if (hit.x + step / 2 <= (int)hit.x)
 		return ((t_fvector2){-1, -1});
+	if (door_angle == 0)
+		return ((t_fvector2){hit.x + step / 2, hit.y + 0.5});
 	if (hit.x + step / 2 < (int)hit.x + 0.5)
 	{
 		player_angle = 270 - player_angle;
@@ -204,6 +252,8 @@ t_fvector2	door_hit_ver_nw(t_fvector2 hit, float step, float door_angle,
 
 	if (hit.y + step / 2 <= (int)hit.y)
 		return ((t_fvector2){-1, -1});
+	if (door_angle == 0)
+		return ((t_fvector2){hit.x - 0.5, hit.y + step / 2});
 	if (hit.y + step / 2 < (int)hit.y + 0.5)
 	{
 		r = (hit.y + step / 2) - (int)hit.y;
@@ -234,6 +284,8 @@ t_fvector2	door_hit_hor_nw(t_fvector2 hit, float step, float door_angle, float p
 
 	if (hit.x + step / 2 <= (int)hit.x)
 		return ((t_fvector2){-1, -1});
+	if (door_angle == 0)
+		return ((t_fvector2){hit.x + step / 2, hit.y - 0.5});
 	if (hit.x + step / 2 < (int)hit.x + 0.5)
 	{
 		player_angle = player_angle - 270;

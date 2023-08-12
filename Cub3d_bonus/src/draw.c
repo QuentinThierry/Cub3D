@@ -6,17 +6,19 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/04 21:02:11 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/13 00:28:15 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
+__attribute__((always_inline))
 static inline unsigned int	get_color_at(char *addr, int size_line, t_vector2 pos)
 {
 	return (*(int*)(addr + (pos.y * size_line + pos.x * 4)));
 }
 
+__attribute__((always_inline))
 static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, int color)
 {
 	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
@@ -24,14 +26,15 @@ static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, in
 
 void	draw_vert(t_game *game, int x, t_ray ray, double height)
 {
-	int					y, y1;
+	register int		i = 0;
+	int					y;
+	int					y1;
 	int					x_img;
-	double				y_img = 0;
+	float				y_img = 0;
 	t_image				*image;
 	enum e_orientation	orient;
-	double				delta_y_img;
+	float				delta_y_img;
 	int					size_line;
-	int					i = 0;
 	char				*addr;
 
 	size_line = game->image->size_line;
@@ -41,16 +44,7 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	{
 		orient = ray.orient;
 		image = get_image(game, orient, (t_fvector2){ray.hit.x, ray.hit.y});
-		// image = &game->tab_images[0];
 		delta_y_img = image->size.y / height;
-		// if (orient == e_north)
-		// 	printf("north\n");
-		// if (orient == e_east)
-		// 	printf("east\n");
-		// if (orient == e_west)
-		// 	printf("west\n");
-		// if (orient == e_south)
-		// 	printf("south\n");
 		if (y < 0)
 		{
 			y_img = -y * delta_y_img;
@@ -62,8 +56,6 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 			x_img = (ray.hit.x - (int)ray.hit.x) * image->size.x;
 		else
 			x_img = (ray.hit.y - (int)ray.hit.y) * image->size.x;
-		// if (game->map[(int)ray.hit.y][(int)ray.hit.x].symbol == 'c')
-		// 	x_img -= ((float)game->map[(int)ray.hit.y][(int)ray.hit.x].door_percent / 100) * image->size.x - image->size.x;
 		if (orient == e_west || orient == e_south)
 			x_img = image->size.x - x_img - 1;
 	}
@@ -73,15 +65,15 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, 0x666666);
 		i++;
 	}
-	while (y < y1)
+	while (i < y1)
 	{
-		my_mlx_pixel_put(addr, size_line, (t_vector2){x, y}, get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}));
+		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}));
 		y_img += delta_y_img;
-		y++;
+		i++;
 	}
-	while (y1 < WIN_Y)
+	while (i < WIN_Y)
 	{
-		my_mlx_pixel_put(addr, size_line, (t_vector2){x, y1}, 0x222222);
-		y1++;
+		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, 0x222222);
+		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/06 22:19:43 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/13 00:22:50 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int	on_update(t_game *game)
 	fps = (long)(1.0 / game->delta_time);
 	tot_fps += fps;
 	nb_fps++;
-	// if ((nb_fps % 50) == 0)
-	// 	printf("fps : %ld\n", fps);
+	if ((nb_fps % 50) == 0)
+		printf("fps : %ld\n", fps);
 	last_time = cur_time;
 	return (0);
 }

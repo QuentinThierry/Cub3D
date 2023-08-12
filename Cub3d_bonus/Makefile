@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/08/06 21:01:04 by qthierry         ###   ########.fr        #
+#    Updated: 2023/08/13 00:29:37 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -108,7 +108,7 @@ $(NAME):	$(MINILIBX) $(LIBAO) $(OBJ_DIR) $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBS) $(INCLUDES) -o $(NAME)
 
 $(OBJ_DIR)%.o:	$(SRC_DIR)%.c $(HEADERS) Makefile
-	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
+	$(CC) -c $(INCLUDES) $< -o $@
 	
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)

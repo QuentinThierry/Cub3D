@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/11 03:27:36 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/13 00:10:27 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,13 @@ void	print_map(t_game *game)
 	}
 }
 
+__attribute__((always_inline))
 static inline unsigned int	get_color_at(char *addr, int size_line, t_vector2 pos)
 {
 	return (*(int*)(addr + (pos.y * size_line + pos.x * 4)));
 }
 
+__attribute__((always_inline))
 static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, int color)
 {
 	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 22:02:47 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/13 19:05:36 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ t_image	*get_image(t_game	*game, enum e_orientation orient);
 int skip_whitespace(char *str);
 t_vector2	get_dimension_maps(int fd, int nb_line, char *line, bool *error);
 void	remove_new_line(char *str);
-void	*ft_memcpy(void *dest, const void *src, size_t n);
+extern void	*ft_memcpy(void *dest, const void *src, const size_t n);
 void	printf_texture(t_game *game);
 void	free_tab(char **str, int sizey);
 void	free_str(char **str);

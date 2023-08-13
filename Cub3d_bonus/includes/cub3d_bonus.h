@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/13 00:21:21 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/13 20:58:39 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@
 # define MAX_VOLUME 1.0
 # define TO_RADIAN .0174532
 # define TRANSPARENT_PXL 0x00FF00
+
+#define DARK_CONSTANT 5000
+// between 0 and 255
+#define DARK_MAXIMUN 250
 
 // MINIMAP
 #define MMAP_CHUNK 20

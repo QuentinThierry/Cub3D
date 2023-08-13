@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/13 00:28:15 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/13 20:58:46 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,32 @@ static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, in
 	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
 }
 
+t_pixel32	lower_dark(t_pixel32 value, int offset)
+{
+	unsigned int red = (value & 0xFF0000) >> 16;
+	unsigned int green = (value & 0xFF00) >> 8;
+	unsigned int blue = (value & 0xFF);
+
+	if (red <= offset)
+		red = 0;
+	else
+		red -= offset;
+	if (green <= offset)
+		green = 0;
+	else
+		green -= offset;
+	if (blue <= offset)
+		blue = 0;
+	else
+		blue -= offset;
+
+	value = red << 16;
+	value += green << 8;
+	value += blue;
+
+	return (value);
+}
+
 void	draw_vert(t_game *game, int x, t_ray ray, double height)
 {
 	register int		i = 0;
@@ -36,6 +62,7 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	float				delta_y_img;
 	int					size_line;
 	char				*addr;
+	int					dark_amount = 0;
 
 	size_line = game->image->size_line;
 	y = WIN_Y / 2.0 - (int)(height / 2);
@@ -59,6 +86,9 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 		if (orient == e_west || orient == e_south)
 			x_img = image->size.x - x_img - 1;
 	}
+	dark_amount = DARK_CONSTANT / height;
+	if (dark_amount > DARK_MAXIMUN)
+		dark_amount = DARK_MAXIMUN;
 	addr = game->image->addr;
 	while (i < y)
 	{
@@ -67,7 +97,7 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	}
 	while (i < y1)
 	{
-		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}));
+		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, lower_dark(get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}), dark_amount));
 		y_img += delta_y_img;
 		i++;
 	}

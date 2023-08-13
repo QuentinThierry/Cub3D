@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 00:30:38 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/12 20:21:44 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/13 18:45:22 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,13 @@ static const t_vector2	g_minimap_pos =
 	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_PAD
 };
 
+__attribute__((always_inline))
 static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, t_pixel32 color)
 {
 	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
 }
 
+__attribute__((always_inline))
 static inline void	my_mlx_pixel_put_sec(t_image *image, t_vector2 pos, t_pixel32 color)
 {
 	if (pos.y < 0 || pos.x < 0 || pos.x >= image->size.x || pos.y >= image->size.y)

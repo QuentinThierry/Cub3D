@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/06 16:48:23 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/08 19:27:41 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,13 @@ int	key_press_hook(int key, t_game *game)
 		{
 			for (int x = 0; x < game->map_size.x; x++)
 			{
-				if (game->map[y][x].symbol == 'c')
+				if (game->map[y][x].symbol == 'c' || game->map[y][x].symbol == 'o')
 				{
-					printf("%d\n", game->map[y][x].door_percent);
+					// printf("%d\n", game->map[y][x].door_percent);
 					game->map[y][x].door_percent--;
 					if (game->map[y][x].door_percent < 0)
 						game->map[y][x].door_percent = 0;
+					game->map[y][x].symbol = 'c', game->map[y][x].is_wall = true;
 				}
 			}
 		}
@@ -58,10 +59,10 @@ int	key_press_hook(int key, t_game *game)
 			{
 				if (game->map[y][x].symbol == 'c')
 				{
-					printf("%d\n", game->map[y][x].door_percent);
+					// printf("%d\n", game->map[y][x].door_percent);
 					game->map[y][x].door_percent++;
 					if (game->map[y][x].door_percent > 90)
-						game->map[y][x].door_percent = 90;
+						game->map[y][x].door_percent = 90, game->map[y][x].symbol = 'o', game->map[y][x].is_wall = false;
 				}
 			}
 		}

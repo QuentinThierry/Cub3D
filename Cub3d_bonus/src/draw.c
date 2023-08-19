@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/08 18:45:48 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/19 18:09:09 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	if (height != 0)
 	{
 		orient = ray.orient;
-		image = get_image(game, orient, (t_fvector2){ray.hit.x, ray.hit.y});
-		if (image->addr == NULL)
-			return (printf("Error : Invalid image\n"),(void)ft_close(game));
-		// image = &game->tab_images[0];
+		// image = get_image(game, orient, (t_fvector2){ray.hit.x, ray.hit.y});
+		// if (image->addr == NULL)
+		// 	return (printf("Error : Invalid image\n"),(void)ft_close(game));
+		image = &game->tab_images[0];
 		delta_y_img = image->size.y / height;
 		if (y < 0)
 		{

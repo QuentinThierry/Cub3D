@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/08 18:40:49 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/09 18:30:22 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,6 +289,7 @@ t_fvector2	door_hit_ver_sw(t_fvector2 hit, float step, float door_angle, float p
 t_fvector2	door_hit_hor_sw(t_fvector2 hit, float step, float door_angle, float player_angle);
 t_fvector2	door_hit_ver_nw(t_fvector2 hit, float step, float door_angle, float player_angle);
 t_fvector2	door_hit_hor_nw(t_fvector2 hit, float step, float door_angle, float player_angle);
+void		open_door(t_vector2 map_size, t_map **map);
 
 long int	time_to_long(struct timespec *time);
 

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/13 00:22:50 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/21 16:24:48 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,6 @@ int main(int argc, char **argv)
 	game.constants = (double[5]){(WIN_X) / (tan((FOV / 2.0) * TO_RADIAN))};
 	init_minimap(&game);
 	
-	game.sound_end_mut = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
-	pthread_create(&game.sound_thread, NULL, (void *)sound_manager_thr, &game);
 	// init_mouse(&game);
 	// mlx_do_key_autorepeatoff(game.mlx_ptr);
 	mlx_hook(game.win, 2, (1L<<0), key_press_hook, &game);

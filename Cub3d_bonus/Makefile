@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/08/13 00:29:37 by qthierry         ###   ########.fr        #
+#    Updated: 2023/08/21 16:23:26 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,8 @@ NAME = cub3d_bonus
 
 CC = gcc
 CFLAGS = -Wl,-rpath,$(LIBAO_ABS_PATH)lib -g -Wall -Wextra #-O3#-fsanitize=address#-Werror
-LIBS = -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext -L$(LIBAO_LIB) -lao -lpthread
-INCLUDES = -I$(MINILIBX_HEADERS) -I$(LIBAO_HEADERS) -I$(HEADERS_DIR)
+LIBS = -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext #-L$(LIBAO_LIB) -lao -lpthread
+INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR) #-I$(LIBAO_HEADERS)
 
 REDIRECT_ERROR = >/dev/null 2>&1
 
@@ -50,7 +50,6 @@ SRC_GNL = get_next_line.c\
 			get_next_line_utils.c
 
 SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
-			$(addprefix $(SOUND), $(SRC_SOUND)) \
 			key_hook.c \
 			ft_strjoin.c \
 			ft_strncmp.c \
@@ -79,6 +78,8 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			bettermlx.c \
 			main.c
 
+#			$(addprefix $(SOUND), $(SRC_SOUND)) \
+
 SRC_DIR = ./src/
 SRC = $(addprefix $(SRC_DIR), $(SRC_LIST))
 
@@ -104,7 +105,7 @@ prun: $(NAME)
 	./$(NAME) maps/map_test.cub
 	gprof $(NAME) gmon.out > analysis.txt
 
-$(NAME):	$(MINILIBX) $(LIBAO) $(OBJ_DIR) $(OBJ)
+$(NAME):	$(MINILIBX) $(OBJ_DIR) $(OBJ) #$(LIBAO)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBS) $(INCLUDES) -o $(NAME)
 
 $(OBJ_DIR)%.o:	$(SRC_DIR)%.c $(HEADERS) Makefile

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/13 20:58:46 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/21 16:14:22 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	float				delta_y_img;
 	int					size_line;
 	char				*addr;
-	int					dark_amount = 0;
 
 	size_line = game->image->size_line;
 	y = WIN_Y / 2.0 - (int)(height / 2);
@@ -86,9 +85,6 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 		if (orient == e_west || orient == e_south)
 			x_img = image->size.x - x_img - 1;
 	}
-	dark_amount = DARK_CONSTANT / height;
-	if (dark_amount > DARK_MAXIMUN)
-		dark_amount = DARK_MAXIMUN;
 	addr = game->image->addr;
 	while (i < y)
 	{
@@ -97,7 +93,7 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	}
 	while (i < y1)
 	{
-		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, lower_dark(get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}), dark_amount));
+		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}));
 		y_img += delta_y_img;
 		i++;
 	}

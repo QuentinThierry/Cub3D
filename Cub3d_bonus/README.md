@@ -26,6 +26,10 @@ FIX :
 - Segfault when no default sprites for symbol in map
 - makefile
 - doors on side of map
+- texture door
+- door parsing
+- opti door open
+- object parsing
 - security on exiting the map is broken
 
 Minimap : 

@@ -6,13 +6,13 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/09 21:50:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/21 16:29:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-void	open_door(t_vector2 map_size, t_map **map)
+void	open_door(t_vector2 map_size, t_map **map, double delta_time)
 {
 	int i;
 	int j;
@@ -23,23 +23,24 @@ void	open_door(t_vector2 map_size, t_map **map)
 		j = 0;
 		while (j < map_size.x)
 		{
-			if (map[i][j].symbol == 'c' && map[i][j].door_percent != 0)
+			if (map[i][j].symbol == 'c' && map[i][j].is_opening_door == 1)
 			{
-				map[i][j].door_percent++;
+				map[i][j].door_percent += delta_time * SPEEP_DOOR_OPENING;
 				if (map[i][j].door_percent >= 90)
 				{
 					map[i][j].symbol = 'o';
 					map[i][j].is_wall = false;
 					map[i][j].door_percent = 90;
+					map[i][j].is_opening_door = 0;
 				}
 			}
-			if (map[i][j].symbol == 'o' && map[i][j].door_percent != 90)
+			else if (map[i][j].symbol == 'c' && map[i][j].is_opening_door == -1)
 			{
-				map[i][j].door_percent--;
+				map[i][j].door_percent -= delta_time * SPEEP_DOOR_OPENING;
 				if (map[i][j].door_percent <= 0)
 				{
-					map[i][j].symbol = 'c';
 					map[i][j].door_percent = 0;
+					map[i][j].is_opening_door = 0;
 				}
 			}
 			j++;

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/09 18:30:22 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/21 16:31:29 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 # define SPRINT_BOOST 100
 # define ROTATION_KEYBOARD 125
 # define ROTATION_MOUSE 20
+# define SPEEP_DOOR_OPENING 100
 # define MAX_VOLUME 1.0
 # define TO_RADIAN .0174532
 # define TRANSPARENT_PXL 0x00FF00
@@ -143,7 +144,8 @@ typedef struct s_map
 	char		symbol;
 	bool		is_wall;
 	t_sprite	sprite[6];
-	int			door_percent;
+	float		door_percent;
+	int			is_opening_door;
 }	t_map;
 
 /**
@@ -289,7 +291,9 @@ t_fvector2	door_hit_ver_sw(t_fvector2 hit, float step, float door_angle, float p
 t_fvector2	door_hit_hor_sw(t_fvector2 hit, float step, float door_angle, float player_angle);
 t_fvector2	door_hit_ver_nw(t_fvector2 hit, float step, float door_angle, float player_angle);
 t_fvector2	door_hit_hor_nw(t_fvector2 hit, float step, float door_angle, float player_angle);
-void		open_door(t_vector2 map_size, t_map **map);
+void		open_door(t_vector2 map_size, t_map **map, double delta_time);
+
+t_vector2	get_object_hit(char object, t_player *player, t_map **map, float dist);
 
 long int	time_to_long(struct timespec *time);
 

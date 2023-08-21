@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 01:05:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/27 17:15:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/19 18:27:00 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	check_colliding(t_player *player, t_fvector2 new_pos, t_map **map)
 	player->pos.y = (int)player->f_pos.y;
 }
 
-// y= 2.00
 static t_fvector2	slide_wall_x(t_fvector2 fpos, t_map **map, t_fvector2 dest)
 {
 	int	dir;
@@ -243,8 +242,6 @@ inline t_fvector2	get_collision(t_fvector2 fpos, t_map **map, t_fvector2 new_pos
 {
 	t_vector2	sign;
 
-	// sign = get_sign(angle);
-	// angle = fabs(tan(angle * TO_RADIAN));
 	if (fpos.x - new_pos.x < 0)
 		sign.x = 1;
 	else

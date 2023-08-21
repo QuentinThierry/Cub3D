@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/19 18:09:33 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/21 16:37:33 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	on_update(t_game *game)
 	struct timespec			time;
 	long					fps;
 
+	// usleep(100000);
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
 	clock_gettime(CLOCK_REALTIME, &time);
@@ -31,7 +32,7 @@ int	on_update(t_game *game)
 		game->player->angle = game->player->angle - 360;
 	if (game->player->angle + game->player->angle < 0)
 		game->player->angle = game->player->angle + 360;
-	open_door(game->map_size, game->map);
+	open_door(game->map_size, game->map, game->delta_time);
 	player_move(game->player, game->delta_time, game->map);
 	raycasting(game);
 	zoom_hook_handle(game->minimap, game->delta_time);

@@ -6,18 +6,20 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/19 18:15:02 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/21 18:06:29 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-static inline unsigned int	get_color_at(char *addr, int size_line, t_vector2 pos)
+static inline unsigned int	get_color_at(char *addr, int size_line,
+			t_vector2 pos)
 {
 	return (*(int*)(addr + (pos.y * size_line + pos.x * 4)));
 }
 
-static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, int color)
+static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos,
+			int color)
 {
 	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
 }
@@ -26,6 +28,7 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 {
 	int					y, y1;
 	int					x_img;
+	int					x_door;
 	double				y_img = 0;
 	t_image				*image;
 	enum e_orientation	orient;
@@ -39,11 +42,9 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	y1 = WIN_Y / 2.0 + ((int)height - (int)(height / 2));
 	if (height != 0)
 	{
-		orient = ray.orient;
-		image = get_image(game, orient, (t_fvector2){ray.hit.x, ray.hit.y});
+		image = get_image(game, ray, &x_door);
 		if (image->addr == NULL)
 			return (printf("Error : Invalid image\n"),(void)ft_close(game));
-		// image = &game->tab_images[0];
 		delta_y_img = image->size.y / height;
 		if (y < 0)
 		{
@@ -52,12 +53,15 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 		}
 		if (y1 > WIN_Y)
 			y1 = WIN_Y;
+		orient = ray.orient;
 		if (orient == e_north || orient == e_south)
 			x_img = (ray.hit.x - (int)ray.hit.x) * image->size.x;
 		else
 			x_img = (ray.hit.y - (int)ray.hit.y) * image->size.x;
 		if (orient == e_west || orient == e_south)
 			x_img = image->size.x - x_img - 1;
+		if (x_door != 0)
+			x_img = x_door;
 	}
 	addr = game->image->addr;
 	while (i < y)

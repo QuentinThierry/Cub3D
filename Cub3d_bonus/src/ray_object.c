@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 18:21:21 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/21 16:26:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/21 20:28:54 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 
 // xy (1, 1)
-static t_vector2	_get_object_se(t_player *player,
+static t_ray	_get_object_se(t_player *player,
 								t_map **map, float dist, char object)
 {
 	t_fvector2	step;
@@ -35,22 +35,22 @@ static t_vector2	_get_object_se(t_player *player,
 		if (map_pos.y >= comp.y)
 		{
 			if (map_pos.x > max_pos.x)
-				return ((t_vector2){-1, -1});
+				return ((t_ray){{-1, -1}, e_west});
 			if (map[(int)(comp.y)][map_pos.x].symbol == object)
-				return ((t_vector2){map_pos.x, (int)(comp.y)});
-			if (map[(int)(comp.y)][map_pos.x].is_wall == true)
-				return ((t_vector2){-1, -1});
+				return ((t_ray){{map_pos.x, (int)(comp.y)}, e_west});
+			if ((map[(int)(comp.y)][map_pos.x].type & WALL) == true)
+				return ((t_ray){{-1, -1}, e_west});
 			comp.y += step.y;
 			map_pos.x += 1;
 		}
 		else 
 		{
 			if (map_pos.y > max_pos.y)
-				return ((t_vector2){-1, -1});
+				return ((t_ray){{-1, -1}, e_north});
 			if (map[map_pos.y][(int)(comp.x)].symbol == object)
-				return ((t_vector2){(int)(comp.x), map_pos.y});
-			if (map[map_pos.y][(int)(comp.x)].is_wall == true)
-				return ((t_vector2){-1, -1});
+				return ((t_ray){{(int)(comp.x), map_pos.y}, e_north});
+			if ((map[map_pos.y][(int)(comp.x)].type & WALL) == true)
+				return ((t_ray){{-1, -1}, e_north});
 			comp.x += step.x;
 			map_pos.y += 1;
 		}
@@ -58,7 +58,7 @@ static t_vector2	_get_object_se(t_player *player,
 }
 
 // xy (1, -1)
-static t_vector2	_get_object_ne(t_player *player,
+static t_ray	_get_object_ne(t_player *player,
 								t_map **map, float dist, char object)
 {
 	t_fvector2	step;
@@ -79,22 +79,22 @@ static t_vector2	_get_object_ne(t_player *player,
 		if (map_pos.y <= comp.y)
 		{
 			if (map_pos.x > max_pos.x)
-				return ((t_vector2){-1, -1});
+				return ((t_ray){{-1, -1}, e_west});
 			if (map[(int)(comp.y)][map_pos.x].symbol == object)
-				return ((t_vector2){map_pos.x, (int)(comp.y)});
-			if (map[(int)(comp.y)][map_pos.x].is_wall == true)
-				return ((t_vector2){-1, -1});
+				return ((t_ray){{map_pos.x, (int)(comp.y)}, e_west});
+			if ((map[(int)(comp.y)][map_pos.x].type & WALL) == true)
+				return ((t_ray){{-1, -1}, e_west});
 			comp.y += step.y;
 			map_pos.x += 1;
 		}
 		else
 		{
 			if (map_pos.y < max_pos.y)
-				return ((t_vector2){-1, -1});
+				return ((t_ray){{-1, -1}, e_south});
 			if (map[map_pos.y - 1][((int)(comp.x))].symbol == object)
-				return ((t_vector2){(int)(comp.x), map_pos.y - 1});
-			if (map[map_pos.y - 1][(int)(comp.x)].is_wall == true)
-				return ((t_vector2){-1, -1});
+				return ((t_ray){{(int)(comp.x), map_pos.y - 1}, e_south});
+			if ((map[map_pos.y - 1][(int)(comp.x)].type & WALL) == true)
+				return ((t_ray){{-1, -1}, e_south});
 			comp.x += step.x;
 			map_pos.y += -1;
 		}
@@ -102,7 +102,7 @@ static t_vector2	_get_object_ne(t_player *player,
 }
 
 // xy (-1, 1)
-static t_vector2	_get_object_sw(t_player *player,
+static t_ray	_get_object_sw(t_player *player,
 								t_map **map, float dist, char object)
 {
 	t_fvector2	step;
@@ -123,22 +123,22 @@ static t_vector2	_get_object_sw(t_player *player,
 		if (map_pos.y >= comp.y)
 		{
 			if (map_pos.x < max_pos.x)
-				return ((t_vector2){-1, -1});
+				return ((t_ray){{-1, -1}, e_east});
 			if (map[(int)(comp.y)][map_pos.x - 1].symbol == object)
-				return ((t_vector2){map_pos.x - 1, (int)(comp.y)});
-			if (map[(int)(comp.y)][map_pos.x - 1].is_wall == true)
-				return ((t_vector2){-1, -1});
+				return ((t_ray){{map_pos.x - 1, (int)(comp.y)}, e_east});
+			if ((map[(int)(comp.y)][map_pos.x - 1].type & WALL) == true)
+				return ((t_ray){{-1, -1}, e_east});
 			comp.y += step.y;
 			map_pos.x += -1;
 		}
 		else
 		{
 			if (map_pos.y > max_pos.y)
-				return ((t_vector2){-1, -1});
+				return ((t_ray){{-1, -1}, e_north});
 			if (map[map_pos.y][(int)(comp.x)].symbol == object)
-				return ((t_vector2){(int)(comp.x), map_pos.y});
-			if (map[map_pos.y][(int)(comp.x)].is_wall == true)
-				return ((t_vector2){-1, -1});
+				return ((t_ray){{(int)(comp.x), map_pos.y}, e_north});
+			if ((map[map_pos.y][(int)(comp.x)].type & WALL) == true)
+				return ((t_ray){{-1, -1}, e_north});
 			comp.x += step.x;
 			map_pos.y += 1;
 		}
@@ -146,7 +146,7 @@ static t_vector2	_get_object_sw(t_player *player,
 }
 
 // xy (-1, -1)
-static t_vector2	_get_object_nw(t_player *player,
+static t_ray	_get_object_nw(t_player *player,
 								t_map **map, float dist, char object)
 {
 	t_fvector2	step;
@@ -167,29 +167,29 @@ static t_vector2	_get_object_nw(t_player *player,
 		if (map_pos.y <= comp.y)
 		{
 			if (map_pos.x < max_pos.x)
-				return ((t_vector2){-1, -1});
+				return ((t_ray){{-1, -1}, e_east});
 			if (map[(int)(comp.y)][map_pos.x - 1].symbol == object)
-				return ((t_vector2){map_pos.x - 1, (int)(comp.y)});
-			if (map[(int)(comp.y)][map_pos.x - 1].is_wall == true)
-				return ((t_vector2){-1, -1});
+				return ((t_ray){{map_pos.x - 1, (int)(comp.y)}, e_east});
+			if ((map[(int)(comp.y)][map_pos.x - 1].type & WALL) == true)
+				return ((t_ray){{-1, -1}, e_east});
 			comp.y += step.y;
 			map_pos.x += -1;
 		}
 		else
 		{
 			if (map_pos.y < max_pos.y)
-				return ((t_vector2){-1, -1});
+				return ((t_ray){{-1, -1}, e_south});
 			if (map[map_pos.y - 1][(int)(comp.x)].symbol == object)
-				return ((t_vector2){(int)(comp.x), map_pos.y - 1});
-			if (map[map_pos.y - 1][(int)(comp.x)].is_wall == true)
-				return ((t_vector2){-1, -1});
+				return ((t_ray){{(int)(comp.x), map_pos.y - 1}, e_south});
+			if ((map[map_pos.y - 1][(int)(comp.x)].type & WALL) == true)
+				return ((t_ray){{-1, -1}, e_south});
 			comp.x += step.x;
 			map_pos.y += -1;
 		}
 	}
 }
 
- t_vector2	get_object_hit(char object, t_player *player, t_map **map, float dist)
+ t_ray	get_object_hit(char object, t_player *player, t_map **map, float dist)
 {
 	t_vector2	sign;
 

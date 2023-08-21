@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/21 16:31:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/21 21:38:15 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,19 @@
 // Represents the minimap size equals to a percentage of the total window
 #define MINIMAP_SIZE 0.25
 
+
+// t_type for arg
+#define NONE 0b0
+#define WALL 0b1
+#define DOOR 0b10
+
 #define PATH_MMAP_PLAYER "../assets/minimap_player.xpm"
 
 extern long tot_fps;
 extern long nb_fps;
 
 typedef u_int32_t t_pixel32;
+typedef u_int32_t t_type;
 
 enum e_orientation
 {
@@ -142,11 +149,18 @@ typedef struct s_sprite
 typedef struct s_map
 {
 	char		symbol;
-	bool		is_wall;
+	t_type		type;
+	void		*arg;
 	t_sprite	sprite[6];
+}	t_map;
+
+typedef struct s_door
+{
 	float		door_percent;
 	int			is_opening_door;
-}	t_map;
+	int			sign;
+	long int	time;
+}	t_door;
 
 /**
  * @brief use to stock the texture during the parsing
@@ -254,33 +268,33 @@ void		player_move(t_player *player, double delta_time, t_map **map);
 void		check_colliding(t_player *player, t_fvector2 new_pos, t_map **map);
 
 // -------Raycasting-----
-t_ray		get_wall_hit(t_fvector2 fpos, t_map **map, float angle, t_vector2 map_size);
+t_ray		get_wall_hit(t_fvector2 fpos, t_map **map, float angle, t_game *game);
 double		get_wall_dist(t_game *game, double angle);
 void		raycasting(t_game *game);
 t_vector2	get_sign(double angle);
 
 
 enum e_orientation	get_wall_orientation(t_fvector2 player, t_fvector2 wall);
-t_image		*get_image(t_game	*game, enum e_orientation orient, t_fvector2 wall);
+t_image		*get_image(t_game	*game, t_ray ray, int *x_door);
 int			ft_close(t_game *game);
 
 // draw
-void	draw_vert(t_game *game, int x, t_ray ray, double height);
+void		draw_vert(t_game *game, int x, t_ray ray, double height);
 
 // image_operations.c
-void	draw_image_on_image_alpha(t_image *dest, t_image *src, t_vector2 offset_dest);
+void		draw_image_on_image_alpha(t_image *dest, t_image *src, t_vector2 offset_dest);
 
 // bettermlx.c
-t_image	*btmlx_new_image(void *mlx_ptr, t_vector2 size);
-t_image	*btmlx_xpm_file_to_image(void *mlx, char *path,
-			t_vector2 dst_size);
+t_image		*btmlx_new_image(void *mlx_ptr, t_vector2 size);
+t_image		*btmlx_xpm_file_to_image(void *mlx, char *path,
+				t_vector2 dst_size);
 
 // Minimap
-void	zoom_hook_handle(t_minimap *minimap, double delta_time);
-void	draw_minimap(t_game *game);
-void	generate_minimap_bounds(t_game *game);
-bool	init_minimap(t_game *game);
-void	draw_rotated_image(t_image *img_dest, t_image *img_src, t_vector2 pos, float angle);
+void		zoom_hook_handle(t_minimap *minimap, double delta_time);
+void		draw_minimap(t_game *game);
+void		generate_minimap_bounds(t_game *game);
+bool		init_minimap(t_game *game);
+void		draw_rotated_image(t_image *img_dest, t_image *img_src, t_vector2 pos, float angle);
 
 // ------------ Door ----------
 t_fvector2	door_hit_ver_se(t_fvector2 hit, float step, float door_angle, float player_angle);
@@ -292,8 +306,10 @@ t_fvector2	door_hit_hor_sw(t_fvector2 hit, float step, float door_angle, float p
 t_fvector2	door_hit_ver_nw(t_fvector2 hit, float step, float door_angle, float player_angle);
 t_fvector2	door_hit_hor_nw(t_fvector2 hit, float step, float door_angle, float player_angle);
 void		open_door(t_vector2 map_size, t_map **map, double delta_time);
+float		get_texture_door(t_ray ray, float door_angle);
+void		step_door_open(t_door *door, long time, t_map *map_cell);
 
-t_vector2	get_object_hit(char object, t_player *player, t_map **map, float dist);
+t_ray		get_object_hit(char object, t_player *player, t_map **map, float dist);
 
 long int	time_to_long(struct timespec *time);
 

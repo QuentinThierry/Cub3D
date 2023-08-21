@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/06 16:55:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/21 20:36:09 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,24 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			line[i] = '0';
 		if (is_wall(line[i], game->filename, game->nb_file, &error))
 		{
-			map[i].is_wall = true;
+			map[i].type = WALL;
 			if (line[i] == 'o')
-				map[i].is_wall = false;
+			{
+				map[i].type = NONE;
+				map[i].type |= DOOR;
+				map[i].arg = ft_calloc(1, sizeof(t_door));
+				if (map[i].arg == NULL)
+					return (perror("Error"), false);
+				((t_door *)map[i].arg)->door_percent = 90;
+			}
 			if (line[i] == 'c')
-				map[i].door_percent = 0;
+			{
+				map[i].type |= DOOR;
+				map[i].arg = ft_calloc(1, sizeof(t_door));
+				if (map[i].arg == NULL)
+					return (perror("Error"), false);
+				((t_door *)map[i].arg)->door_percent = 0;
+			}
 			map[i].sprite[e_north] = fill_texture(game->filename, game->nb_file, line[i], e_north);
 			map[i].sprite[e_east] = fill_texture(game->filename, game->nb_file, line[i], e_east);
 			map[i].sprite[e_south] = fill_texture(game->filename, game->nb_file, line[i], e_south);
@@ -62,7 +75,7 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 		{
 			if (error == true)
 				return (printf("Error : invalid caracter in the map %s\n", line), false);
-			map[i].is_wall = false;
+			map[i].type = NONE;
 			map[i].sprite[e_north].index = -1;
 			map[i].sprite[e_east].index = -1;
 			map[i].sprite[e_south].index = -1;

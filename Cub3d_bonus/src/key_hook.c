@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/21 16:29:07 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/21 20:57:57 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 int	key_press_hook(int key, t_game *game)
 {
-	t_vector2 pos;
+	t_vector2		pos;
+	t_ray			hit;
+	int				sign;
+	struct timespec	time;
 
 	if (key == 65307 ) // esc
 		ft_close(game);
@@ -38,35 +41,36 @@ int	key_press_hook(int key, t_game *game)
 		game->minimap->zoom_dir += 1;
 	else if (key == ' ')
 	{
-		pos = get_object_hit('c', game->player, game->map, 1);
-		if (pos.x != -1)
+		hit = get_object_hit('c', game->player, game->map, 1);
+		if (hit.hit.x != -1)
 		{
-			if (game->map[pos.y][pos.x].is_opening_door == 1)
+			if (hit.orient == e_east || hit.orient == e_south)
+				sign = 1;
+			else
+			 	sign = -1;
+			clock_gettime(CLOCK_REALTIME, &time);
+			if (((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door == 1)
 			{
-				game->map[pos.y][pos.x].is_opening_door = -1;
-				game->map[pos.y][pos.x].door_percent -= game->delta_time * SPEEP_DOOR_OPENING;
-				// game->map[pos.y][pos.x].is_wall = true;
-			}
-			else if (game->map[pos.y][pos.x].is_opening_door == -1)
-			{
-				game->map[pos.y][pos.x].is_opening_door = 1;
-				game->map[pos.y][pos.x].door_percent += game->delta_time * SPEEP_DOOR_OPENING;
-				// game->map[pos.y][pos.x].is_wall = true;
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = -1;
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent -= game->delta_time * SPEEP_DOOR_OPENING;// * sign;
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
 			}
 			else
 			{
-				game->map[pos.y][pos.x].is_opening_door = 1;
-				game->map[pos.y][pos.x].door_percent += game->delta_time * SPEEP_DOOR_OPENING;
-				// game->map[pos.y][pos.x].is_wall = true;
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = 1;
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent += game->delta_time * SPEEP_DOOR_OPENING;// * sign;
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
 			}
 		}
-		pos = get_object_hit('o', game->player, game->map, 1);
-		if (pos.x != -1)
+		hit = get_object_hit('o', game->player, game->map, 1);
+		if (hit.hit.x != -1)
 		{
-				game->map[pos.y][pos.x].symbol = 'c';
-				game->map[pos.y][pos.x].is_wall = true;
-				game->map[pos.y][pos.x].is_opening_door = -1;
-				game->map[pos.y][pos.x].door_percent -= game->delta_time * SPEEP_DOOR_OPENING;
+				clock_gettime(CLOCK_REALTIME, &time);
+				game->map[(int)hit.hit.y][(int)hit.hit.x].symbol = 'c';
+				game->map[(int)hit.hit.y][(int)hit.hit.x].type |= true;
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = -1;
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent -= game->delta_time * SPEEP_DOOR_OPENING;
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
 		}
 	}
 	return (0);

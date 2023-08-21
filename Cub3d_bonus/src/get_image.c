@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:13:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/08 18:27:10 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/21 20:41:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,30 +52,54 @@ static void	update_anim(long int time, t_sprite *sprite, t_image *img)
 	}
 }
 
-t_image	*get_image(t_game *game, enum e_orientation orient, t_fvector2 wall)
+t_image	*get_image(t_game *game, t_ray ray, int *x_door)
 {
 	t_sprite	*sprite;
 	t_image		*image;
+	t_vector2	wall;
+	float		dist;
 	
-	if (orient == e_south)
-		wall.y = ceil(wall.y);
-	if (orient == e_east)
-		wall.x = ceil(wall.x);
+	*x_door = 0;
+	dist = -1;
+	wall.x = (int)ray.hit.x;
+	wall.y = (int)ray.hit.y;
+	if (ray.orient == e_south)
+		wall.y = (int)ceil(ray.hit.y);
+	if (ray.orient == e_east)
+		wall.x = (int)ceil(ray.hit.x);
 
-	if (orient == e_south)
-		sprite = &(game->map[(int)wall.y - 1][(int)wall.x].sprite[orient]);
-	else if (orient == e_north || orient == e_west)
-		sprite = &(game->map[(int)wall.y][(int)wall.x].sprite[orient]);
-	if (orient == e_east)
-		sprite = &(game->map[(int)wall.y][(int)wall.x - 1].sprite[orient]);
+	if (ray.orient == e_south)
+	{
+		if (game->map[wall.y - 1][wall.x].symbol == 'c')
+			dist = get_texture_door(ray, ((t_door *)game->map[wall.y - 1][wall.x].arg)->door_percent);
+		sprite = &(game->map[wall.y - 1][wall.x].sprite[ray.orient]);
+	}
+	else if (ray.orient == e_north || ray.orient == e_west)
+	{
+		if (game->map[wall.y][wall.x].symbol == 'c')
+			dist = get_texture_door(ray, ((t_door *)game->map[wall.y][wall.x].arg)->door_percent);
+		sprite = &(game->map[wall.y][wall.x].sprite[ray.orient]);
+	}
+	if (ray.orient == e_east)
+	{
+		if (game->map[wall.y][wall.x - 1].symbol == 'c')
+			dist = get_texture_door(ray, ((t_door *)game->map[wall.y][wall.x - 1].arg)->door_percent);
+		sprite = &(game->map[wall.y][wall.x - 1].sprite[ray.orient]);
+	}
 	if (sprite->frame == -1)
+	{
+		if (dist != -1)
+			*x_door = game->tab_images[sprite->index].size.x * dist;
 		return (&(game->tab_images[sprite->index]));
+	}
 	else		//animation
 	{
 		image = &game->tab_images[sprite->index];
 		if (sprite->time == 0)
 		{
 			sprite->time = game->time;
+			if (dist != -1)
+				*x_door = game->tab_images[sprite->index + sprite->frame].size.x * dist;
 			return (&(game->tab_images[sprite->index + sprite->frame]));
 		}
 		if (sprite->frame < image->nb_total_frame
@@ -85,7 +109,13 @@ t_image	*get_image(t_game *game, enum e_orientation orient, t_fvector2 wall)
 				&& game->time - sprite->time >= image->time_animation)
 			update_anim(game->time, sprite, image);
 		if (sprite->frame == image->nb_total_frame)
+		{
+			if (dist != -1)
+				*x_door = image->size.x * dist;
 			return (image);
+		}
+		if (dist != -1)
+			*x_door = game->tab_images[sprite->index + sprite->frame].size.x * dist;
 		return (&(game->tab_images[sprite->index + sprite->frame]));
 	}
 }

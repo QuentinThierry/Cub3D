@@ -25,12 +25,15 @@ FIX :
 <!-- - stop parsing if not valid caracter on the map -->
 - Segfault when no default sprites for symbol in map
 - makefile
-- doors on side of map
-- texture door
-- door parsing
-- opti door open
 - object parsing
 - security on exiting the map is broken
 
 Minimap : 
 - if screen is too small, do not draw minimap
+
+Door :
+<!-- - texture door -->
+<!-- - opti door open -->
+- open door depending on the orientation ->> door does not always open the same ways
+- door parsing
+- doors on side of map

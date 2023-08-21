@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/21 16:29:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/21 21:35:20 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,24 @@ void	open_door(t_vector2 map_size, t_map **map, double delta_time)
 		j = 0;
 		while (j < map_size.x)
 		{
-			if (map[i][j].symbol == 'c' && map[i][j].is_opening_door == 1)
+			if (map[i][j].symbol == 'c' && ((t_door *)map[i][j].arg)->is_opening_door == 1)
 			{
-				map[i][j].door_percent += delta_time * SPEEP_DOOR_OPENING;
-				if (map[i][j].door_percent >= 90)
+				((t_door *)map[i][j].arg)->door_percent += delta_time * SPEEP_DOOR_OPENING;
+				if (((t_door *)map[i][j].arg)->door_percent >= 90 || ((t_door *)map[i][j].arg)->door_percent <= -90)
 				{
 					map[i][j].symbol = 'o';
-					map[i][j].is_wall = false;
-					map[i][j].door_percent = 90;
-					map[i][j].is_opening_door = 0;
+					map[i][j].type ^= WALL;
+					((t_door *)map[i][j].arg)->door_percent = 90;
+					((t_door *)map[i][j].arg)->is_opening_door = 0;
 				}
 			}
-			else if (map[i][j].symbol == 'c' && map[i][j].is_opening_door == -1)
+			else if (map[i][j].symbol == 'c' && ((t_door *)map[i][j].arg)->is_opening_door == -1)
 			{
-				map[i][j].door_percent -= delta_time * SPEEP_DOOR_OPENING;
-				if (map[i][j].door_percent <= 0)
+				((t_door *)map[i][j].arg)->door_percent -= delta_time * SPEEP_DOOR_OPENING;
+				if (((t_door *)map[i][j].arg)->door_percent <= 0)
 				{
-					map[i][j].door_percent = 0;
-					map[i][j].is_opening_door = 0;
+					((t_door *)map[i][j].arg)->door_percent = 0;
+					((t_door *)map[i][j].arg)->is_opening_door = 0;
 				}
 			}
 			j++;
@@ -309,3 +309,65 @@ t_fvector2	door_hit_hor_nw(t_fvector2 hit, float step, float door_angle, float p
 	return ((t_fvector2){(int)hit.x + 1 - (cosf(door_angle * TO_RADIAN) * a),
 		hit.y - 0.5 - sinf(door_angle * TO_RADIAN) * a});
 }
+
+float	get_texture_door(t_ray ray, float door_angle)
+{
+	t_fvector2	delta;
+	double		dist;
+
+	if (ray.orient == e_south || ray.orient == e_north)
+	{
+		if (ray.hit.x - (int)ray.hit.x < 0.5)
+			delta.x = ray.hit.x - (int)ray.hit.x;
+		else
+			delta.x = ((int)ray.hit.x + 1) - ray.hit.x;
+		delta.y = fabs(ray.hit.y - ((int)ray.hit.y + 0.5)); 
+	}
+	else
+	{
+		delta.x = fabs(ray.hit.x - ((int)ray.hit.x + 0.5)); 
+		if (ray.hit.y - (int)ray.hit.y < 0.5)
+			delta.y = ray.hit.y - (int)ray.hit.y;
+		else
+			delta.y = ((int)ray.hit.y + 1) - ray.hit.y;
+	}
+	dist = sqrt((delta.x * delta.x + delta.y * delta.y));
+	// printf("door : %f	%f\n", ray.hit.x, ray.hit.y);
+	// printf("orient : %d	dist : %f	delta : %f	%f\n",ray.orient, dist, delta.x, delta.y);
+	return (dist);
+}
+
+void	step_door_open(t_door *door, long time, t_map *map_cell)
+{
+	long	tmp;
+
+	if (door->is_opening_door == 0)
+		return ;
+	tmp = time - door->time;
+	if (door->is_opening_door == 1)
+	{
+		door->door_percent += tmp / 1000.0 * SPEEP_DOOR_OPENING;
+		door->time = time;
+		if (door->door_percent > 90)
+		{
+			map_cell->symbol = 'o';
+			map_cell->type ^= WALL;
+			door->door_percent = 90;
+			door->is_opening_door = 0;
+		}
+	}
+	else
+	{
+		door->door_percent -= tmp / 1000.0 * SPEEP_DOOR_OPENING;
+		door->time = time;
+		if (door->door_percent < 0)
+		{
+			door->door_percent = 0;
+			door->is_opening_door = 0;
+		}
+	}
+	
+	
+	
+}
+

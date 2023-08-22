@@ -6,35 +6,62 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/21 18:06:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/22 21:29:01 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-static inline unsigned int	get_color_at(char *addr, int size_line,
-			t_vector2 pos)
+__attribute__((always_inline))
+static inline unsigned int	get_color_at(char *addr, int size_line, t_vector2 pos)
 {
 	return (*(int*)(addr + (pos.y * size_line + pos.x * 4)));
 }
 
-static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos,
-			int color)
+__attribute__((always_inline))
+static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, int color)
 {
 	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
 }
 
+t_pixel32	lower_dark(t_pixel32 value, int offset)
+{
+	unsigned int red = (value & 0xFF0000) >> 16;
+	unsigned int green = (value & 0xFF00) >> 8;
+	unsigned int blue = (value & 0xFF);
+
+	if (red <= offset)
+		red = 0;
+	else
+		red -= offset;
+	if (green <= offset)
+		green = 0;
+	else
+		green -= offset;
+	if (blue <= offset)
+		blue = 0;
+	else
+		blue -= offset;
+
+	value = red << 16;
+	value += green << 8;
+	value += blue;
+
+	return (value);
+}
+
 void	draw_vert(t_game *game, int x, t_ray ray, double height)
 {
-	int					y, y1;
+	register int		i = 0;
+	int					y;
+	int					y1;
 	int					x_img;
 	int					x_door;
-	double				y_img = 0;
+	float				y_img = 0;
 	t_image				*image;
 	enum e_orientation	orient;
-	double				delta_y_img;
+	float				delta_y_img;
 	int					size_line;
-	int					i = 0;
 	char				*addr;
 
 	size_line = game->image->size_line;
@@ -69,15 +96,15 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, 0x666666);
 		i++;
 	}
-	while (y < y1)
+	while (i < y1)
 	{
-		my_mlx_pixel_put(addr, size_line, (t_vector2){x, y}, get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}));
+		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}));
 		y_img += delta_y_img;
-		y++;
+		i++;
 	}
-	while (y1 < WIN_Y)
+	while (i < WIN_Y)
 	{
-		my_mlx_pixel_put(addr, size_line, (t_vector2){x, y1}, 0x222222);
-		y1++;
+		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, 0x222222);
+		i++;
 	}
 }

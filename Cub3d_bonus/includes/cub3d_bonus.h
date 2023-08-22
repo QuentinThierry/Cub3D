@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/22 21:24:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/22 21:30:11 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <time.h>
 # include <stdint.h>
 # include <dirent.h>
+# include <pthread.h>
+# include <signal.h>
 
 # include "minilibx-linux/mlx.h"
 # include "minilibx-linux/mlx_int.h"
@@ -44,6 +46,10 @@
 # define MAX_VOLUME 1.0
 # define TO_RADIAN .0174532
 # define TRANSPARENT_PXL 0x00FF00
+
+#define DARK_CONSTANT 5000
+// between 0 and 255
+#define DARK_MAXIMUN 250
 
 // MINIMAP
 #define MMAP_CHUNK 20

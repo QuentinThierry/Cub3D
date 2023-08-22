@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 10:22:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 02:58:14 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/13 00:12:54 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	size_t	i;
-	size_t	size;
+	register size_t	i;
+	register size_t	size;
 
 	size = sizeof(size_t);
 	i = 0;

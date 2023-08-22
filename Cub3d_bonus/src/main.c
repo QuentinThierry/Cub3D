@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/21 17:57:31 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/22 21:29:40 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	on_update(t_game *game)
 	struct timespec			time;
 	long					fps;
 
+	// usleep(100000);
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
 	clock_gettime(CLOCK_REALTIME, &time);
@@ -31,7 +32,8 @@ int	on_update(t_game *game)
 		game->player->angle = game->player->angle - 360;
 	if (game->player->angle + game->player->angle < 0)
 		game->player->angle = game->player->angle + 360;
-	player_move(game->player, game->delta_time, game->map, game->map_size);
+	// open_door(game->map_size, game->map, game->delta_time);
+	player_move(game->player, game->delta_time, game->map);
 	raycasting(game);
 	zoom_hook_handle(game->minimap, game->delta_time);
 	draw_minimap(game);
@@ -76,16 +78,13 @@ int main(int argc, char **argv)
 	free_filename(&game);
 	game.constants = (double[5]){(WIN_X) / (tan((FOV / 2.0) * TO_RADIAN))};
 	init_minimap(&game);
-
-	print_map(&game);
-	
-	// init_mouse(&game);
-	// mlx_do_key_autorepeatoff(game.mlx_ptr);
+	init_mouse(&game);
+	mlx_do_key_autorepeatoff(game.mlx_ptr);
 	mlx_hook(game.win, 2, (1L<<0), key_press_hook, &game);
 	mlx_hook(game.win, 3, (1L<<1), key_release_hook, &game);
 	mlx_hook(game.win, 17, (1L << 8), ft_close, &game);
-	// mlx_hook(game.win, 6, (1L << 6) | (1L << 2) , mouse_hook, &game);
-	// mlx_hook(game.win, 8, (1L << 5), mouse_leave, &game);
+	mlx_hook(game.win, 6, (1L << 6) | (1L << 2) , mouse_hook, &game);
+	mlx_hook(game.win, 8, (1L << 5), mouse_leave, &game);
 	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	mlx_loop(game.mlx_ptr);
 	return (0);

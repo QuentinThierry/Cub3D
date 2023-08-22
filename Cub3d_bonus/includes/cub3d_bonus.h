@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/21 17:55:51 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/22 21:30:11 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # define SPRINT_BOOST 100
 # define ROTATION_KEYBOARD 125
 # define ROTATION_MOUSE 20
+# define SPEEP_DOOR_OPENING 100
 # define MAX_VOLUME 1.0
 # define TO_RADIAN .0174532
 # define TRANSPARENT_PXL 0x00FF00
@@ -62,12 +63,19 @@
 // Represents the minimap size equals to a percentage of the total window
 #define MINIMAP_SIZE 0.25
 
+
+// t_type for arg
+#define NONE 0b0
+#define WALL 0b1
+#define DOOR 0b10
+
 #define PATH_MMAP_PLAYER "../assets/minimap_player.xpm"
 
 extern long tot_fps;
 extern long nb_fps;
 
 typedef u_int32_t t_pixel32;
+typedef u_int32_t t_type;
 
 enum e_orientation
 {
@@ -111,13 +119,6 @@ typedef struct s_ray
 	enum e_orientation	orient;
 }	t_ray;
 
-typedef struct s_ray_2
-{
-	t_fvector2			hit_point;
-	t_fvector2			delta_point;
-	enum e_orientation	orient;
-}	t_ray_2;
-
 typedef	struct s_player
 {
 	t_vector2	pos;
@@ -154,10 +155,18 @@ typedef struct s_sprite
 typedef struct s_map
 {
 	char		symbol;
-	bool		is_wall;
+	t_type		type;
+	void		*arg;
 	t_sprite	sprite[6];
-	int			door_percent;
 }	t_map;
+
+typedef struct s_door
+{
+	float		door_percent;
+	int			is_opening_door;
+	int			sign;
+	long int	time;
+}	t_door;
 
 /**
  * @brief use to stock the texture during the parsing
@@ -233,7 +242,6 @@ char		*ft_strjoin(char *str, char *str1);
 char		*ft_strjoin_slash(char *str, char *str1, bool add_slash);
 int			ft_atoi(const char *str);
 int			get_len_texture(t_texture *texture, int len);
-t_fvector2	get_matching_letter(t_map **map, t_vector2 map_size, char letter);
 
 // -------Parsing-------
 bool		parse_file(char *filename, t_game *game);
@@ -262,37 +270,52 @@ int			key_release_hook(int key, t_game *game);
 int			mouse_leave(t_game *game);
 int			mouse_hook(int x,int y, t_game *game);
 int			on_update(t_game *game);
-void		player_move(t_player *player, double delta_time, t_map **map, t_vector2 map_size);
+void		player_move(t_player *player, double delta_time, t_map **map);
 void		check_colliding(t_player *player, t_fvector2 new_pos, t_map **map);
 
 // -------Raycasting-----
-t_ray_2		get_wall_hit(t_fvector2 fpos, t_map **map, float angle, t_vector2 map_size);
+t_ray		get_wall_hit(t_fvector2 fpos, t_map **map, float angle, t_game *game);
 double		get_wall_dist(t_game *game, double angle);
 void		raycasting(t_game *game);
 t_vector2	get_sign(double angle);
 
 
 enum e_orientation	get_wall_orientation(t_fvector2 player, t_fvector2 wall);
-t_image		*get_image(t_game	*game, enum e_orientation orient, t_fvector2 wall);
+t_image		*get_image(t_game	*game, t_ray ray, int *x_door);
 int			ft_close(t_game *game);
 
 // draw
-void	draw_vert(t_game *game, int x, t_ray_2 ray, double height);
+void		draw_vert(t_game *game, int x, t_ray ray, double height);
 
 // image_operations.c
-void	draw_image_on_image_alpha(t_image *dest, t_image *src, t_vector2 offset_dest);
+void		draw_image_on_image_alpha(t_image *dest, t_image *src, t_vector2 offset_dest);
 
 // bettermlx.c
-t_image	*btmlx_new_image(void *mlx_ptr, t_vector2 size);
-t_image	*btmlx_xpm_file_to_image(void *mlx, char *path,
-			t_vector2 dst_size);
+t_image		*btmlx_new_image(void *mlx_ptr, t_vector2 size);
+t_image		*btmlx_xpm_file_to_image(void *mlx, char *path,
+				t_vector2 dst_size);
 
 // Minimap
-void	zoom_hook_handle(t_minimap *minimap, double delta_time);
-void	draw_minimap(t_game *game);
-void	generate_minimap_bounds(t_game *game);
-bool	init_minimap(t_game *game);
-void	draw_rotated_image(t_image *img_dest, t_image *img_src, t_vector2 pos, float angle);
+void		zoom_hook_handle(t_minimap *minimap, double delta_time);
+void		draw_minimap(t_game *game);
+void		generate_minimap_bounds(t_game *game);
+bool		init_minimap(t_game *game);
+void		draw_rotated_image(t_image *img_dest, t_image *img_src, t_vector2 pos, float angle);
+
+// ------------ Door ----------
+t_fvector2	door_hit_ver_se(t_fvector2 hit, float step, float door_angle, float player_angle);
+t_fvector2	door_hit_hor_se(t_fvector2 hit, float step, float door_angle, float player_angle);
+t_fvector2	door_hit_ver_ne(t_fvector2 hit, float step, float door_angle, float player_angle);
+t_fvector2	door_hit_hor_ne(t_fvector2 hit, float step, float door_angle, float player_angle);
+t_fvector2	door_hit_ver_sw(t_fvector2 hit, float step, float door_angle, float player_angle);
+t_fvector2	door_hit_hor_sw(t_fvector2 hit, float step, float door_angle, float player_angle);
+t_fvector2	door_hit_ver_nw(t_fvector2 hit, float step, float door_angle, float player_angle);
+t_fvector2	door_hit_hor_nw(t_fvector2 hit, float step, float door_angle, float player_angle);
+void		open_door(t_vector2 map_size, t_map **map, double delta_time);
+float		get_texture_door(t_ray ray, float door_angle);
+void		step_door_open(t_door *door, long time, t_map *map_cell);
+
+t_ray		get_object_hit(char object, t_player *player, t_map **map, float dist);
 
 long int	time_to_long(struct timespec *time);
 

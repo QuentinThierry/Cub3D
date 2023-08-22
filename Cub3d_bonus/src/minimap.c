@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 00:30:38 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/13 18:45:22 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/22 21:29:45 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	draw_rectangular_minimap(t_game *game)
 		{
 			if (x < 0)
 				x = 0;
-			if (map[y][x].is_wall)
+			if (map[y][x].type & WALL)
 				color = 0x505050;
 			else
 				color = 0x808080;

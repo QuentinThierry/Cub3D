@@ -3,18 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/21 17:06:14 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/21 21:05:05 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-double	get_dist(t_game *game, t_fvector2 delta, double angle)
+double	get_dist(t_game *game, double x, double y, double angle)
 {
+	t_fvector2	delta;
 	double		res;
+
+	delta.x = fabs(x - game->player->f_real_pos.x);
+	delta.y = fabs(y - game->player->f_real_pos.y);
 
 	res = sqrt((delta.x * delta.x + delta.y * delta.y))
 				* cos(angle * TO_RADIAN);
@@ -43,7 +47,7 @@ void	raycasting(t_game *game)
 	int			x;
 	double		height;
 	double		angle;
-	t_ray_2		ray;
+	t_ray		ray;
 	t_fvector2	fpos;
 	double		dist; 
 	
@@ -56,13 +60,13 @@ void	raycasting(t_game *game)
 			angle = angle - 360;
 		if (game->player->angle + angle < 0)
 			angle = angle + 360;
-		ray = get_wall_hit(fpos, game->map, game->player->angle + angle, game->map_size);
+		ray = get_wall_hit(fpos, game->map, game->player->angle + angle, game);
 		// printf("wall : %f %f\n", wall.x, wall.y);
-		if (ray.hit_point.x == -1)
+		if (ray.hit.x == -1)
 			height = 0;
 		else
 		{
-			dist = get_dist(game, ray.delta_point, angle) ;
+			dist = get_dist(game, ray.hit.x, ray.hit.y, angle) ;
 			height = 1 / dist * game->constants[0];		//div par 0 if sin == 0
 			// printf("dist : %f	height : %f\n", dist, height);
 		}

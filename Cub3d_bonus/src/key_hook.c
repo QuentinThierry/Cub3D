@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/21 18:37:11 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/22 21:29:26 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 
 int	key_press_hook(int key, t_game *game)
 {
+	t_vector2		pos;
+	t_ray			hit;
+	int				sign;
+	struct timespec	time;
+
 	if (key == 65307 ) // esc
 		ft_close(game);
 	else if (key == 65361) // left rrow
@@ -34,6 +39,40 @@ int	key_press_hook(int key, t_game *game)
 		game->minimap->zoom_dir -= 1;
 	else if (key == '=' || key == '+' || key == 65451)
 		game->minimap->zoom_dir += 1;
+	else if (key == ' ')
+	{
+		hit = get_object_hit('c', game->player, game->map, 1);
+		if (hit.hit.x != -1)
+		{
+			if (hit.orient == e_east || hit.orient == e_south)
+				sign = 1;
+			else
+			 	sign = -1;
+			clock_gettime(CLOCK_REALTIME, &time);
+			if (((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door == 1)
+			{
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = -1;
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent -= game->delta_time * SPEEP_DOOR_OPENING;
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
+			}
+			else
+			{
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = 1;
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent += game->delta_time * SPEEP_DOOR_OPENING;
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
+			}
+		}
+		hit = get_object_hit('o', game->player, game->map, 1);
+		if (hit.hit.x != -1)
+		{
+				clock_gettime(CLOCK_REALTIME, &time);
+				game->map[(int)hit.hit.y][(int)hit.hit.x].symbol = 'c';
+				game->map[(int)hit.hit.y][(int)hit.hit.x].type |= true;
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = -1;
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent -= game->delta_time * SPEEP_DOOR_OPENING;
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
+		}
+	}
 	return (0);
 }
 
@@ -60,7 +99,7 @@ int	key_release_hook(int key, t_game *game)
 	return (0);
 }
 
-void	player_move(t_player *player, double delta_time, t_map **map, t_vector2 map_size)
+void	player_move(t_player *player, double delta_time, t_map **map)
 {
 	t_fvector2 move_value;
 
@@ -88,19 +127,6 @@ void	player_move(t_player *player, double delta_time, t_map **map, t_vector2 map
 		move_value.x = player->f_pos.x + move_value.x * delta_time;
 		move_value.y = player->f_pos.y + move_value.y * delta_time;
 		check_colliding(player, move_value, map);
-	}
-	if (map[(int)player->f_real_pos.y][(int)player->f_real_pos.x].symbol == 'a'
-	|| map[(int)player->f_real_pos.y][(int)player->f_real_pos.x].symbol == 'c'
-	|| map[(int)player->f_real_pos.y][(int)player->f_real_pos.x].symbol == 'e')
-	{
-		t_fvector2 b_pos = get_matching_letter(map, map_size, map[(int)player->f_real_pos.y][(int)player->f_real_pos.x].symbol);
-
-		player->f_real_pos.x = b_pos.x + (player->f_real_pos.x - (int)player->f_real_pos.x);
-		player->f_real_pos.y = b_pos.y + (player->f_real_pos.y - (int)player->f_real_pos.y);
-		player->f_pos.x = player->f_real_pos.x * CHUNK_SIZE;
-		player->f_pos.y = player->f_real_pos.y * CHUNK_SIZE;
-		player->pos.x = (int)player->f_pos.x;
-		player->pos.y = (int)player->f_pos.y;
 	}
 }
 

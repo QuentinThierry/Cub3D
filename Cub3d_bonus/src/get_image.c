@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:13:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/21 20:41:07 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/22 18:42:14 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,10 @@ t_image	*get_image(t_game *game, t_ray ray, int *x_door)
 		wall.y = (int)ceil(ray.hit.y);
 	if (ray.orient == e_east)
 		wall.x = (int)ceil(ray.hit.x);
+	// if (ray.orient == e_north)
+	// 	wall.y = (int)ceil(ray.hit.y);
+	// if (ray.orient == e_west)
+	// 	wall.x = (int)ceil(ray.hit.x);
 
 	if (ray.orient == e_south)
 	{

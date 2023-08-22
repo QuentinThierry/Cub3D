@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/21 20:57:57 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/22 19:53:09 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ int	key_press_hook(int key, t_game *game)
 			if (((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door == 1)
 			{
 				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = -1;
-				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent -= game->delta_time * SPEEP_DOOR_OPENING;// * sign;
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent -= game->delta_time * SPEEP_DOOR_OPENING;
 				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
 			}
 			else
 			{
 				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = 1;
-				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent += game->delta_time * SPEEP_DOOR_OPENING;// * sign;
+				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent += game->delta_time * SPEEP_DOOR_OPENING;
 				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
 			}
 		}

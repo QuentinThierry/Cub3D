@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/03 12:29:50 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/21 18:39:56 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,11 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			break ;
 		map[i].symbol = line[i];
 		if (line[i] == ' ')
+		{
+			i++;
+			continue ;
+		}
+		if (line[i] >= 'a' && line[i] <= 'f')
 		{
 			i++;
 			continue ;

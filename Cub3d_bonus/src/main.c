@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/21 16:24:48 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/21 17:57:31 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	on_update(t_game *game)
 		game->player->angle = game->player->angle - 360;
 	if (game->player->angle + game->player->angle < 0)
 		game->player->angle = game->player->angle + 360;
-	player_move(game->player, game->delta_time, game->map);
+	player_move(game->player, game->delta_time, game->map, game->map_size);
 	raycasting(game);
 	zoom_hook_handle(game->minimap, game->delta_time);
 	draw_minimap(game);
@@ -76,6 +76,8 @@ int main(int argc, char **argv)
 	free_filename(&game);
 	game.constants = (double[5]){(WIN_X) / (tan((FOV / 2.0) * TO_RADIAN))};
 	init_minimap(&game);
+
+	print_map(&game);
 	
 	// init_mouse(&game);
 	// mlx_do_key_autorepeatoff(game.mlx_ptr);

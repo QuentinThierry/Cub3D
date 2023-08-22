@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/21 16:29:47 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/21 18:37:11 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	key_release_hook(int key, t_game *game)
 	return (0);
 }
 
-void	player_move(t_player *player, double delta_time, t_map **map)
+void	player_move(t_player *player, double delta_time, t_map **map, t_vector2 map_size)
 {
 	t_fvector2 move_value;
 
@@ -88,6 +88,19 @@ void	player_move(t_player *player, double delta_time, t_map **map)
 		move_value.x = player->f_pos.x + move_value.x * delta_time;
 		move_value.y = player->f_pos.y + move_value.y * delta_time;
 		check_colliding(player, move_value, map);
+	}
+	if (map[(int)player->f_real_pos.y][(int)player->f_real_pos.x].symbol == 'a'
+	|| map[(int)player->f_real_pos.y][(int)player->f_real_pos.x].symbol == 'c'
+	|| map[(int)player->f_real_pos.y][(int)player->f_real_pos.x].symbol == 'e')
+	{
+		t_fvector2 b_pos = get_matching_letter(map, map_size, map[(int)player->f_real_pos.y][(int)player->f_real_pos.x].symbol);
+
+		player->f_real_pos.x = b_pos.x + (player->f_real_pos.x - (int)player->f_real_pos.x);
+		player->f_real_pos.y = b_pos.y + (player->f_real_pos.y - (int)player->f_real_pos.y);
+		player->f_pos.x = player->f_real_pos.x * CHUNK_SIZE;
+		player->f_pos.y = player->f_real_pos.y * CHUNK_SIZE;
+		player->pos.x = (int)player->f_pos.x;
+		player->pos.y = (int)player->f_pos.y;
 	}
 }
 

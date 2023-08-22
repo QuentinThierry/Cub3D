@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/04 14:34:54 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/21 18:39:44 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,4 +167,23 @@ int	ft_strlen(char *str)
 	while (str[i])
 		i++;
 	return (i);
+}
+
+t_fvector2	get_matching_letter(t_map **map, t_vector2 map_size, char letter)
+{
+	t_vector2	res;
+
+	res.y = 0;
+	while (res.y < map_size.y)
+	{
+		res.x = 0;
+		while (res.x < map_size.x)
+		{
+			if (map[res.y][res.x].symbol == letter + 1)
+				return ((t_fvector2){res.x, res.y});
+			res.x++;
+		}
+		res.y++;
+	}
+	return ((t_fvector2){-1, -1});
 }

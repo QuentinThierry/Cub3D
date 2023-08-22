@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/21 16:25:09 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/21 17:55:51 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,13 @@ typedef struct s_ray
 	t_fvector2			hit;
 	enum e_orientation	orient;
 }	t_ray;
+
+typedef struct s_ray_2
+{
+	t_fvector2			hit_point;
+	t_fvector2			delta_point;
+	enum e_orientation	orient;
+}	t_ray_2;
 
 typedef	struct s_player
 {
@@ -226,6 +233,7 @@ char		*ft_strjoin(char *str, char *str1);
 char		*ft_strjoin_slash(char *str, char *str1, bool add_slash);
 int			ft_atoi(const char *str);
 int			get_len_texture(t_texture *texture, int len);
+t_fvector2	get_matching_letter(t_map **map, t_vector2 map_size, char letter);
 
 // -------Parsing-------
 bool		parse_file(char *filename, t_game *game);
@@ -254,11 +262,11 @@ int			key_release_hook(int key, t_game *game);
 int			mouse_leave(t_game *game);
 int			mouse_hook(int x,int y, t_game *game);
 int			on_update(t_game *game);
-void		player_move(t_player *player, double delta_time, t_map **map);
+void		player_move(t_player *player, double delta_time, t_map **map, t_vector2 map_size);
 void		check_colliding(t_player *player, t_fvector2 new_pos, t_map **map);
 
 // -------Raycasting-----
-t_ray		get_wall_hit(t_fvector2 fpos, t_map **map, float angle, t_vector2 map_size);
+t_ray_2		get_wall_hit(t_fvector2 fpos, t_map **map, float angle, t_vector2 map_size);
 double		get_wall_dist(t_game *game, double angle);
 void		raycasting(t_game *game);
 t_vector2	get_sign(double angle);
@@ -269,7 +277,7 @@ t_image		*get_image(t_game	*game, enum e_orientation orient, t_fvector2 wall);
 int			ft_close(t_game *game);
 
 // draw
-void	draw_vert(t_game *game, int x, t_ray ray, double height);
+void	draw_vert(t_game *game, int x, t_ray_2 ray, double height);
 
 // image_operations.c
 void	draw_image_on_image_alpha(t_image *dest, t_image *src, t_vector2 offset_dest);

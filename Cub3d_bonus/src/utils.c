@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/21 20:26:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/23 15:04:54 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ bool	is_wall(char symbol, t_texture *tab, int len, bool *error)
 		if (tab[i].symbol == symbol)
 		{
 			if (tab[i].orient == e_wall || tab[i].orient == e_north || tab[i].orient == e_south
-					|| tab[i].orient == e_east || tab[i].orient == e_west)
+					|| tab[i].orient == e_east || tab[i].orient == e_west || tab[i].orient == e_door)
 				return (true);
 			else
 				return (false);
@@ -123,6 +123,20 @@ bool	is_wall(char symbol, t_texture *tab, int len, bool *error)
 		i++;
 	}
 	return (*error = true, false);
+}
+
+bool	is_door(char symbol, t_texture *tab, int len)
+{
+	int i;
+
+	i = 0;
+	while (i < len)
+	{
+		if (tab[i].symbol == symbol && tab[i].orient == e_door)
+			return (true);
+		i++;
+	}
+	return (false);
 }
 
 /**

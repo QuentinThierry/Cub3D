@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/22 21:23:44 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/23 17:53:16 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,7 +271,7 @@ t_fvector2	door_hit_hor_nw(t_fvector2 hit, float step, float door_angle, float p
 		hit.y - 0.5 - sinf(door_angle * TO_RADIAN) * a});
 }
 
-float	get_texture_door(t_ray ray, float door_angle)
+float	get_texture_door(t_ray ray)
 {
 	t_fvector2	delta;
 	double		dist;
@@ -311,7 +311,8 @@ void	step_door_open(t_door *door, long time, t_map *map_cell)
 		door->time = time;
 		if (door->door_percent > 90)
 		{
-			map_cell->symbol = 'o';
+			map_cell->type ^= DOOR_CLOSE;
+			map_cell->type |= DOOR_OPEN;
 			map_cell->type ^= WALL;
 			door->door_percent = 90;
 			door->is_opening_door = 0;
@@ -327,8 +328,5 @@ void	step_door_open(t_door *door, long time, t_map *map_cell)
 			door->is_opening_door = 0;
 		}
 	}
-	
-	
-	
 }
 

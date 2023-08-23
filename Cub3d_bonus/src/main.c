@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/22 21:29:40 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/23 18:03:53 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ int main(int argc, char **argv)
 	game = (t_game){0};
 	if (argc != 2)
 		return (printf("Error : Invalid nubmber of arguments\n"), 1);
-	game.filename = ft_calloc(e_total, sizeof(t_texture));
+	game.filename = ft_calloc(6, sizeof(t_texture));
 	if (game.filename == NULL)
 		return (perror("Error"), 1);
-	game.nb_file = e_total;
+	game.nb_file = 6;
 	if (!parse_file(argv[1], &game))
 		return (1);
 	// printf_texture(&game);

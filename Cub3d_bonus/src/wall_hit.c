@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/22 21:28:09 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/23 17:59:24 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ static t_ray	_get_wall_hit_se(t_fvector2 fpos,
 	{
 		if (map_pos.y >= comp.y)
 		{
-			if ((map[(int)(comp.y)][map_pos.x].type & WALL) == true)
+			if ((map[(int)(comp.y)][map_pos.x].type & WALL) == WALL)
 			{
-				if (map[(int)(comp.y)][map_pos.x].symbol == 'c')
+				if ((map[(int)(comp.y)][map_pos.x].type & DOOR_CLOSE) == DOOR_CLOSE)
 				{
 					step_door_open(map[(int)(comp.y)][map_pos.x].arg, game->time, &map[(int)(comp.y)][map_pos.x]);
 					door = door_hit_ver_se((t_fvector2){map_pos.x, comp.y}, step.y
@@ -50,9 +50,9 @@ static t_ray	_get_wall_hit_se(t_fvector2 fpos,
 		}
 		else 
 		{
-			if ((map[map_pos.y][(int)(comp.x)].type & WALL) == true)
+			if ((map[map_pos.y][(int)(comp.x)].type & WALL) == WALL)
 			{
-				if (map[map_pos.y][(int)(comp.x)].symbol == 'c')
+				if ((map[map_pos.y][(int)(comp.x)].type & DOOR_CLOSE) == DOOR_CLOSE)
 				{
 					step_door_open(map[map_pos.y][(int)(comp.x)].arg, game->time, &map[map_pos.y][(int)(comp.x)]);
 					door = door_hit_hor_se((t_fvector2){comp.x, map_pos.y}, step.x
@@ -89,9 +89,9 @@ static t_ray	_get_wall_hit_ne(t_fvector2 fpos,
 	{
 		if (map_pos.y <= comp.y)
 		{
-			if ((map[(int)(comp.y)][map_pos.x].type & WALL) == true)
+			if ((map[(int)(comp.y)][map_pos.x].type & WALL) == WALL)
 			{
-				if (map[(int)(comp.y)][map_pos.x].symbol == 'c')
+				if ((map[(int)(comp.y)][map_pos.x].type & DOOR_CLOSE) == DOOR_CLOSE)
 				{
 					step_door_open(map[(int)(comp.y)][map_pos.x].arg, game->time, &map[(int)(comp.y)][map_pos.x]);
 					door = door_hit_ver_ne((t_fvector2){map_pos.x, comp.y}, step.y
@@ -107,9 +107,9 @@ static t_ray	_get_wall_hit_ne(t_fvector2 fpos,
 		}
 		else
 		{
-			if ((map[map_pos.y - 1][(int)(comp.x)].type & WALL) == true)
+			if ((map[map_pos.y - 1][(int)(comp.x)].type & WALL) == WALL)
 			{
-				if (map[map_pos.y - 1][(int)(comp.x)].symbol == 'c')
+				if ((map[map_pos.y - 1][(int)(comp.x)].type & DOOR_CLOSE) == DOOR_CLOSE)
 				{
 					step_door_open(map[map_pos.y - 1][(int)(comp.x)].arg, game->time, &map[map_pos.y - 1][(int)(comp.x)]);
 					door = door_hit_hor_ne((t_fvector2){comp.x, map_pos.y}, step.x
@@ -147,9 +147,9 @@ static t_ray	_get_wall_hit_sw(t_fvector2 fpos,
 	{
 		if (map_pos.y >= comp.y)
 		{
-			if ((map[(int)(comp.y)][map_pos.x - 1].type & WALL) == true)
+			if ((map[(int)(comp.y)][map_pos.x - 1].type & WALL) == WALL)
 			{
-				if (map[(int)(comp.y)][map_pos.x - 1].symbol == 'c')
+				if ((map[(int)(comp.y)][map_pos.x - 1].type & DOOR_CLOSE) == DOOR_CLOSE)
 				{
 					step_door_open(map[(int)(comp.y)][map_pos.x - 1].arg, game->time, &map[(int)(comp.y)][map_pos.x - 1]);
 					door = door_hit_ver_sw((t_fvector2){map_pos.x, comp.y}, step.y
@@ -165,9 +165,9 @@ static t_ray	_get_wall_hit_sw(t_fvector2 fpos,
 		}
 		else
 		{
-			if ((map[map_pos.y][(int)(comp.x)].type & WALL) == true)
+			if ((map[map_pos.y][(int)(comp.x)].type & WALL) == WALL)
 			{
-				if (map[map_pos.y][(int)(comp.x)].symbol == 'c')
+				if ((map[map_pos.y][(int)(comp.x)].type & DOOR_CLOSE) == DOOR_CLOSE)
 				{
 					step_door_open(map[map_pos.y][(int)(comp.x)].arg, game->time, &map[map_pos.y][(int)(comp.x)]);
 					door = door_hit_hor_sw((t_fvector2){comp.x, map_pos.y}, step.x
@@ -205,9 +205,9 @@ static t_ray	_get_wall_hit_nw(t_fvector2 fpos,
 		
 		if (map_pos.y <= comp.y)
 		{
-			if ((map[(int)(comp.y)][map_pos.x - 1].type & WALL) == true)
+			if ((map[(int)(comp.y)][map_pos.x - 1].type & WALL) == WALL)
 			{
-				if (map[(int)(comp.y)][map_pos.x - 1].symbol == 'c')
+				if ((map[(int)(comp.y)][map_pos.x - 1].type & DOOR_CLOSE) == DOOR_CLOSE)
 				{
 					step_door_open(map[(int)(comp.y)][map_pos.x - 1].arg, game->time, &map[(int)(comp.y)][map_pos.x - 1]);
 					door = door_hit_ver_nw((t_fvector2){map_pos.x, comp.y}, step.y
@@ -223,9 +223,9 @@ static t_ray	_get_wall_hit_nw(t_fvector2 fpos,
 		}
 		else
 		{
-			if ((map[map_pos.y - 1][(int)(comp.x)].type & WALL) == true)
+			if ((map[map_pos.y - 1][(int)(comp.x)].type & WALL) == WALL)
 			{
-				if (map[map_pos.y - 1][(int)(comp.x)].symbol == 'c')
+				if ((map[map_pos.y - 1][(int)(comp.x)].type & DOOR_CLOSE) == DOOR_CLOSE)
 				{
 					step_door_open(map[map_pos.y - 1][(int)(comp.x)].arg, game->time, &map[map_pos.y - 1][(int)(comp.x)]);
 					door = door_hit_hor_nw((t_fvector2){comp.x, map_pos.y}, step.x
@@ -236,7 +236,6 @@ static t_ray	_get_wall_hit_nw(t_fvector2 fpos,
 				else
 					return ((t_ray){{comp.x, map_pos.y}, e_south});
 			}
-
 			comp.x += step.x;
 			map_pos.y += -1;
 		}

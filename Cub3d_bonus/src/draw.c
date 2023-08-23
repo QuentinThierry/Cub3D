@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/22 21:29:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/23 17:52:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,31 +24,31 @@ static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, in
 	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
 }
 
-t_pixel32	lower_dark(t_pixel32 value, int offset)
-{
-	unsigned int red = (value & 0xFF0000) >> 16;
-	unsigned int green = (value & 0xFF00) >> 8;
-	unsigned int blue = (value & 0xFF);
+// t_pixel32	lower_dark(t_pixel32 value, int offset)
+// {
+// 	unsigned int red = (value & 0xFF0000) >> 16;
+// 	unsigned int green = (value & 0xFF00) >> 8;
+// 	unsigned int blue = (value & 0xFF);
 
-	if (red <= offset)
-		red = 0;
-	else
-		red -= offset;
-	if (green <= offset)
-		green = 0;
-	else
-		green -= offset;
-	if (blue <= offset)
-		blue = 0;
-	else
-		blue -= offset;
+// 	if (red <= offset)
+// 		red = 0;
+// 	else
+// 		red -= offset;
+// 	if (green <= offset)
+// 		green = 0;
+// 	else
+// 		green -= offset;
+// 	if (blue <= offset)
+// 		blue = 0;
+// 	else
+// 		blue -= offset;
 
-	value = red << 16;
-	value += green << 8;
-	value += blue;
+// 	value = red << 16;
+// 	value += green << 8;
+// 	value += blue;
 
-	return (value);
-}
+// 	return (value);
+// }
 
 void	draw_vert(t_game *game, int x, t_ray ray, double height)
 {

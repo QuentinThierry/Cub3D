@@ -34,6 +34,5 @@ Minimap :
 Door :
 <!-- - texture door -->
 <!-- - opti door open -->
-- open door depending on the orientation ->> door does not always open the same ways
 - door parsing
 - doors on side of map

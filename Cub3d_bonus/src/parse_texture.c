@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/04 15:02:20 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/23 16:12:45 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,7 @@ bool	ft_read_dir(DIR *dir, t_texture *texture)
 	return (true);
 }
 
+// ATTENTION DOES'NOT WORK WELL
 bool	is_existing(t_game *game, int index, char symbol, enum e_orientation orient)
 {
 	int i;
@@ -234,7 +235,7 @@ bool	is_existing(t_game *game, int index, char symbol, enum e_orientation orient
 	i = 0;
 	if (index == e_floor || index == e_ceiling)
 		symbol = '0';
-	else if (index < e_floor)
+	else if (index == e_north || index == e_east || index == e_south || index == e_wall)
 		symbol = '1';
 	while (i < game->nb_file)
 	{
@@ -286,12 +287,12 @@ static bool	_find_texture(t_game *game, char *str, int index, enum e_orientation
 	game->filename[index].filename = filename;
 	game->filename[index].orient = orient;
 	game->filename[index].nb_file = 1;
-	if (index >= e_door_close)
-		game->filename[index].symbol = *(str - 1);
+	if (index == e_north || index == e_east || index == e_south || index == e_west)
+		game->filename[index].symbol = '1';
 	else if (index == e_floor || index == e_ceiling)
 		game->filename[index].symbol = '0';
 	else
-		game->filename[index].symbol = '1';
+		game->filename[index].symbol = *(str - 1);
 	dir = opendir(filename);
 	if (dir != NULL)
 		return (ft_read_dir(dir, &(game->filename[index])));
@@ -329,26 +330,22 @@ static bool	_cmp_texture(char *line, t_game *game, int i, bool *is_end)
 	if (next_wsp - i == 1)
 	{
 		if (line[i] == 'F')
-			return (_find_texture(game, line + i + 1, e_floor, e_down));
+			return (_find_texture(game, line + i + 1, e_floor, e_floor));
 		else if (line[i] == 'C')
-			return (_find_texture(game, line + i + 1, e_ceiling, e_up));
-		else if (line[i] == 'c')
-			return (_find_texture(game, line + i + 1, e_door_close, e_wall));
-		else if (line[i] == 'o')
-			return (_find_texture(game, line + i + 1, e_door_open, e_wall));
+			return (_find_texture(game, line + i + 1, e_ceiling, e_ceiling));
 		else
 		 	return (_find_texture(game, line + i + 1, game->nb_file, e_wall));
 	}
 	else if (next_wsp - i == 2)
 	{
 		if (ft_strncmp(line + i, "NO", 2) == 0)
-			return (_find_texture(game, line + i + 2, e_north_wall, e_north));
+			return (_find_texture(game, line + i + 2, e_north, e_north));
 		else if (ft_strncmp(line + i, "SO", 2) == 0)
-			return (_find_texture(game, line + i + 2, e_south_wall, e_south));
+			return (_find_texture(game, line + i + 2, e_south, e_south));
 		else if (ft_strncmp(line + i, "WE", 2) == 0)
-			return (_find_texture(game, line + i + 2, e_west_wall, e_west));
+			return (_find_texture(game, line + i + 2, e_west, e_west));
 		else if (ft_strncmp(line + i, "EA", 2) == 0)
-			return (_find_texture(game, line + i + 2, e_east_wall, e_east));
+			return (_find_texture(game, line + i + 2, e_east, e_east));
 	}
 	else if (next_wsp - i == 3)
 	{
@@ -363,9 +360,11 @@ static bool	_cmp_texture(char *line, t_game *game, int i, bool *is_end)
 		else if (ft_strncmp(line + i, "E_", 2) == 0)
 			return (_find_texture(game, line + i + 3, game->nb_file, e_east));
 		else if (ft_strncmp(line + i, "F_", 2) == 0)
-			return (_find_texture(game, line + i + 3, game->nb_file, e_down));
+			return (_find_texture(game, line + i + 3, game->nb_file, e_floor));
 		else if (ft_strncmp(line + i, "C_", 2) == 0)
-			return (_find_texture(game, line + i + 3, game->nb_file, e_up));
+			return (_find_texture(game, line + i + 3, game->nb_file, e_ceiling));
+		else if (ft_strncmp(line + i, "D_", 2) == 0)
+			return (_find_texture(game, line + i + 3, game->nb_file, e_door));
 	}
 	return (printf("Error : invalid identifier %s\n", line), false);
 }

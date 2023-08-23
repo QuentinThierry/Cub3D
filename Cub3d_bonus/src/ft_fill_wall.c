@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/21 20:36:09 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/23 16:14:57 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,29 +47,19 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 		if (is_wall(line[i], game->filename, game->nb_file, &error))
 		{
 			map[i].type = WALL;
-			if (line[i] == 'o')
+			if (is_door(line[i], game->filename, game->nb_file))
 			{
-				map[i].type = NONE;
-				map[i].type |= DOOR;
+				map[i].type |= DOOR_CLOSE;
 				map[i].arg = ft_calloc(1, sizeof(t_door));
 				if (map[i].arg == NULL)
 					return (perror("Error"), false);
-				((t_door *)map[i].arg)->door_percent = 90;
-			}
-			if (line[i] == 'c')
-			{
-				map[i].type |= DOOR;
-				map[i].arg = ft_calloc(1, sizeof(t_door));
-				if (map[i].arg == NULL)
-					return (perror("Error"), false);
-				((t_door *)map[i].arg)->door_percent = 0;
 			}
 			map[i].sprite[e_north] = fill_texture(game->filename, game->nb_file, line[i], e_north);
 			map[i].sprite[e_east] = fill_texture(game->filename, game->nb_file, line[i], e_east);
 			map[i].sprite[e_south] = fill_texture(game->filename, game->nb_file, line[i], e_south);
 			map[i].sprite[e_west] = fill_texture(game->filename, game->nb_file, line[i], e_west);
-			map[i].sprite[e_down].index = e_floor;
-			map[i].sprite[e_up].index = e_ceiling;
+			map[i].sprite[e_floor].index = -1;
+			map[i].sprite[e_ceiling].index = -1;
 		}
 		else
 		{
@@ -80,8 +70,8 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			map[i].sprite[e_east].index = -1;
 			map[i].sprite[e_south].index = -1;
 			map[i].sprite[e_west].index = -1;
-			map[i].sprite[e_down] = fill_texture(game->filename, game->nb_file, line[i], e_down);
-			map[i].sprite[e_up] = fill_texture(game->filename, game->nb_file, line[i], e_up);
+			map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, line[i], e_floor);
+			map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, line[i], e_ceiling);
 		}
 		i++;
 	}

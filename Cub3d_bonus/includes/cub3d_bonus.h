@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/23 19:45:10 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/24 22:18:09 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # define WIN_X 1000 //1920 - 918
 # define WIN_Y 1000 //1080 - 468
 # define CHUNK_SIZE 50
-# define FOV 90
+# define FOV 60
 # define MOUV 1
 # define SPEED 100
 # define SPRINT_BOOST 100

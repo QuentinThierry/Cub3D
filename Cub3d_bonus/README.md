@@ -1,9 +1,8 @@
 ADD : 
 - [ ] texture for the floor and ceiling
-- [ ] random for similar sprites for walls
-- [ ] organise texture
+- [X] random for similar sprites for walls
+- [X] organise texture
 - [ ] objects not walls
-- [ ] ennemy
 - [ ] sounds (ambiance music)
 - [ ] objects
 - [ ] exit + enigmes
@@ -27,6 +26,7 @@ FIX :
 - makefile
 - object parsing
 - security on exiting the map is broken
+- fov too big == deformation
 
 Minimap : 
 - if screen is too small, do not draw minimap
@@ -34,5 +34,5 @@ Minimap :
 Door :
 <!-- - texture door -->
 <!-- - opti door open -->
-- door parsing
-- doors on side of map
+<!-- - door parsing -->
+<!-- - doors on side of map -->

@@ -27,6 +27,7 @@ FIX :
 - makefile
 - object parsing
 - security on exiting the map is broken
+- increase wall height
 
 Minimap : 
 - if screen is too small, do not draw minimap

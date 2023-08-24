@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/08/23 14:47:59 by qthierry         ###   ########.fr        #
+#    Updated: 2023/08/23 15:13:36 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,6 +77,7 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			free.c \
 			bettermlx.c \
 			door.c \
+			floor.c \
 			ray_object.c \
 			main.c
 

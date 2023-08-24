@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/22 21:30:11 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/23 19:45:10 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # define WIN_X 1000 //1920 - 918
 # define WIN_Y 1000 //1080 - 468
 # define CHUNK_SIZE 50
-# define FOV 120
+# define FOV 90
 # define MOUV 1
 # define SPEED 100
 # define SPRINT_BOOST 100
@@ -318,5 +318,9 @@ void		step_door_open(t_door *door, long time, t_map *map_cell);
 t_ray		get_object_hit(char object, t_player *player, t_map **map, float dist);
 
 long int	time_to_long(struct timespec *time);
+
+// floor.c
+void	draw_ceiling(t_game *game);
+
 
 #endif

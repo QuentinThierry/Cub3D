@@ -6,11 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 21:27:20 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/21 20:48:06 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d_bonus.h"
+#include "../../includes/cub3d_bonus.h"
 
 static bool	_check_sides(t_map **map, int x, int y, t_vector2 map_size)
 {
@@ -40,10 +40,11 @@ bool	check_map(t_game *game)
 		x = 0;
 		while (x < game->map_size.x)
 		{
-			if ((map[y][x].type & WALL) == false && map[y][x].symbol != ' ')
+			if (((map[y][x].type & WALL) != WALL && map[y][x].symbol != ' ')
+				|| (map[y][x].type & DOOR_CLOSE) == DOOR_CLOSE || (map[y][x].type & DOOR_OPEN) == DOOR_OPEN)
 			{
 				if (!_check_sides(map, x, y, game->map_size))
-					return (printf("Error : Map not closed\n"), false);
+					return (printf("Error : Map not closed %d	%d\n", x, y), false);
 			}
 			x++;
 		}

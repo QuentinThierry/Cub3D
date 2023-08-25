@@ -6,11 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 16:34:46 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/04 14:13:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d_bonus.h"
+#include "../../includes/cub3d_bonus.h"
 
 static t_sprite	random_texture(t_texture *texture_tab, int index)
 {
@@ -62,7 +62,8 @@ t_sprite	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation o
 		{
 			if (tab[i].orient == orient)
 				return (random_texture(tab, i));
-			else if ((orient >= e_north && orient <= e_west) && tab[i].orient == e_wall)
+			else if ((orient == e_north || orient == e_east || orient == e_south
+					|| orient == e_west) && (tab[i].orient == e_wall || tab[i].orient == e_door))
 				res = i;
 		}
 		i++;

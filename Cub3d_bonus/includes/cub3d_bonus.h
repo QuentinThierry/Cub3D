@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/25 19:10:18 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/25 19:37:51 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@
 // t_type for arg
 #define NONE 0b0
 #define WALL 0b1
-#define DOOR 0b10
+#define DOOR_CLOSE 0b10
+#define DOOR_OPEN 0b100
 
 #define PATH_MMAP_PLAYER "../assets/minimap_player.xpm"
 
@@ -86,23 +87,24 @@ enum e_orientation
 	e_east,
 	e_south,
 	e_west,
-	e_down,
-	e_up,
-	e_wall
-};
-
-enum e_texture
-{
-	e_north_wall = 0,
-	e_east_wall,
-	e_south_wall,
-	e_west_wall,
 	e_floor,
 	e_ceiling,
-	e_door_close,
-	e_door_open,
-	e_total
+	e_wall,
+	e_door
 };
+
+// enum e_texture
+// {
+// 	e_north_wall = 0,
+// 	e_east_wall,
+// 	e_south_wall,
+// 	e_west_wall,
+// 	e_floor,
+// 	e_ceiling,
+// 	e_door_close,
+// 	e_door_open,
+// 	e_total
+// };
 
 typedef struct s_vector2
 {
@@ -257,7 +259,7 @@ bool		find_player(t_game *game);
 bool		check_map(t_game *game);
 bool		ft_read_config(t_animation *animation, int index);
 bool		parse_texture(int fd, t_game *game, int *nb_line, char **rest);
-
+bool		is_door(char symbol, t_texture *tab, int len);
 // -------Print--------
 void		printf_texture(t_game *game);
 void		print_map(t_game *game);
@@ -315,10 +317,10 @@ t_fvector2	door_hit_hor_sw(t_fvector2 hit, float step, float door_angle, float p
 t_fvector2	door_hit_ver_nw(t_fvector2 hit, float step, float door_angle, float player_angle);
 t_fvector2	door_hit_hor_nw(t_fvector2 hit, float step, float door_angle, float player_angle);
 void		open_door(t_vector2 map_size, t_map **map, double delta_time);
-float		get_texture_door(t_ray ray, float door_angle);
+float		get_texture_door(t_ray ray);
 void		step_door_open(t_door *door, long time, t_map *map_cell);
 
-t_ray		get_object_hit(char object, t_player *player, t_map **map, float dist);
+t_ray		get_object_hit(char object, t_type type, float dist, t_game *game);
 
 long int	time_to_long(struct timespec *time);
 

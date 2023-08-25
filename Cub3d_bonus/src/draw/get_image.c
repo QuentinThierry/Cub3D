@@ -6,11 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:13:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/22 18:42:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d_bonus.h"
+#include "../../includes/cub3d_bonus.h"
 
 
 /**
@@ -74,20 +74,20 @@ t_image	*get_image(t_game *game, t_ray ray, int *x_door)
 
 	if (ray.orient == e_south)
 	{
-		if (game->map[wall.y - 1][wall.x].symbol == 'c')
-			dist = get_texture_door(ray, ((t_door *)game->map[wall.y - 1][wall.x].arg)->door_percent);
+		if ((game->map[wall.y - 1][wall.x].type & DOOR_CLOSE) == DOOR_CLOSE)
+			dist = get_texture_door(ray);
 		sprite = &(game->map[wall.y - 1][wall.x].sprite[ray.orient]);
 	}
 	else if (ray.orient == e_north || ray.orient == e_west)
 	{
-		if (game->map[wall.y][wall.x].symbol == 'c')
-			dist = get_texture_door(ray, ((t_door *)game->map[wall.y][wall.x].arg)->door_percent);
+		if ((game->map[wall.y][wall.x].type & DOOR_CLOSE) == DOOR_CLOSE)
+			dist = get_texture_door(ray);
 		sprite = &(game->map[wall.y][wall.x].sprite[ray.orient]);
 	}
 	if (ray.orient == e_east)
 	{
-		if (game->map[wall.y][wall.x - 1].symbol == 'c')
-			dist = get_texture_door(ray, ((t_door *)game->map[wall.y][wall.x - 1].arg)->door_percent);
+		if ((game->map[wall.y][wall.x - 1].type & DOOR_CLOSE) == DOOR_CLOSE)
+			dist = get_texture_door(ray);
 		sprite = &(game->map[wall.y][wall.x - 1].sprite[ray.orient]);
 	}
 	if (sprite->frame == -1)

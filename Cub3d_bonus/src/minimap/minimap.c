@@ -6,11 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 00:30:38 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/22 21:29:45 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d_bonus.h"
+#include "../../includes/cub3d_bonus.h"
 
 static const t_vector2	g_minimap_size =
 (t_vector2)
@@ -102,7 +102,7 @@ void	draw_rectangular_minimap(t_game *game)
 		{
 			if (x < 0)
 				x = 0;
-			if (map[y][x].type & WALL)
+			if ((map[y][x].type & WALL) == WALL)
 				color = 0x505050;
 			else
 				color = 0x808080;

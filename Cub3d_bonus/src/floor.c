@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/24 22:19:16 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/25 17:36:08 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,18 @@ void	draw_line_ceiling(t_game *game, float x_dist, int y_screen, t_fvector2 hit)
 	t_image				image;
 	t_pixel32			pix;
 
-	dist_to_left = tanf(-(FOV / 2.0) * TO_RADIAN) * x_dist;
+	dist_to_left = fabsf(tanf((FOV / 2.0) * TO_RADIAN) * x_dist);
 	h = x_dist / cos((FOV / 2.0) * TO_RADIAN);
 	left_p.x = cos((game->player->angle - 90 - FOV / 2.) * TO_RADIAN) * h;
-	left_p.y = -sin((game->player->angle - 90 - FOV / 2.) * TO_RADIAN) * h;
+	left_p.y = sin((game->player->angle - 90 - FOV / 2.) * TO_RADIAN) * h;
 	step = fabs(dist_to_left * 2) / WIN_X;
-	a.y = (hit.y - left_p.y) * step;
-	a.x = (hit.x - left_p.x) * step;
-	printf("y_screen : %d	step : %f	a :%f	%f\n", y_screen, step, a.x, a.y);
+	// printf("%d	coef : %f\n",y_screen, (hit.y - left_p.y) / (hit.x - left_p.x));
+	a.y = ((hit.y - left_p.y) / dist_to_left) * step;
+	a.x = ((hit.x - left_p.x) / dist_to_left) * step;
+	// printf("y_screen : %d	step : %f	a :%f	%f\n", y_screen, step, a.x, a.y);
 	y_map = f_pos.y + left_p.y;
 	x_map = f_pos.x + left_p.x;
-	fflush(stdout);
+	// fflush(stdout);
 	i = 0;
 	// hit.x += f_pos.x;
 	// if (x_map > game->map_size.x || x_map < 0 || y_map > game->map_size.y || y_map < 0)
@@ -91,7 +92,7 @@ void	draw_ceiling(t_game *game)
 	{
 		x_dist = (0.5 * (game->constants[0] / y_screen));
 		hit.x = cos((game->player->angle - 90) * TO_RADIAN) * x_dist;
-		hit.y = -sin((game->player->angle - 90) * TO_RADIAN) * x_dist;
+		hit.y = sin((game->player->angle - 90) * TO_RADIAN) * x_dist;
 		// printf("angle : %f	x_dist : %f, y_dist : %f\n",game->player->angle, hit.x, hit.y);
 
 		// if (f_pos.x + hit.x > game->map_size.x || f_pos.x + hit.x < 0 || f_pos.y + hit.y > game->map_size.y || f_pos.y + hit.y < 0)

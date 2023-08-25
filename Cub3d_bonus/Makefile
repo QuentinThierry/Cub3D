@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/08/25 19:42:01 by jvigny           ###   ########.fr        #
+#    Updated: 2023/08/25 20:36:19 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,39 +46,57 @@ SRC_SOUND = \
 			sound.c
 
 GNL = get_next_line/
-SRC_GNL = get_next_line.c\
+SRC_GNL = get_next_line.c \
 			get_next_line_utils.c
 
-SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
-			key_hook.c \
-			ft_strjoin.c \
+UTILS = utils/
+SRC_UTILS = ft_strjoin.c \
 			ft_strncmp.c \
 			ft_atoi.c \
 			utils.c \
-			raycasting.c \
-			draw.c \
-			parsing.c \
-			parse_texture.c \
-			ft_fill_wall.c \
-			fill_texture.c \
 			ft_calloc.c \
 			ft_realloc.c \
 			ft_strdup.c \
-			init.c \
 			ft_memcpy.c \
-			ft_close.c \
-			wall_hit.c \
-			check_map.c \
-			collisions.c \
-			minimap.c \
-			image_operations.c \
-			get_image.c \
-			print.c \
 			free.c \
-			bettermlx.c \
+			bettermlx.c
+
+PARSING = parsing/
+SRC_PARSING = check_map.c \
+			ft_fill_wall.c \
+			fill_texture.c \
+			init.c \
+			parsing.c \
+			parse_texture.c
+
+RAYCASTING = raycasting/
+SRC_RAYCASTING = raycasting.c \
+			collisions.c \
+			wall_hit.c \
 			door.c \
 			floor.c \
-			ray_object.c \
+			ray_object.c
+
+MINIMAP = minimap/
+SRC_MINIMAP = minimap.c
+
+DRAW = draw/
+SRC_DRAW = 	draw.c \
+			image_operations.c \
+			get_image.c
+
+HOOKS = hooks/
+SRC_HOOKS = key_hook.c \
+			ft_close.c 
+
+SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
+			$(addprefix $(UTILS), $(SRC_UTILS)) \
+			$(addprefix $(PARSING), $(SRC_PARSING)) \
+			$(addprefix $(RAYCASTING), $(SRC_RAYCASTING)) \
+			$(addprefix $(MINIMAP), $(SRC_MINIMAP)) \
+			$(addprefix $(DRAW), $(SRC_DRAW)) \
+			$(addprefix $(HOOKS), $(SRC_HOOKS)) \
+			print.c \
 			main.c
 
 #			$(addprefix $(SOUND), $(SRC_SOUND)) \
@@ -112,12 +130,18 @@ $(NAME):	$(MINILIBX) $(OBJ_DIR) $(OBJ) #$(LIBAO)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBS) $(INCLUDES) -o $(NAME)
 
 $(OBJ_DIR)%.o:	$(SRC_DIR)%.c $(HEADERS) Makefile
-	$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@
+	$(CC) -c $(INCLUDES) $< -o $@
 	
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(OBJ_DIR)$(GNL)
 	@mkdir -p $(OBJ_DIR)$(SOUND)
+	@mkdir -p $(OBJ_DIR)$(RAYCASTING)
+	@mkdir -p $(OBJ_DIR)$(DRAW)
+	@mkdir -p $(OBJ_DIR)$(HOOKS)
+	@mkdir -p $(OBJ_DIR)$(UTILS)
+	@mkdir -p $(OBJ_DIR)$(MINIMAP)
+	@mkdir -p $(OBJ_DIR)$(PARSING)
 
 $(MINILIBX):
 	@echo "${GREEN}~-~-~-~-~ COMPILING MINILIBX ~-~-~-~-~${RESET_COLOR}"

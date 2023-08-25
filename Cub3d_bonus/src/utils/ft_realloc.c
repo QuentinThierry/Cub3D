@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_realloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/08 18:04:11 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/27 17:21:47 by jvigny           ###   ########.fr       */
+/*   Created: 2023/06/30 19:15:03 by jvigny            #+#    #+#             */
+/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d_bonus.h"
+#include "../../includes/cub3d_bonus.h"
 
-char	*ft_strdup(const char *s)
+void	*ft_realloc(void *ptr, size_t prev_size, size_t new_size)
 {
-	char	*res;
-	size_t	len;
-	size_t	i;
+	void	*new_ptr;
 
-	i = 0;
-	len = ft_strlen((char *)s);
-	res = ft_calloc(sizeof(char), len + 1);
-	if (res == 0)
-		return (0);
-	while (i < len)
-	{
-		res[i] = s[i];
-		i++;
-	}
-	res[i] = 0;
-	return (res);
+	new_ptr = ft_calloc(new_size, 1);
+	if (!new_ptr)
+		return (NULL);
+	if (prev_size > new_size)
+		prev_size = new_size;
+	ft_memcpy(new_ptr, ptr, prev_size);
+	free(ptr);
+	return (new_ptr);
 }

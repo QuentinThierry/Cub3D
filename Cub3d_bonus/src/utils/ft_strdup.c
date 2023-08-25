@@ -1,41 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/17 16:42:46 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/17 16:43:35 by jvigny           ###   ########.fr       */
+/*   Created: 2022/11/08 18:04:11 by jvigny            #+#    #+#             */
+/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d_bonus.h"
+#include "../../includes/cub3d_bonus.h"
 
-int	ft_atoi(const char *str)
+char	*ft_strdup(const char *s)
 {
-	int	res;
-	int	i;
-	int	sign;
+	char	*res;
+	size_t	len;
+	size_t	i;
 
-	res = 0;
 	i = 0;
-	sign = 1;
-	while (str[i] == ' ' || str[i] == '\f' || str[i] == '\r' || str[i] == '\n'
-		||str[i] == '\t' || str[i] == '\v')
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	len = ft_strlen((char *)s);
+	res = ft_calloc(sizeof(char), len + 1);
+	if (res == 0)
+		return (0);
+	while (i < len)
 	{
-		if (str[i] == '-')
-			sign = -1;
+		res[i] = s[i];
 		i++;
 	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		res = res * 10 + str[i] - '0';
-		i++;
-	}
-	if (sign != 1)
-		return (res * sign);
+	res[i] = 0;
 	return (res);
 }

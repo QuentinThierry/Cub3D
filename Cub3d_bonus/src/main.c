@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/23 18:03:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/25 19:40:47 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	on_update(t_game *game)
 		clock_gettime(CLOCK_REALTIME, &last_time);
 	clock_gettime(CLOCK_REALTIME, &time);
 	game->time = time_to_long(&time);
-	
 	if (game->player->angle + game->player->angle >= 360)
 		game->player->angle = game->player->angle - 360;
 	if (game->player->angle + game->player->angle < 0)
@@ -49,6 +48,7 @@ int	on_update(t_game *game)
 	if ((nb_fps % 50) == 0)
 		printf("fps : %ld\n", fps);
 	last_time = cur_time;
+	// exit(0);
 	return (0);
 }
 
@@ -76,7 +76,8 @@ int main(int argc, char **argv)
 	if (!load_image_tab(&game))
 		return (perror("Error"), ft_close(&game), 1);
 	free_filename(&game);
-	game.constants = (double[5]){(WIN_X) / (tan((FOV / 2.0) * TO_RADIAN))};
+	game.constants = (double[5]){(WIN_X / 2.) / tan((FOV / 2.) * TO_RADIAN)
+					, tanf((FOV / 2.0) * TO_RADIAN), cos((FOV / 2.0) * TO_RADIAN)};
 	init_minimap(&game);
 	init_mouse(&game);
 	mlx_do_key_autorepeatoff(game.mlx_ptr);

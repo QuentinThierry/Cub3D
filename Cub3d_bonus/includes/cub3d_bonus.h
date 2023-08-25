@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/23 18:11:16 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/25 19:37:51 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # define WIN_X 1000 //1920 - 918
 # define WIN_Y 1000 //1080 - 468
 # define CHUNK_SIZE 50
-# define FOV 120
+# define FOV 60
 # define MOUV 1
 # define SPEED 100
 # define SPRINT_BOOST 100
@@ -63,6 +63,9 @@
 // Represents the minimap size equals to a percentage of the total window
 #define MINIMAP_SIZE 0.25
 
+#define PLANE_DIST 0
+#define TAN_HALF_FOV 1
+#define COS_HALF_FOV 2
 
 // t_type for arg
 #define NONE 0b0
@@ -320,5 +323,9 @@ void		step_door_open(t_door *door, long time, t_map *map_cell);
 t_ray		get_object_hit(char object, t_type type, float dist, t_game *game);
 
 long int	time_to_long(struct timespec *time);
+
+// floor.c
+void	draw_ceiling(t_game *game);
+
 
 #endif

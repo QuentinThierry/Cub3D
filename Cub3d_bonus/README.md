@@ -27,6 +27,7 @@ FIX :
 - object parsing
 - security on exiting the map is broken
 - fov too big == deformation
+- increase wall height
 
 Minimap : 
 - if screen is too small, do not draw minimap

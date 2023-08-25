@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/23 17:52:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/25 19:39:15 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,20 +91,21 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 			x_img = x_door;
 	}
 	addr = game->image->addr;
-	while (i < y)
-	{
-		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, 0x666666);
-		i++;
-	}
+	// while (i < y)
+	// {
+	// 	my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, 0x666666);
+	// 	i++;
+	// }
+	i = y;
 	while (i < y1)
 	{
 		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}));
 		y_img += delta_y_img;
 		i++;
 	}
-	while (i < WIN_Y)
-	{
-		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, 0x222222);
-		i++;
-	}
+	// while (i < WIN_Y)
+	// {
+	// 	my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, 0x222222);
+	// 	i++;
+	// }
 }

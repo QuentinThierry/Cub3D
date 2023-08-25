@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_fill_wall.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/21 20:36:09 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/25 19:31:06 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			map[i].sprite[e_east] = fill_texture(game->filename, game->nb_file, line[i], e_east);
 			map[i].sprite[e_south] = fill_texture(game->filename, game->nb_file, line[i], e_south);
 			map[i].sprite[e_west] = fill_texture(game->filename, game->nb_file, line[i], e_west);
-			map[i].sprite[e_down].index = e_floor;
-			map[i].sprite[e_up].index = e_ceiling;
+			map[i].sprite[e_down].index = -1;
+			map[i].sprite[e_up].index = -1;
 		}
 		else
 		{

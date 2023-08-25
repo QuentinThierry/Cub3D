@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/24 16:15:30 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/25 18:49:33 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ int main(int argc, char **argv)
 	if (!load_image_tab(&game))
 		return (perror("Error"), ft_close(&game), 1);
 	free_filename(&game);
-	game.constants = (double[5]){(WIN_X / 2.) / tan((FOV / 2.) * TO_RADIAN)};
+	game.constants = (double[5]){(WIN_X / 2.) / tan((FOV / 2.) * TO_RADIAN)
+					, tanf((FOV / 2.0) * TO_RADIAN), cos((FOV / 2.0) * TO_RADIAN)};
 	init_minimap(&game);
 	// init_mouse(&game);
 	mlx_do_key_autorepeaton(game.mlx_ptr);

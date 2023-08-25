@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/24 22:18:09 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/25 19:10:18 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@
 // Represents the minimap size equals to a percentage of the total window
 #define MINIMAP_SIZE 0.25
 
+#define PLANE_DIST 0
+#define TAN_HALF_FOV 1
+#define COS_HALF_FOV 2
 
 // t_type for arg
 #define NONE 0b0

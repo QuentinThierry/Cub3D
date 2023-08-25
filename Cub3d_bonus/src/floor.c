@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   floor.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/25 19:30:33 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/25 20:04:47 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static inline void draw_pixels(t_game *game, t_fvector2 map_point, t_fvector2 st
 	int			i;
 	t_image		*image;
 	t_pixel32	pix;
-	int			index_texture;
+	t_sprite	*tab_sprite;
 
 	i = 0;
 	while (i < WIN_X)
@@ -42,15 +42,21 @@ static inline void draw_pixels(t_game *game, t_fvector2 map_point, t_fvector2 st
 			i++;
 			continue;
 		}
-		index_texture = game->map[(int)map_point.y][(int)map_point.x].sprite[e_ceiling].index;
-		if (index_texture != -1)
+		tab_sprite = game->map[(int)map_point.y][(int)map_point.x].sprite;
+		if (tab_sprite[e_ceiling].index != -1)
 		{
-			image = &game->tab_images[index_texture];
+			image = &game->tab_images[tab_sprite[e_ceiling].index];
 			pix = get_color_at(image->addr, image->size_line,
 				(t_vector2){(map_point.x - (int)map_point.x) * image->size.x,
 				(map_point.y - (int)map_point.y) * image->size.y});
 			my_mlx_pixel_put(game->image->addr, game->image->size_line,
 				(t_vector2){i, WIN_Y / 2 - y_screen}, pix);
+			image = &game->tab_images[tab_sprite[e_floor].index];
+			pix = get_color_at(image->addr, image->size_line,
+				(t_vector2){(map_point.x - (int)map_point.x) * image->size.x,
+				(map_point.y - (int)map_point.y) * image->size.y});
+			my_mlx_pixel_put(game->image->addr, game->image->size_line,
+				(t_vector2){i, WIN_Y / 2 + y_screen}, pix);
 		}
 		map_point.x += step_dir.x; 
 		map_point.y += step_dir.y;

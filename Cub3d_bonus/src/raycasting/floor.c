@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/27 15:26:51 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static inline void draw_pixels(t_game *game, t_fvector2 map_point, t_fvector2 st
 				(t_vector2){(map_point.x - (int)map_point.x) * image->size.x,
 				(map_point.y - (int)map_point.y) * image->size.y});
 			my_mlx_pixel_put(game->image->addr, game->image->size_line,
-				(t_vector2){i, WIN_Y / 2 + y_screen}, pix);
+				(t_vector2){i, WIN_Y / 2 + y_screen - 1}, pix);
 		}
 		map_point.x += step_dir.x; 
 		map_point.y += step_dir.y;

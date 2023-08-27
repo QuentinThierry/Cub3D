@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/27 17:28:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/27 21:00:32 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,14 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 					return (perror("Error"), false);
 				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, '0', e_floor);
 				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, '0', e_ceiling);
+			}
+			else if (is_object(line[i], game->filename, game->nb_file))
+			{
+				printf("coucou\n");
+				map[i].type |= OBJECT;
+				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, '0', e_floor);
+				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, '0', e_ceiling);
+
 			}
 		}
 		else

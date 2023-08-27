@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/27 18:03:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/27 20:31:05 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # define WIN_X 1000 //1920 - 918
 # define WIN_Y 1000 //1080 - 468
 # define CHUNK_SIZE 50
-# define FOV 90
+# define FOV 60
 # define MOUV 1
 # define SPEED 100
 # define SPRINT_BOOST 100
@@ -72,6 +72,7 @@
 #define WALL 0b1
 #define DOOR_CLOSE 0b10
 #define DOOR_OPEN 0b100
+#define OBJECT 0b1000
 
 #define PATH_MMAP_PLAYER "../assets/minimap_player.xpm"
 
@@ -90,7 +91,8 @@ enum e_orientation
 	e_floor,
 	e_ceiling,
 	e_wall,
-	e_door
+	e_door,
+	e_object
 };
 
 typedef struct s_vector2
@@ -109,7 +111,15 @@ typedef struct s_ray
 {
 	t_fvector2			hit;
 	enum e_orientation	orient;
+	int					nb_object_hit;
 }	t_ray;
+
+typedef struct s_object
+{
+	char	symbol;
+	t_type	type;
+	float	dist;
+}	t_objet;
 
 typedef	struct s_player
 {
@@ -247,6 +257,7 @@ bool		check_map(t_game *game);
 bool		ft_read_config(t_animation *animation, int index);
 bool		parse_texture(int fd, t_game *game, int *nb_line, char **rest);
 bool		is_door(char symbol, t_texture *tab, int len);
+bool		is_object(char symbol, t_texture *tab, int len);
 // -------Print--------
 void		printf_texture(t_game *game);
 void		print_map(t_game *game);
@@ -274,7 +285,7 @@ t_vector2	get_sign(double angle);
 
 enum e_orientation	get_wall_orientation(t_fvector2 player, t_fvector2 wall);
 t_image		*get_image_wall(t_game	*game, t_ray ray, int *x_door);
-t_image		*get_image_non_wall(t_game *game, t_ray ray);
+t_image	*get_image_non_wall(t_game *game, t_fvector2 hit, enum e_orientation orient);
 int			ft_close(t_game *game);
 
 // draw
@@ -308,12 +319,13 @@ void		open_door(t_vector2 map_size, t_map **map, double delta_time);
 float		get_texture_door(t_ray ray);
 void		step_door_open(t_door *door, long time, t_map *map_cell);
 
-t_ray		get_object_hit(char object, t_type type, float dist, t_game *game);
+t_ray		get_object_hit(t_objet object, t_game *game, t_fvector2 begin, float angle);
+void		draw_object(t_game *game, t_ray ray, int x, float angle);
 
 long int	time_to_long(struct timespec *time);
 
 // floor.c
-void	draw_ceiling(t_game *game);
+void		draw_ceiling(t_game *game);
 
 
 #endif

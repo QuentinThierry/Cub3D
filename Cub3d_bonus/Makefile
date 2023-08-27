@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/08/27 18:03:04 by jvigny           ###   ########.fr        #
+#    Updated: 2023/08/27 20:33:02 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,6 +75,7 @@ SRC_RAYCASTING = raycasting.c \
 			wall_hit.c \
 			door.c \
 			floor.c \
+			object.c \
 			ray_object.c
 
 MINIMAP = minimap/

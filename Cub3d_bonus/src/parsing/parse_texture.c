@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/27 17:58:40 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/27 18:21:10 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -378,6 +378,8 @@ static bool	_cmp_texture(char *line, t_game *game, int i, bool *is_end)
 			return (_find_texture(game, line + i + 3, game->nb_file, e_ceiling));
 		else if (ft_strncmp(line + i, "D_", 2) == 0)
 			return (_find_texture(game, line + i + 3, game->nb_file, e_door));
+		else if (ft_strncmp(line + i, "O_", 2) == 0)
+			return (_find_texture(game, line + i + 3, game->nb_file, e_object));
 	}
 	return (printf("Error : invalid identifier %s\n", line), false);
 }

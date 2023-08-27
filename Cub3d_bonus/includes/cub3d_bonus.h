@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/27 20:58:50 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/27 21:01:25 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@
 # include "minilibx-linux/mlx.h"
 # include "get_next_line.h"
 
-#define SUPPORT_FILEFORMAT_WAV
 # include "raudio/src/raudio.h"
 
 # include <X11/X.h>

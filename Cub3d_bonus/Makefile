@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/08/27 20:53:11 by qthierry         ###   ########.fr        #
+#    Updated: 2023/08/27 21:08:54 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,8 @@ NAME = cub3d_bonus
 
 CC = gcc
 CFLAGS = -g -Wall -Wextra #-O3#-fsanitize=address#-Werror
-LIBS = -L$(MINILIBX_DIR) -lmlx -lX11 -lXext -lm -L$(RAUDIO_SRC) -lraudio
-INCLUDES = -I$(MINILIBX_HEADERS) -I$(RAUDIO_HEADERS) -I$(HEADERS_DIR)
+LIBS = -L$(MINILIBX_DIR) -lmlx -lX11 -lXext -lm  -L$(RAUDIO_SRC) -lraudio
+INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR) -I$(RAUDIO_HEADERS)
 
 REDIRECT_ERROR = >/dev/null 2>&1
 
@@ -37,6 +37,7 @@ RAUDIO_DIR = $(HEADERS_DIR)raudio/
 RAUDIO_SRC = $(RAUDIO_DIR)src/
 RAUDIO_HEADERS = $(RAUDIO_SRC)
 RAUDIO = $(RAUDIO_SRC)/libraudio.a
+RAUDIO_DEFINE = -D RAUDIO_STANDALONE -D SUPPORT_MODULE_RAUDIO -D SUPPORT_FILEFORMAT_WAV
 
 SOUND = sound/
 SRC_SOUND = \
@@ -161,7 +162,7 @@ $(RAUDIO):
 		cd $(RAUDIO_DIR) && git pull; \
 	fi
 	@echo "   ${GREEN}- Compiling sources...${RESET_COLOR}"
-	gcc -c $(RAUDIO_SRC)raudio.c -D RAUDIO_STANDALONE -D SUPPORT_MODULE_RAUDIO -o $(RAUDIO_SRC)raudio.o
+	gcc -c $(RAUDIO_SRC)raudio.c $(RAUDIO_DEFINE) -o $(RAUDIO_SRC)raudio.o
 	ar rcs $(RAUDIO) $(RAUDIO_SRC)raudio.o
 	rm -f $(RAUDIO_SRC)raudio.o
 	@echo "${GREEN}~ DONE ~\n${RESET_COLOR}"

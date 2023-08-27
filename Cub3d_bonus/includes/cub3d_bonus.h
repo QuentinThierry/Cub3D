@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/27 18:03:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/27 20:58:50 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@
 # include <signal.h>
 
 # include "minilibx-linux/mlx.h"
-# include "minilibx-linux/mlx_int.h"
 # include "get_next_line.h"
+
+#define SUPPORT_FILEFORMAT_WAV
+# include "raudio/src/raudio.h"
 
 # include <X11/X.h>
 

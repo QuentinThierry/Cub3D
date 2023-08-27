@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/25 19:37:51 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/27 15:59:38 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,7 +286,8 @@ t_vector2	get_sign(double angle);
 
 
 enum e_orientation	get_wall_orientation(t_fvector2 player, t_fvector2 wall);
-t_image		*get_image(t_game	*game, t_ray ray, int *x_door);
+t_image		*get_image_wall(t_game	*game, t_ray ray, int *x_door);
+t_image		*get_image_non_wall(t_game *game, t_ray ray);
 int			ft_close(t_game *game);
 
 // draw

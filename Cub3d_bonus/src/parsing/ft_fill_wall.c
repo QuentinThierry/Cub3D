@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/27 16:47:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 				map[i].arg = ft_calloc(1, sizeof(t_door));
 				if (map[i].arg == NULL)
 					return (perror("Error"), false);
-				map[i].sprite[e_floor].index = e_floor;
-				map[i].sprite[e_ceiling].index = e_ceiling;
+				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, '0', e_floor);
+				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, '0', e_ceiling);
 			}
 		}
 		else

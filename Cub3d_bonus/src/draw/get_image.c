@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:13:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/27 16:11:50 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	update_anim(long int time, t_sprite *sprite, t_image *img)
 	}
 }
 
-t_image	*get_image(t_game *game, t_ray ray, int *x_door)
+t_image	*get_image_wall(t_game *game, t_ray ray, int *x_door)
 {
 	t_sprite	*sprite;
 	t_image		*image;
@@ -67,10 +67,6 @@ t_image	*get_image(t_game *game, t_ray ray, int *x_door)
 		wall.y = (int)ceil(ray.hit.y);
 	if (ray.orient == e_east)
 		wall.x = (int)ceil(ray.hit.x);
-	// if (ray.orient == e_north)
-	// 	wall.y = (int)ceil(ray.hit.y);
-	// if (ray.orient == e_west)
-	// 	wall.x = (int)ceil(ray.hit.x);
 
 	if (ray.orient == e_south)
 	{
@@ -120,6 +116,36 @@ t_image	*get_image(t_game *game, t_ray ray, int *x_door)
 		}
 		if (dist != -1)
 			*x_door = game->tab_images[sprite->index + sprite->frame].size.x * dist;
+		return (&(game->tab_images[sprite->index + sprite->frame]));
+	}
+}
+
+t_image	*get_image_non_wall(t_game *game, t_ray ray)
+{
+	t_sprite	*sprite;
+	t_image		*image;
+
+	sprite = &(game->map[(int)ray.hit.y][(int)ray.hit.x].sprite[ray.orient]);
+	if (sprite->index == -1)
+		return (printf("no texture"), NULL);
+	if (sprite->frame == -1)
+		return (&(game->tab_images[sprite->index]));
+	else		//animation
+	{
+		image = &game->tab_images[sprite->index];
+		if (sprite->time == 0)
+		{
+			sprite->time = game->time;
+			return (&(game->tab_images[sprite->index + sprite->frame]));
+		}
+		if (sprite->frame < image->nb_total_frame
+				&& game->time - sprite->time >= image->time_frame)
+			update_anim(game->time, sprite, image);
+		else if (sprite->frame == image->nb_total_frame
+				&& game->time - sprite->time >= image->time_animation)
+			update_anim(game->time, sprite, image);
+		if (sprite->frame == image->nb_total_frame)
+			return (image);
 		return (&(game->tab_images[sprite->index + sprite->frame]));
 	}
 }

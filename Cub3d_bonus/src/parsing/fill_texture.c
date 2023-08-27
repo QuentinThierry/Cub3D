@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 16:34:46 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/27 17:02:57 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static t_sprite	random_texture(t_texture *texture_tab, int index)
 
 	size = 0;
 	i = 0;
+	if (index == -1)
+		return ((t_sprite){-1, -1, 0});
 	while (i < index)
 	{
 		size += texture_tab[i].total;
@@ -51,11 +53,13 @@ static t_sprite	random_texture(t_texture *texture_tab, int index)
  */
 t_sprite	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient)
 {
-	int	res;
+	int	symbol_ref;
+	int	orient_ref;
 	int	i;
 	
 	i = 0;
-	res = -1;
+	symbol_ref = -1;
+	orient_ref = -1;
 	while (i < len)
 	{
 		if (tab[i].symbol == symbol)
@@ -64,9 +68,17 @@ t_sprite	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation o
 				return (random_texture(tab, i));
 			else if ((orient == e_north || orient == e_east || orient == e_south
 					|| orient == e_west) && (tab[i].orient == e_wall || tab[i].orient == e_door))
-				res = i;
+				symbol_ref = i;
 		}
+		if (tab[i].orient == orient && (orient == e_north || orient == e_east || orient == e_south
+				|| orient == e_west) && tab[i].symbol == '1')
+			orient_ref = i;
+		else if (tab[i].orient == orient && (orient == e_floor || orient == e_ceiling)
+			&& tab[i].symbol == '0')
+			orient_ref = i;
 		i++;
 	}
-	return (random_texture(tab, res));
+	if (symbol_ref == -1)
+		symbol_ref = orient_ref;
+	return (random_texture(tab, symbol_ref));
 }

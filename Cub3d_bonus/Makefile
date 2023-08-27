@@ -6,15 +6,15 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/08/27 15:26:10 by jvigny           ###   ########.fr        #
+#    Updated: 2023/08/27 15:40:20 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3d_bonus
 
 CC = gcc
-CFLAGS = -Wl,-rpath,$(LIBAO_ABS_PATH)lib -g -Wall -Wextra #-O3#-fsanitize=address#-Werror
-LIBS = -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext #-L$(LIBAO_LIB) -lao -lpthread
+CFLAGS = -g -Wall -Wextra #-O3#-fsanitize=address#-Werror
+LIBS = -Wl,-rpath,$(LIBAO_ABS_PATH)lib -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext #-L$(LIBAO_LIB) -lao -lpthread
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR) #-I$(LIBAO_HEADERS)
 
 REDIRECT_ERROR = >/dev/null 2>&1

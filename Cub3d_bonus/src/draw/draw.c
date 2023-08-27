@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/27 17:01:51 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	y1 = WIN_Y / 2.0 + ((int)height - (int)(height / 2));
 	if (height != 0)
 	{
-		image = get_image(game, ray, &x_door);
+		image = get_image_wall(game, ray, &x_door);
 		if (image->addr == NULL)
 			return (printf("Error : Invalid image\n"),(void)ft_close(game));
 		delta_y_img = image->size.y / height;

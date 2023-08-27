@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/27 15:26:51 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/27 15:59:51 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,13 @@ static inline void draw_pixels(t_game *game, t_fvector2 map_point, t_fvector2 st
 		tab_sprite = game->map[(int)map_point.y][(int)map_point.x].sprite;
 		if (tab_sprite[e_ceiling].index != -1)
 		{
-			image = &game->tab_images[tab_sprite[e_ceiling].index];
+			image = get_image_non_wall(game, (t_ray){map_point, e_ceiling});
 			pix = get_color_at(image->addr, image->size_line,
 				(t_vector2){(map_point.x - (int)map_point.x) * image->size.x,
 				(map_point.y - (int)map_point.y) * image->size.y});
 			my_mlx_pixel_put(game->image->addr, game->image->size_line,
 				(t_vector2){i, WIN_Y / 2 - y_screen}, pix);
-			image = &game->tab_images[tab_sprite[e_floor].index];
+			image = get_image_non_wall(game, (t_ray){map_point, e_floor});
 			pix = get_color_at(image->addr, image->size_line,
 				(t_vector2){(map_point.x - (int)map_point.x) * image->size.x,
 				(map_point.y - (int)map_point.y) * image->size.y});

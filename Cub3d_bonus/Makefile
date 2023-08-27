@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/08/27 17:28:39 by jvigny           ###   ########.fr        #
+#    Updated: 2023/08/27 18:03:04 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -187,4 +187,4 @@ fclean:	clean clean_minilibx clean_libao
 
 re: fclean all
 
-.PHONY : all clean fclean re
+.PHONY : all clean fclean re run vrun prun

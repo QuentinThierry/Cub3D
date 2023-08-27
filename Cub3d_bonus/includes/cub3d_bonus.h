@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/27 17:27:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/27 18:03:53 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # define WIN_X 1000 //1920 - 918
 # define WIN_Y 1000 //1080 - 468
 # define CHUNK_SIZE 50
-# define FOV 60
+# define FOV 90
 # define MOUV 1
 # define SPEED 100
 # define SPRINT_BOOST 100
@@ -92,19 +92,6 @@ enum e_orientation
 	e_wall,
 	e_door
 };
-
-// enum e_texture
-// {
-// 	e_north_wall = 0,
-// 	e_east_wall,
-// 	e_south_wall,
-// 	e_west_wall,
-// 	e_floor,
-// 	e_ceiling,
-// 	e_door_close,
-// 	e_door_open,
-// 	e_total
-// };
 
 typedef struct s_vector2
 {

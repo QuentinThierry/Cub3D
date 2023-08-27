@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/27 17:35:24 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ void remove_end_whitespace(char *str)
 	i = ft_strlen(str) - 1;
 	if (i <= 0)
 		return ;
-	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\v' || str[i] == '\n'
-			|| str[i] == '\f' || str[i] == '\r')
+	while (i >= 0 && (str[i] == ' ' || str[i] == '\t' || str[i] == '\v' || str[i] == '\n'
+			|| str[i] == '\f' || str[i] == '\r'))
 		i--;
 	if (i + 1 < ft_strlen(str))
 		str[i + 1] = '\0';

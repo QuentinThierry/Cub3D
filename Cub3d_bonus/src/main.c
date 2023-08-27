@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/27 17:28:28 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/27 17:32:53 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,6 @@ int main(int argc, char **argv)
 	printf_texture(&game);
 	fflush(stdout);
 	print_map(&game);
-	printf("char : %c	type : %d\n", game.map[1][1].symbol, game.map[1][1].type);
-	printf("floor : %d ceilling : %d\n",game.map[1][1].sprite[e_floor].index, game.map[1][1].sprite[e_ceiling].index);
 	if (!check_map(&game))
 		return (1);
 	if (init_mlx(&game) == -1)

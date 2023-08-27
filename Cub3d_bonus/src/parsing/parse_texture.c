@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/27 17:58:40 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,12 +235,25 @@ bool	is_existing(t_game *game, int index, char symbol, enum e_orientation orient
 	i = 0;
 	if (index == e_floor || index == e_ceiling)
 		symbol = '0';
-	else if (index == e_north || index == e_east || index == e_south || index == e_wall)
+	else if (index == e_north || index == e_east || index == e_south || index == e_west)
 		symbol = '1';
+	else if (symbol == '1' || symbol == '0')
+		return (true);
 	while (i < game->nb_file)
 	{
-		if (game->filename[i].symbol == symbol && game->filename[i].orient == orient)
-			return (true);
+		if (game->filename[i].symbol == symbol)
+		{
+			if (game->filename[i].orient == orient)
+				return (true);
+			else if ((orient == e_north || orient == e_east || orient == e_south
+				|| orient == e_west || orient == e_door || orient == e_wall)
+				&& (game->filename[i].orient == e_floor || game->filename[i].orient == e_ceiling))
+				return (true);
+			else if ((orient == e_floor || orient == e_ceiling)
+				&& (game->filename[i].orient == e_north || game->filename[i].orient == e_east || game->filename[i].orient == e_south
+				|| game->filename[i].orient == e_west || game->filename[i].orient == e_door || game->filename[i].orient == e_wall))
+				return (true);
+		}
 		i++;
 	}
 	return (false);

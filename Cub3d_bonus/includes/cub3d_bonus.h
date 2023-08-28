@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/27 20:31:05 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/28 19:51:53 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -321,6 +321,7 @@ void		step_door_open(t_door *door, long time, t_map *map_cell);
 
 t_ray		get_object_hit(t_objet object, t_game *game, t_fvector2 begin, float angle);
 void		draw_object(t_game *game, t_ray ray, int x, float angle);
+double		get_dist(t_fvector2 fpos, t_fvector2 wall, double angle);
 
 long int	time_to_long(struct timespec *time);
 

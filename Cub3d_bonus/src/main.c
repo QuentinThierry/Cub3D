@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/27 20:54:21 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/28 19:40:22 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,9 @@ int main(int argc, char **argv)
 	game.nb_file = 6;
 	if (!parse_file(argv[1], &game))
 		return (1);
-	printf_texture(&game);
-	fflush(stdout);
-	print_map(&game);
-	printf("char : %c	type : %d\n", game.map[7][14].symbol, game.map[7][14].type);
+	// printf_texture(&game);
+	// fflush(stdout);
+	// print_map(&game);
 	if (!check_map(&game))
 		return (1);
 	if (init_mlx(&game) == -1)

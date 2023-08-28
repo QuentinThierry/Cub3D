@@ -6,13 +6,13 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/27 21:02:11 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/28 19:51:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-static double	get_dist(t_fvector2 fpos, t_fvector2 wall, double angle)
+double	get_dist(t_fvector2 fpos, t_fvector2 wall, double angle)
 {
 	t_fvector2	delta;
 	double		res;

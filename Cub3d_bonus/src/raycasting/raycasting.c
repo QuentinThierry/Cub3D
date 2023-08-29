@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/27 17:40:45 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/29 17:58:30 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,7 @@ void	raycasting(t_game *game)
 	t_ray		ray;
 	t_fvector2	fpos;
 	double		dist; 
-	
-	bzero(game->image->addr, WIN_X * WIN_Y * 4);
-	
+
 	draw_ceiling(game);
 	fpos = game->player->f_real_pos;
 	x = -WIN_X / 2;

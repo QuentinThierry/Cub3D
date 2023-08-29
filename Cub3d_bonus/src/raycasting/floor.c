@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/29 13:12:38 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/29 17:58:47 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static inline void	draw_pixel_line(t_game *game, t_fvector2 map_point, t_fvector
 				image2 = get_image_non_wall(game, (t_ray){map_point, e_floor});
 			}
 			my_mlx_pixel_put(game_image->addr, game_image->size_line,
-				(t_vector2){i, WIN_X / 2 - y_screen},
+				(t_vector2){i, WIN_Y / 2 - y_screen},
 				get_color_at(image->addr, image->size_line,
 				(t_vector2){(map_point.x - last_map_pos.x) * image->size.x,
 				(map_point.y - last_map_pos.y) * image->size.y}));
@@ -112,11 +112,5 @@ void	draw_ceiling(t_game *game)
 		hit.y = cos_sin1.y * x_dist;
 		draw_line_ceiling(game, (t_fvector2){x_dist, y_screen}, cos_sin2, hit);
 		y_screen--;
-	}
-	y_screen = 0;
-	while (y_screen < WIN_X)
-	{
-		my_mlx_pixel_put(game->image->addr, game->image->size_line, (t_vector2){y_screen, WIN_Y / 2}, 0x00ff00);
-		y_screen++;
 	}
 }

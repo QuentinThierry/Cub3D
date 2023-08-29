@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/08/27 21:08:54 by qthierry         ###   ########.fr        #
+#    Updated: 2023/08/28 18:06:50 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,12 +32,18 @@ HEADERS_LIST = cub3d_bonus.h get_next_line.h
 HEADERS_DIR = ./includes/
 HEADERS = $(addprefix $(HEADERS_DIR), $(HEADERS_LIST))
 
+# ------------------RAUDIO-------------------
 RAUDIO_URL = https://github.com/raysan5/raudio.git
 RAUDIO_DIR = $(HEADERS_DIR)raudio/
 RAUDIO_SRC = $(RAUDIO_DIR)src/
 RAUDIO_HEADERS = $(RAUDIO_SRC)
 RAUDIO = $(RAUDIO_SRC)/libraudio.a
-RAUDIO_DEFINE = -D RAUDIO_STANDALONE -D SUPPORT_MODULE_RAUDIO -D SUPPORT_FILEFORMAT_WAV
+# defines for the raudio compilation :
+# - RAUDIO_STANDALONE/SUPPORT_MODULE_RAUDIO: compile raudio without all raylib; 
+# - SUPPORT_FILEFORMAT_WAV: support wav format for raudio
+# - 'TRACELOG(level, ...)': override log print function to remove unwanted logs
+RAUDIO_DEFINE = -D RAUDIO_STANDALONE -D SUPPORT_MODULE_RAUDIO -D SUPPORT_FILEFORMAT_WAV -D 'TRACELOG(level, ...)'
+#----------------------------------------------
 
 SOUND = sound/
 SRC_SOUND = \

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/29 18:07:32 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/08/31 19:00:13 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,16 @@
 #define DOOR_CLOSE 0b10
 #define DOOR_OPEN 0b100
 
+#define NB_MAX_SOUNDS 16
+
 #define PATH_MMAP_PLAYER "../assets/minimap_player.xpm"
 
 extern long tot_fps;
 extern long nb_fps;
 
-typedef u_int32_t t_pixel32;
-typedef u_int32_t t_type;
+typedef u_int32_t	t_pixel32;
+typedef u_int32_t	t_type;
+typedef Music		t_music;
 
 enum e_orientation
 {
@@ -218,6 +221,7 @@ typedef struct s_game
 	double			delta_time;
 	long int		time;
 	const double	*constants;
+	t_music			*music_array;
 }	t_game;
 
 // ------ Utils------

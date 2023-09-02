@@ -5,6 +5,7 @@ EA ./assets/wallpaper_torn_sale.xpm
 F ./assets/floor_wood_plank.xpm
 C ./assets/floor_wood_plank.xpm
 
+O_f ./assets/chatmignon.xpm
 D_i ./assets/door.xpm
 c ./assets/griffure.xpm
 o ./assets/griffure.xpm
@@ -16,7 +17,7 @@ MAP
 100000010000000001000000001
 11111111111i111c11111i11111
 1111c0000000000001000000001
-11i11000000N00000i000000001
+11i11000000N00f00i000000001
 1000i000000000000c00000000c
 110110000000000001000000001
 11i10111i11c1111111111111i1

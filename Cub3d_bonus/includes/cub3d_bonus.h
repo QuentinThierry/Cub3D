@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/02 19:51:56 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/02 23:14:51 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,15 +115,20 @@ typedef struct s_ray
 {
 	t_fvector2			hit;
 	enum e_orientation	orient;
-	int					nb_object_hit;
 }	t_ray;
 
-typedef struct s_object
+typedef struct s_launch_ray
 {
 	char	symbol;
 	t_type	type;
 	float	dist;
-}	t_objet;
+}	t_launch_ray;
+
+typedef struct s_object
+{
+	t_fvector2	map_pos;
+	bool		visited;
+}	t_object;
 
 typedef	struct s_player
 {
@@ -231,6 +236,8 @@ typedef struct s_game
 	double			delta_time;
 	long int		time;
 	const double	*constants;
+	int				nb_objects;
+	t_object		**object_array;
 	t_music			*music_array;
 }	t_game;
 
@@ -263,6 +270,8 @@ bool		ft_read_config(t_animation *animation, int index);
 bool		parse_texture(int fd, t_game *game, int *nb_line, char **rest);
 bool		is_door(char symbol, t_texture *tab, int len);
 bool		is_object(char symbol, t_texture *tab, int len);
+bool		fill_object_array(t_game *game);
+
 // -------Print--------
 void		printf_texture(t_game *game);
 void		print_map(t_game *game);
@@ -324,8 +333,8 @@ void		open_door(t_vector2 map_size, t_map **map, double delta_time);
 float		get_texture_door(t_ray ray);
 void		step_door_open(t_door *door, long time, t_map *map_cell);
 
-t_ray		get_object_hit(t_objet object, t_game *game, t_fvector2 begin, float angle);
-void		draw_object(t_game *game, t_ray ray, int x, float angle);
+t_ray		get_object_hit(t_launch_ray object, t_game *game, t_fvector2 begin, float angle);
+void		draw_objects(t_game *game);
 double		get_dist(t_fvector2 fpos, t_fvector2 wall, double angle);
 
 long int	time_to_long(struct timespec *time);

@@ -3,14 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   ft_fill_wall.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/27 21:00:32 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/02 23:15:08 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
+
+bool fill_object_array(t_game *game)
+{
+	int	x;
+	int	y;
+	int	i;
+
+	y = 0;
+	i = 0;
+	if (game->nb_objects == 0)
+		return (true);
+	game->object_array = ft_calloc(game->nb_objects, sizeof(t_object *));
+	if (!game->object_array)
+		return (false);
+	while (y < game->map_size.y)
+	{
+		x = 0;
+		while (x < game->map_size.x)
+		{
+			if ((game->map[y][x].type & OBJECT) == OBJECT)
+			{
+				game->object_array[i] = game->map[y][x].arg;
+				game->object_array[i]->map_pos =
+					(t_fvector2){x + 0.5f, y + 0.5f};
+				i++;
+			}
+			x++;
+		}
+		y++;
+	}
+	return (true);
+}
 
 /**
  * @brief initialize the map the symbol find and each texture depending on
@@ -64,11 +96,13 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			}
 			else if (is_object(line[i], game->filename, game->nb_file))
 			{
-				printf("coucou\n");
+				game->nb_objects++;
 				map[i].type |= OBJECT;
 				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, '0', e_floor);
 				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, '0', e_ceiling);
-
+				map[i].arg = ft_calloc(1, sizeof(t_object *));
+				if (map[i].arg == NULL)
+					return (perror("Error"), false);
 			}
 		}
 		else

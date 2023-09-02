@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/09/02 18:47:54 by jvigny           ###   ########.fr        #
+#    Updated: 2023/09/02 18:56:38 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,10 +44,6 @@ RAUDIO = $(RAUDIO_SRC)/libraudio.a
 # - 'TRACELOG(level, ...)': override log print function to remove unwanted logs
 RAUDIO_DEFINE = -D RAUDIO_STANDALONE -D SUPPORT_MODULE_RAUDIO -D SUPPORT_FILEFORMAT_WAV -D 'TRACELOG(level, ...)'
 #----------------------------------------------
-
-SOUND = sound/
-SRC_SOUND = \
-			sound.c
 
 GNL = get_next_line/
 SRC_GNL = get_next_line.c \
@@ -92,6 +88,10 @@ SRC_DRAW = 	draw.c \
 HOOKS = hooks/
 SRC_HOOKS = key_hook.c \
 			ft_close.c 
+
+AUDIO = audio/
+SRC_AUDIO = \
+			audio.c
 
 SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			$(addprefix $(UTILS), $(SRC_UTILS)) \

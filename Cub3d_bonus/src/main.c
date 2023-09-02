@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/02 18:47:44 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/02 18:54:43 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	on_update(t_game *game)
 		game->player->angle = game->player->angle - 360;
 	if (game->player->angle + game->player->angle < 0)
 		game->player->angle = game->player->angle + 360;
-	// open_door(game->map_size, game->map, game->delta_time);
 	player_move(game->player, game->delta_time, game->map);
 	raycasting(game);
 	zoom_hook_handle(game->minimap, game->delta_time);

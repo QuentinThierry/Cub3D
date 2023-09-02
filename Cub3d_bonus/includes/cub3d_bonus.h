@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/02 18:35:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/02 18:43:46 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,16 @@
 # include <signal.h>
 
 # include "minilibx-linux/mlx.h"
-# include "minilibx-linux/mlx_int.h"
 # include "get_next_line.h"
+
+# include "raudio/src/raudio.h"
 
 # include <X11/X.h>
 
-# define WIN_X 1000 //1920 - 918
-# define WIN_Y 1000 //1080 - 468
+# define WIN_X 1280 //1920 - 918
+# define WIN_Y 720 //1080 - 468
 # define CHUNK_SIZE 50
-# define FOV 60
+# define FOV 80
 # define MOUV 1
 # define SPEED 100
 # define SPRINT_BOOST 100
@@ -74,13 +75,16 @@
 #define DOOR_OPEN 0b100
 #define OBJECT 0b1000
 
+#define NB_MAX_SOUNDS 16
+
 #define PATH_MMAP_PLAYER "../assets/minimap_player.xpm"
 
 extern long tot_fps;
 extern long nb_fps;
 
-typedef u_int32_t t_pixel32;
-typedef u_int32_t t_type;
+typedef u_int32_t	t_pixel32;
+typedef u_int32_t	t_type;
+typedef Music		t_music;
 
 enum e_orientation
 {
@@ -227,6 +231,7 @@ typedef struct s_game
 	double			delta_time;
 	long int		time;
 	const double	*constants;
+	t_music			*music_array;
 }	t_game;
 
 // ------ Utils------

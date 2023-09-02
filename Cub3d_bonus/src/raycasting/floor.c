@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/27 19:45:27 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/02 18:45:29 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,17 @@ static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, in
 }
 
 __attribute__((always_inline))
-static inline void draw_pixels(t_game *game, t_fvector2 map_point, t_fvector2 step_dir, int y_screen)
+static inline void	draw_pixel_line(t_game *game, t_fvector2 map_point, t_fvector2 step_dir, int y_screen)
 {
-	int			i;
-	t_image		*image;
-	t_pixel32	pix;
-	t_sprite	*tab_sprite;
+	int				i;
+	const t_image	*game_image = game->image;
+	t_vector2		last_map_pos;
+	t_image			*image;
+	t_image			*image2;
 
 	i = 0;
+	last_map_pos.x = -(int)map_point.x;
+	last_map_pos.y = -(int)map_point.y;
 	while (i < WIN_X)
 	{
 		if (map_point.x >= game->map_size.x || map_point.x < 0 || map_point.y >= game->map_size.y || map_point.y < 0)
@@ -42,21 +45,24 @@ static inline void draw_pixels(t_game *game, t_fvector2 map_point, t_fvector2 st
 			i++;
 			continue;
 		}
-		tab_sprite = game->map[(int)map_point.y][(int)map_point.x].sprite;
-		if (tab_sprite[e_ceiling].index != -1)
+		if (game->map[(int)map_point.y][(int)map_point.x].sprite[e_ceiling].index != -1)
 		{
-			image = get_image_non_wall(game, map_point, e_ceiling);
-			pix = get_color_at(image->addr, image->size_line,
-				(t_vector2){(map_point.x - (int)map_point.x) * image->size.x,
-				(map_point.y - (int)map_point.y) * image->size.y});
-			my_mlx_pixel_put(game->image->addr, game->image->size_line,
-				(t_vector2){i, WIN_Y / 2 - y_screen}, pix);
-			image = get_image_non_wall(game, map_point, e_floor);
-			pix = get_color_at(image->addr, image->size_line,
-				(t_vector2){(map_point.x - (int)map_point.x) * image->size.x,
-				(map_point.y - (int)map_point.y) * image->size.y});
-			my_mlx_pixel_put(game->image->addr, game->image->size_line,
-				(t_vector2){i, WIN_Y / 2 + y_screen - 1}, pix);
+			if (last_map_pos.x != (int)map_point.x || last_map_pos.y != (int)map_point.y)
+			{
+				last_map_pos.x = (int)map_point.x;
+				last_map_pos.y = (int)map_point.y;
+				image = get_image_non_wall(game, map_point, e_ceiling);
+				image2 = get_image_non_wall(game, map_point, e_floor);
+			}
+			my_mlx_pixel_put(game_image->addr, game_image->size_line,
+				(t_vector2){i, WIN_Y / 2 - y_screen},
+				get_color_at(image->addr, image->size_line,
+				(t_vector2){(map_point.x - last_map_pos.x) * image->size.x,
+				(map_point.y - last_map_pos.y) * image->size.y}));
+			my_mlx_pixel_put(game_image->addr, game_image->size_line,
+				(t_vector2){i, WIN_Y / 2 + y_screen - 1}, get_color_at(image2->addr, image2->size_line,
+				(t_vector2){(map_point.x - last_map_pos.x) * image2->size.x,
+				(map_point.y - last_map_pos.y) * image2->size.y}));
 		}
 		map_point.x += step_dir.x; 
 		map_point.y += step_dir.y;
@@ -64,7 +70,7 @@ static inline void draw_pixels(t_game *game, t_fvector2 map_point, t_fvector2 st
 	}
 }
 
-void	draw_line_ceiling(t_game *game, float x_dist, int y_screen, t_fvector2 hit)
+void	draw_line_ceiling(t_game *game, t_fvector2 xdist_yscreen, t_fvector2 cos_sin, t_fvector2 hit)
 {
 	float				dist_to_left;
 	float				h;
@@ -72,38 +78,39 @@ void	draw_line_ceiling(t_game *game, float x_dist, int y_screen, t_fvector2 hit)
 	t_fvector2			map_point;
 	t_fvector2			left_p;
 
-	dist_to_left = fabs((game->constants[TAN_HALF_FOV]) * x_dist);
-	h = x_dist / game->constants[COS_HALF_FOV];
-	left_p.x = cos((game->player->angle - 90 - FOV / 2.) * TO_RADIAN) * h;
-	left_p.y = sin((game->player->angle - 90 - FOV / 2.) * TO_RADIAN) * h;
+	dist_to_left = fabs((game->constants[TAN_HALF_FOV]) * xdist_yscreen.x);
+	h = xdist_yscreen.x / game->constants[COS_HALF_FOV];
+	left_p.x = cos_sin.x * h;
+	left_p.y = cos_sin.y * h;
 	a.y = ((hit.y - left_p.y) / dist_to_left) * fabs(dist_to_left * 2) / WIN_X;
 	a.x = ((hit.x - left_p.x) / dist_to_left) * fabs(dist_to_left * 2) / WIN_X;
 	map_point.x = game->player->f_real_pos.x + left_p.x;
 	map_point.y = game->player->f_real_pos.y + left_p.y;
-	draw_pixels(game, map_point, a, y_screen);
+	draw_pixel_line(game, map_point, a, xdist_yscreen.y);
 }
 
 // if odd WIN_Y, draw 1 floor pixel more than ceiling
 void	draw_ceiling(t_game *game)
 {
 	t_fvector2	hit;
+	t_fvector2	cos_sin1;
+	t_fvector2	cos_sin2;
 	int			y_screen;
 	float		x_dist;
 
 	x_dist = 0;
 	y_screen = WIN_Y / 2.;
+
+	cos_sin2.x = cos((game->player->angle - 90 - FOV / 2.) * TO_RADIAN);
+	cos_sin2.y = sin((game->player->angle - 90 - FOV / 2.) * TO_RADIAN);
+	cos_sin1.x = cos((game->player->angle - 90) * TO_RADIAN);
+	cos_sin1.y = sin((game->player->angle - 90) * TO_RADIAN);
 	while (y_screen > 0)
 	{
 		x_dist = (0.5 * (game->constants[0] / y_screen));
-		hit.x = cos((game->player->angle - 90) * TO_RADIAN) * x_dist;
-		hit.y = sin((game->player->angle - 90) * TO_RADIAN) * x_dist;
-		draw_line_ceiling(game, x_dist, y_screen, hit);
+		hit.x = cos_sin1.x * x_dist;
+		hit.y = cos_sin1.y * x_dist;
+		draw_line_ceiling(game, (t_fvector2){x_dist, y_screen}, cos_sin2, hit);
 		y_screen--;
-	}
-	y_screen = 0;
-	while (y_screen < WIN_X)
-	{
-		my_mlx_pixel_put(game->image->addr, game->image->size_line, (t_vector2){y_screen, WIN_Y / 2}, 0x00ff00);
-		y_screen++;
 	}
 }

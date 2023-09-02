@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/31 18:58:55 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/02 19:49:36 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,135 +52,135 @@ int	on_update(t_game *game)
 	return (0);
 }
 
-// int main(int argc, char **argv)
-// {
-// 	t_game	game;
-
-// init_audio(game);
-
-// 	game = (t_game){0};
-// 	if (argc != 2)
-// 		return (printf("Error : Invalid nubmber of arguments\n"), 1);
-// 	game.filename = ft_calloc(6, sizeof(t_texture));
-// 	if (game.filename == NULL)
-// 		return (perror("Error"), 1);
-// 	game.nb_file = 6;
-// 	if (!parse_file(argv[1], &game))
-// 		return (1);
-// 	printf_texture(&game);
-// 	fflush(stdout);
-// 	print_map(&game);
-// 	if (!check_map(&game))
-// 		return (1);
-// 	if (init_mlx(&game) == -1)
-// 		return (perror("Error"), ft_close(&game), 1);
-// 	if (!load_image_tab(&game))
-// 		return (perror("Error"), ft_close(&game), 1);
-// 	free_filename(&game);
-// 	game.constants = (double[5]){(WIN_X / 2.) / tan((FOV / 2.) * TO_RADIAN)
-// 					, tanf((FOV / 2.0) * TO_RADIAN), cos((FOV / 2.0) * TO_RADIAN)};
-// 	init_minimap(&game);
-// 	init_mouse(&game);
-// 	mlx_do_key_autorepeatoff(game.mlx_ptr);
-// 	mlx_hook(game.win, 2, (1L<<0), key_press_hook, &game);
-// 	mlx_hook(game.win, 3, (1L<<1), key_release_hook, &game);
-// 	mlx_hook(game.win, 17, (1L << 8), ft_close, &game);
-// 	mlx_hook(game.win, 6, (1L << 6) | (1L << 2) , mouse_hook, &game);
-// 	mlx_hook(game.win, 8, (1L << 5), mouse_leave, &game);
-// 	mlx_loop_hook(game.mlx_ptr, on_update, &game);
-// 	mlx_loop(game.mlx_ptr);
-
-
-// 	return (0);
-// }
-void	load_new_sound_in_array(t_music *music_array, const char *audio_file);
-
-int	audio_hook(int key, t_game *game)
-{
-	printf("key %d\n", key);
-	if (key == 'a')
-		load_new_sound_in_array(game->music_array, "assets/sounds/app.wav");
-	else if (key == 's')
-		load_new_sound_in_array(game->music_array, "assets/sounds/sound.wav");
-	return (0);
-}
-
-bool	init_audio(t_game *game)
-{
-	InitAudioDevice();
-	if (!IsAudioDeviceReady() || NB_MAX_SOUNDS <= 0)
-		return (printf("Audio init failed."), false);
-	game->music_array = ft_calloc(NB_MAX_SOUNDS, sizeof(t_music));
-	if (!game->music_array)
-		return (false);
-	return (true);
-}
-
-void	close_audio(t_game *game)
-{
-	if (!IsAudioDeviceReady())
-		return ;
-	CloseAudioDevice();
-}
-
-void	load_new_sound_in_array(t_music *music_array, const char *audio_file)
-{
-	int	i;
-
-	i = 0;
-	while (i < NB_MAX_SOUNDS)
-	{
-		if (!music_array[i].ctxData)
-		{
-			music_array[i] = LoadMusicStream(audio_file);
-			SetMusicPan(music_array[i], 0.1f);
-			if (!music_array[i].ctxData)
-				printf("Error creating audio stream.\n");
-			else
-			{
-				music_array[i].looping = false;
-				PlayMusicStream(music_array[i]);
-			}
-			return ;
-		}
-		i++;
-	}
-}
-
-void	update_playing_sounds(t_music *music_array)
-{
-	int	i;
-
-	i = 0;
-	while (i < NB_MAX_SOUNDS)
-	{
-		if (music_array[i].ctxData)
-			UpdateMusicStream(music_array[i]);
-		i++;
-	}
-}
-
-int loupouk(t_game *game)
-{
-	update_playing_sounds(game->music_array);
-	return (0);
-}
-
-int main()
+int main(int argc, char **argv)
 {
 	t_game	game;
-	int	i = 1;
+
+	// init_audio(game);
 
 	game = (t_game){0};
-
-	init_audio(&game);
-	init_mlx(&game);
-
-	SetMasterVolume(1.f);
-
-	mlx_loop_hook(game.mlx_ptr, loupouk, &game);
-	mlx_hook(game.win, 2, (1L<<0), audio_hook, &game);
+	if (argc != 2)
+		return (printf("Error : Invalid nubmber of arguments\n"), 1);
+	game.filename = ft_calloc(6, sizeof(t_texture));
+	if (game.filename == NULL)
+		return (perror("Error"), 1);
+	game.nb_file = 6;
+	if (!parse_file(argv[1], &game))
+		return (1);
+	printf_texture(&game);
+	fflush(stdout);
+	print_map(&game);
+	if (!check_map(&game))
+		return (1);
+	if (init_mlx(&game) == -1)
+		return (perror("Error"), ft_close(&game), 1);
+	if (!load_image_tab(&game))
+		return (perror("Error"), ft_close(&game), 1);
+	free_filename(&game);
+	game.constants = (double[5]){(WIN_X / 2.) / tan((FOV / 2.) * TO_RADIAN)
+					, tanf((FOV / 2.0) * TO_RADIAN), cos((FOV / 2.0) * TO_RADIAN)};
+	init_minimap(&game);
+	init_mouse(&game);
+	mlx_do_key_autorepeatoff(game.mlx_ptr);
+	mlx_hook(game.win, 2, (1L<<0), key_press_hook, &game);
+	mlx_hook(game.win, 3, (1L<<1), key_release_hook, &game);
+	mlx_hook(game.win, 17, (1L << 8), ft_close, &game);
+	mlx_hook(game.win, 6, (1L << 6) | (1L << 2) , mouse_hook, &game);
+	mlx_hook(game.win, 8, (1L << 5), mouse_leave, &game);
+	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	mlx_loop(game.mlx_ptr);
-	CloseAudioDevice();
-	
+
+
+	return (0);
 }
+// void	load_new_sound_in_array(t_music *music_array, const char *audio_file);
+
+// int	audio_hook(int key, t_game *game)
+// {
+// 	printf("key %d\n", key);
+// 	if (key == 'a')
+// 		load_new_sound_in_array(game->music_array, "assets/sounds/app.wav");
+// 	else if (key == 's')
+// 		load_new_sound_in_array(game->music_array, "assets/sounds/sound.wav");
+// 	return (0);
+// }
+
+// bool	init_audio(t_game *game)
+// {
+// 	InitAudioDevice();
+// 	if (!IsAudioDeviceReady() || NB_MAX_SOUNDS <= 0)
+// 		return (printf("Audio init failed."), false);
+// 	game->music_array = ft_calloc(NB_MAX_SOUNDS, sizeof(t_music));
+// 	if (!game->music_array)
+// 		return (false);
+// 	return (true);
+// }
+
+// void	close_audio(t_game *game)
+// {
+// 	if (!IsAudioDeviceReady())
+// 		return ;
+// 	CloseAudioDevice();
+// }
+
+// void	load_new_sound_in_array(t_music *music_array, const char *audio_file)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (i < NB_MAX_SOUNDS)
+// 	{
+// 		if (!music_array[i].ctxData)
+// 		{
+// 			music_array[i] = LoadMusicStream(audio_file);
+// 			SetMusicPan(music_array[i], 0.1f);
+// 			if (!music_array[i].ctxData)
+// 				printf("Error creating audio stream.\n");
+// 			else
+// 			{
+// 				music_array[i].looping = false;
+// 				PlayMusicStream(music_array[i]);
+// 			}
+// 			return ;
+// 		}
+// 		i++;
+// 	}
+// }
+
+// void	update_playing_sounds(t_music *music_array)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (i < NB_MAX_SOUNDS)
+// 	{
+// 		if (music_array[i].ctxData)
+// 			UpdateMusicStream(music_array[i]);
+// 		i++;
+// 	}
+// }
+
+// int loupouk(t_game *game)
+// {
+// 	update_playing_sounds(game->music_array);
+// 	return (0);
+// }
+
+// int main()
+// {
+// 	t_game	game;
+// 	int	i = 1;
+
+// 	game = (t_game){0};
+
+// 	init_audio(&game);
+// 	init_mlx(&game);
+
+// 	SetMasterVolume(1.f);
+
+// 	mlx_loop_hook(game.mlx_ptr, loupouk, &game);
+// 	mlx_hook(game.win, 2, (1L<<0), audio_hook, &game);
+// 	mlx_loop(game.mlx_ptr);
+// 	CloseAudioDevice();
+	
+// }

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/29 17:58:47 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/02 19:53:47 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ static inline void	draw_pixel_line(t_game *game, t_fvector2 map_point, t_fvector
 			{
 				last_map_pos.x = (int)map_point.x;
 				last_map_pos.y = (int)map_point.y;
-				image = get_image_non_wall(game, (t_ray){map_point, e_ceiling});
-				image2 = get_image_non_wall(game, (t_ray){map_point, e_floor});
+				image = get_image_non_wall(game, map_point, e_ceiling);
+				image2 = get_image_non_wall(game, map_point, e_floor);
 			}
 			my_mlx_pixel_put(game_image->addr, game_image->size_line,
 				(t_vector2){i, WIN_Y / 2 - y_screen},

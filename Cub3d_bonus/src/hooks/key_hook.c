@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/28 17:09:48 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	key_press_hook(int key, t_game *game)
 		game->minimap->zoom_dir += 1;
 	else if (key == ' ')
 	{
-		hit = get_object_hit('\0', DOOR_CLOSE, 1, game); //??
+		hit = get_object_hit((t_objet){'\0', DOOR_CLOSE, 1}, game, game->player->f_real_pos, game->player->angle);
 		if (hit.hit.x != -1)
 		{
 			clock_gettime(CLOCK_REALTIME, &time);
@@ -56,9 +56,11 @@ int	key_press_hook(int key, t_game *game)
 				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
 			}
 		}
-		hit = get_object_hit('\0', DOOR_OPEN, 1, game);
-		if (hit.hit.x != -1)
+		else
 		{
+			hit = get_object_hit((t_objet){'\0', DOOR_OPEN, 1}, game, game->player->f_real_pos, game->player->angle);
+			if (hit.hit.x != -1)
+			{
 				clock_gettime(CLOCK_REALTIME, &time);
 				game->map[(int)hit.hit.y][(int)hit.hit.x].type |= DOOR_CLOSE;
 				game->map[(int)hit.hit.y][(int)hit.hit.x].type ^= DOOR_OPEN;
@@ -66,6 +68,8 @@ int	key_press_hook(int key, t_game *game)
 				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = -1;
 				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent -= game->delta_time * SPEEP_DOOR_OPENING;
 				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
+			}
+	
 		}
 	}
 	return (0);

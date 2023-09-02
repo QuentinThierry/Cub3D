@@ -6,19 +6,19 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/29 17:58:30 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/02 19:53:23 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-double	get_dist(t_game *game, double x, double y, double angle)
+double	get_dist(t_fvector2 fpos, t_fvector2 wall, double angle)
 {
 	t_fvector2	delta;
 	double		res;
 
-	delta.x = fabs(x - game->player->f_real_pos.x);
-	delta.y = fabs(y - game->player->f_real_pos.y);
+	delta.x = fabs(wall.x - fpos.x);
+	delta.y = fabs(wall.y - fpos.y);
 
 	res = sqrt((delta.x * delta.x + delta.y * delta.y))
 				* cos(angle * TO_RADIAN);
@@ -50,7 +50,6 @@ void	raycasting(t_game *game)
 	t_ray		ray;
 	t_fvector2	fpos;
 	double		dist; 
-
 	draw_ceiling(game);
 	fpos = game->player->f_real_pos;
 	x = -WIN_X / 2;
@@ -66,10 +65,15 @@ void	raycasting(t_game *game)
 			height = 0;
 		else
 		{
-			dist = get_dist(game, ray.hit.x, ray.hit.y, angle) ;
+			dist = get_dist(game->player->f_real_pos, ray.hit, angle) ;
 			height = 1 / dist * game->constants[0];		//div par 0 if sin == 0
 		}
 		draw_vert(game, x + WIN_X / 2, ray, height);
+		if (ray.nb_object_hit != 0)
+		{
+			printf("nb object : %d\n", ray.nb_object_hit);
+			draw_object(game, ray, x + WIN_X / 2, game->player->angle + angle);
+		}
 		x++;
 	}
 }

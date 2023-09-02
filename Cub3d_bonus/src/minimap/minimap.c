@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 00:30:38 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/27 18:37:21 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ void	draw_horiz_line(t_image *image, t_vector2 origin, int len, t_pixel32 color)
 	}
 }
 
-static inline unsigned int	get_color_at(char *addr, int size_line, t_vector2 pos)
-{
-	return (*(int *)(addr + (pos.y * size_line + pos.x * 4)));
-}
+// static inline unsigned int	get_color_at(char *addr, int size_line, t_vector2 pos)
+// {
+// 	return (*(int *)(addr + (pos.y * size_line + pos.x * 4)));
+// }
 
 void	draw_rectangle(t_image *image, t_vector2 pos, t_vector2 size, t_pixel32 color)
 {

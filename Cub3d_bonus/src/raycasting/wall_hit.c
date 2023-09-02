@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/08/27 20:36:25 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static t_ray	_get_wall_hit_se(t_fvector2 fpos,
 	t_vector2	map_pos;
 	t_fvector2	door;
 	float		player_angle;
+	int			nb_object;
 
 	player_angle = angle;
 	angle = fabs(tan(angle * TO_RADIAN));
@@ -28,22 +29,25 @@ static t_ray	_get_wall_hit_se(t_fvector2 fpos,
 	comp.x = fpos.x + fabs(fpos.y - map_pos.y) * angle;
 	comp.y = fpos.y + fabs(fpos.x - map_pos.x) / angle;
 	step = (t_fvector2){angle, 1 / angle};
+	nb_object = 0;
 	while (true)
 	{
 		if (map_pos.y >= comp.y)
 		{
 			if ((map[(int)(comp.y)][map_pos.x].type & WALL) == WALL)
 			{
-				if ((map[(int)(comp.y)][map_pos.x].type & DOOR_CLOSE) == DOOR_CLOSE)
+				if ((map[(int)(comp.y)][map_pos.x].type & OBJECT) == OBJECT)
+					nb_object++;
+				else if ((map[(int)(comp.y)][map_pos.x].type & DOOR_CLOSE) == DOOR_CLOSE)
 				{
 					step_door_open(map[(int)(comp.y)][map_pos.x].arg, game->time, &map[(int)(comp.y)][map_pos.x]);
 					door = door_hit_ver_se((t_fvector2){map_pos.x, comp.y}, step.y
 						, (float)((t_door *)map[(int)(comp.y)][map_pos.x].arg)->door_percent, player_angle);
 					if (door.x != -1)
-						return ((t_ray){door, e_west});
+						return ((t_ray){door, e_west, nb_object});
 				}
 				else
-					return ((t_ray){{map_pos.x, comp.y}, e_west});
+					return ((t_ray){{map_pos.x, comp.y}, e_west, nb_object});
 			}
 			comp.y += step.y;
 			map_pos.x += 1;
@@ -52,16 +56,18 @@ static t_ray	_get_wall_hit_se(t_fvector2 fpos,
 		{
 			if ((map[map_pos.y][(int)(comp.x)].type & WALL) == WALL)
 			{
-				if ((map[map_pos.y][(int)(comp.x)].type & DOOR_CLOSE) == DOOR_CLOSE)
+				if ((map[map_pos.y][(int)(comp.x)].type & OBJECT) == OBJECT)
+					nb_object++;
+				else if ((map[map_pos.y][(int)(comp.x)].type & DOOR_CLOSE) == DOOR_CLOSE)
 				{
 					step_door_open(map[map_pos.y][(int)(comp.x)].arg, game->time, &map[map_pos.y][(int)(comp.x)]);
 					door = door_hit_hor_se((t_fvector2){comp.x, map_pos.y}, step.x
 						, (float)((t_door *)map[map_pos.y][(int)comp.x].arg)->door_percent, player_angle);
 					if (door.x != -1)
-						return ((t_ray){door, e_north});
+						return ((t_ray){door, e_north, nb_object});
 				}
 				else
-					return ((t_ray){{comp.x, map_pos.y}, e_north});
+					return ((t_ray){{comp.x, map_pos.y}, e_north, nb_object});
 			}
 			comp.x += step.x;
 			map_pos.y += 1;
@@ -78,6 +84,7 @@ static t_ray	_get_wall_hit_ne(t_fvector2 fpos,
 	t_fvector2	door;
 	t_vector2	map_pos;
 	float		player_angle;
+	int			nb_object;
 
 	player_angle = angle;
 	angle = fabs(tan(angle * TO_RADIAN));
@@ -85,22 +92,25 @@ static t_ray	_get_wall_hit_ne(t_fvector2 fpos,
 	comp.x = fpos.x + fabs(fpos.y - map_pos.y) * angle;
 	comp.y = fpos.y + fabs(fpos.x - map_pos.x) / angle * -1;
 	step = (t_fvector2){angle, 1 / angle * -1};
+	nb_object = 0;
 	while (true)
 	{
 		if (map_pos.y <= comp.y)
 		{
 			if ((map[(int)(comp.y)][map_pos.x].type & WALL) == WALL)
 			{
-				if ((map[(int)(comp.y)][map_pos.x].type & DOOR_CLOSE) == DOOR_CLOSE)
+				if ((map[(int)(comp.y)][map_pos.x].type & OBJECT) == OBJECT)
+					nb_object++;
+				else if ((map[(int)(comp.y)][map_pos.x].type & DOOR_CLOSE) == DOOR_CLOSE)
 				{
 					step_door_open(map[(int)(comp.y)][map_pos.x].arg, game->time, &map[(int)(comp.y)][map_pos.x]);
 					door = door_hit_ver_ne((t_fvector2){map_pos.x, comp.y}, step.y
 						, (float)((t_door *)map[(int)(comp.y)][map_pos.x].arg)->door_percent, player_angle);
 					if (door.x != -1)
-						return ((t_ray){door, e_west});
+						return ((t_ray){door, e_west, nb_object});
 				}
 				else
-					return ((t_ray){{map_pos.x, comp.y}, e_west});
+					return ((t_ray){{map_pos.x, comp.y}, e_west, nb_object});
 			}
 			comp.y += step.y;
 			map_pos.x += 1;
@@ -109,16 +119,18 @@ static t_ray	_get_wall_hit_ne(t_fvector2 fpos,
 		{
 			if ((map[map_pos.y - 1][(int)(comp.x)].type & WALL) == WALL)
 			{
-				if ((map[map_pos.y - 1][(int)(comp.x)].type & DOOR_CLOSE) == DOOR_CLOSE)
+				if ((map[map_pos.y - 1][(int)(comp.x)].type & OBJECT) == OBJECT)
+					nb_object++;
+				else if ((map[map_pos.y - 1][(int)(comp.x)].type & DOOR_CLOSE) == DOOR_CLOSE)
 				{
 					step_door_open(map[map_pos.y - 1][(int)(comp.x)].arg, game->time, &map[map_pos.y - 1][(int)(comp.x)]);
 					door = door_hit_hor_ne((t_fvector2){comp.x, map_pos.y}, step.x
 						, (float)((t_door *)map[map_pos.y - 1][(int)comp.x].arg)->door_percent, player_angle);
 					if (door.x != -1)
-						return ((t_ray){door, e_south});
+						return ((t_ray){door, e_south, nb_object});
 				}
 				else
-					return ((t_ray){{comp.x, map_pos.y}, e_south});
+					return ((t_ray){{comp.x, map_pos.y}, e_south, nb_object});
 			}
 
 			comp.x += step.x;
@@ -136,6 +148,7 @@ static t_ray	_get_wall_hit_sw(t_fvector2 fpos,
 	t_fvector2	door;
 	t_vector2	map_pos;
 	float		player_angle;
+	int			nb_object;
 
 	player_angle = angle;
 	angle = fabs(tan(angle * TO_RADIAN));
@@ -143,22 +156,25 @@ static t_ray	_get_wall_hit_sw(t_fvector2 fpos,
 	comp.x = fpos.x + fabs(fpos.y - map_pos.y) * angle * -1;
 	comp.y = fpos.y + fabs(fpos.x - map_pos.x) / angle;
 	step = (t_fvector2){angle * -1, 1 / angle};
+	nb_object = 0;
 	while (true)
 	{
 		if (map_pos.y >= comp.y)
 		{
 			if ((map[(int)(comp.y)][map_pos.x - 1].type & WALL) == WALL)
 			{
-				if ((map[(int)(comp.y)][map_pos.x - 1].type & DOOR_CLOSE) == DOOR_CLOSE)
+				if ((map[(int)(comp.y)][map_pos.x - 1].type & OBJECT) == OBJECT)
+					nb_object++;
+				else if ((map[(int)(comp.y)][map_pos.x - 1].type & DOOR_CLOSE) == DOOR_CLOSE)
 				{
 					step_door_open(map[(int)(comp.y)][map_pos.x - 1].arg, game->time, &map[(int)(comp.y)][map_pos.x - 1]);
 					door = door_hit_ver_sw((t_fvector2){map_pos.x, comp.y}, step.y
 						, (float)((t_door *)map[(int)(comp.y)][map_pos.x - 1].arg)->door_percent, player_angle);
 					if (door.x != -1)
-						return ((t_ray){door, e_east});
+						return ((t_ray){door, e_east, nb_object});
 				}
 				else
-					return ((t_ray){{map_pos.x, comp.y}, e_east});
+					return ((t_ray){{map_pos.x, comp.y}, e_east, nb_object});
 			}
 			comp.y += step.y;
 			map_pos.x -= 1;
@@ -167,16 +183,18 @@ static t_ray	_get_wall_hit_sw(t_fvector2 fpos,
 		{
 			if ((map[map_pos.y][(int)(comp.x)].type & WALL) == WALL)
 			{
-				if ((map[map_pos.y][(int)(comp.x)].type & DOOR_CLOSE) == DOOR_CLOSE)
+				if ((map[map_pos.y][(int)(comp.x)].type & OBJECT) == OBJECT)
+					nb_object++;
+				else if ((map[map_pos.y][(int)(comp.x)].type & DOOR_CLOSE) == DOOR_CLOSE)
 				{
 					step_door_open(map[map_pos.y][(int)(comp.x)].arg, game->time, &map[map_pos.y][(int)(comp.x)]);
 					door = door_hit_hor_sw((t_fvector2){comp.x, map_pos.y}, step.x
 						, (float)((t_door *)map[map_pos.y][(int)comp.x].arg)->door_percent, player_angle);
 					if (door.x != -1)
-						return ((t_ray){door, e_north});
+						return ((t_ray){door, e_north, nb_object});
 				}
 				else
-					return ((t_ray){{comp.x, map_pos.y}, e_north});
+					return ((t_ray){{comp.x, map_pos.y}, e_north, nb_object});
 			}
 			comp.x += step.x;
 			map_pos.y += 1;
@@ -193,6 +211,7 @@ static t_ray	_get_wall_hit_nw(t_fvector2 fpos,
 	t_fvector2	door;
 	t_vector2	map_pos;
 	float		player_angle;
+	int			nb_object;
 
 	player_angle = angle;
 	angle = fabs(tan(angle * TO_RADIAN));
@@ -200,6 +219,7 @@ static t_ray	_get_wall_hit_nw(t_fvector2 fpos,
 	comp.x = fpos.x + fabs(fpos.y - map_pos.y) * angle * -1;
 	comp.y = fpos.y + fabs(fpos.x - map_pos.x) / angle * -1;
 	step = (t_fvector2){angle * -1, 1 / angle * -1};
+	nb_object = 0;
 	while (true)
 	{
 		
@@ -207,16 +227,18 @@ static t_ray	_get_wall_hit_nw(t_fvector2 fpos,
 		{
 			if ((map[(int)(comp.y)][map_pos.x - 1].type & WALL) == WALL)
 			{
-				if ((map[(int)(comp.y)][map_pos.x - 1].type & DOOR_CLOSE) == DOOR_CLOSE)
+				if ((map[(int)(comp.y)][map_pos.x - 1].type & OBJECT) == OBJECT)
+					nb_object++;
+				else if ((map[(int)(comp.y)][map_pos.x - 1].type & DOOR_CLOSE) == DOOR_CLOSE)
 				{
 					step_door_open(map[(int)(comp.y)][map_pos.x - 1].arg, game->time, &map[(int)(comp.y)][map_pos.x - 1]);
 					door = door_hit_ver_nw((t_fvector2){map_pos.x, comp.y}, step.y
 						, (float)((t_door *)map[(int)(comp.y)][map_pos.x - 1].arg)->door_percent, player_angle);
 					if (door.x != -1)
-						return ((t_ray){door, e_east});
+						return ((t_ray){door, e_east, nb_object});
 				}
 				else
-					return ((t_ray){{map_pos.x, comp.y}, e_east});
+					return ((t_ray){{map_pos.x, comp.y}, e_east, nb_object});
 			}
 			comp.y += step.y;
 			map_pos.x -= 1;
@@ -225,16 +247,18 @@ static t_ray	_get_wall_hit_nw(t_fvector2 fpos,
 		{
 			if ((map[map_pos.y - 1][(int)(comp.x)].type & WALL) == WALL)
 			{
-				if ((map[map_pos.y - 1][(int)(comp.x)].type & DOOR_CLOSE) == DOOR_CLOSE)
+				if ((map[map_pos.y - 1][(int)(comp.x)].type & OBJECT) == OBJECT)
+					nb_object++;
+				else if ((map[map_pos.y - 1][(int)(comp.x)].type & DOOR_CLOSE) == DOOR_CLOSE)
 				{
 					step_door_open(map[map_pos.y - 1][(int)(comp.x)].arg, game->time, &map[map_pos.y - 1][(int)(comp.x)]);
 					door = door_hit_hor_nw((t_fvector2){comp.x, map_pos.y}, step.x
 						, (float)((t_door *)map[map_pos.y - 1][(int)comp.x].arg)->door_percent, player_angle);
 					if (door.x != -1)
-						return ((t_ray){door, e_south});
+						return ((t_ray){door, e_south, nb_object});
 				}
 				else
-					return ((t_ray){{comp.x, map_pos.y}, e_south});
+					return ((t_ray){{comp.x, map_pos.y}, e_south, nb_object});
 			}
 			comp.x += step.x;
 			map_pos.y += -1;

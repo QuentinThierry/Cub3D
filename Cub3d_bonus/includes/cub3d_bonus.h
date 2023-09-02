@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/28 19:51:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/02 18:35:46 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ typedef struct s_ray
 {
 	t_fvector2			hit;
 	enum e_orientation	orient;
-	int					nb_object_hit;
+	// int					nb_object_hit;
 }	t_ray;
 
 typedef struct s_object

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/28 19:51:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/02 18:33:59 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,11 @@ void	raycasting(t_game *game)
 			height = 1 / dist * game->constants[0];		//div par 0 if sin == 0
 		}
 		draw_vert(game, x + WIN_X / 2, ray, height);
-		if (ray.nb_object_hit != 0)
-		{
-			printf("nb object : %d\n", ray.nb_object_hit);
-			draw_object(game, ray, x + WIN_X / 2, game->player->angle + angle);
-		}
+		// if (ray.nb_object_hit != 0)
+		// {
+		// 	printf("nb object : %d\n", ray.nb_object_hit);
+		// 	draw_object(game, ray, x + WIN_X / 2, game->player->angle + angle);
+		// }
 		x++;
 	}
 }

@@ -29,6 +29,7 @@ FIX :
 - fov too big == deformation
 - increase wall height
 - collision with hit box
+- quit if WIN_X or WIN_Y is <= 0
 
 Minimap : 
 - if screen is too small, do not draw minimap

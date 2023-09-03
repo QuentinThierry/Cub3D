@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/02 18:43:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/03 20:34:47 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@
 
 # include <X11/X.h>
 
-# define WIN_X 1280 //1920 - 918
-# define WIN_Y 720 //1080 - 468
+# define WIN_X 1200 //1920 - 918
+# define WIN_Y 700 //1080 - 468
 # define CHUNK_SIZE 50
 # define FOV 80
 # define MOUV 1
@@ -215,6 +215,14 @@ typedef struct s_minimap
 	float		zoom;
 }	t_minimap;
 
+typedef struct s_loading
+{
+	t_image		*background;
+	t_image		*bordure;
+	t_image		*center;
+	int			nb_image_load;
+}	t_loading;
+
 typedef struct s_game
 {
 	t_image			*image;
@@ -232,6 +240,7 @@ typedef struct s_game
 	long int		time;
 	const double	*constants;
 	t_music			*music_array;
+	t_loading		*loading_screen;
 }	t_game;
 
 // ------ Utils------
@@ -333,5 +342,6 @@ long int	time_to_long(struct timespec *time);
 // floor.c
 void		draw_ceiling(t_game *game);
 
+bool		loading_screen(t_game *game);
 
 #endif

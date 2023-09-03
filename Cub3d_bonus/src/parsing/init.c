@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/03 19:34:35 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	init_mlx(t_game *game)
 {
-		game->image = ft_calloc(1, sizeof(t_image));
+	game->image = ft_calloc(1, sizeof(t_image));
 	if (game->image == NULL)
 		return (-1);
 	game->mlx_ptr = mlx_init();

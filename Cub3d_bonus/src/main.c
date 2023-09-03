@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/02 18:54:43 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/03 19:35:00 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int main(int argc, char **argv)
 		return (1);
 	if (init_mlx(&game) == -1)
 		return (perror("Error"), ft_close(&game), 1);
+	loading_screen(&game);
 	if (!load_image_tab(&game))
 		return (perror("Error"), ft_close(&game), 1);
 	free_filename(&game);
@@ -86,6 +87,7 @@ int main(int argc, char **argv)
 	mlx_hook(game.win, 6, (1L << 6) | (1L << 2) , mouse_hook, &game);
 	mlx_hook(game.win, 8, (1L << 5), mouse_leave, &game);
 	mlx_loop_hook(game.mlx_ptr, on_update, &game);
+	sleep(5);
 	mlx_loop(game.mlx_ptr);
 	return (0);
 }

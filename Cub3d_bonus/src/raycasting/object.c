@@ -6,27 +6,58 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:39:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/02 23:47:30 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/03 20:41:33 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-void	draw_object(t_object *object, t_player *player)
+__attribute__((always_inline))
+static inline unsigned int	get_color_at(char *addr, int size_line, t_vector2 pos)
 {
-	t_vector2	relative_pos;
+	return (*(int*)(addr + (pos.y * size_line + pos.x * 4)));
+}
+
+__attribute__((always_inline))
+static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, int color)
+{
+	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
+}
+
+void	draw_object(t_game *game, t_object *object, t_player *player)
+{
+	t_fvector2	relative_pos;
 	float		angle;
+	float		arctan2;
+	float		player_angle;
+	int			x_screen;
 
-	relative_pos.x = fabs(player->f_real_pos.x - object->map_pos.x);
-	relative_pos.y = fabs(player->f_real_pos.y - object->map_pos.y);
+	player_angle = player->angle;
+	relative_pos.x = (object->map_pos.x - player->f_real_pos.x);
+	relative_pos.y = (object->map_pos.y - player->f_real_pos.y);
+	arctan2 = (atan2(-relative_pos.y, relative_pos.x) * 180 / M_PI);
+
+
+	if (player_angle >= 0 && player_angle < 90) // 0-90
+		angle = (90 - player_angle) + FOV / 2. - arctan2;
+	else if (player_angle >= 90 && player_angle < 180) // 90-180
+		angle = (FOV / 2.) - (player_angle - 90) - arctan2;
+	else if (player_angle >= 180 && player_angle < 270) // 180-270
+		angle = arctan2 - ((player_angle - 90) - FOV / 2.);
+	else // 270-360
+		angle = 360 - ((player_angle - 90) - (FOV / 2.)) - arctan2;
+
+	// if (arctan2 < 0)
+	// 	angle = FOV - angle;
+	x_screen = WIN_X * angle / FOV;
 	
-	angle = atan2(-relative_pos.y, relative_pos.x) * 180 / M_PI;
-	printf("atan : %f\n", angle);
-
-	angle += player->angle;
-
-	
-	printf("angle : %f\n", angle);
+	// printf("angle : %f\n", angle);
+	printf("x_screen: %d, angle: %f, p_angle: %f arctan2: %f\n", x_screen, angle, player_angle, arctan2);
+	if (x_screen > 0 && x_screen < WIN_X)
+	{
+		for (int y = 0; y < WIN_Y; y++)
+			my_mlx_pixel_put(game->image->addr, game->image->size_line, (t_vector2){x_screen, y}, 0xFF00);
+	}
 }
 
 
@@ -38,7 +69,7 @@ void	draw_objects(t_game *game)
 	while (i < game->nb_objects)
 	{
 		if (game->object_array[i]->visited)
-			draw_object(game->object_array[i], game->player);
+			draw_object(game, game->object_array[i], game->player);
 		game->object_array[i]->visited = false;
 		i++;
 	}

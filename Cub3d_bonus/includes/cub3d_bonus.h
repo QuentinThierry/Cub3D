@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/04 15:06:37 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/04 16:50:52 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,6 @@ typedef struct s_loading
 	t_image		*background;
 	t_image		*bordure;
 	t_image		*center;
-	// t_vector2	size_loading;
 	int			nb_image_load;
 }	t_loading;
 
@@ -254,6 +253,7 @@ void		*ft_realloc(void *ptr, size_t prev_size, size_t new_size);
 void		*ft_memcpy(void *dest, const void *src, size_t n);
 void		free_filename(t_game *game);
 void		free_tab(void **str, int size);
+void		free_map(t_map **map, t_vector2 size);
 void		free_str(char **str);
 char		*ft_strjoin(char *str, char *str1);
 char		*ft_strjoin_slash(char *str, char *str1, bool add_slash);
@@ -343,6 +343,8 @@ long int	time_to_long(struct timespec *time);
 // floor.c
 void		draw_ceiling(t_game *game);
 
-bool		loading_screen(t_game *game, t_loading *loading_screen);
+bool		loading_screen(t_game *game);
+void		update_loading_screen(t_game *game, t_loading *loading_screen);
+void		free_loading_screen(t_game *game);
 
 #endif

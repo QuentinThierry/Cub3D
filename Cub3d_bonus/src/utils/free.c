@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 16:27:51 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/04 16:50:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,27 @@ void	free_tab(void **str, int size)
 		i++;
 	}
 	free(str);
+}
+
+void	free_map(t_map **map, t_vector2 size)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < size.y)
+	{
+		j = 0;
+		while (j < size.x)
+		{
+			if (map[i][j].arg != NULL)
+				free(map[i][j].arg);
+			j++;
+		}
+		free(map[i]);
+		i++;
+	}
+	free(map);
 }
 
 void	free_str(char **str)

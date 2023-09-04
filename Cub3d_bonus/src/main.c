@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/03 19:35:00 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/04 14:44:35 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int main(int argc, char **argv)
 		return (1);
 	if (init_mlx(&game) == -1)
 		return (perror("Error"), ft_close(&game), 1);
-	loading_screen(&game);
+	loading_screen(&game, game.loading_screen);
 	if (!load_image_tab(&game))
 		return (perror("Error"), ft_close(&game), 1);
 	free_filename(&game);

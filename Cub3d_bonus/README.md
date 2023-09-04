@@ -35,7 +35,7 @@ Minimap :
 - if screen is too small, do not draw minimap
 
 Door :
-<!-- - texture door -->
+- texture door only print the half two time
 <!-- - opti door open -->
 <!-- - door parsing -->
 <!-- - doors on side of map -->

@@ -6,11 +6,20 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:39:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/03 20:41:33 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/04 18:59:53 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
+
+static double	get_dist_real(t_fvector2 fpos, t_fvector2 wall)
+{
+	t_fvector2	delta;
+
+	delta.x = fabs(wall.x - fpos.x);
+	delta.y = fabs(wall.y - fpos.y);
+	return (sqrtf(delta.x * delta.x + delta.y * delta.y));
+}
 
 __attribute__((always_inline))
 static inline unsigned int	get_color_at(char *addr, int size_line, t_vector2 pos)
@@ -24,40 +33,113 @@ static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, in
 	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
 }
 
-void	draw_object(t_game *game, t_object *object, t_player *player)
+void	draw_object(t_game *game, t_object *object, int x_pos)
+{
+	float		height;
+	float		width;
+	t_vector2	pos;
+	t_image		*image;
+	int			x;
+	int			y;
+	float		x_img;
+	float		y_img;
+	float		x_ratio;
+	float		y_ratio;
+
+	height = 1 / object->dist * game->constants[0];
+	width = height;
+	x_pos = x_pos - width / 2;
+	image = &game->tab_images[game->map[(int)object->map_pos.y][(int)object->map_pos.x].sprite[e_object_image].index];
+	x_ratio = image->size.x / width;
+	y_ratio = image->size.y / height;
+	// if (x_pos < 0)
+	// {
+	// 	width += x_pos;
+	// 	x_pos = 0;
+	// }
+	pos.x = x_pos;
+	pos.y = WIN_Y / 2. - height / 2.;
+	y = 0;
+	y_img = 0;
+	while (y < height)
+	{
+		if (pos.y + y >= WIN_Y)
+			return ;
+		if (pos.y + y < 0)
+		{
+			y++;
+			y_img = y * (image->size.y / height);
+			continue ;
+		}
+		x = x_pos;
+		x_img = 0;
+		while (x < width + x_pos)
+		{
+			if (x >= WIN_X)
+				break ;
+			if (x < 0)
+			{
+				x++;
+				x_img = (x - x_pos) * x_ratio;
+				continue ;
+			}
+			my_mlx_pixel_put(game->image->addr, game->image->size_line, (t_vector2){x, pos.y + y},
+				get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}));
+			x++;
+			x_img = (x - x_pos) * x_ratio;
+		}
+		y++;
+		y_img = y * y_ratio;
+	}
+
+}
+
+
+void	find_object_projection(t_game *game, t_object *object, t_player *player)
 {
 	t_fvector2	relative_pos;
 	float		angle;
 	float		arctan2;
 	float		player_angle;
 	int			x_screen;
+	int			x;
 
 	player_angle = player->angle;
 	relative_pos.x = (object->map_pos.x - player->f_real_pos.x);
 	relative_pos.y = (object->map_pos.y - player->f_real_pos.y);
 	arctan2 = (atan2(-relative_pos.y, relative_pos.x) * 180 / M_PI);
 
-
-	if (player_angle >= 0 && player_angle < 90) // 0-90
-		angle = (90 - player_angle) + FOV / 2. - arctan2;
-	else if (player_angle >= 90 && player_angle < 180) // 90-180
-		angle = (FOV / 2.) - (player_angle - 90) - arctan2;
-	else if (player_angle >= 180 && player_angle < 270) // 180-270
-		angle = arctan2 - ((player_angle - 90) - FOV / 2.);
-	else // 270-360
-		angle = 360 - ((player_angle - 90) - (FOV / 2.)) - arctan2;
-
-	// if (arctan2 < 0)
-	// 	angle = FOV - angle;
-	x_screen = WIN_X * angle / FOV;
-	
-	// printf("angle : %f\n", angle);
-	printf("x_screen: %d, angle: %f, p_angle: %f arctan2: %f\n", x_screen, angle, player_angle, arctan2);
-	if (x_screen > 0 && x_screen < WIN_X)
+	if (arctan2 > 0) // positive
 	{
-		for (int y = 0; y < WIN_Y; y++)
-			my_mlx_pixel_put(game->image->addr, game->image->size_line, (t_vector2){x_screen, y}, 0xFF00);
+		if (player_angle >= 0 && player_angle < 90) // 0-90
+			angle = (90 - player_angle) + FOV / 2. - arctan2;
+		else if (player_angle >= 90 && player_angle < 180) // 90-180
+			angle = (FOV / 2.) - (player_angle - 90) - arctan2;
+		else if (player_angle >= 180 && player_angle < 270) // 180-270
+			angle = 360 - (player_angle - 90 - FOV / 2.) - arctan2;
+		else // 270-360
+			angle = 360 - (player_angle - 90 - FOV / 2.) - arctan2;
 	}
+	else // negative
+	{
+		if (player_angle >= 0 && player_angle < 90) // 0-90
+			angle = (90 - player_angle) + FOV / 2. - arctan2;
+		else if (player_angle >= 90 && player_angle < 180) // 90-180
+			angle = (FOV / 2.) - (player_angle - 90) - arctan2;
+		else if (player_angle >= 180 && player_angle < 270) // 180-270
+			angle = fabs(arctan2) - (player_angle - 90 - FOV / 2.);
+		else // 270 - 360
+			angle = fabs(arctan2) - (player_angle - 90 - FOV / 2.);
+	}
+	if (angle < FOV / 2.)
+		angle = -(FOV / 2. - angle);
+	else
+		angle = angle - FOV / 2.;
+
+	object->dist = sqrtf(relative_pos.x * relative_pos.x + relative_pos.y * relative_pos.y)
+		* cos(angle * TO_RADIAN);
+	x_screen = tan(angle * TO_RADIAN) * game->constants[0];
+	draw_object(game, object, x_screen + WIN_X / 2);
 }
 
 
@@ -69,7 +151,7 @@ void	draw_objects(t_game *game)
 	while (i < game->nb_objects)
 	{
 		if (game->object_array[i]->visited)
-			draw_object(game, game->object_array[i], game->player);
+			find_object_projection(game, game->object_array[i], game->player);
 		game->object_array[i]->visited = false;
 		i++;
 	}
@@ -143,16 +225,6 @@ void	draw_objects(t_game *game)
 
 
 
-
-// static double	get_dist_real(t_fvector2 fpos, t_fvector2 wall)
-// {
-// 	t_fvector2	delta;
-
-// 	delta.x = fabs(wall.x - fpos.x);
-// 	delta.y = fabs(wall.y - fpos.y);
-
-// 	return (sqrt(delta.x * delta.x + delta.y * delta.y));
-// }
 
 // __attribute__((always_inline))
 // static inline unsigned int	get_color_at(char *addr, int size_line, t_vector2 pos)

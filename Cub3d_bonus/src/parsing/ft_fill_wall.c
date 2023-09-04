@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/02 23:15:08 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/04 18:46:03 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,8 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 				map[i].type |= OBJECT;
 				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, '0', e_floor);
 				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, '0', e_ceiling);
-				map[i].arg = ft_calloc(1, sizeof(t_object *));
+				map[i].sprite[e_object_image] = fill_texture(game->filename, game->nb_file, line[i], e_object);
+				map[i].arg = ft_calloc(1, sizeof(t_object));
 				if (map[i].arg == NULL)
 					return (perror("Error"), false);
 			}

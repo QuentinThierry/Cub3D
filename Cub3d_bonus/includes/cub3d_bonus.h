@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/02 23:14:51 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/04 18:25:08 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ enum e_orientation
 	e_ceiling,
 	e_wall,
 	e_door,
-	e_object
+	e_object,
+	e_object_image = e_north
 };
 
 typedef struct s_vector2
@@ -128,6 +129,7 @@ typedef struct s_object
 {
 	t_fvector2	map_pos;
 	bool		visited;
+	float		dist;
 }	t_object;
 
 typedef	struct s_player

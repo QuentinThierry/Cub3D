@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:39:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/04 18:59:53 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/06 21:24:16 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, in
 	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
 }
 
-void	draw_object(t_game *game, t_object *object, int x_pos)
+void	draw_object(t_game *game, t_object *object, float object_dist, int x_pos)
 {
 	float		height;
 	float		width;
-	t_vector2	pos;
+	int			y_pos;
 	t_image		*image;
 	int			x;
 	int			y;
@@ -46,52 +46,43 @@ void	draw_object(t_game *game, t_object *object, int x_pos)
 	float		x_ratio;
 	float		y_ratio;
 
-	height = 1 / object->dist * game->constants[0];
+	height = 1 / object_dist * game->constants[0];
 	width = height;
 	x_pos = x_pos - width / 2;
 	image = &game->tab_images[game->map[(int)object->map_pos.y][(int)object->map_pos.x].sprite[e_object_image].index];
 	x_ratio = image->size.x / width;
 	y_ratio = image->size.y / height;
-	// if (x_pos < 0)
-	// {
-	// 	width += x_pos;
-	// 	x_pos = 0;
-	// }
-	pos.x = x_pos;
-	pos.y = WIN_Y / 2. - height / 2.;
+	y_pos = WIN_Y / 2. - height / 2.;
 	y = 0;
-	y_img = 0;
-	while (y < height)
+	x = x_pos;
+	while (x < width + x_pos)
 	{
-		if (pos.y + y >= WIN_Y)
-			return ;
-		if (pos.y + y < 0)
+		if (x >= WIN_X)
+			break ;
+		if (x < 0 || game->dist_tab[x] < object->dist)
 		{
-			y++;
-			y_img = y * (image->size.y / height);
+			// printf("%f < %f\n", game->dist_tab[x - x_pos], object->dist);
+			x++;
 			continue ;
 		}
-		x = x_pos;
-		x_img = 0;
-		while (x < width + x_pos)
+		x_img = (x - x_pos) * x_ratio;
+		y = 0;
+		while (y < height)
 		{
-			if (x >= WIN_X)
-				break ;
-			if (x < 0)
+			if (y_pos + y < 0)
 			{
-				x++;
-				x_img = (x - x_pos) * x_ratio;
+				y++;
 				continue ;
 			}
-			my_mlx_pixel_put(game->image->addr, game->image->size_line, (t_vector2){x, pos.y + y},
+			if (y_pos + y >= WIN_Y)
+				break ;
+			y_img = y * y_ratio;
+			my_mlx_pixel_put(game->image->addr, game->image->size_line, (t_vector2){x, y_pos + y},
 				get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}));
-			x++;
-			x_img = (x - x_pos) * x_ratio;
+			y++;
 		}
-		y++;
-		y_img = y * y_ratio;
+		x++;
 	}
-
 }
 
 
@@ -102,7 +93,6 @@ void	find_object_projection(t_game *game, t_object *object, t_player *player)
 	float		arctan2;
 	float		player_angle;
 	int			x_screen;
-	int			x;
 
 	player_angle = player->angle;
 	relative_pos.x = (object->map_pos.x - player->f_real_pos.x);
@@ -136,28 +126,68 @@ void	find_object_projection(t_game *game, t_object *object, t_player *player)
 	else
 		angle = angle - FOV / 2.;
 
-	object->dist = sqrtf(relative_pos.x * relative_pos.x + relative_pos.y * relative_pos.y)
-		* cos(angle * TO_RADIAN);
 	x_screen = tan(angle * TO_RADIAN) * game->constants[0];
-	draw_object(game, object, x_screen + WIN_X / 2);
+	draw_object(game, object, object->dist * cos(angle * TO_RADIAN), x_screen + WIN_X / 2);
 }
 
+static void	fill_object_perp_dist(t_game *game)
+{
+	int			i;
+	t_fvector2	relative_pos;
+	
+	i = 0;
+	while (i < game->nb_objects)
+	{
+		if (game->object_array[i]->visited)
+		{
+			relative_pos.x = (game->object_array[i]->map_pos.x - game->player->f_real_pos.x);
+			relative_pos.y = (game->object_array[i]->map_pos.y - game->player->f_real_pos.y);
+			game->object_array[i]->dist = sqrtf(relative_pos.x * relative_pos.x + relative_pos.y * relative_pos.y);
+		}
+		else
+			game->object_array[i]->dist = -1;
+		i++;
+	}
+}
+
+static void	sort_objects_distance(t_object **objects, int nb_object)
+{
+	int			i;
+	int			j;
+	t_object	*key;
+
+	i = 1;
+	while (i < nb_object)
+	{
+		j = i - 1;
+		key = objects[i];
+		while (j >= 0 && key->dist > objects[j]->dist && key->dist != -1)
+		{
+			objects[j + 1] = objects[j];
+			j--;
+		}
+		objects[j + 1] = key;
+		i++;
+	}
+}
 
 void	draw_objects(t_game *game)
 {
 	int	i;
 
 	i = 0;
-	while (i < game->nb_objects)
+	if (game->nb_objects != 0)
 	{
-		if (game->object_array[i]->visited)
-			find_object_projection(game, game->object_array[i], game->player);
-		game->object_array[i]->visited = false;
-		i++;
+		fill_object_perp_dist(game);
+		sort_objects_distance(game->object_array, game->nb_objects);
+		while (i < game->nb_objects)
+		{
+			if (game->object_array[i]->visited)
+				find_object_projection(game, game->object_array[i], game->player);
+			game->object_array[i]->visited = false;
+			i++;
+		}
 	}
-
-
-	
 }
 
 

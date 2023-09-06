@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/04 16:16:28 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/06 22:01:02 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	on_update(t_game *game)
 	raycasting(game);
 	zoom_hook_handle(game->minimap, game->delta_time);
 	draw_minimap(game);
-
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
 
 	clock_gettime(CLOCK_REALTIME, &cur_time);
@@ -56,8 +55,6 @@ int main(int argc, char **argv)
 {
 	t_game	game;
 
-	// init_audio(game);
-
 	game = (t_game){0};
 	if (argc != 2)
 		return (printf("Error : Invalid nubmber of arguments\n"), 1);
@@ -65,11 +62,11 @@ int main(int argc, char **argv)
 	if (game.filename == NULL)
 		return (perror("Error"), 1);
 	game.nb_file = 6;
+	game.dist_tab = ft_calloc(WIN_X, sizeof(float));
+	if (game.filename == NULL)
+		return (free(game.filename), perror("Error"), 1);
 	if (!parse_file(argv[1], &game))
 		return (1);
-	// printf_texture(&game);
-	// fflush(stdout);
-	// print_map(&game);
 	if (!check_map(&game))
 		return (1);
 	if (init_mlx(&game) == -1)

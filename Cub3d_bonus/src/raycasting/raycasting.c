@@ -6,25 +6,20 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/02 23:01:54 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/06 21:18:55 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-double	get_dist(t_fvector2 fpos, t_fvector2 wall, double angle)
+double	get_dist(t_fvector2 fpos, t_fvector2 wall)
 {
 	t_fvector2	delta;
 	double		res;
 
 	delta.x = fabs(wall.x - fpos.x);
 	delta.y = fabs(wall.y - fpos.y);
-
-	res = sqrt((delta.x * delta.x + delta.y * delta.y))
-				* cos(angle * TO_RADIAN);
-	if (res == 0)
-		return (0.01);
-	return (res);
+	return (sqrt((delta.x * delta.x + delta.y * delta.y)));
 }
 
 t_vector2	get_sign(double angle)
@@ -65,7 +60,11 @@ void	raycasting(t_game *game)
 			height = 0;
 		else
 		{
-			dist = get_dist(game->player->f_real_pos, ray.hit, angle) ;
+			dist = get_dist(game->player->f_real_pos, ray.hit);
+			game->dist_tab[x + WIN_X / 2] = dist;
+			dist *= cos(angle * TO_RADIAN);
+			if (dist == 0)
+				dist = 0.01;
 			height = 1 / dist * game->constants[0];		//div par 0 if sin == 0
 		}
 		draw_vert(game, x + WIN_X / 2, ray, height);

@@ -29,6 +29,8 @@ FIX :
 - fov too big == deformation
 - increase wall height
 - collision with hit box
+- floor is by default where player spawns
+- open doors and instantly turn around would not open the door for player
 
 Minimap : 
 - if screen is too small, do not draw minimap

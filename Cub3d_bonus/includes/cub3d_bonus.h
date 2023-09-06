@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/04 18:25:08 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/06 21:32:58 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <dirent.h>
 # include <pthread.h>
 # include <signal.h>
+# include <float.h>
 
 # include "minilibx-linux/mlx.h"
 # include "get_next_line.h"
@@ -241,6 +242,7 @@ typedef struct s_game
 	int				nb_objects;
 	t_object		**object_array;
 	t_music			*music_array;
+	float			*dist_tab;
 }	t_game;
 
 // ------ Utils------
@@ -337,7 +339,7 @@ void		step_door_open(t_door *door, long time, t_map *map_cell);
 
 t_ray		get_object_hit(t_launch_ray object, t_game *game, t_fvector2 begin, float angle);
 void		draw_objects(t_game *game);
-double		get_dist(t_fvector2 fpos, t_fvector2 wall, double angle);
+double		get_dist(t_fvector2 fpos, t_fvector2 wall);
 
 long int	time_to_long(struct timespec *time);
 

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/04 16:50:52 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/06 15:26:45 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,6 +229,8 @@ typedef struct s_game
 	void			*mlx_ptr;
 	void			*win;
 	t_image			*tab_images;
+	t_image			*alphabet;
+	t_fvector2		size_letter;
 	int				nb_images;
 	t_texture		*filename;
 	int				nb_file;

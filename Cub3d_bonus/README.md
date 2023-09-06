@@ -33,6 +33,7 @@ FIX :
 
 Minimap : 
 - if screen is too small, do not draw minimap
+- leaks
 
 Door :
 - texture door only print the half two time

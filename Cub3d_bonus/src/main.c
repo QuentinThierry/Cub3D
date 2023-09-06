@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/04 16:54:28 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/06 16:23:08 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int main(int argc, char **argv)
 	mlx_hook(game.win, 6, (1L << 6) | (1L << 2) , mouse_hook, &game);
 	mlx_hook(game.win, 8, (1L << 5), mouse_leave, &game);
 	mlx_loop_hook(game.mlx_ptr, on_update, &game);
+	sleep(1);
 	mlx_loop(game.mlx_ptr);
 	return (0);
 }

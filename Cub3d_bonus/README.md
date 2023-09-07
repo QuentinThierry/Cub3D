@@ -28,10 +28,11 @@ FIX :
 - object parsing
 - fov too big == deformation
 - increase wall height
-- collision with hit box
+<!-- - collision with hit box -->
 - floor is by default where player spawns
 - open doors and instantly turn around would not open the door for player
 - quit if WIN_X or WIN_Y is <= 0
+- file structure for bonus and mandatory
 
 Minimap : 
 - if screen is too small, do not draw minimap

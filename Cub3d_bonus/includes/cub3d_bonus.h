@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/07 16:28:42 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:21:22 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,11 @@
 # define WIDTH_LETTER (1880 / 94.)
 # define HEIGHT_ALPHA 34
 # define GREEN_SCREEN 0x00ff00
+
+
+#define DIST_TO_WALL 1
+
+
 
 extern long tot_fps;
 extern long nb_fps;

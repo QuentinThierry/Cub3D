@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/06 21:32:58 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:50:20 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,6 +299,7 @@ t_ray		get_wall_hit(t_fvector2 fpos, t_map **map, float angle, t_game *game);
 double		get_wall_dist(t_game *game, double angle);
 void		raycasting(t_game *game);
 t_vector2	get_sign(double angle);
+void		draw_objects(t_game *game);
 
 
 enum e_orientation	get_wall_orientation(t_fvector2 player, t_fvector2 wall);

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/06 22:01:02 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:49:00 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	on_update(t_game *game)
 		game->player->angle = game->player->angle - 360;
 	if (game->player->angle + game->player->angle < 0)
 		game->player->angle = game->player->angle + 360;
-	// open_door(game->map_size, game->map, game->delta_time);
 	player_move(game->player, game->delta_time, game->map);
 	raycasting(game);
 	zoom_hook_handle(game->minimap, game->delta_time);
@@ -86,8 +85,6 @@ int main(int argc, char **argv)
 	mlx_hook(game.win, 8, (1L << 5), mouse_leave, &game);
 	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	mlx_loop(game.mlx_ptr);
-
-
 	return (0);
 }
 // void	load_new_sound_in_array(t_music *music_array, const char *audio_file);

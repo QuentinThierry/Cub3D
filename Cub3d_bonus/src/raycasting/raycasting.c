@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/06 21:18:55 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:47:27 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	raycasting(t_game *game)
 	t_ray		ray;
 	t_fvector2	fpos;
 	double		dist; 
+	
 	draw_ceiling(game);
 	fpos = game->player->f_real_pos;
 	x = -WIN_X / 2;

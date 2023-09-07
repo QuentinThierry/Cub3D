@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/07 17:14:41 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/07 18:51:57 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -395,7 +395,7 @@ bool	check_texture(t_texture	*filename, int size)
 	i = 0;
 	while (i < 6)
 	{
-		if (filename[i].filename == NULL && filename[i].nb_file == 0)
+		if (filename[i].filename == NULL && filename[i].nb_file <= 0 && filename[i].nb_animation <= 0)
 			return (false);
 		i++;
 	}

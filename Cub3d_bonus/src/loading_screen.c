@@ -6,42 +6,14 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 19:04:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/06 17:23:10 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/06 17:51:06 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define LOADING_SCREEN "./assets/smiley.xpm"
-#define LOADING_BORDURE "./assets/loading_bordure.xpm"
-#define LOADING_CENTER "./assets/loading_center.xpm"
-#define LOADING_ALPHABET "./assets/ascii.xpm"
-#define WIDTH_ALPHA 1880
-#define WIDTH_LETTER (WIDTH_ALPHA / 94.)
-#define HEIGHT_ALPHA 34
-#define GREEN_SCEEN 0x00ff00
 #include "../includes/cub3d_bonus.h"
 
-// void	*routine(t_game *game)
-// {
-// 	game->win = mlx_new_window(game->mlx_ptr, WIN_X, WIN_Y, "cub3d");
-// 	while (1)
-// 	{
-// 		mlx_put_image_to_window(game->mlx_ptr, game->win, game->image2->img, 0, 0);
-// 		usleep(10000);
-// 	}
-// 	return (NULL);
-// }
-
-// bool	loading_screen(t_game *game)
-// {
-// 	pthread_t	th;
-
-// 	game->image2 = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/cobble.xpm", (t_vector2){250, 250});
-// 	pthread_create(&th, NULL, (void *)routine, game);
-// 	pthread_detach(th);
-// 	return (true);
-// }
-
-void	draw_image_with_transparence(t_image *dest, t_image *src, t_vector2 begin_dest, t_vector2 begin_src, t_vector2 size_src)
+void	draw_image_with_transparence(t_image *dest, t_image *src
+			, t_vector2 begin_dest, t_vector2 begin_src, t_vector2 size_src)
 {
 	int	y;
 	int	x;
@@ -56,7 +28,7 @@ void	draw_image_with_transparence(t_image *dest, t_image *src, t_vector2 begin_d
 		x = 0;
 		while (x < size_src.x * 4)
 		{
-			if (*(int*)(src->addr + start_src + x) != GREEN_SCEEN)
+			if (*(int*)(src->addr + start_src + x) != GREEN_SCREEN)
 				*(int*)(dest->addr + start_dest + x) = *(int*)(src->addr + start_src + x);
 			x+=4;
 		}
@@ -74,8 +46,10 @@ void print_text(t_game *game, char *str, t_image *alpha, t_vector2 start_pos)
 	i = 0;
 	while (str[i])
 	{
-		draw_image_with_transparence(game->image, alpha, (t_vector2){start_pos.x + (int)(game->size_letter.x * i),start_pos.y}
-			, (t_vector2){(int)(game->size_letter.x * (str[i] - '!')), 0},(t_vector2){(int)game->size_letter.x, (int)game->size_letter.y});
+		draw_image_with_transparence(game->image, alpha, (t_vector2){start_pos.x
+			+ (int)(game->size_letter.x * i),start_pos.y}
+			, (t_vector2){(int)(game->size_letter.x * (str[i] - '!')), 0}
+			, (t_vector2){(int)game->size_letter.x, (int)game->size_letter.y});
 		i++;
 	}
 }
@@ -90,7 +64,7 @@ char	*itoa_join(char *str, int nb)
 	power = 100;
 	res = ft_calloc(ft_strlen(str) + 5, sizeof(char));
 	if (res == NULL)
-		return (res);
+		return (NULL);
 	while (str[i])
 	{
 		res[i] = str[i];
@@ -108,7 +82,7 @@ char	*itoa_join(char *str, int nb)
 	return (res);
 }
 
-void	update_loading_screen(t_game *game, t_loading *loading_screen)
+bool	update_loading_screen(t_game *game, t_loading *loading_screen)
 {
 	float	delta;
 	char	*text;
@@ -122,17 +96,21 @@ void	update_loading_screen(t_game *game, t_loading *loading_screen)
 	game->image->addr = ft_memcpy(game->image->addr
 		, loading_screen->background->addr, WIN_X * WIN_Y * 4);
 	draw_image_with_transparence(game->image, loading_screen->bordure
-		, (t_vector2){WIN_X / 3, WIN_Y / 2 - loading_screen->bordure->size.y / 2}, (t_vector2){0}, loading_screen->bordure->size);
+		, (t_vector2){WIN_X / 3, WIN_Y / 2 - loading_screen->bordure->size.y / 2}
+		, (t_vector2){0}, loading_screen->bordure->size);
 	draw_image_with_transparence(game->image, loading_screen->center
-		, (t_vector2){WIN_X / 3, WIN_Y / 2 - loading_screen->center->size.y / 2}, (t_vector2){0}, size_bar);
+		, (t_vector2){WIN_X / 3, WIN_Y / 2 - loading_screen->center->size.y / 2}
+		, (t_vector2){0}, size_bar);
 	text = "Loading...";
-	// printf("pourcentage : %d\n",(int)((float)loading_screen->nb_image_load / game->nb_images * 100));
 	text = itoa_join(text, (int)((float)loading_screen->nb_image_load / game->nb_images * 100));
-	// printf("text : %s\n", text);
-	pos_text = (t_vector2){WIN_X / 2 - (int)(ft_strlen(text) * game->size_letter.x / 2.), WIN_Y / 2 - loading_screen->center->size.y / 2 - game->alphabet->size.y};
+	if (text == NULL)
+		return (false);
+	pos_text = (t_vector2){WIN_X / 2 - (int)(ft_strlen(text) * game->size_letter.x / 2.)
+		, WIN_Y / 2 - loading_screen->center->size.y / 2 - game->alphabet->size.y};
 	print_text(game, text, game->alphabet, pos_text);
 	free(text);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
+	return (true);
 }
 
 bool	loading_screen(t_game *game)
@@ -144,7 +122,7 @@ bool	loading_screen(t_game *game)
 		return (false);
 	loading_screen = game->loading_screen;
 	game->alphabet = btmlx_xpm_file_to_image(game->mlx_ptr
-		, LOADING_ALPHABET, (t_vector2){WIN_X, 20});
+		, LOADING_ALPHABET, (t_vector2){WIN_X, 25});
 	if (game->alphabet == NULL)
 		return (false);
 	game->size_letter = (t_fvector2){game->alphabet->size.x * WIDTH_LETTER / WIDTH_ALPHA, game->alphabet->size.y};

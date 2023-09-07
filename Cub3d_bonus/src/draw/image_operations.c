@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 22:06:01 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/06 17:51:30 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static inline void	draw_image_alpha(t_vector2 dim,
 		while (x < dim.x)
 		{
 			color = *(src_addr + x + y * size_line.y);
-			if (color == TRANSPARENT_PXL)
+			if (color == GREEN_SCREEN)
 			{
 				x++;
 				continue ;

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/04 16:36:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/06 17:41:51 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ bool	load_image(t_game *game, t_image *img, char *filename, t_animation *anim)
 	if (img->addr == NULL)
 		return (false);
 	img->opp /= 8;
-	update_loading_screen(game, game->loading_screen);
+	if (!update_loading_screen(game, game->loading_screen))
+		return (false);
 	if (anim == NULL)
 		return (true);
 	img->time_animation = anim->time_animation;

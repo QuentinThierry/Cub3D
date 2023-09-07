@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/06 17:25:12 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/07 19:32:11 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	ft_close(t_game *game)
 {
 	int	i;
 
-	i = 0;
 	if (game->map != NULL)
 		free_map((void *)game->map, game->map_size);
 	if (game->player != NULL)

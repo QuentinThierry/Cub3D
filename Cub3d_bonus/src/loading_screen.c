@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 19:04:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/06 17:51:06 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/07 18:57:50 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	draw_image_with_transparence(t_image *dest, t_image *src
 		x = 0;
 		while (x < size_src.x * 4)
 		{
-			if (*(int*)(src->addr + start_src + x) != GREEN_SCREEN)
+			if (*(int*)(src->addr + start_src + x) != GREEN_SCREEN
+				&& (start_dest + x) <= WIN_X * WIN_Y * 4)
 				*(int*)(dest->addr + start_dest + x) = *(int*)(src->addr + start_src + x);
 			x+=4;
 		}

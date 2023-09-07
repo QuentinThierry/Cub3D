@@ -30,9 +30,9 @@ FIX :
 <!-- - check texture obligatoire (NO, SO, WE, EA) -->
 <!-- - collision with hit box -->
 <!-- - increase wall height -->
+<!-- - protect text draw outside of the screen -->
+<!-- - texture floor and ceiling beug -->
 - open doors and instantly turn around would not open the door for player
-- protect text draw outside of the screen
-- texture floor and ceiling beug
 
 Minimap : 
 - if screen is too small, do not draw minimap

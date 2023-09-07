@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/07 15:47:27 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/07 19:26:40 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 double	get_dist(t_fvector2 fpos, t_fvector2 wall)
 {
 	t_fvector2	delta;
-	double		res;
 
 	delta.x = fabs(wall.x - fpos.x);
 	delta.y = fabs(wall.y - fpos.y);

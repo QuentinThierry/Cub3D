@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/07 16:10:34 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/07 19:49:34 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	char				*addr;
 
 	size_line = game->image->size_line;
+	if (((int)height & 1) == 1)
+		height++;
 	y = WIN_Y / 2.0 - (int)(height / 2);
 	y1 = WIN_Y / 2.0 + ((int)height - (int)(height / 2));
 	if (height != 0)

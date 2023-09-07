@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   floor.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/07 15:46:56 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/07 19:41:40 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ static inline void	draw_pixel_line(t_game *game, t_fvector2 map_point, t_fvector
 		map_point.y += step_dir.y;
 		i++;
 	}
+	// printf("floor y : %d \n", WIN_Y / 2 + y_screen - 1);
+	// printf("ceiling y : %d \n", WIN_Y / 2 - y_screen);
 }
 
 void	draw_line_ceiling(t_game *game, t_fvector2 xdist_yscreen, t_fvector2 cos_sin, t_fvector2 hit)
@@ -98,7 +100,6 @@ void	draw_ceiling(t_game *game)
 	int			y_screen;
 	float		x_dist;
 
-	x_dist = 0;
 	y_screen = WIN_Y / 2.;
 
 	cos_sin2.x = cos((game->player->angle - 90 - FOV / 2.) * TO_RADIAN);
@@ -110,6 +111,7 @@ void	draw_ceiling(t_game *game)
 		x_dist = (0.5 * (game->constants[0] / y_screen));
 		hit.x = cos_sin1.x * x_dist;
 		hit.y = cos_sin1.y * x_dist;
+		// printf("y_screen : %d\n", y_screen);
 		draw_line_ceiling(game, (t_fvector2){x_dist, y_screen}, cos_sin2, hit);
 		y_screen--;
 	}

@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   object.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:39:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/06 21:24:16 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/07 19:29:35 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
-
-static double	get_dist_real(t_fvector2 fpos, t_fvector2 wall)
-{
-	t_fvector2	delta;
-
-	delta.x = fabs(wall.x - fpos.x);
-	delta.y = fabs(wall.y - fpos.y);
-	return (sqrtf(delta.x * delta.x + delta.y * delta.y));
-}
 
 __attribute__((always_inline))
 static inline unsigned int	get_color_at(char *addr, int size_line, t_vector2 pos)
@@ -53,7 +44,6 @@ void	draw_object(t_game *game, t_object *object, float object_dist, int x_pos)
 	x_ratio = image->size.x / width;
 	y_ratio = image->size.y / height;
 	y_pos = WIN_Y / 2. - height / 2.;
-	y = 0;
 	x = x_pos;
 	while (x < width + x_pos)
 	{

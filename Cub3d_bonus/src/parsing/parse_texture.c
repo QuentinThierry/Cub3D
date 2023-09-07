@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/27 18:21:10 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/07 17:14:41 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,13 +245,17 @@ bool	is_existing(t_game *game, int index, char symbol, enum e_orientation orient
 		{
 			if (game->filename[i].orient == orient)
 				return (true);
-			else if ((orient == e_north || orient == e_east || orient == e_south
-				|| orient == e_west || orient == e_door || orient == e_wall)
-				&& (game->filename[i].orient == e_floor || game->filename[i].orient == e_ceiling))
-				return (true);
-			else if ((orient == e_floor || orient == e_ceiling)
+			else if (orient == e_north || orient == e_east || orient == e_south
+				|| orient == e_west || orient == e_wall)
+			{
+				if (game->filename[i].orient == e_floor || game->filename[i].orient == e_ceiling 
+					|| game->filename[i].orient == e_door || game->filename[i].orient == e_object)
+					return (true);
+					
+			}
+			else if ((orient == e_floor || orient == e_ceiling || orient == e_door || orient == e_object)
 				&& (game->filename[i].orient == e_north || game->filename[i].orient == e_east || game->filename[i].orient == e_south
-				|| game->filename[i].orient == e_west || game->filename[i].orient == e_door || game->filename[i].orient == e_wall))
+				|| game->filename[i].orient == e_west || game->filename[i].orient == e_wall))
 				return (true);
 		}
 		i++;
@@ -384,6 +388,20 @@ static bool	_cmp_texture(char *line, t_game *game, int i, bool *is_end)
 	return (printf("Error : invalid identifier %s\n", line), false);
 }
 
+bool	check_texture(t_texture	*filename, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < 6)
+	{
+		if (filename[i].filename == NULL && filename[i].nb_file == 0)
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 /**
  * @brief Parse the first part of the file that contain the name of the texture
  * 
@@ -423,5 +441,7 @@ bool	parse_texture(int fd, t_game *game, int *nb_line, char **rest)
 			break ;
 	}
 	*rest = line;
+	if (!check_texture(game->filename, game->nb_file))
+		return (printf("Error : need the mandatory texture\n"),false);
 	return (true);
 }

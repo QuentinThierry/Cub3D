@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/07 17:21:22 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:56:08 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@
 
 # include <X11/X.h>
 
-# define WIN_X 1280 //1920 - 918
-# define WIN_Y 720 //1080 - 468
+# define WIN_X 1280 //1920 - 918 - 1280
+# define WIN_Y 720 //1080 - 468 - 720
+# define CHUNK_SIZE 100
 # define FOV 80		//
 # define SPEED 100
 # define SPRINT_BOOST 100
@@ -63,15 +64,7 @@
 # define TAN_HALF_FOV 1
 # define COS_HALF_FOV 2
 
-// t_type for arg
-# define NONE 0b0
-# define WALL 0b1
-# define DOOR_CLOSE 0b10
-# define DOOR_OPEN 0b100
-# define OBJECT 0b1000
-
 # define NB_MAX_SOUNDS 16
-
 
 // info for loading screen
 # define LOADING_SCREEN "./assets/smiley.xpm"
@@ -84,9 +77,15 @@
 # define GREEN_SCREEN 0x00ff00
 
 
-#define DIST_TO_WALL 1
+#define DIST_TO_WALL 0.1
 
 
+// t_type for arg
+# define NONE 0b0
+# define WALL 0b1
+# define DOOR_CLOSE 0b10
+# define DOOR_OPEN 0b100
+# define OBJECT 0b1000
 
 extern long tot_fps;
 extern long nb_fps;

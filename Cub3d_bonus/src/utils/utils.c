@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/27 20:57:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/07 16:49:19 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,11 @@ t_vector2	get_dimension_maps(int fd, char *line, bool *error)
  */
 bool	is_wall(char symbol, t_texture *tab, int len, bool *error)
 {
-	int i;
+	int		i;
+	bool	find_floor_ceiling;
 
 	i = 0;
+	find_floor_ceiling = false;
 	*error = false;
 	while (i < len)
 	{
@@ -119,10 +121,12 @@ bool	is_wall(char symbol, t_texture *tab, int len, bool *error)
 					|| tab[i].orient == e_object)
 				return (true);
 			else
-				return (false);
+				find_floor_ceiling = true;
 		}
 		i++;
 	}
+	if (find_floor_ceiling)
+		return (false);
 	return (*error = true, false);
 }
 

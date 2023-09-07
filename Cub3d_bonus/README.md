@@ -1,19 +1,19 @@
 ADD : 
-- [ ] texture for the floor and ceiling
+- [X] texture for the floor and ceiling
 - [X] random for similar sprites for walls
 - [X] organise texture
-- [ ] objects not walls
+- [X] objects
 - [ ] sounds (ambiance music)
-- [ ] objects
 - [ ] exit + enigmes
 - [ ] random events (lightning, planks cracks, little girl)
 - [ ] menu settings
+- [ ] max view distance
 
 Obligation :
 - [x] minimap
 - [x] animation (windows + lightning)
 - [x] collision with wall
-- [ ] door close and open
+- [x] door close and open
 - [x] mouv with mouse
 
 FIX :
@@ -24,14 +24,15 @@ FIX :
 <!-- - Segfault when no default sprites for symbol in map -->
 <!-- - makefile -->
 <!-- - security on exiting the map is broken -->
-- line with only white space return error ?
-- object parsing
-- fov too big == deformation
-- increase wall height
+<!-- - object parsing -->
+<!-- - floor is by default where player spawns -->
+<!-- - quit if WIN_X or WIN_Y is <= 0 -->
+<!-- - check texture obligatoire (NO, SO, WE, EA) -->
 <!-- - collision with hit box -->
-- floor is by default where player spawns
+<!-- - increase wall height -->
 - open doors and instantly turn around would not open the door for player
-- quit if WIN_X or WIN_Y is <= 0
+- protect text draw outside of the screen
+- texture floor and ceiling beug
 - file structure for bonus and mandatory
 
 Minimap : 
@@ -39,7 +40,7 @@ Minimap :
 - leaks
 
 Door :
-- texture door only print the half two time
+<!-- - texture door only print the half two time -->
 <!-- - opti door open -->
 <!-- - door parsing -->
 <!-- - doors on side of map -->

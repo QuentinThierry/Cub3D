@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/07 16:22:54 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,13 +275,18 @@ float	get_texture_door(t_ray ray)
 {
 	t_fvector2	delta;
 	double		dist;
+	bool		left_door;
 
+	left_door = false;
 	if (ray.orient == e_south || ray.orient == e_north)
 	{
 		if (ray.hit.x - (int)ray.hit.x < 0.5)
 			delta.x = ray.hit.x - (int)ray.hit.x;
 		else
+		{
 			delta.x = ((int)ray.hit.x + 1) - ray.hit.x;
+			left_door = true;
+		}
 		delta.y = fabs(ray.hit.y - ((int)ray.hit.y + 0.5)); 
 	}
 	else
@@ -290,11 +295,14 @@ float	get_texture_door(t_ray ray)
 		if (ray.hit.y - (int)ray.hit.y < 0.5)
 			delta.y = ray.hit.y - (int)ray.hit.y;
 		else
+		{
+			left_door = true;
 			delta.y = ((int)ray.hit.y + 1) - ray.hit.y;
+		}
 	}
 	dist = sqrt((delta.x * delta.x + delta.y * delta.y));
-	// printf("door : %f	%f\n", ray.hit.x, ray.hit.y);
-	// printf("orient : %d	dist : %f	delta : %f	%f\n",ray.orient, dist, delta.x, delta.y);
+	if (left_door)
+		dist = 1 - dist;
 	return (dist);
 }
 

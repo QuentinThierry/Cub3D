@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/07 17:04:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/07 17:14:41 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -388,6 +388,20 @@ static bool	_cmp_texture(char *line, t_game *game, int i, bool *is_end)
 	return (printf("Error : invalid identifier %s\n", line), false);
 }
 
+bool	check_texture(t_texture	*filename, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < 6)
+	{
+		if (filename[i].filename == NULL && filename[i].nb_file == 0)
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 /**
  * @brief Parse the first part of the file that contain the name of the texture
  * 
@@ -427,5 +441,7 @@ bool	parse_texture(int fd, t_game *game, int *nb_line, char **rest)
 			break ;
 	}
 	*rest = line;
+	if (!check_texture(game->filename, game->nb_file))
+		return (printf("Error : need the mandatory texture\n"),false);
 	return (true);
 }

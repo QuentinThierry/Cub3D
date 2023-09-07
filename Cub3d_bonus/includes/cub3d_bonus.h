@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/07 15:57:43 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:28:42 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@
 
 # define WIN_X 1280 //1920 - 918
 # define WIN_Y 720 //1080 - 468
-# define CHUNK_SIZE 100
 # define FOV 80		//
 # define SPEED 100
 # define SPRINT_BOOST 100
@@ -139,8 +138,8 @@ typedef struct s_object
 
 typedef	struct s_player
 {
-	t_vector2	pos;
-	t_fvector2 	f_pos;
+	// t_vector2	pos;
+	// t_fvector2 	f_pos;
 	t_fvector2 	f_real_pos;
 	t_vector2 	mouse_pos;
 	double		angle;

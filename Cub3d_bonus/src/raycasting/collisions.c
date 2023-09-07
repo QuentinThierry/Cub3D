@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   collisions.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 01:05:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/07 16:26:45 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,7 @@ t_fvector2	get_collision(t_fvector2 fpos, t_map **map, t_fvector2 new_pos);
 
 void	check_colliding(t_player *player, t_fvector2 new_pos, t_map **map)
 {
-	new_pos.x /= CHUNK_SIZE;
-	new_pos.y /= CHUNK_SIZE;
 	player->f_real_pos = get_collision(player->f_real_pos, map, new_pos);
-	
-	player->f_pos.x = player->f_real_pos.x * CHUNK_SIZE;
-	player->f_pos.y = player->f_real_pos.y * CHUNK_SIZE;
-	player->pos.x = (int)player->f_pos.x;
-	player->pos.y = (int)player->f_pos.y;
 }
 
 static t_fvector2	slide_wall_x(t_fvector2 fpos, t_map **map, t_fvector2 dest)

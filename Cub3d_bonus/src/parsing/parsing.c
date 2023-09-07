@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/02 23:14:37 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:27:16 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,10 +121,6 @@ bool	find_player(t_game *game)
 				if (is_player)
 					return (printf("Error : Too much players\n"), false);
 				is_player = true;
-				player->pos.x = index.x * CHUNK_SIZE + CHUNK_SIZE / 2.0;
-				player->pos.y = index.y * CHUNK_SIZE + CHUNK_SIZE / 2.0;
-				player->f_pos.x = index.x * CHUNK_SIZE + CHUNK_SIZE / 2.0;
-				player->f_pos.y = index.y * CHUNK_SIZE + CHUNK_SIZE / 2.0;
 				player->f_real_pos.x = index.x + 1 / 2.0;
 				player->f_real_pos.y = index.y + 1 / 2.0;
 				if (game->map[index.y][index.x].symbol == 'N')

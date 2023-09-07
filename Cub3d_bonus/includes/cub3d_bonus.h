@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/07 15:50:20 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:57:43 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,48 +37,52 @@
 
 # define WIN_X 1280 //1920 - 918
 # define WIN_Y 720 //1080 - 468
-# define CHUNK_SIZE 50
-# define FOV 80
-# define MOUV 1
+# define CHUNK_SIZE 100
+# define FOV 80		//
 # define SPEED 100
 # define SPRINT_BOOST 100
-# define ROTATION_KEYBOARD 125
-# define ROTATION_MOUSE 20
+# define ROTATION_KEYBOARD 125	//
+# define ROTATION_MOUSE 20		// + keyboard binds + play + quit + activer sous-titre 
 # define SPEEP_DOOR_OPENING 100
-# define MAX_VOLUME 1.0
-# define TO_RADIAN .0174532
-# define TRANSPARENT_PXL 0x00FF00
-
-#define DARK_CONSTANT 5000
-// between 0 and 255
-#define DARK_MAXIMUN 250
+# define TO_RADIAN .01745329251994
 
 // MINIMAP
-#define MMAP_CHUNK 20
-#define ZOOM_SPEED 10
-#define ZOOM_OFFSET 20
-#define MAX_ZOOM 20
-#define MIN_ZOOM -10
+# define PATH_MMAP_PLAYER "../assets/minimap_player.xpm"
+# define MMAP_CHUNK 20
+# define ZOOM_SPEED 10
+# define ZOOM_OFFSET 20
+# define MAX_ZOOM 20
+# define MIN_ZOOM -10
 // Represents the minimap padding equals to a percentage of the total window
-#define MINIMAP_PAD 0.05
+# define MINIMAP_PAD 0.05
 
 // Represents the minimap size equals to a percentage of the total window
-#define MINIMAP_SIZE 0.25
+# define MINIMAP_SIZE 0.25
 
-#define PLANE_DIST 0
-#define TAN_HALF_FOV 1
-#define COS_HALF_FOV 2
+// access tab
+# define PLANE_DIST 0
+# define TAN_HALF_FOV 1
+# define COS_HALF_FOV 2
 
 // t_type for arg
-#define NONE 0b0
-#define WALL 0b1
-#define DOOR_CLOSE 0b10
-#define DOOR_OPEN 0b100
-#define OBJECT 0b1000
+# define NONE 0b0
+# define WALL 0b1
+# define DOOR_CLOSE 0b10
+# define DOOR_OPEN 0b100
+# define OBJECT 0b1000
 
-#define NB_MAX_SOUNDS 16
+# define NB_MAX_SOUNDS 16
 
-#define PATH_MMAP_PLAYER "../assets/minimap_player.xpm"
+
+// info for loading screen
+# define LOADING_SCREEN "./assets/smiley.xpm"
+# define LOADING_BORDURE "./assets/loading_bordure.xpm"
+# define LOADING_CENTER "./assets/loading_center.xpm"
+# define LOADING_ALPHABET "./assets/ascii.xpm"
+# define WIDTH_ALPHA 1880
+# define WIDTH_LETTER (1880 / 94.)
+# define HEIGHT_ALPHA 34
+# define GREEN_SCREEN 0x00ff00
 
 extern long tot_fps;
 extern long nb_fps;
@@ -223,12 +227,22 @@ typedef struct s_minimap
 	float		zoom;
 }	t_minimap;
 
+typedef struct s_loading
+{
+	t_image		*background;
+	t_image		*bordure;
+	t_image		*center;
+	int			nb_image_load;
+}	t_loading;
+
 typedef struct s_game
 {
 	t_image			*image;
 	void			*mlx_ptr;
 	void			*win;
 	t_image			*tab_images;
+	t_image			*alphabet;
+	t_fvector2		size_letter;
 	int				nb_images;
 	t_texture		*filename;
 	int				nb_file;
@@ -243,6 +257,7 @@ typedef struct s_game
 	t_object		**object_array;
 	t_music			*music_array;
 	float			*dist_tab;
+	t_loading		*loading_screen;
 }	t_game;
 
 // ------ Utils------
@@ -255,6 +270,7 @@ void		*ft_realloc(void *ptr, size_t prev_size, size_t new_size);
 void		*ft_memcpy(void *dest, const void *src, size_t n);
 void		free_filename(t_game *game);
 void		free_tab(void **str, int size);
+void		free_map(t_map **map, t_vector2 size);
 void		free_str(char **str);
 char		*ft_strjoin(char *str, char *str1);
 char		*ft_strjoin_slash(char *str, char *str1, bool add_slash);
@@ -347,5 +363,8 @@ long int	time_to_long(struct timespec *time);
 // floor.c
 void		draw_ceiling(t_game *game);
 
+bool		loading_screen(t_game *game);
+bool		update_loading_screen(t_game *game, t_loading *loading_screen);
+void		free_loading_screen(t_game *game);
 
 #endif

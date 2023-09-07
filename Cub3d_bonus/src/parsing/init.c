@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/06 17:41:51 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	init_mlx(t_game *game)
 {
-		game->image = ft_calloc(1, sizeof(t_image));
+	game->image = ft_calloc(1, sizeof(t_image));
 	if (game->image == NULL)
 		return (-1);
 	game->mlx_ptr = mlx_init();
@@ -45,10 +45,10 @@ void	init_mouse(t_game *game)
 	mlx_mouse_hide(game->mlx_ptr, game->win);
 }
 
-bool	load_image(void *mlx_ptr, t_image *img, char *filename, t_animation *anim)
+bool	load_image(t_game *game, t_image *img, char *filename, t_animation *anim)
 {
 	// printf("name : %s\n", filename);
-	img->img = mlx_xpm_file_to_image(mlx_ptr, filename,
+	img->img = mlx_xpm_file_to_image(game->mlx_ptr, filename,
 			&(img->size.x), &(img->size.y));
 	if (img->img == NULL)
 		return (false);
@@ -57,6 +57,8 @@ bool	load_image(void *mlx_ptr, t_image *img, char *filename, t_animation *anim)
 	if (img->addr == NULL)
 		return (false);
 	img->opp /= 8;
+	if (!update_loading_screen(game, game->loading_screen))
+		return (false);
 	if (anim == NULL)
 		return (true);
 	img->time_animation = anim->time_animation;
@@ -84,7 +86,7 @@ bool	load_image_tab(t_game *game)
 	{
 		if (game->filename[i].filename != NULL)
 		{
-			if (!load_image(game->mlx_ptr, &(tab_image[index]), game->filename[i].filename, NULL))
+			if (!load_image(game, &(tab_image[index]), game->filename[i].filename, NULL))
 				return (false);
 			index++;
 		}
@@ -93,7 +95,7 @@ bool	load_image_tab(t_game *game)
 			j = 0;
 			while (j < game->filename[i].nb_file)
 			{
-				if (!load_image(game->mlx_ptr, &(tab_image[index]), game->filename[i].filename_d[j], NULL))
+				if (!load_image(game, &(tab_image[index]), game->filename[i].filename_d[j], NULL))
 					return (false);
 				j++;
 				index++;
@@ -106,7 +108,7 @@ bool	load_image_tab(t_game *game)
 					return (false);
 				while (h < game->filename[i].animation[j].nb_sprite)
 				{
-					if (!load_image(game->mlx_ptr, &(tab_image[index]), game->filename[i].animation[j].filename[h], &(game->filename[i].animation[j])))
+					if (!load_image(game, &(tab_image[index]), game->filename[i].animation[j].filename[h], &(game->filename[i].animation[j])))
 						return (false);
 					index++;
 					h++;

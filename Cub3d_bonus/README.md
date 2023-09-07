@@ -31,12 +31,14 @@ FIX :
 - collision with hit box
 - floor is by default where player spawns
 - open doors and instantly turn around would not open the door for player
+- quit if WIN_X or WIN_Y is <= 0
 
 Minimap : 
 - if screen is too small, do not draw minimap
+- leaks
 
 Door :
-<!-- - texture door -->
+- texture door only print the half two time
 <!-- - opti door open -->
 <!-- - door parsing -->
 <!-- - doors on side of map -->

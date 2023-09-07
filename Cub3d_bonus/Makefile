@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/09/07 15:51:26 by qthierry         ###   ########.fr        #
+#    Updated: 2023/09/07 15:56:00 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -102,6 +102,7 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			$(addprefix $(DRAW), $(SRC_DRAW)) \
 			$(addprefix $(HOOKS), $(SRC_HOOKS)) \
 			print.c \
+			loading_screen.c \
 			main.c
 
 #			$(addprefix $(SOUND), $(SRC_SOUND)) \

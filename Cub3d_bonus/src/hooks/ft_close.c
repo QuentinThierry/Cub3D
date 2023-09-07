@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/27 17:27:37 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/06 17:25:12 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_close(t_game *game)
 
 	i = 0;
 	if (game->map != NULL)
-		free_tab((void *)game->map, game->map_size.y);
+		free_map((void *)game->map, game->map_size);
 	if (game->player != NULL)
 		free(game->player);
 	if (game->filename != NULL)
@@ -38,6 +38,12 @@ int	ft_close(t_game *game)
 		{
 			mlx_destroy_image(game->mlx_ptr, game->image->img);
 			free(game->image);
+		}
+		if (game->alphabet != NULL)
+		{
+			if (game->alphabet->img != NULL)	
+				mlx_destroy_image(game->mlx_ptr, game->alphabet->img);
+			free(game->alphabet);
 		}
 		if (game->win != NULL)
 			mlx_destroy_window(game->mlx_ptr, game->win);

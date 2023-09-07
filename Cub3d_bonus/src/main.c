@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/07 15:55:49 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:38:33 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int main(int argc, char **argv)
 	game = (t_game){0};
 	if (argc != 2)
 		return (printf("Error : Invalid nubmber of arguments\n"), 1);
+	if (WIN_X < 100 || WIN_Y < 100)
+		return (printf("Error : Invalid Window size\n"), 1);
 	game.filename = ft_calloc(6, sizeof(t_texture));
 	if (game.filename == NULL)
 		return (perror("Error"), 1);

@@ -25,14 +25,14 @@ FIX :
 <!-- - makefile -->
 <!-- - security on exiting the map is broken -->
 <!-- - object parsing -->
-- check texture obligatoire (NO, SO, WE, EA)
-- line with only white space return error ?
-- increase wall height
-- collision with hit box
-- floor is by default where player spawns
+<!-- - floor is by default where player spawns -->
+<!-- - quit if WIN_X or WIN_Y is <= 0 -->
+<!-- - check texture obligatoire (NO, SO, WE, EA) -->
+<!-- - collision with hit box -->
+<!-- - increase wall height -->
 - open doors and instantly turn around would not open the door for player
-- quit if WIN_X or WIN_Y is <= 0
 - protect text draw outside of the screen
+- texture floor and ceiling beug
 
 Minimap : 
 - if screen is too small, do not draw minimap

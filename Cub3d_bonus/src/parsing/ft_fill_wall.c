@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_fill_wall.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/06 21:33:29 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:03:54 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,10 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 		if (is_wall(line[i], game->filename, game->nb_file, &error))
 		{
 			map[i].type = WALL;
-			map[i].sprite[e_north] = fill_texture(game->filename, game->nb_file, line[i], e_north);
-			map[i].sprite[e_east] = fill_texture(game->filename, game->nb_file, line[i], e_east);
-			map[i].sprite[e_south] = fill_texture(game->filename, game->nb_file, line[i], e_south);
-			map[i].sprite[e_west] = fill_texture(game->filename, game->nb_file, line[i], e_west);
+			map[i].sprite[e_north] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_north);
+			map[i].sprite[e_east] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_east);
+			map[i].sprite[e_south] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_south);
+			map[i].sprite[e_west] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_west);
 			map[i].sprite[e_floor].index = -1;
 			map[i].sprite[e_ceiling].index = -1;
 			if (is_door(line[i], game->filename, game->nb_file))
@@ -91,16 +91,16 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 				map[i].arg = ft_calloc(1, sizeof(t_door));
 				if (map[i].arg == NULL)
 					return (perror("Error"), false);
-				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, '0', e_floor);
-				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, '0', e_ceiling);
+				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_floor);
+				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_ceiling);
 			}
 			else if (is_object(line[i], game->filename, game->nb_file))
 			{
 				game->nb_objects++;
 				map[i].type |= OBJECT;
-				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, '0', e_floor);
-				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, '0', e_ceiling);
-				map[i].sprite[e_object_image] = fill_texture(game->filename, game->nb_file, line[i], e_object);
+				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_floor);
+				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_ceiling);
+				map[i].sprite[e_object_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_object);
 				map[i].arg = ft_calloc(1, sizeof(t_object));
 				if (map[i].arg == NULL)
 					return (perror("Error"), false);
@@ -115,8 +115,8 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			map[i].sprite[e_east].index = -1;
 			map[i].sprite[e_south].index = -1;
 			map[i].sprite[e_west].index = -1;
-			map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, line[i], e_floor);
-			map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, line[i], e_ceiling);
+			map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_floor);
+			map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_ceiling);
 		}
 		i++;
 	}

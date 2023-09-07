@@ -25,6 +25,7 @@ FIX :
 <!-- - makefile -->
 <!-- - security on exiting the map is broken -->
 <!-- - object parsing -->
+- check texture obligatoire (NO, SO, WE, EA)
 - line with only white space return error ?
 - increase wall height
 - collision with hit box

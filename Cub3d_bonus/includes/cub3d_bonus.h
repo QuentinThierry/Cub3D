@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/07 17:56:08 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/07 20:21:11 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 
 // MINIMAP
 # define PATH_MMAP_PLAYER "../assets/minimap_player.xpm"
+# define MINIMAP_PLAYER_SIZE 12
 # define MMAP_CHUNK 20
 # define ZOOM_SPEED 10
 # define ZOOM_OFFSET 20
@@ -77,7 +78,7 @@
 # define GREEN_SCREEN 0x00ff00
 
 
-#define DIST_TO_WALL 0.1
+#define DIST_TO_WALL 0.0999
 
 
 // t_type for arg

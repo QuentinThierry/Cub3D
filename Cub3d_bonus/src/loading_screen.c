@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loading_screen.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 19:04:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/06 17:51:06 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/07 20:24:34 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ bool	update_loading_screen(t_game *game, t_loading *loading_screen)
 bool	loading_screen(t_game *game)
 {
 	t_loading *loading_screen;
+	t_vector2	pos_text;
 	
 	game->loading_screen = ft_calloc(1, sizeof(t_loading));
 	if (game->loading_screen == NULL)
@@ -143,6 +144,9 @@ bool	loading_screen(t_game *game)
 	draw_image_with_transparence(game->image, loading_screen->bordure
 		, (t_vector2){WIN_X / 3, WIN_Y / 2 - loading_screen->bordure->size.y / 2}
 		, (t_vector2){0}, loading_screen->bordure->size);
+	pos_text = (t_vector2){WIN_X / 2 - (int)(ft_strlen("Loading...0%") * game->size_letter.x / 2.)
+		, WIN_Y / 2 - loading_screen->center->size.y / 2 - game->alphabet->size.y};
+	print_text(game, "Loading...0%", game->alphabet, pos_text);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
 	return (true);
 }

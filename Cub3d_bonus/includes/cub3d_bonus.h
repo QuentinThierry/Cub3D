@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/08 17:30:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 19:09:38 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,8 @@ enum e_orientation
 	e_ceiling,
 	e_wall,
 	e_door,
-	e_object,
+	e_object_wall,
+	e_object_entity,
 	e_object_image = e_north
 };
 

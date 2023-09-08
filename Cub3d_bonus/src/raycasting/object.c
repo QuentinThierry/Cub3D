@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:39:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/08 16:43:48 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 18:39:32 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,9 @@ void	draw_object_projection(t_game *game, t_object *object, float object_dist, i
 			if (y_pos + y >= WIN_Y)
 				break ;
 			y_img = y * y_ratio;
-			my_mlx_pixel_put(game->image->addr, game->image->size_line, (t_vector2){x, y_pos + y},
-				get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}));
+			if (get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}) !=  GREEN_SCREEN)
+				my_mlx_pixel_put(game->image->addr, game->image->size_line, (t_vector2){x, y_pos + y},
+					get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}));
 			y++;
 		}
 		x++;

@@ -35,7 +35,7 @@ FIX :
 - open doors and instantly turn around would not open the door for player
 
 Minimap : 
-- if screen is too small, do not draw minimap
+<!-- - if screen is too small, do not draw minimap -->
 - leaks
 
 Door :

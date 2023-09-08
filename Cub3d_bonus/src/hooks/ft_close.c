@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/07 19:32:11 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/07 20:01:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ int	ft_close(t_game *game)
 			mlx_destroy_image(game->mlx_ptr, game->image->img);
 			free(game->image);
 		}
-		if (game->alphabet != NULL)
+		if (game->font != NULL)
 		{
-			if (game->alphabet->img != NULL)	
-				mlx_destroy_image(game->mlx_ptr, game->alphabet->img);
-			free(game->alphabet);
+			if (game->font->img != NULL)	
+				mlx_destroy_image(game->mlx_ptr, game->font->img);
+			free(game->font);
 		}
 		if (game->win != NULL)
 			mlx_destroy_window(game->mlx_ptr, game->win);

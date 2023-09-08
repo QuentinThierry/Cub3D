@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/07 19:09:35 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/07 20:01:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@
 
 # include <X11/X.h>
 
-# define WIN_X 1280 //1920 - 918 - 1280
-# define WIN_Y 720 //1080 - 468 - 720
+# define WIN_X 1920 //1920 - 918 - 1280
+# define WIN_Y 1080 //1080 - 468 - 720
 # define CHUNK_SIZE 100
 # define FOV 80		//
 # define SPEED 100
@@ -181,7 +181,6 @@ typedef struct s_door
 {
 	float		door_percent;
 	int			is_opening_door;
-	int			sign;
 	long int	time;
 }	t_door;
 
@@ -240,7 +239,7 @@ typedef struct s_game
 	void			*mlx_ptr;
 	void			*win;
 	t_image			*tab_images;
-	t_image			*alphabet;
+	t_image			*font;
 	t_fvector2		size_letter;
 	int				nb_images;
 	t_texture		*filename;

@@ -6,14 +6,23 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 19:04:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/07 18:57:50 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 15:21:21 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-void	draw_image_with_transparence(t_image *dest, t_image *src
-			, t_vector2 begin_dest, t_vector2 begin_src, t_vector2 size_src)
+/**
+ * @brief 
+ * ! NO protection if draw outside of the window
+ * 
+ * @param dest_addr 
+ * @param src 
+ * @param begin_src 
+ * @param size_src 
+ */
+void	draw_image_with_transparence(char *dest_addr, t_image *src
+			, t_vector2 begin_src, t_vector2 size_src)
 {
 	int	y;
 	int	x;
@@ -21,16 +30,15 @@ void	draw_image_with_transparence(t_image *dest, t_image *src
 	int	start_src;
 	
 	y = 0;
-	start_dest = begin_dest.y * dest->size_line + begin_dest.x * 4;
 	start_src = begin_src.y * src->size_line + begin_src.x * 4;
+	start_dest = 0;
 	while (y < size_src.y)
 	{
 		x = 0;
 		while (x < size_src.x * 4)
 		{
-			if (*(int*)(src->addr + start_src + x) != GREEN_SCREEN
-				&& (start_dest + x) <= WIN_X * WIN_Y * 4)
-				*(int*)(dest->addr + start_dest + x) = *(int*)(src->addr + start_src + x);
+			if (*(int*)(src->addr + start_src + x) != GREEN_SCREEN)
+				*(int*)(dest_addr + start_dest + x) = *(int*)(src->addr + start_src + x);
 			x+=4;
 		}
 		start_dest += WIN_X * 4;
@@ -43,12 +51,11 @@ void print_text(t_game *game, char *str, t_image *alpha, t_vector2 start_pos)
 {
 	int	i;
 
-	
 	i = 0;
 	while (str[i])
 	{
-		draw_image_with_transparence(game->image, alpha, (t_vector2){start_pos.x
-			+ (int)(game->size_letter.x * i),start_pos.y}
+		draw_image_with_transparence(game->image->addr + (start_pos.y * game->image->size_line + (start_pos.x
+			+ (int)(game->size_letter.x * i)) * 4) , alpha
 			, (t_vector2){(int)(game->size_letter.x * (str[i] - '!')), 0}
 			, (t_vector2){(int)game->size_letter.x, (int)game->size_letter.y});
 		i++;
@@ -96,19 +103,19 @@ bool	update_loading_screen(t_game *game, t_loading *loading_screen)
 	size_bar.y = loading_screen->center->size.y;
 	game->image->addr = ft_memcpy(game->image->addr
 		, loading_screen->background->addr, WIN_X * WIN_Y * 4);
-	draw_image_with_transparence(game->image, loading_screen->bordure
-		, (t_vector2){WIN_X / 3, WIN_Y / 2 - loading_screen->bordure->size.y / 2}
-		, (t_vector2){0}, loading_screen->bordure->size);
-	draw_image_with_transparence(game->image, loading_screen->center
-		, (t_vector2){WIN_X / 3, WIN_Y / 2 - loading_screen->center->size.y / 2}
-		, (t_vector2){0}, size_bar);
+	draw_image_with_transparence(game->image->addr 
+		+ ((WIN_Y / 2 - loading_screen->bordure->size.y / 2) * game->image->size_line + (WIN_X / 3) * 4)
+		, loading_screen->bordure, (t_vector2){0}, loading_screen->bordure->size);
+	draw_image_with_transparence(game->image->addr 
+		+ ((WIN_Y / 2 - loading_screen->center->size.y / 2) * game->image->size_line + (WIN_X / 3) * 4)
+		, loading_screen->center, (t_vector2){0}, size_bar);
 	text = "Loading...";
 	text = itoa_join(text, (int)((float)loading_screen->nb_image_load / game->nb_images * 100));
 	if (text == NULL)
 		return (false);
 	pos_text = (t_vector2){WIN_X / 2 - (int)(ft_strlen(text) * game->size_letter.x / 2.)
-		, WIN_Y / 2 - loading_screen->center->size.y / 2 - game->alphabet->size.y};
-	print_text(game, text, game->alphabet, pos_text);
+		, WIN_Y / 2 - loading_screen->center->size.y / 2 - game->font->size.y};
+	print_text(game, text, game->font, pos_text);
 	free(text);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
 	return (true);
@@ -122,11 +129,11 @@ bool	loading_screen(t_game *game)
 	if (game->loading_screen == NULL)
 		return (false);
 	loading_screen = game->loading_screen;
-	game->alphabet = btmlx_xpm_file_to_image(game->mlx_ptr
-		, LOADING_ALPHABET, (t_vector2){WIN_X, 25});
-	if (game->alphabet == NULL)
+	game->font = btmlx_xpm_file_to_image(game->mlx_ptr
+		, LOADING_ALPHABET, (t_vector2){WIN_X, WIN_Y / 16});
+	if (game->font == NULL)
 		return (false);
-	game->size_letter = (t_fvector2){game->alphabet->size.x * WIDTH_LETTER / WIDTH_ALPHA, game->alphabet->size.y};
+	game->size_letter = (t_fvector2){game->font->size.x * WIDTH_LETTER / WIDTH_ALPHA, game->font->size.y};
 	loading_screen->background = btmlx_xpm_file_to_image(game->mlx_ptr
 		, LOADING_SCREEN, (t_vector2){WIN_X, WIN_Y});
 	if (loading_screen->background == NULL)
@@ -141,9 +148,9 @@ bool	loading_screen(t_game *game)
 		return (false);
 	game->image->addr = ft_memcpy(game->image->addr
 		, loading_screen->background->addr, WIN_X * WIN_Y * 4);
-	draw_image_with_transparence(game->image, loading_screen->bordure
-		, (t_vector2){WIN_X / 3, WIN_Y / 2 - loading_screen->bordure->size.y / 2}
-		, (t_vector2){0}, loading_screen->bordure->size);
+	draw_image_with_transparence(game->image->addr 
+		+ ((WIN_Y / 2 - loading_screen->bordure->size.y / 2) * game->image->size_line + (WIN_X / 3) * 4)
+		, loading_screen->bordure, (t_vector2){0}, loading_screen->bordure->size);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
 	return (true);
 }

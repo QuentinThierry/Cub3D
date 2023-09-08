@@ -6,25 +6,34 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/08 15:41:25 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 17:26:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-bool fill_object_array(t_game *game)
+bool fill_object_and_doors(t_game *game)
 {
 	int	x;
 	int	y;
-	int	i;
+	int	cpt_objects;
+	int	cpt_doors;
 
 	y = 0;
-	i = 0;
-	if (game->nb_objects == 0)
-		return (true);
-	game->object_array = ft_calloc(game->nb_objects, sizeof(t_object *));
-	if (!game->object_array)
-		return (false);
+	if (game->nb_objects != 0)
+	{
+		game->object_array = ft_calloc(game->nb_objects, sizeof(t_object *));
+		if (!game->object_array)
+			return (false);
+	}
+	if (game->nb_doors != 0)
+	{
+		game->door_array = ft_calloc(game->nb_doors, sizeof(t_map *));
+		if (!game->door_array)
+			return (false);
+	}
+	cpt_objects = 0;
+	cpt_doors = 0;
 	while (y < game->map_size.y)
 	{
 		x = 0;
@@ -32,10 +41,15 @@ bool fill_object_array(t_game *game)
 		{
 			if ((game->map[y][x].type & OBJECT) == OBJECT)
 			{
-				game->object_array[i] = game->map[y][x].arg;
-				game->object_array[i]->map_pos =
+				game->object_array[cpt_objects] = game->map[y][x].arg;
+				game->object_array[cpt_objects]->map_pos =
 					(t_fvector2){x + 0.5f, y + 0.5f};
-				i++;
+				cpt_objects++;
+			}
+			else if ((game->map[y][x].type & DOOR_CLOSE) == DOOR_CLOSE)
+			{
+				game->door_array[cpt_doors] = &game->map[y][x];
+				cpt_doors++;
 			}
 			x++;
 		}
@@ -87,6 +101,7 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			map[i].sprite[e_ceiling].index = -1;
 			if (is_door(line[i], game->filename, game->nb_file))
 			{
+				game->nb_doors++;
 				map[i].type |= DOOR_CLOSE;
 				map[i].arg = ft_calloc(1, sizeof(t_door));
 				if (map[i].arg == NULL)

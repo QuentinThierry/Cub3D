@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/07 16:22:54 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 17:28:26 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,12 +306,10 @@ float	get_texture_door(t_ray ray)
 	return (dist);
 }
 
-void	step_door_open(t_door *door, long time, t_map *map_cell)
+static void	_step_door_open(t_door *door, long time, t_map *map_cell)
 {
 	long	tmp;
 
-	if (door->is_opening_door == 0)
-		return ;
 	tmp = time - door->time;
 	if (door->is_opening_door == 1)
 	{
@@ -335,6 +333,19 @@ void	step_door_open(t_door *door, long time, t_map *map_cell)
 			door->door_percent = 0;
 			door->is_opening_door = 0;
 		}
+	}
+}
+
+void	update_doors(t_map **doors, int	nb_doors, long time)
+{
+	int	i;
+
+	i = 0;
+	while (i < nb_doors)
+	{
+		if (((t_door *)doors[i]->arg)->is_opening_door != 0)
+			_step_door_open(doors[i]->arg, time, doors[i]);
+		i++;
 	}
 }
 

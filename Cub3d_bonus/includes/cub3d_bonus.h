@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/08 16:22:09 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 17:30:14 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,6 +259,8 @@ typedef struct s_game
 	const double	*constants;
 	int				nb_objects;
 	t_object		**object_array;
+	int				nb_doors;
+	t_map			**door_array;
 	t_music			*music_array;
 	float			*dist_tab;
 	t_loading		*loading_screen;
@@ -294,7 +296,7 @@ bool		ft_read_config(t_animation *animation, int index);
 bool		parse_texture(int fd, t_game *game, int *nb_line, char **rest);
 bool		is_door(char symbol, t_texture *tab, int len);
 bool		is_object(char symbol, t_texture *tab, int len);
-bool		fill_object_array(t_game *game);
+bool		fill_object_and_doors(t_game *game);
 
 // -------Print--------
 void		printf_texture(t_game *game);
@@ -316,7 +318,7 @@ void		check_colliding(t_player *player, t_fvector2 new_pos, t_map **map);
 int			ft_close(t_game *game);
 
 // -------Raycasting-----
-t_ray		get_wall_hit(t_fvector2 fpos, t_map **map, float angle, t_game *game);
+t_ray		get_wall_hit(t_fvector2 fpos, t_map **map, float angle);
 double		get_wall_dist(t_game *game, double angle);
 void		raycasting(t_game *game);
 t_vector2	get_sign(double angle);
@@ -356,7 +358,7 @@ t_fvector2	door_hit_ver_nw(t_fvector2 hit, float step, float door_angle, float p
 t_fvector2	door_hit_hor_nw(t_fvector2 hit, float step, float door_angle, float player_angle);
 void		open_door(t_vector2 map_size, t_map **map, double delta_time);
 float		get_texture_door(t_ray ray);
-void		step_door_open(t_door *door, long time, t_map *map_cell);
+void		update_doors(t_map **doors, int	nb_doors, long time);
 
 t_ray		get_object_hit(t_launch_ray object, t_game *game, t_fvector2 begin, float angle);
 void		draw_objects(t_game *game);

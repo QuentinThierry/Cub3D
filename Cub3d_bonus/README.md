@@ -32,7 +32,7 @@ FIX :
 <!-- - increase wall height -->
 <!-- - texture floor and ceiling beug -->
 <!-- - animation for object -->
-- open doors and instantly turn around would not open the door for player
+<!-- - open doors and instantly turn around would not open the door for player -->
 - protect text draw outside of the screen
 - file structure for bonus and mandatory
 

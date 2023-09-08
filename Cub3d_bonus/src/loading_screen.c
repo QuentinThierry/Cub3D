@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 19:04:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/08 16:27:54 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 17:00:53 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ bool	update_loading_screen(t_game *game, t_loading *loading_screen)
 	t_vector2	pos_text;
 
 	loading_screen->nb_image_load++;
-	size_bar.x = ((float)loading_screen->center->size.x / game->nb_images) * loading_screen->nb_image_load;
+	size_bar.x = (float)loading_screen->center->size.x / game->nb_images * loading_screen->nb_image_load;
 	size_bar.y = loading_screen->center->size.y;
 	game->image->addr = ft_memcpy(game->image->addr
 		, loading_screen->background->addr, WIN_X * WIN_Y * 4);
@@ -131,7 +131,8 @@ static bool	_load_image(t_game *game, t_loading *loading_screen)
 		, LOADING_FONT, g_size_font);
 	if (game->font == NULL)
 		return (false);
-	game->size_letter = (t_fvector2){game->font->size.x * WIDTH_LETTER / WIDTH_ALPHA, game->font->size.y};
+	game->size_letter.x = game->font->size.x * WIDTH_LETTER / WIDTH_ALPHA;
+	game->size_letter.y = game->font->size.y;
 	loading_screen->background = btmlx_xpm_file_to_image(game->mlx_ptr
 		, LOADING_SCREEN, g_size_background);
 	if (loading_screen->background == NULL)

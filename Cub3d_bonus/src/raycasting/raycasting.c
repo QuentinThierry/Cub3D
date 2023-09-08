@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/07 19:26:40 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 17:29:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	raycasting(t_game *game)
 			angle = angle - 360;
 		if (game->player->angle + angle < 0)
 			angle = angle + 360;
-		ray = get_wall_hit(fpos, game->map, game->player->angle + angle, game);
+		ray = get_wall_hit(fpos, game->map, game->player->angle + angle);
 		if (ray.hit.x == -1)
 			height = 0;
 		else

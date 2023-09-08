@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/08 15:42:38 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 17:25:15 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ bool	parse_map(int fd, char *filename, t_game *game, int nb_line, char *line)
 	}
 	free(line);
 	game->map = maps;
-	if (!fill_object_array(game))
+	if (!fill_object_and_doors(game))
 		return (false);
 	return (true);
 }

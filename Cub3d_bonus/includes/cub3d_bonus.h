@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/08 15:30:17 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 16:03:24 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@
 # define LOADING_SCREEN "./assets/smiley.xpm"
 # define LOADING_BORDURE "./assets/loading_bordure.xpm"
 # define LOADING_CENTER "./assets/loading_center.xpm"
-# define LOADING_ALPHABET "./assets/ascii.xpm"
+# define LOADING_FONT "./assets/ascii.xpm"
 # define WIDTH_ALPHA 1880
 # define WIDTH_LETTER (1880 / 94.)
 # define HEIGHT_ALPHA 34
@@ -138,6 +138,7 @@ typedef struct s_object
 	t_fvector2	map_pos;
 	bool		visited;
 	float		dist;
+	long int	time;	//for animation
 }	t_object;
 
 typedef	struct s_player

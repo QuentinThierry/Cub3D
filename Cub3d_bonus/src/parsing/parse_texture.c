@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/07 19:26:16 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 15:41:57 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ bool	ft_read_config(t_animation *animation, int index)
 	char	*buffer;
 	bool	error;
 	
-	// printf("'%s'\n",animation->filename[index]);
-	// fflush(stdout);
 	error = false;
 	fd = open(animation->filename[index], O_RDONLY);
 	if (fd == -1)
@@ -124,7 +122,6 @@ bool	ft_read_anim(DIR *dir, t_texture *texture, char *dirname)
 	bool			add_slash;
 	bool			has_config;
 
-	// printf(" ANIM %d : %s\n",texture->nb_animation, dirname);
 	texture->animation = ft_realloc(texture->animation
 		, sizeof(t_animation) * (texture->nb_animation)
 		,sizeof(t_animation) * (texture->nb_animation + 1));
@@ -142,7 +139,6 @@ bool	ft_read_anim(DIR *dir, t_texture *texture, char *dirname)
 			buffer = readdir(dir);
 			continue ;
 		}
-		// printf(" ANIM %d: filename :%s\n",texture->nb_animation, buffer->d_name);
 		filename = ft_strjoin_slash(dirname, buffer->d_name, add_slash);
 		if (filename == NULL)
 			return (perror("Error"), closedir(dir), false);
@@ -185,7 +181,6 @@ bool	ft_read_dir(DIR *dir, t_texture *texture)
 	char			*filename;
 	bool			add_slash;
 
-	// printf(" DIR : %s\n", texture->filename);
 	texture->nb_file = 0;
 	if (ft_strlen(texture->filename) > 0 && texture->filename[ft_strlen(texture->filename) - 1] == '/')
 		add_slash = false;
@@ -199,7 +194,6 @@ bool	ft_read_dir(DIR *dir, t_texture *texture)
 			buffer = readdir(dir);
 			continue ;
 		}
-		// printf(" DIR : filename : %s\n", buffer->d_name);
 		filename = ft_strjoin_slash(texture->filename, buffer->d_name, add_slash);
 		if (filename == NULL)
 			return (perror("Error"), closedir(dir), false);
@@ -385,7 +379,7 @@ static bool	_cmp_texture(char *line, t_game *game, int i, bool *is_end)
 		else if (ft_strncmp(line + i, "O_", 2) == 0)
 			return (_find_texture(game, line + i + 3, game->nb_file, e_object));
 	}
-	return (printf("Error : invalid identifier %s\n", line), false);
+	return (printf("Error : invalid identifier\n"), false);
 }
 
 bool	check_texture(t_texture	*filename)

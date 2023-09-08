@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:13:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/27 19:46:47 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 15:40:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,6 @@ t_image	*get_image_non_wall(t_game *game, t_fvector2 hit, enum e_orientation ori
 	t_image		*image;
 
 	sprite = &(game->map[(int)hit.y][(int)hit.x].sprite[orient]);
-	// if (sprite->index == -1)
-	// 	return (printf("no texture"), NULL);
 	if (sprite->frame == -1)
 		return (&(game->tab_images[sprite->index]));
 	else		//animation

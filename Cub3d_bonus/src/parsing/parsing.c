@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/07 16:27:16 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/08 15:42:38 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ bool	find_player(t_game *game)
 				|| game->map[index.y][index.x].symbol == 'W'
 				|| game->map[index.y][index.x].symbol == 'E')
 			{
-				// printf("find player : %c\n", game->map[index.y][index.x].symbol);
 				if (is_player)
 					return (printf("Error : Too much players\n"), false);
 				is_player = true;
@@ -197,7 +196,6 @@ bool	parse_file(char *filename, t_game *game)
 	}
 	if (line == NULL)
 		return (close(fd), printf("Error : Empty map\n"), false);
-	// printf("'%s'", line);
 	if (!parse_map(fd, filename, game, i, line))
 		return (close(fd), false);
 	close(fd);

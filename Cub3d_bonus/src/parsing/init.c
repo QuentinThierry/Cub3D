@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/06 17:41:51 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 15:41:32 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	init_mouse(t_game *game)
 
 bool	load_image(t_game *game, t_image *img, char *filename, t_animation *anim)
 {
-	// printf("name : %s\n", filename);
 	img->img = mlx_xpm_file_to_image(game->mlx_ptr, filename,
 			&(img->size.x), &(img->size.y));
 	if (img->img == NULL)

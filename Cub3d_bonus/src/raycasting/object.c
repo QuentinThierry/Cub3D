@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:39:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/07 19:29:35 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 15:43:26 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	draw_object(t_game *game, t_object *object, float object_dist, int x_pos)
 			break ;
 		if (x < 0 || game->dist_tab[x] < object->dist)
 		{
-			// printf("%f < %f\n", game->dist_tab[x - x_pos], object->dist);
 			x++;
 			continue ;
 		}
@@ -277,9 +276,9 @@ void	draw_objects(t_game *game)
 // 	y1 = WIN_Y / 2.0 + ((int)height - (int)(height / 2));
 // 	if (height != 0)
 // 	{
-// 		// image = get_image_wall(game, ray, &x_door);
-// 		// if (image->addr == NULL)
-// 		// 	return (printf("Error : Invalid image\n"),(void)ft_close(game));
+		// image = get_image_wall(game, ray, &x_door);
+		// if (image->addr == NULL)
+		// 	return (printf("Error : Invalid image\n"),(void)ft_close(game));
 // 		image = game->tab_images[0];
 // 		delta_y_img = image.size.y / height;
 // 		if (y < 0)
@@ -330,20 +329,20 @@ void	draw_objects(t_game *game)
 // 			break ;
 // 		demi.x = (int)ray.hit.x + 0.5;
 // 		demi.y = (int)ray.hit.y + 0.5;
-// 		// printf("angle b : %f	c : %f	a:%f\n", fabs(180 - angle), 90 - (game->player->angle - 90), 180 - (90 - (game->player->angle - 90)) - (fabs(180 - angle)));
-// 		// a = get_dist_real(demi, ray.hit);
-// 		// printf("a : %f\n", a);
-// 		// c = (a / sin((180 - (90 - (game->player->angle - 90)) - (fabs(180 - angle))) * TO_RADIAN))
-// 		// 	* sin((90 - (game->player->angle - 90)) * TO_RADIAN);
-// 		// res.x = cos(fabs(180 - angle)) * c;
-// 		// res.y = sin(fabs(180 - angle)) * c;
-// 		// ray.hit.x += res.x;
-// 		// ray.hit.y += res.y;
-// 		// if ((game->map[(int)ray.hit.y][(int)ray.hit.x].type & OBJECT) != OBJECT)
-// 		// {
-// 		// 	i++;
-// 		// 	continue ;
-// 		// }
+		// printf("angle b : %f	c : %f	a:%f\n", fabs(180 - angle), 90 - (game->player->angle - 90), 180 - (90 - (game->player->angle - 90)) - (fabs(180 - angle)));
+		// a = get_dist_real(demi, ray.hit);
+		// printf("a : %f\n", a);
+		// c = (a / sin((180 - (90 - (game->player->angle - 90)) - (fabs(180 - angle))) * TO_RADIAN))
+		// 	* sin((90 - (game->player->angle - 90)) * TO_RADIAN);
+		// res.x = cos(fabs(180 - angle)) * c;
+		// res.y = sin(fabs(180 - angle)) * c;
+		// ray.hit.x += res.x;
+		// ray.hit.y += res.y;
+		// if ((game->map[(int)ray.hit.y][(int)ray.hit.x].type & OBJECT) != OBJECT)
+		// {
+		// 	i++;
+		// 	continue ;
+		// }
 // 		d = get_dist(game->player->f_real_pos, demi, angle) ;
 // 		height = 1 / dist * game->constants[0];
 // 		printf("height : %f\n", height);

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/08 15:27:36 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 15:30:17 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,6 +311,7 @@ int			mouse_hook(int x,int y, t_game *game);
 int			on_update(t_game *game);
 void		player_move(t_player *player, double delta_time, t_map **map);
 void		check_colliding(t_player *player, t_fvector2 new_pos, t_map **map);
+int			ft_close(t_game *game);
 
 // -------Raycasting-----
 t_ray		get_wall_hit(t_fvector2 fpos, t_map **map, float angle, t_game *game);
@@ -321,9 +322,8 @@ void		draw_objects(t_game *game);
 
 
 enum e_orientation	get_wall_orientation(t_fvector2 player, t_fvector2 wall);
-t_image		*get_image_wall(t_game	*game, t_ray ray, int *x_door);
-t_image	*get_image_non_wall(t_game *game, t_fvector2 hit, enum e_orientation orient);
-int			ft_close(t_game *game);
+t_image			*get_image_wall(t_game	*game, t_ray ray, int *x_door);
+t_image			*get_image_non_wall(t_game *game, t_fvector2 hit, enum e_orientation orient);
 
 // draw
 void		draw_vert(t_game *game, int x, t_ray ray, double height);
@@ -365,6 +365,7 @@ long int	time_to_long(struct timespec *time);
 // floor.c
 void		draw_ceiling(t_game *game);
 
+// ------ Loading screen ------
 bool		loading_screen(t_game *game);
 bool		update_loading_screen(t_game *game, t_loading *loading_screen);
 void		free_loading_screen(t_game *game);

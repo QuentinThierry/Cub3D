@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_object.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 18:21:21 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/07 15:47:01 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/08 15:43:46 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,26 +201,13 @@ t_ray	get_object_hit(t_launch_ray object, t_game *game, t_fvector2 begin, float 
 {
 	t_vector2	sign;
 
-	// printf("begin\n");
 	sign = get_sign(angle);
 	if (sign.x == 1 && sign.y == 1)
-	{
-		// printf("SE\n");
 		return (_get_object_se(begin, game->map, object, angle));
-	}
 	else if (sign.x == 1 && sign.y == -1)
-	{
-		// printf("NE\n");
 		return (_get_object_ne(begin, game->map, object, angle));
-	}
 	else if (sign.x == -1 && sign.y == 1)
-	{
-		// printf("SW\n");
 		return (_get_object_sw(begin, game->map, object, angle));
-	}
 	else
-	{
-		// printf("NW\n");
 		return (_get_object_nw(begin, game->map, object, angle));
-	}
 }

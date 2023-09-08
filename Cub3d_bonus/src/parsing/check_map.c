@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 21:27:20 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/07 17:16:06 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 15:41:15 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static bool	_check_sides(t_map **map, int x, int y, t_vector2 map_size)
 
 /**
  * @brief verify if the map is properly close
- * printf the Error
+ * print the Error
  */
 bool	check_map(t_game *game)
 {

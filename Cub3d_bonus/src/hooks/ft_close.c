@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/08 16:22:19 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 16:55:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	ft_close(t_game *game)
 	if (game->filename != NULL)
 		free_filename(game);
 	free(game->dist_tab);
+	free(game->object_array);
 	if (game->mlx_ptr != NULL)
 	{
 		mlx_do_key_autorepeaton(game->mlx_ptr);

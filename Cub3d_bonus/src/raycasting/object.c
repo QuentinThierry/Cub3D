@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:39:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/08 15:43:26 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 16:43:48 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, in
 	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
 }
 
-void	draw_object(t_game *game, t_object *object, float object_dist, int x_pos)
+void	draw_object_projection(t_game *game, t_object *object, float object_dist, int x_pos)
 {
 	float		height;
 	float		width;
@@ -40,7 +40,7 @@ void	draw_object(t_game *game, t_object *object, float object_dist, int x_pos)
 	height = 1 / object_dist * game->constants[0];
 	width = height;
 	x_pos = x_pos - width / 2;
-	image = &game->tab_images[game->map[(int)object->map_pos.y][(int)object->map_pos.x].sprite[e_object_image].index];
+	image = get_image_wall(game, (t_ray){object->map_pos, e_object_image}, &x);
 	x_ratio = image->size.x / width;
 	y_ratio = image->size.y / height;
 	y_pos = WIN_Y / 2. - height / 2.;
@@ -116,10 +116,10 @@ void	find_object_projection(t_game *game, t_object *object, t_player *player)
 		angle = angle - FOV / 2.;
 
 	x_screen = tan(angle * TO_RADIAN) * game->constants[0];
-	draw_object(game, object, object->dist * cos(angle * TO_RADIAN), x_screen + WIN_X / 2);
+	draw_object_projection(game, object, object->dist * cos(angle * TO_RADIAN), x_screen + WIN_X / 2);
 }
 
-static void	fill_object_perp_dist(t_game *game)
+static void	fill_object_dist(t_game *game)
 {
 	int			i;
 	t_fvector2	relative_pos;
@@ -167,7 +167,7 @@ void	draw_objects(t_game *game)
 	i = 0;
 	if (game->nb_objects != 0)
 	{
-		fill_object_perp_dist(game);
+		fill_object_dist(game);
 		sort_objects_distance(game->object_array, game->nb_objects);
 		while (i < game->nb_objects)
 		{

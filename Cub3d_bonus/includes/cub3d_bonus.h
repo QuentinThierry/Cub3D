@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/07 20:01:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 15:27:36 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,10 @@
 # define HEIGHT_ALPHA 34
 # define GREEN_SCREEN 0x00ff00
 
+
+#define DIST_TO_WALL 0.1
+
+
 // t_type for arg
 # define NONE 0b0
 # define WALL 0b1
@@ -138,8 +142,8 @@ typedef struct s_object
 
 typedef	struct s_player
 {
-	t_vector2	pos;
-	t_fvector2 	f_pos;
+	// t_vector2	pos;
+	// t_fvector2 	f_pos;
 	t_fvector2 	f_real_pos;
 	t_vector2 	mouse_pos;
 	double		angle;

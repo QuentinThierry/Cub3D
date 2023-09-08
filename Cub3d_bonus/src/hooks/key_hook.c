@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/02 22:55:18 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:41:37 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,8 @@ void	player_move(t_player *player, double delta_time, t_map **map)
 	}
 	if (player->dir.x != 0 || player->dir.y != 0)
 	{
-		move_value.x = player->f_pos.x + move_value.x * delta_time;
-		move_value.y = player->f_pos.y + move_value.y * delta_time;
+		move_value.x = player->f_real_pos.x + move_value.x * delta_time / 100;
+		move_value.y = player->f_real_pos.y + move_value.y * delta_time / 100;
 		check_colliding(player, move_value, map);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/07 20:01:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 16:22:19 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	ft_close(t_game *game)
 		free(game->player);
 	if (game->filename != NULL)
 		free_filename(game);
+	free(game->dist_tab);
 	if (game->mlx_ptr != NULL)
 	{
 		mlx_do_key_autorepeaton(game->mlx_ptr);
@@ -46,6 +47,23 @@ int	ft_close(t_game *game)
 		}
 		if (game->win != NULL)
 			mlx_destroy_window(game->mlx_ptr, game->win);
+		if (game->minimap != NULL)
+		{
+			if (game->minimap->image)
+				mlx_destroy_image(game->mlx_ptr, game->minimap->image->img);
+			if (game->minimap->back_img)
+				mlx_destroy_image(game->mlx_ptr, game->minimap->back_img->img);
+			if (game->minimap->buffer_img)
+				mlx_destroy_image(game->mlx_ptr, game->minimap->buffer_img->img);
+			if (game->minimap->player_img)
+				mlx_destroy_image(game->mlx_ptr, game->minimap->player_img->img);
+			free(game->minimap->image);
+			free(game->minimap->back_img);
+			free(game->minimap->buffer_img);
+			free(game->minimap->player_img);
+			free(game->minimap->bounds);
+			free(game->minimap);
+		}
 		mlx_destroy_display(game->mlx_ptr);
 		free(game->mlx_ptr);
 	}

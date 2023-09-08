@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 00:30:38 by qthierry          #+#    #+#             */
-/*   Updated: 2023/08/27 18:37:21 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/07 20:21:42 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,6 @@ void	draw_horiz_line(t_image *image, t_vector2 origin, int len, t_pixel32 color)
 	}
 }
 
-// static inline unsigned int	get_color_at(char *addr, int size_line, t_vector2 pos)
-// {
-// 	return (*(int *)(addr + (pos.y * size_line + pos.x * 4)));
-// }
-
 void	draw_rectangle(t_image *image, t_vector2 pos, t_vector2 size, t_pixel32 color)
 {
 	int	x;
@@ -110,20 +105,12 @@ void	draw_rectangular_minimap(t_game *game)
 			(t_vector2){
 			(x - game->player->f_real_pos.x) * (MMAP_CHUNK + (int)minimap->zoom - ZOOM_OFFSET) + g_minimap_size.x / 2.0,
 			(y - game->player->f_real_pos.y) * (MMAP_CHUNK + (int)minimap->zoom - ZOOM_OFFSET) + g_minimap_size.y / 2.0},
-			(t_vector2){MMAP_CHUNK + minimap->zoom - ZOOM_OFFSET, MMAP_CHUNK + minimap->zoom - ZOOM_OFFSET}, color);
+			(t_vector2){MMAP_CHUNK + minimap->zoom - ZOOM_OFFSET + 1, MMAP_CHUNK + minimap->zoom - ZOOM_OFFSET + 1}, color);
 			x++;
 		}
 		y++;
 	}
 }
-
-
-
-
-
-
-
-
 
 static void	draw_minimap_buf_on_main_image(t_minimap *mmap, t_image *image)
 {
@@ -135,13 +122,6 @@ static void	draw_minimap_buf_on_main_image(t_minimap *mmap, t_image *image)
 	i = mmap->image->size.y / 2 - 1;
 	dest_pos = (t_vector2){g_minimap_pos.x, g_minimap_pos.y};
 
-	// while (y < mmap->img->size.y)
-	// {
-	// 	ft_memcpy(image->addr + y * image->size_line, 
-	// 	mmap->img->addr + y * mmap->background_image->size_line, mmap->size.x * 4);
-	// 	y++;
-	// }
-	
 	while (y < mmap->buffer_img->size.y / 2)
 	{
 		ft_memcpy(
@@ -167,9 +147,9 @@ void	mmap_draw_player(t_game *game)
 	draw_image_on_image_alpha(game->image, game->minimap->player_img,
 		(t_vector2){
 		g_minimap_pos.x + g_minimap_size.x / 2
-			- game->minimap->player_img->size.x / 2,
+			- game->minimap->player_img->size.x / 2 - 1,
 		g_minimap_pos.y + g_minimap_size.y / 2
-			- game->minimap->player_img->size.x / 2});
+			- game->minimap->player_img->size.x / 2 - 1});
 }
 
 void	zoom_hook_handle(t_minimap *minimap, double delta_time)
@@ -275,8 +255,7 @@ bool	init_minimap(t_game *game)
 	if (!minimap->image)
 		return (false);
 	generate_background_image(game);
-
-	minimap->player_img = btmlx_xpm_file_to_image(game->mlx_ptr, "assets/minimap_player.xpm", (t_vector2){15, 15});
+	minimap->player_img = btmlx_xpm_file_to_image(game->mlx_ptr, "assets/minimap_player.xpm", (t_vector2){g_minimap_size.x / MINIMAP_PLAYER_SIZE, g_minimap_size.y / MINIMAP_PLAYER_SIZE});
 	if (!minimap->player_img->img)
 		return (false);
 	minimap->zoom = ZOOM_OFFSET;

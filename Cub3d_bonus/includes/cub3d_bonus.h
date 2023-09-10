@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/10 16:22:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/10 19:03:43 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,10 @@
 # define ROTATION_MOUSE 20		// + keyboard binds + play + quit + activer sous-titre 
 # define SPEEP_DOOR_OPENING 100
 # define TO_RADIAN .01745329251994
+# define DARK_COLOR 0x101010
+# define DIST_MAX_DARK 15.
+# define DIST_MIN_DARK 3.
+
 
 // MINIMAP
 # define PATH_MMAP_PLAYER "../assets/minimap_player.xpm"
@@ -377,5 +381,7 @@ void		draw_ceiling(t_game *game);
 bool		loading_screen(t_game *game);
 bool		update_loading_screen(t_game *game, t_loading *loading_screen);
 void		free_loading_screen(t_game *game);
+
+unsigned int	dark_with_dist(int color, float dark_quantity);
 
 #endif

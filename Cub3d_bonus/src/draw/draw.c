@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/08 16:46:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/10 19:02:40 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,38 @@ static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, in
 	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
 }
 
+
+unsigned int	dark_with_dist(int color, float dark_quantity)
+{
+	int	red;
+	int	green;
+	int	blue;
+	float	color_quantity;
+
+	if (dark_quantity >= 1)
+		return (DARK_COLOR);
+	color_quantity = 1 - dark_quantity;
+	red = ((color >> 16) & 0xFF) * color_quantity;
+	red += ((DARK_COLOR >> 16) & 0xff) * dark_quantity;
+	if (red < 0)
+		red = 0;
+	if (red > 255)
+		red = 255;
+	green = ((color >> 8) & 0xFF) * color_quantity;
+	green += ((DARK_COLOR >> 8) & 0xff) * dark_quantity;
+	if (green < 0)
+		green = 0;
+	if (green > 255)
+		green = 255;
+	blue = (color & 0xFF) * color_quantity;
+	blue += (DARK_COLOR & 0xff) * dark_quantity;
+	if (blue < 0)
+		blue = 0;
+	if (blue > 255)
+		blue = 255;
+	return (red << 16 | green << 8 | blue);
+}
+
 void	draw_vert(t_game *game, int x, t_ray ray, double height)
 {
 	register int		i = 0;
@@ -37,7 +69,12 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	float				delta_y_img;
 	int					size_line;
 	char				*addr;
-
+	float				dark_quantity;
+	
+	if (game->dist_tab[x] >= DIST_MIN_DARK)
+		dark_quantity = (-DIST_MIN_DARK + game->dist_tab[x]) / (DIST_MAX_DARK - DIST_MIN_DARK);
+	else
+		dark_quantity = 0;
 	size_line = game->image->size_line;
 	if (((int)height & 1) == 1)
 		height++;
@@ -70,7 +107,7 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	i = y;
 	while (i < y1)
 	{
-		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}));
+		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, dark_with_dist(get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}), dark_quantity));
 		y_img += delta_y_img;
 		i++;
 	}

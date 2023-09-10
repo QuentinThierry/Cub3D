@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/08 16:22:26 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/10 19:02:36 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ static inline void	draw_pixel_line(t_game *game, t_fvector2 map_point, t_fvector
 	t_vector2		last_map_pos;
 	t_image			*image;
 	t_image			*image2;
+	float			dark_quantity;
+	
 
 	i = 0;
 	last_map_pos.x = -(int)map_point.x;
@@ -54,15 +56,19 @@ static inline void	draw_pixel_line(t_game *game, t_fvector2 map_point, t_fvector
 				image = get_image_non_wall(game, map_point, e_ceiling);
 				image2 = get_image_non_wall(game, map_point, e_floor);
 			}
+			if (get_dist(game->player->f_real_pos, map_point) >= DIST_MIN_DARK)
+				dark_quantity = (-DIST_MIN_DARK + get_dist(game->player->f_real_pos, map_point)) / (DIST_MAX_DARK - DIST_MIN_DARK);
+			else
+				dark_quantity = 0;
 			my_mlx_pixel_put(game_image->addr, game_image->size_line,
 				(t_vector2){i, WIN_Y / 2 - y_screen},
-				get_color_at(image->addr, image->size_line,
+				dark_with_dist(get_color_at(image->addr, image->size_line,
 				(t_vector2){(map_point.x - last_map_pos.x) * image->size.x,
-				(map_point.y - last_map_pos.y) * image->size.y}));
+				(map_point.y - last_map_pos.y) * image->size.y}), dark_quantity));
 			my_mlx_pixel_put(game_image->addr, game_image->size_line,
-				(t_vector2){i, WIN_Y / 2 + y_screen - 1}, get_color_at(image2->addr, image2->size_line,
+				(t_vector2){i, WIN_Y / 2 + y_screen - 1}, dark_with_dist(get_color_at(image2->addr, image2->size_line,
 				(t_vector2){(map_point.x - last_map_pos.x) * image2->size.x,
-				(map_point.y - last_map_pos.y) * image2->size.y}));
+				(map_point.y - last_map_pos.y) * image2->size.y}), dark_quantity));
 		}
 		map_point.x += step_dir.x; 
 		map_point.y += step_dir.y;

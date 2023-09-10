@@ -35,6 +35,7 @@ FIX :
 <!-- - open doors and instantly turn around would not open the door for player -->
 - protect text draw outside of the screen
 - file structure for bonus and mandatory
+- collision vibration when it objet
 
 Minimap : 
 <!-- - if screen is too small, do not draw minimap -->

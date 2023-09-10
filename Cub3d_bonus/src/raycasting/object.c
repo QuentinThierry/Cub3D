@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:39:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/08 20:01:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/10 19:18:24 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	draw_object_projection(t_game *game, t_object *object, float object_dist, i
 	float		y_ratio;
 	float		size_ratio;
 	t_pixel32	color;
+	float		dark_quantity;
 
 	if (object_dist <= 0. || object_dist <= -0.)
 		return ;
@@ -52,6 +53,10 @@ void	draw_object_projection(t_game *game, t_object *object, float object_dist, i
 
 	x_ratio = image->size.x / width;
 	y_ratio = image->size.y / height;
+	if (object->dist >= DIST_MIN_DARK)
+		dark_quantity = (-DIST_MIN_DARK + object->dist) / (DIST_MAX_DARK - DIST_MIN_DARK);
+	else
+		dark_quantity = 0;
 	x = 0;
 	if (x_pos < 0)
 		x = -x_pos;
@@ -81,7 +86,7 @@ void	draw_object_projection(t_game *game, t_object *object, float object_dist, i
 
 			color = get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img});
 			if (color != GREEN_SCREEN)
-				my_mlx_pixel_put(game->image->addr, game->image->size_line, (t_vector2){x + x_pos, y_pos + y}, color);
+				my_mlx_pixel_put(game->image->addr, game->image->size_line, (t_vector2){x + x_pos, y_pos + y}, dark_with_dist(color, dark_quantity));
 			y++;
 		}
 		x++;

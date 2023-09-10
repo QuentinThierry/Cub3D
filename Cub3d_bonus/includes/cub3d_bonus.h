@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/08 19:09:38 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/10 16:22:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@
 
 # include <X11/X.h>
 
-# define WIN_X 1920 //1920 - 918 - 1280
-# define WIN_Y 1080 //1080 - 468 - 720
+# define WIN_X 1280 //1920 - 918 - 1280
+# define WIN_Y 720 //1080 - 468 - 720
 # define CHUNK_SIZE 100
 # define FOV 80		//
 # define SPEED 100
@@ -315,8 +315,10 @@ int			mouse_leave(t_game *game);
 int			mouse_hook(int x,int y, t_game *game);
 int			on_update(t_game *game);
 void		player_move(t_player *player, double delta_time, t_map **map);
-void		check_colliding(t_player *player, t_fvector2 new_pos, t_map **map);
+int			mouse_click(int button, int x, int y,t_game *game);
 int			ft_close(t_game *game);
+
+void		check_colliding(t_player *player, t_fvector2 new_pos, t_map **map);
 
 // -------Raycasting-----
 t_ray		get_wall_hit(t_fvector2 fpos, t_map **map, float angle);
@@ -357,9 +359,10 @@ t_fvector2	door_hit_ver_sw(t_fvector2 hit, float step, float door_angle, float p
 t_fvector2	door_hit_hor_sw(t_fvector2 hit, float step, float door_angle, float player_angle);
 t_fvector2	door_hit_ver_nw(t_fvector2 hit, float step, float door_angle, float player_angle);
 t_fvector2	door_hit_hor_nw(t_fvector2 hit, float step, float door_angle, float player_angle);
-void		open_door(t_vector2 map_size, t_map **map, double delta_time);
 float		get_texture_door(t_ray ray);
 void		update_doors(t_map **doors, int	nb_doors, long time);
+void		open_door(t_game *game);
+
 
 t_ray		get_object_hit(t_launch_ray object, t_game *game, t_fvector2 begin, float angle);
 void		draw_objects(t_game *game);

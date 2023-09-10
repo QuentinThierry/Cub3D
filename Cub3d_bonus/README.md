@@ -41,6 +41,8 @@ Minimap :
 <!-- - leaks -->
 
 Door :
+- show when a door is open
+<!-- - open with clic of the mouse -->
 <!-- - texture door only print the half two time -->
 <!-- - opti door open -->
 <!-- - door parsing -->

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/08 17:28:26 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/10 16:22:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,6 +304,44 @@ float	get_texture_door(t_ray ray)
 	if (left_door)
 		dist = 1 - dist;
 	return (dist);
+}
+
+void	open_door(t_game *game)
+{
+	t_ray			hit;
+	struct timespec	time;
+
+	hit = get_object_hit((t_launch_ray){'\0', DOOR_CLOSE, 1}, game, game->player->f_real_pos, game->player->angle);
+	if (hit.hit.x != -1)
+	{
+		clock_gettime(CLOCK_REALTIME, &time);
+		if (((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door == 1)
+		{
+			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = -1;
+			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent -= game->delta_time * SPEEP_DOOR_OPENING;
+			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
+		}
+		else
+		{
+			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = 1;
+			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent += game->delta_time * SPEEP_DOOR_OPENING;
+			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
+		}
+	}
+	else
+	{
+		hit = get_object_hit((t_launch_ray){'\0', DOOR_OPEN, 1}, game, game->player->f_real_pos, game->player->angle);
+		if (hit.hit.x != -1)
+		{
+			clock_gettime(CLOCK_REALTIME, &time);
+			game->map[(int)hit.hit.y][(int)hit.hit.x].type |= DOOR_CLOSE;
+			game->map[(int)hit.hit.y][(int)hit.hit.x].type ^= DOOR_OPEN;
+			game->map[(int)hit.hit.y][(int)hit.hit.x].type |= WALL;
+			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = -1;
+			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent -= game->delta_time * SPEEP_DOOR_OPENING;
+			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
+		}
+	}
 }
 
 static void	_step_door_open(t_door *door, long time, t_map *map_cell)

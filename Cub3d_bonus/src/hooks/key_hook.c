@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/07 16:41:37 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/10 16:24:31 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	key_press_hook(int key, t_game *game)
 		game->minimap->zoom_dir += 1;
 	else if (key == ' ')
 	{
-		hit = get_object_hit((t_launch_ray){'\0', DOOR_CLOSE, 1}, game, game->player->f_real_pos, game->player->angle);
+		hit = get_object_hit((t_launch_ray){'\0', DOOR_CLOSE, 10}, game, game->player->f_real_pos, game->player->angle);
 		if (hit.hit.x != -1)
 		{
 			clock_gettime(CLOCK_REALTIME, &time);
@@ -58,7 +58,7 @@ int	key_press_hook(int key, t_game *game)
 		}
 		else
 		{
-			hit = get_object_hit((t_launch_ray){'\0', DOOR_OPEN, 1}, game, game->player->f_real_pos, game->player->angle);
+			hit = get_object_hit((t_launch_ray){'\0', DOOR_OPEN, 10}, game, game->player->f_real_pos, game->player->angle);
 			if (hit.hit.x != -1)
 			{
 				clock_gettime(CLOCK_REALTIME, &time);

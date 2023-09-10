@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/08 17:30:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/10 15:27:21 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@
 
 # include <X11/X.h>
 
-# define WIN_X 1920 //1920 - 918 - 1280
-# define WIN_Y 1080 //1080 - 468 - 720
+# define WIN_X 1280 //1920 - 918 - 1280
+# define WIN_Y 720 //1080 - 468 - 720
 # define CHUNK_SIZE 100
 # define FOV 80		//
 # define SPEED 100

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/08 19:10:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/11 14:52:22 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ bool fill_object_and_doors(t_game *game)
 			{
 				game->object_array[cpt_objects] = game->map[y][x].arg;
 				game->object_array[cpt_objects]->map_pos =
-					(t_fvector2){x + 0.5f, y + 0.5f};
+					(t_dvector2){x + 0.5f, y + 0.5f};
 				cpt_objects++;
 			}
 			else if ((game->map[y][x].type & DOOR_CLOSE) == DOOR_CLOSE)

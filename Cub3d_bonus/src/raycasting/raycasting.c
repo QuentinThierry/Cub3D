@@ -6,19 +6,16 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/10 17:48:54 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/11 14:51:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-double	get_dist(t_fvector2 fpos, t_fvector2 wall)
+__attribute__((always_inline))
+static inline float	get_dist(t_dvector2 fpos, t_dvector2 wall)
 {
-	t_fvector2	delta;
-
-	delta.x = fabs(wall.x - fpos.x);
-	delta.y = fabs(wall.y - fpos.y);
-	return (sqrt((delta.x * delta.x + delta.y * delta.y)));
+	return (sqrtf((wall.x - fpos.x) * (wall.x - fpos.x) + (wall.y - fpos.y) * (wall.y - fpos.y)));
 }
 
 t_vector2	get_sign(double angle)
@@ -42,8 +39,8 @@ void	raycasting(t_game *game)
 	double		height;
 	double		angle;
 	t_ray		ray;
-	t_fvector2	fpos;
-	double		dist; 
+	t_dvector2	fpos;
+	float		dist; 
 	
 	draw_ceiling(game);
 	fpos = game->player->f_real_pos;

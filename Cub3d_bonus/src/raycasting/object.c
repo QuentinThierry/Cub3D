@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:39:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/10 19:18:24 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/11 14:56:14 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,29 @@ __attribute__((always_inline))
 static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, int color)
 {
 	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
+}
+
+__attribute__((always_inline))
+static inline unsigned int	dark_with_dist(int color, float dark_quantity)
+{
+	unsigned char	red;
+	unsigned char	green;
+	unsigned char	blue;
+	float			color_quantity;
+
+	if (dark_quantity >= 1)
+		return (DARK_COLOR);
+	if (dark_quantity == 0)
+		return (color);
+	color_quantity = 1 - dark_quantity;
+	red = ((color >> 16) & 0xFF) * color_quantity;
+	red += ((DARK_COLOR >> 16) & 0xff) * dark_quantity;
+	green = ((color >> 8) & 0xFF) * color_quantity;
+	green += ((DARK_COLOR >> 8) & 0xff) * dark_quantity;
+	blue = (color & 0xFF) * color_quantity;
+	blue += (DARK_COLOR & 0xff) * dark_quantity;
+	// printf("red : %x green : %x	blue : %x\n", red, green, blue);
+	return (red << 16 | green << 8 | blue);
 }
 
 void	draw_object_projection(t_game *game, t_object *object, float object_dist, int x_pos)
@@ -96,7 +119,7 @@ void	draw_object_projection(t_game *game, t_object *object, float object_dist, i
 
 void	find_object_projection(t_game *game, t_object *object, t_player *player)
 {
-	t_fvector2	relative_pos;
+	t_dvector2	relative_pos;
 	float		angle;
 	float		arctan2;
 	float		player_angle;
@@ -141,7 +164,7 @@ void	find_object_projection(t_game *game, t_object *object, t_player *player)
 static void	fill_object_dist(t_game *game)
 {
 	int			i;
-	t_fvector2	relative_pos;
+	t_dvector2	relative_pos;
 	
 	i = 0;
 	while (i < game->nb_objects)

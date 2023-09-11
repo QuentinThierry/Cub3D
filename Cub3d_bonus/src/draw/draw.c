@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/10 19:02:40 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/11 14:57:51 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,35 +25,23 @@ static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, in
 }
 
 
-unsigned int	dark_with_dist(int color, float dark_quantity)
+__attribute__((always_inline))
+static inline unsigned int	dark_with_dist1(unsigned int color, float dark_quantity)
 {
-	int	red;
-	int	green;
-	int	blue;
-	float	color_quantity;
+	unsigned char	red;
+	unsigned char	green;
+	unsigned char	blue;
+	float			color_quantity;
 
-	if (dark_quantity >= 1)
-		return (DARK_COLOR);
 	color_quantity = 1 - dark_quantity;
 	red = ((color >> 16) & 0xFF) * color_quantity;
 	red += ((DARK_COLOR >> 16) & 0xff) * dark_quantity;
-	if (red < 0)
-		red = 0;
-	if (red > 255)
-		red = 255;
 	green = ((color >> 8) & 0xFF) * color_quantity;
 	green += ((DARK_COLOR >> 8) & 0xff) * dark_quantity;
-	if (green < 0)
-		green = 0;
-	if (green > 255)
-		green = 255;
 	blue = (color & 0xFF) * color_quantity;
 	blue += (DARK_COLOR & 0xff) * dark_quantity;
-	if (blue < 0)
-		blue = 0;
-	if (blue > 255)
-		blue = 255;
 	return (red << 16 | green << 8 | blue);
+	// return (color);
 }
 
 void	draw_vert(t_game *game, int x, t_ray ray, double height)
@@ -105,10 +93,31 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	}
 	addr = game->image->addr;
 	i = y;
-	while (i < y1)
+	if (dark_quantity >= 1)
 	{
-		my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, dark_with_dist(get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}), dark_quantity));
-		y_img += delta_y_img;
-		i++;
+		while (i < y1)
+		{
+			my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, DARK_COLOR);
+			y_img += delta_y_img;
+			i++;
+		}
+	}
+	else if (dark_quantity == 0)
+	{
+		while (i < y1)
+		{
+			my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}));
+			y_img += delta_y_img;
+			i++;
+		}
+	}
+	else
+	{
+		while (i < y1)
+		{
+			my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, dark_with_dist1(get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}), dark_quantity));
+			y_img += delta_y_img;
+			i++;
+		}
 	}
 }

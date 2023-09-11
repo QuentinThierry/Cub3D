@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/10 19:03:43 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/11 14:57:01 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@
 # define ROTATION_MOUSE 20		// + keyboard binds + play + quit + activer sous-titre 
 # define SPEEP_DOOR_OPENING 100
 # define TO_RADIAN .01745329251994
-# define DARK_COLOR 0x101010
+# define DARK_COLOR 0x00ff00
 # define DIST_MAX_DARK 15.
 # define DIST_MIN_DARK 3.
 
@@ -120,15 +120,21 @@ typedef struct s_vector2
 	int	y;
 }	t_vector2;
 
-typedef struct s_fvector2
+typedef struct s_dvector2
 {
 	double	x;
 	double	y;
+}	t_dvector2;
+
+typedef struct s_fvector2
+{
+	float	x;
+	float	y;
 }	t_fvector2;
 
 typedef struct s_ray
 {
-	t_fvector2			hit;
+	t_dvector2			hit;
 	enum e_orientation	orient;
 }	t_ray;
 
@@ -141,7 +147,7 @@ typedef struct s_launch_ray
 
 typedef struct s_object
 {
-	t_fvector2	map_pos;
+	t_dvector2	map_pos;
 	bool		visited;
 	float		dist;
 	long int	time;	//for animation
@@ -149,9 +155,7 @@ typedef struct s_object
 
 typedef	struct s_player
 {
-	// t_vector2	pos;
-	// t_fvector2 	f_pos;
-	t_fvector2 	f_real_pos;
+	t_dvector2 	f_real_pos;
 	t_vector2 	mouse_pos;
 	double		angle;
 	t_vector2	dir;
@@ -251,7 +255,7 @@ typedef struct s_game
 	void			*win;
 	t_image			*tab_images;
 	t_image			*font;
-	t_fvector2		size_letter;
+	t_dvector2		size_letter;
 	int				nb_images;
 	t_texture		*filename;
 	int				nb_file;
@@ -322,19 +326,19 @@ void		player_move(t_player *player, double delta_time, t_map **map);
 int			mouse_click(int button, int x, int y,t_game *game);
 int			ft_close(t_game *game);
 
-void		check_colliding(t_player *player, t_fvector2 new_pos, t_map **map);
+void		check_colliding(t_player *player, t_dvector2 new_pos, t_map **map);
 
 // -------Raycasting-----
-t_ray		get_wall_hit(t_fvector2 fpos, t_map **map, float angle);
+t_ray		get_wall_hit(t_dvector2 fpos, t_map **map, float angle);
 double		get_wall_dist(t_game *game, double angle);
 void		raycasting(t_game *game);
 t_vector2	get_sign(double angle);
 void		draw_objects(t_game *game);
 
 
-enum e_orientation	get_wall_orientation(t_fvector2 player, t_fvector2 wall);
+enum e_orientation	get_wall_orientation(t_dvector2 player, t_dvector2 wall);
 t_image			*get_image_wall(t_game	*game, t_ray ray, int *x_door);
-t_image			*get_image_non_wall(t_game *game, t_fvector2 hit, enum e_orientation orient);
+t_image			*get_image_non_wall(t_game *game, t_dvector2 hit, enum e_orientation orient);
 
 // draw
 void		draw_vert(t_game *game, int x, t_ray ray, double height);
@@ -355,22 +359,22 @@ bool		init_minimap(t_game *game);
 void		draw_rotated_image(t_image *img_dest, t_image *img_src, t_vector2 pos, float angle);
 
 // ------------ Door ----------
-t_fvector2	door_hit_ver_se(t_fvector2 hit, float step, float door_angle, float player_angle);
-t_fvector2	door_hit_hor_se(t_fvector2 hit, float step, float door_angle, float player_angle);
-t_fvector2	door_hit_ver_ne(t_fvector2 hit, float step, float door_angle, float player_angle);
-t_fvector2	door_hit_hor_ne(t_fvector2 hit, float step, float door_angle, float player_angle);
-t_fvector2	door_hit_ver_sw(t_fvector2 hit, float step, float door_angle, float player_angle);
-t_fvector2	door_hit_hor_sw(t_fvector2 hit, float step, float door_angle, float player_angle);
-t_fvector2	door_hit_ver_nw(t_fvector2 hit, float step, float door_angle, float player_angle);
-t_fvector2	door_hit_hor_nw(t_fvector2 hit, float step, float door_angle, float player_angle);
+t_dvector2	door_hit_ver_se(t_dvector2 hit, float step, float door_angle, float player_angle);
+t_dvector2	door_hit_hor_se(t_dvector2 hit, float step, float door_angle, float player_angle);
+t_dvector2	door_hit_ver_ne(t_dvector2 hit, float step, float door_angle, float player_angle);
+t_dvector2	door_hit_hor_ne(t_dvector2 hit, float step, float door_angle, float player_angle);
+t_dvector2	door_hit_ver_sw(t_dvector2 hit, float step, float door_angle, float player_angle);
+t_dvector2	door_hit_hor_sw(t_dvector2 hit, float step, float door_angle, float player_angle);
+t_dvector2	door_hit_ver_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
+t_dvector2	door_hit_hor_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
 float		get_texture_door(t_ray ray);
 void		update_doors(t_map **doors, int	nb_doors, long time);
 void		open_door(t_game *game);
 
 
-t_ray		get_object_hit(t_launch_ray object, t_game *game, t_fvector2 begin, float angle);
+t_ray		get_object_hit(t_launch_ray object, t_game *game, t_dvector2 begin, float angle);
 void		draw_objects(t_game *game);
-double		get_dist(t_fvector2 fpos, t_fvector2 wall);
+// float		get_dist(t_dvector2 fpos, t_dvector2 wall);
 
 long int	time_to_long(struct timespec *time);
 
@@ -382,6 +386,6 @@ bool		loading_screen(t_game *game);
 bool		update_loading_screen(t_game *game, t_loading *loading_screen);
 void		free_loading_screen(t_game *game);
 
-unsigned int	dark_with_dist(int color, float dark_quantity);
+// unsigned int	dark_with_dist(int color, float dark_quantity);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/10 16:22:52 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/11 14:49:26 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	key_release_hook(int key, t_game *game)
 
 void	player_move(t_player *player, double delta_time, t_map **map)
 {
-	t_fvector2 move_value;
+	t_dvector2 move_value;
 
 	if (player->view != 0)
 		player->angle += ROTATION_KEYBOARD * delta_time * player->view;

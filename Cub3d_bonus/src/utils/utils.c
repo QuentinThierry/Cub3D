@@ -6,13 +6,13 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/08 19:10:20 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/11 14:56:14 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-enum e_orientation	get_wall_orientation(t_fvector2 player, t_fvector2 wall)
+enum e_orientation	get_wall_orientation(t_dvector2 player, t_dvector2 wall)
 {
 	if ((wall.x - (int)wall.x) != 0)
 	{

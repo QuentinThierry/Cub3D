@@ -6,14 +6,14 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/11 21:41:20 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/11 21:51:07 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
 // xy (1, 1)
-t_fvector2	door_hit_ver_se(t_fvector2 hit, float step, float door_angle,
+t_dvector2	door_hit_ver_se(t_dvector2 hit, float step, float door_angle,
 						float player_angle)
 {
 	float	l;
@@ -24,8 +24,8 @@ t_fvector2	door_hit_ver_se(t_fvector2 hit, float step, float door_angle,
 	if (door_angle == 0)
 	{
 		if (hit.y + step / 2 >= ((int)hit.y + 1))
-			return ((t_fvector2){-1, -1});
-		return ((t_fvector2){hit.x + 0.5, hit.y + step / 2});
+			return ((t_dvector2){-1, -1});
+		return ((t_dvector2){hit.x + 0.5, hit.y + step / 2});
 	}
 	a = hit.y + step / 2 - (int)hit.y;
 	l = a * sin((180 - player_angle) * TO_RADIAN)
@@ -34,29 +34,29 @@ t_fvector2	door_hit_ver_se(t_fvector2 hit, float step, float door_angle,
 	{
 		x = sin(door_angle * TO_RADIAN) * l;
 		y = cos(door_angle * TO_RADIAN) * l;
-		return ((t_fvector2){(int)hit.x + 0.5 - x, (int)hit.y + y});
+		return ((t_dvector2){(int)hit.x + 0.5 - x, (int)hit.y + y});
 	}
 	a = ((int)hit.y + 1) - (hit.y + step / 2);
 	if ((90 - player_angle) + door_angle >= 90 && a > 0)
-		return ((t_fvector2){-1, -1});
+		return ((t_dvector2){-1, -1});
 	l = a * sin(player_angle * TO_RADIAN)
 		/ sin((180 - player_angle - door_angle) * TO_RADIAN);
 	if (l > 0.5 || l < 0)
-		return ((t_fvector2){-1, -1});
+		return ((t_dvector2){-1, -1});
 	x = sin(door_angle * TO_RADIAN) * l;
 	y = cos(door_angle * TO_RADIAN) * l;
-	return ((t_fvector2){(int)hit.x + 0.5 - x, (int)hit.y + 1 - y});
+	return ((t_dvector2){(int)hit.x + 0.5 - x, (int)hit.y + 1 - y});
 }
 
-t_fvector2	door_hit_hor_se(t_fvector2 hit, float step, float door_angle, float player_angle)
+t_dvector2	door_hit_hor_se(t_dvector2 hit, float step, float door_angle, float player_angle)
 {
 	float	a;
 	float	r;
 
 	if (hit.x + step / 2 >= (int)hit.x + 1)
-		return ((t_fvector2){-1, -1});
+		return ((t_dvector2){-1, -1});
 	if (door_angle == 0)
-		return ((t_fvector2){hit.x + step / 2, hit.y + 0.5});
+		return ((t_dvector2){hit.x + step / 2, hit.y + 0.5});
 	player_angle -= 90;
 	player_angle = 180 - player_angle;
 	if (door_angle < 180 - player_angle)
@@ -65,23 +65,24 @@ t_fvector2	door_hit_hor_se(t_fvector2 hit, float step, float door_angle, float p
 		a = (r * sinf(player_angle * TO_RADIAN))
 			/ sinf((180 - door_angle - player_angle) * TO_RADIAN);
 		if (a <= 0.5)
-			return ((t_fvector2){(int)hit.x + (cosf(door_angle * TO_RADIAN) * a),
+			return ((t_dvector2){(int)hit.x + (cosf(door_angle * TO_RADIAN) * a),
 				hit.y + 0.5 + sinf(door_angle * TO_RADIAN) * a});
 		if (hit.x + step < (int)hit.x + 0.5)
-			return ((t_fvector2){-1, -1});
+			return ((t_dvector2){-1, -1});
 	}
 	r = (int)(hit.x + 1) - (hit.x + step / 2);
 	player_angle = -player_angle + 180;
 	a = (r * sinf(player_angle * TO_RADIAN))
 		/ sinf((180 - door_angle - player_angle) * TO_RADIAN);
 	if (a > 0.5)
-		return ((t_fvector2){-1, -1});
-	return ((t_fvector2){(int)hit.x + 1 - (cosf(door_angle * TO_RADIAN) * a),
+		return ((t_dvector2){-1, -1});
+	return ((t_dvector2){(int)hit.x + 1 - (cosf(door_angle * TO_RADIAN) * a),
 		hit.y + 0.5 + sinf(door_angle * TO_RADIAN) * a});
 }
 
 // xy (1, -1)
-t_fvector2	door_hit_ver_ne(t_fvector2 hit, float step, float door_angle, float player_angle)
+t_dvector2	door_hit_ver_ne(t_dvector2 hit, float step, float door_angle,
+						float player_angle)
 {
 	float	l;
 	float	x;
@@ -91,8 +92,8 @@ t_fvector2	door_hit_ver_ne(t_fvector2 hit, float step, float door_angle, float p
 	if (door_angle == 0)
 	{
 		if (hit.y + step / 2 <= ((int)hit.y))
-			return ((t_fvector2){-1, -1});
-		return ((t_fvector2){hit.x + 0.5, hit.y + step / 2});
+			return ((t_dvector2){-1, -1});
+		return ((t_dvector2){hit.x + 0.5, hit.y + step / 2});
 	}
 	a = (int)hit.y + 1 - (hit.y + step / 2);
 	l = a * sin(player_angle * TO_RADIAN)
@@ -101,23 +102,23 @@ t_fvector2	door_hit_ver_ne(t_fvector2 hit, float step, float door_angle, float p
 	{
 		y = sin(door_angle * TO_RADIAN) * l;
 		x = cos(door_angle * TO_RADIAN) * l;
-		return ((t_fvector2){(int)hit.x + 0.5 - y, (int)hit.y + 1 - x});
+		return ((t_dvector2){(int)hit.x + 0.5 - y, (int)hit.y + 1 - x});
 	}
 	a = (hit.y + step / 2) - (int)hit.y;
 	if ((90 - player_angle) + door_angle < 90 && a < 0)
-		return ((t_fvector2){-1, -1});
+		return ((t_dvector2){-1, -1});
 	if ((90 - player_angle) + door_angle >= 90 && a > 0)
-		return ((t_fvector2){-1, -1});
+		return ((t_dvector2){-1, -1});
 	l = a * sin((180 - player_angle) * TO_RADIAN)
 		/ sin((180 - door_angle - (180 - player_angle)) * TO_RADIAN);
 	if (l > 0.5 || l < -0.5)
-		return ((t_fvector2){-1, -1});
+		return ((t_dvector2){-1, -1});
 	x = cos(door_angle * TO_RADIAN) * l;
 	y = sin(door_angle * TO_RADIAN) * l;
-	return ((t_fvector2){(int)hit.x + 0.5 - y, (int)hit.y + x});
+	return ((t_dvector2){(int)hit.x + 0.5 - y, (int)hit.y + x});
 }
 
-t_fvector2	door_hit_hor_ne(t_fvector2 hit, float step, float door_angle, float player_angle)
+t_dvector2	door_hit_hor_ne(t_dvector2 hit, float step, float door_angle, float player_angle)
 {
 	float	l;
 	float	x;
@@ -127,8 +128,8 @@ t_fvector2	door_hit_hor_ne(t_fvector2 hit, float step, float door_angle, float p
 	if (door_angle == 0)
 	{
 		if (hit.x + step / 2 >= ((int)hit.x + 1))
-			return ((t_fvector2){-1, -1});
-		return ((t_fvector2){hit.x + step / 2, hit.y - 0.5});
+			return ((t_dvector2){-1, -1});
+		return ((t_dvector2){hit.x + step / 2, hit.y - 0.5});
 	}
 	a = hit.x + step / 2 - (int)hit.x;
 	l = a * sin((90 - player_angle) * TO_RADIAN)
@@ -137,33 +138,33 @@ t_fvector2	door_hit_hor_ne(t_fvector2 hit, float step, float door_angle, float p
 	{
 		y = sin(door_angle * TO_RADIAN) * l;
 		x = cos(door_angle * TO_RADIAN) * l;
-		return ((t_fvector2){(int)hit.x + x, (int)hit.y - 0.5 + y});
+		return ((t_dvector2){(int)hit.x + x, (int)hit.y - 0.5 + y});
 	}
 	a = 1 - (hit.x + step / 2 - (int)hit.x);
 	if (player_angle + door_angle < 90 && a < 0)
-		return ((t_fvector2){-1, -1});
+		return ((t_dvector2){-1, -1});
 	if (player_angle + door_angle >= 90 && a > 0)
-		return ((t_fvector2){-1, -1});
+		return ((t_dvector2){-1, -1});
 	l = a * sin((180 - (90 - player_angle)) * TO_RADIAN)
 		/ sin((180 - door_angle - (180 - (90 - player_angle))) * TO_RADIAN);
 	if (l > 0.5)
-		return ((t_fvector2){-1, -1});
+		return ((t_dvector2){-1, -1});
 	x = cos(door_angle * TO_RADIAN) * l;
 	y = sin(door_angle * TO_RADIAN) * l;
-	return ((t_fvector2){(int)hit.x + 1 - x, (int)hit.y - 0.5 + y});
+	return ((t_dvector2){(int)hit.x + 1 - x, (int)hit.y - 0.5 + y});
 }
 
 // xy (-1, 1)
-t_fvector2	door_hit_ver_sw(t_fvector2 hit, float step, float door_angle,
+t_dvector2	door_hit_ver_sw(t_dvector2 hit, float step, float door_angle,
 						float player_angle)
 {
 	float	a;
 	float	r;
 
 	if (hit.y + step / 2 > (int)hit.y + 1)
-		return ((t_fvector2){-1, -1});
+		return ((t_dvector2){-1, -1});
 	if (door_angle == 0)
-		return ((t_fvector2){hit.x - 0.5, hit.y + step / 2});
+		return ((t_dvector2){hit.x - 0.5, hit.y + step / 2});
 	player_angle = 360 - player_angle;
 	if (door_angle < 180 - player_angle)
 	{
@@ -171,30 +172,30 @@ t_fvector2	door_hit_ver_sw(t_fvector2 hit, float step, float door_angle,
 		a = (r * sinf(player_angle * TO_RADIAN))
 			/ sinf((180 - door_angle - player_angle) * TO_RADIAN);
 		if (a <= 0.5)
-			return ((t_fvector2){hit.x - 0.5 - sinf(door_angle * TO_RADIAN) * a,
+			return ((t_dvector2){hit.x - 0.5 - sinf(door_angle * TO_RADIAN) * a,
 				(int)hit.y + (cosf(door_angle * TO_RADIAN) * a)});
 		if (hit.y + step < (int)hit.y + 0.5)
-			return ((t_fvector2){-1, -1});
+			return ((t_dvector2){-1, -1});
 	}
 	r = (int)(hit.y + 1) - (hit.y + step / 2);
 	player_angle = -player_angle + 180;
 	a = (r * sinf(player_angle * TO_RADIAN))
 		/ sinf((180 - door_angle - player_angle) * TO_RADIAN);
 	if (a > 0.5)
-		return ((t_fvector2){-1, -1});
-	return ((t_fvector2){hit.x - 0.5 - sinf(door_angle * TO_RADIAN) * a,
+		return ((t_dvector2){-1, -1});
+	return ((t_dvector2){hit.x - 0.5 - sinf(door_angle * TO_RADIAN) * a,
 		(int)hit.y + 1 - (cosf(door_angle * TO_RADIAN) * a)});
 }
 
-t_fvector2	door_hit_hor_sw(t_fvector2 hit, float step, float door_angle, float player_angle)
+t_dvector2	door_hit_hor_sw(t_dvector2 hit, float step, float door_angle, float player_angle)
 {
 	float	a;
 	float	r;
 
 	if (hit.x + step / 2 <= (int)hit.x)
-		return ((t_fvector2){-1, -1});
+		return ((t_dvector2){-1, -1});
 	if (door_angle == 0)
-		return ((t_fvector2){hit.x + step / 2, hit.y + 0.5});
+		return ((t_dvector2){hit.x + step / 2, hit.y + 0.5});
 	player_angle = player_angle - 90;
 	if (door_angle < 180 - player_angle)
 	{
@@ -202,32 +203,32 @@ t_fvector2	door_hit_hor_sw(t_fvector2 hit, float step, float door_angle, float p
 		a = (r * sinf(player_angle * TO_RADIAN))
 			/ sinf((180 - door_angle - player_angle) * TO_RADIAN);
 		if (a <= 0.5)
-			return ((t_fvector2){(int)hit.x + 1 - (cosf(door_angle * TO_RADIAN) * a),
+			return ((t_dvector2){(int)hit.x + 1 - (cosf(door_angle * TO_RADIAN) * a),
 				hit.y + 0.5 + sinf(door_angle * TO_RADIAN) * a});
 		if (hit.x + step > (int)hit.x + 0.5)
-			return ((t_fvector2){-1, -1});
+			return ((t_dvector2){-1, -1});
 	}
 	player_angle = 180 - player_angle;
 	r = (hit.x + step / 2) - (int)hit.x;
 	a = (r * sinf(player_angle * TO_RADIAN))
 		/ sinf((180 - door_angle - player_angle) * TO_RADIAN);
 	if (a > 0.5)
-		return ((t_fvector2){-1, -1});
-	return ((t_fvector2){(int)hit.x + (cosf(door_angle * TO_RADIAN) * a),
+		return ((t_dvector2){-1, -1});
+	return ((t_dvector2){(int)hit.x + (cosf(door_angle * TO_RADIAN) * a),
 		hit.y + 0.5 + sinf(door_angle * TO_RADIAN) * a});
 }
 
 // xy (-1, -1)
-t_fvector2	door_hit_ver_nw(t_fvector2 hit, float step, float door_angle,
+t_dvector2	door_hit_ver_nw(t_dvector2 hit, float step, float door_angle,
 						float player_angle)
 {
 	float	a;
 	float	r;
 
 	if (hit.y + step / 2 <= (int)hit.y)
-		return ((t_fvector2){-1, -1});
+		return ((t_dvector2){-1, -1});
 	if (door_angle == 0)
-		return ((t_fvector2){hit.x - 0.5, hit.y + step / 2});
+		return ((t_dvector2){hit.x - 0.5, hit.y + step / 2});
 	player_angle = player_angle - 180;
 	if (door_angle < 180 - player_angle)
 	{
@@ -235,23 +236,23 @@ t_fvector2	door_hit_ver_nw(t_fvector2 hit, float step, float door_angle,
 		a = (r * sinf(player_angle * TO_RADIAN))
 			/ sinf((180 - door_angle - player_angle) * TO_RADIAN);
 		if (a <= 0.5)
-			return ((t_fvector2){hit.x - 0.5 - sinf(door_angle * TO_RADIAN) * a,
+			return ((t_dvector2){hit.x - 0.5 - sinf(door_angle * TO_RADIAN) * a,
 				(int)hit.y + 1 - (cosf(door_angle * TO_RADIAN) * a)});
 		if (hit.y + step > (int)hit.y + 0.5)
-			return ((t_fvector2){-1, -1});
+			return ((t_dvector2){-1, -1});
 	}
 	r = (hit.y + step / 2) - (int)hit.y;
 	player_angle = 180 - player_angle;
 	a = (r * sinf(player_angle * TO_RADIAN))
 		/ sinf((180 - door_angle - player_angle) * TO_RADIAN);
 	if (a > 0.5)
-		return ((t_fvector2){-1, -1});
-	return ((t_fvector2){hit.x - 0.5 - sinf(door_angle * TO_RADIAN) * a,
+		return ((t_dvector2){-1, -1});
+	return ((t_dvector2){hit.x - 0.5 - sinf(door_angle * TO_RADIAN) * a,
 		(int)hit.y + (cosf(door_angle * TO_RADIAN) * a)});
 	
 }
 
-t_fvector2	door_hit_hor_nw(t_fvector2 hit, float step, float door_angle, float player_angle)
+t_dvector2	door_hit_hor_nw(t_dvector2 hit, float step, float door_angle, float player_angle)
 {
 	float	l;
 	float	x;
@@ -261,8 +262,8 @@ t_fvector2	door_hit_hor_nw(t_fvector2 hit, float step, float door_angle, float p
 	if (door_angle == 0)
 	{
 		if (hit.x + step / 2 <= (int)hit.x)
-			return ((t_fvector2){-1, -1});
-		return ((t_fvector2){hit.x + step / 2, hit.y - 0.5});
+			return ((t_dvector2){-1, -1});
+		return ((t_dvector2){hit.x + step / 2, hit.y - 0.5});
 	}
 	a = (int)hit.x + 1 - (hit.x + step / 2);
 	player_angle = 360 - player_angle;
@@ -272,25 +273,25 @@ t_fvector2	door_hit_hor_nw(t_fvector2 hit, float step, float door_angle, float p
 	{
 		y = sin(door_angle * TO_RADIAN) * l;
 		x = cos(door_angle * TO_RADIAN) * l;
-		return ((t_fvector2){(int)hit.x + 1 - x, (int)hit.y - 0.5 + y});
+		return ((t_dvector2){(int)hit.x + 1 - x, (int)hit.y - 0.5 + y});
 	}
 	a = hit.x + step / 2 - (int)hit.x;
 	if (player_angle + door_angle < 90 && a < 0)
-		return ((t_fvector2){-1, -1});
+		return ((t_dvector2){-1, -1});
 	if (player_angle + door_angle >= 90 && a > 0)
-		return ((t_fvector2){-1, -1});
+		return ((t_dvector2){-1, -1});
 	l = a * sin((180 - (180 - player_angle - 90)) * TO_RADIAN)
 		/ sin((180 - door_angle - 90 - player_angle) * TO_RADIAN);
 	if (l > 0.5 || l < -0.5)
-		return ((t_fvector2){-1, -1});
+		return ((t_dvector2){-1, -1});
 	x = cos(door_angle * TO_RADIAN) * l;
 	y = sin(door_angle * TO_RADIAN) * l;
-	return ((t_fvector2){(int)hit.x + x, (int)hit.y - 0.5 + y});
+	return ((t_dvector2){(int)hit.x + x, (int)hit.y - 0.5 + y});
 }
 
 float	get_texture_door(t_ray ray)
 {
-	t_fvector2	delta;
+	t_dvector2	delta;
 	double		dist;
 	bool		left_door;
 
@@ -321,6 +322,44 @@ float	get_texture_door(t_ray ray)
 	if (left_door)
 		dist = 1 - dist;
 	return (dist);
+}
+
+void	open_door(t_game *game)
+{
+	t_ray			hit;
+	struct timespec	time;
+
+	hit = get_object_hit((t_launch_ray){'\0', DOOR_CLOSE, 1}, game, game->player->f_real_pos, game->player->angle);
+	if (hit.hit.x != -1)
+	{
+		clock_gettime(CLOCK_REALTIME, &time);
+		if (((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door == 1)
+		{
+			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = -1;
+			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent -= game->delta_time * SPEEP_DOOR_OPENING;
+			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
+		}
+		else
+		{
+			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = 1;
+			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent += game->delta_time * SPEEP_DOOR_OPENING;
+			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
+		}
+	}
+	else
+	{
+		hit = get_object_hit((t_launch_ray){'\0', DOOR_OPEN, 1}, game, game->player->f_real_pos, game->player->angle);
+		if (hit.hit.x != -1)
+		{
+			clock_gettime(CLOCK_REALTIME, &time);
+			game->map[(int)hit.hit.y][(int)hit.hit.x].type |= DOOR_CLOSE;
+			game->map[(int)hit.hit.y][(int)hit.hit.x].type ^= DOOR_OPEN;
+			game->map[(int)hit.hit.y][(int)hit.hit.x].type |= WALL;
+			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = -1;
+			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent -= game->delta_time * SPEEP_DOOR_OPENING;
+			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
+		}
+	}
 }
 
 static void	_step_door_open(t_door *door, long time, t_map *map_cell)

@@ -35,12 +35,15 @@ FIX :
 <!-- - open doors and instantly turn around would not open the door for player -->
 - protect text draw outside of the screen
 - file structure for bonus and mandatory
+- collision vibration when it objet
 
 Minimap : 
 <!-- - if screen is too small, do not draw minimap -->
 <!-- - leaks -->
 
 Door :
+- show when a door is open
+<!-- - open with clic of the mouse -->
 <!-- - texture door only print the half two time -->
 <!-- - opti door open -->
 <!-- - door parsing -->

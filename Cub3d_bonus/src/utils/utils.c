@@ -6,13 +6,13 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/07 16:49:19 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/11 14:56:14 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-enum e_orientation	get_wall_orientation(t_fvector2 player, t_fvector2 wall)
+enum e_orientation	get_wall_orientation(t_dvector2 player, t_dvector2 wall)
 {
 	if ((wall.x - (int)wall.x) != 0)
 	{
@@ -118,7 +118,7 @@ bool	is_wall(char symbol, t_texture *tab, int len, bool *error)
 		{
 			if (tab[i].orient == e_wall || tab[i].orient == e_north || tab[i].orient == e_south
 					|| tab[i].orient == e_east || tab[i].orient == e_west || tab[i].orient == e_door
-					|| tab[i].orient == e_object)
+					|| tab[i].orient == e_object_wall)
 				return (true);
 			else
 				find_floor_ceiling = true;
@@ -151,7 +151,8 @@ bool	is_object(char symbol, t_texture *tab, int len)
 	i = 0;
 	while (i < len)
 	{
-		if (tab[i].symbol == symbol && tab[i].orient == e_object)
+		if (tab[i].symbol == symbol && (tab[i].orient == e_object_entity 
+			|| tab[i].orient == e_object_wall))
 			return (true);
 		i++;
 	}

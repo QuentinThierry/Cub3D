@@ -5,7 +5,10 @@ EA ./assets/wallpaper_torn_sale.xpm
 F ./assets/floor_wood_plank.xpm
 C ./assets/floor_wood_plank.xpm
 
-O_f ./assets/chatmignon.xpm
+OW_f ./assets/chatmignon.xpm
+OE_j ./assets/chandelier.xpm
+C_j ./assets/floor_light.xpm
+F_j ./assets/floor_light.xpm
 D_i ./assets/door.xpm
 c ./assets/griffure.xpm
 o ./assets/griffure.xpm
@@ -13,7 +16,7 @@ o ./assets/griffure.xpm
 MAP
 1111111111111c1111111111111
 1000000i0000000001000000001
-1000000c000000000i00000000c
+1000000c000j00000i00000000c
 100000010000000001000000001
 11111111111i111c11111i11111
 1111c0000000000001000000001

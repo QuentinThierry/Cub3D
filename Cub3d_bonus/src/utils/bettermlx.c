@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 18:51:49 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/25 20:37:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/11 14:56:14 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_image	*btmlx_new_image(void *mlx_ptr, t_vector2 size)
 t_image	*resize_img(void *mlx, t_image *src,
 					t_vector2 dst_size)
 {
-	t_fvector2	ratio;
+	t_dvector2	ratio;
 	t_image		*dst;
 	int			x;
 	int			y;

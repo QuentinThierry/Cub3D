@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/08 15:41:57 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/08 19:14:43 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,13 +243,19 @@ bool	is_existing(t_game *game, int index, char symbol, enum e_orientation orient
 				|| orient == e_west || orient == e_wall)
 			{
 				if (game->filename[i].orient == e_floor || game->filename[i].orient == e_ceiling 
-					|| game->filename[i].orient == e_door || game->filename[i].orient == e_object)
+					|| game->filename[i].orient == e_door || game->filename[i].orient == e_object_entity
+					|| game->filename[i].orient == e_object_wall)
 					return (true);
 					
 			}
-			else if ((orient == e_floor || orient == e_ceiling || orient == e_door || orient == e_object)
-				&& (game->filename[i].orient == e_north || game->filename[i].orient == e_east || game->filename[i].orient == e_south
-				|| game->filename[i].orient == e_west || game->filename[i].orient == e_wall))
+			else if ((orient == e_object_entity && game->filename[i].orient == e_object_wall)
+				|| (orient == e_object_wall && game->filename[i].orient == e_object_entity))
+				return (true);
+			else if ((orient == e_floor || orient == e_ceiling || orient == e_door
+				|| orient == e_object_entity || orient == e_object_wall) 
+				&& (game->filename[i].orient == e_north || game->filename[i].orient == e_east 
+				|| game->filename[i].orient == e_south || game->filename[i].orient == e_west 
+				|| game->filename[i].orient == e_wall))
 				return (true);
 		}
 		i++;
@@ -376,8 +382,13 @@ static bool	_cmp_texture(char *line, t_game *game, int i, bool *is_end)
 			return (_find_texture(game, line + i + 3, game->nb_file, e_ceiling));
 		else if (ft_strncmp(line + i, "D_", 2) == 0)
 			return (_find_texture(game, line + i + 3, game->nb_file, e_door));
-		else if (ft_strncmp(line + i, "O_", 2) == 0)
-			return (_find_texture(game, line + i + 3, game->nb_file, e_object));
+	}
+	else if (next_wsp - i == 4)
+	{
+		if (ft_strncmp(line + i, "OE_", 3) == 0)
+			return (_find_texture(game, line + i + 4, game->nb_file, e_object_entity));
+		else if (ft_strncmp(line + i, "OW_", 3) == 0)
+			return (_find_texture(game, line + i + 4, game->nb_file, e_object_wall));
 	}
 	return (printf("Error : invalid identifier\n"), false);
 }

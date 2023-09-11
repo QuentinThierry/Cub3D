@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/10 16:24:31 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/11 16:17:47 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 int	key_press_hook(int key, t_game *game)
 {
-	t_ray			hit;
-	struct timespec	time;
 
 	if (key == 65307 ) // esc
 		ft_close(game);
@@ -38,40 +36,7 @@ int	key_press_hook(int key, t_game *game)
 	else if (key == '=' || key == '+' || key == 65451)
 		game->minimap->zoom_dir += 1;
 	else if (key == ' ')
-	{
-		hit = get_object_hit((t_launch_ray){'\0', DOOR_CLOSE, 10}, game, game->player->f_real_pos, game->player->angle);
-		if (hit.hit.x != -1)
-		{
-			clock_gettime(CLOCK_REALTIME, &time);
-			if (((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door == 1)
-			{
-				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = -1;
-				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent -= game->delta_time * SPEEP_DOOR_OPENING;
-				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
-			}
-			else
-			{
-				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = 1;
-				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent += game->delta_time * SPEEP_DOOR_OPENING;
-				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
-			}
-		}
-		else
-		{
-			hit = get_object_hit((t_launch_ray){'\0', DOOR_OPEN, 10}, game, game->player->f_real_pos, game->player->angle);
-			if (hit.hit.x != -1)
-			{
-				clock_gettime(CLOCK_REALTIME, &time);
-				game->map[(int)hit.hit.y][(int)hit.hit.x].type |= DOOR_CLOSE;
-				game->map[(int)hit.hit.y][(int)hit.hit.x].type ^= DOOR_OPEN;
-				game->map[(int)hit.hit.y][(int)hit.hit.x].type |= WALL;
-				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = -1;
-				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent -= game->delta_time * SPEEP_DOOR_OPENING;
-				((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
-			}
-	
-		}
-	}
+		open_door(game);
 	return (0);
 }
 
@@ -100,7 +65,7 @@ int	key_release_hook(int key, t_game *game)
 
 void	player_move(t_player *player, double delta_time, t_map **map)
 {
-	t_fvector2 move_value;
+	t_dvector2 move_value;
 
 	if (player->view != 0)
 		player->angle += ROTATION_KEYBOARD * delta_time * player->view;
@@ -129,7 +94,7 @@ void	player_move(t_player *player, double delta_time, t_map **map)
 	}
 }
 
-int mouse_hook(int x, int y, t_game *game)
+int	mouse_hook(int x, int y, t_game *game)
 {
 	game->player->angle -= (double)(game->player->mouse_pos.x - x) / ROTATION_MOUSE;
 	if (x != WIN_X / 2 || y != WIN_Y / 2)
@@ -146,5 +111,12 @@ int	mouse_leave(t_game *game)
 	mlx_mouse_move(game->mlx_ptr, game->win, WIN_X / 2, WIN_Y / 2);
 	game->player->mouse_pos.x = WIN_X / 2;
 	game->player->mouse_pos.y = WIN_Y / 2;
+	return (0);
+}
+
+int	mouse_click(int button, int x, int y,t_game *game)
+{
+	if (button == 1)
+		open_door(game);
 	return (0);
 }

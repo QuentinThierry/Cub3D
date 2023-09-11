@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/08 16:22:26 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/11 15:09:06 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,41 @@ static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, in
 }
 
 __attribute__((always_inline))
-static inline void	draw_pixel_line(t_game *game, t_fvector2 map_point, t_fvector2 step_dir, int y_screen)
+static inline float	get_dist(t_dvector2 fpos, t_dvector2 wall)
+{
+	return (sqrtf((wall.x - fpos.x) * (wall.x - fpos.x) + (wall.y - fpos.y) * (wall.y - fpos.y)));
+}
+
+__attribute__((always_inline))
+static inline unsigned int	dark_with_dist(unsigned int color, float dark_quantity)
+{
+	unsigned char	red;
+	unsigned char	green;
+	unsigned char	blue;
+	float			color_quantity;
+
+	color_quantity = 1 - dark_quantity;
+	red = ((color >> 16) & 0xFF) * color_quantity;
+	red += ((DARK_COLOR >> 16) & 0xff) * dark_quantity;
+	green = ((color >> 8) & 0xFF) * color_quantity;
+	green += ((DARK_COLOR >> 8) & 0xff) * dark_quantity;
+	blue = (color & 0xFF) * color_quantity;
+	blue += (DARK_COLOR & 0xff) * dark_quantity;
+	return (red << 16 | green << 8 | blue);
+}
+
+__attribute__((always_inline))
+static inline void	draw_pixel_line(t_game *game, t_dvector2 map_point, t_fvector2 step_dir, int y_screen)
 {
 	int				i;
 	const t_image	*game_image = game->image;
 	t_vector2		last_map_pos;
 	t_image			*image;
 	t_image			*image2;
+	float			dark_quantity;
+	int				color_ceiling;
+	int				color_floor;
+	float			dist;
 
 	i = 0;
 	last_map_pos.x = -(int)map_point.x;
@@ -54,15 +82,39 @@ static inline void	draw_pixel_line(t_game *game, t_fvector2 map_point, t_fvector
 				image = get_image_non_wall(game, map_point, e_ceiling);
 				image2 = get_image_non_wall(game, map_point, e_floor);
 			}
+			dist = get_dist(game->player->f_real_pos, map_point);
+			if (dist >= DIST_MIN_DARK)
+			{
+				dark_quantity = (-DIST_MIN_DARK + dist) / (DIST_MAX_DARK - DIST_MIN_DARK);
+				if (dark_quantity >= 1)
+				{
+					color_ceiling = DARK_COLOR;
+					color_floor = DARK_COLOR;
+				}
+				else
+				{
+					color_ceiling = dark_with_dist(get_color_at(image->addr, image->size_line,
+						(t_vector2){(map_point.x - last_map_pos.x) * image->size.x,
+						(map_point.y - last_map_pos.y) * image->size.y}), dark_quantity);
+					color_floor = dark_with_dist(get_color_at(image2->addr, image2->size_line,
+						(t_vector2){(map_point.x - last_map_pos.x) * image2->size.x,
+						(map_point.y - last_map_pos.y) * image2->size.y}), dark_quantity);
+				}
+			}
+			else
+			{
+				dark_quantity = 0;
+				color_ceiling = get_color_at(image->addr, image->size_line,
+					(t_vector2){(map_point.x - last_map_pos.x) * image->size.x,
+					(map_point.y - last_map_pos.y) * image->size.y});
+				color_floor = get_color_at(image2->addr, image2->size_line,
+					(t_vector2){(map_point.x - last_map_pos.x) * image2->size.x,
+					(map_point.y - last_map_pos.y) * image2->size.y});
+			}
 			my_mlx_pixel_put(game_image->addr, game_image->size_line,
-				(t_vector2){i, WIN_Y / 2 - y_screen},
-				get_color_at(image->addr, image->size_line,
-				(t_vector2){(map_point.x - last_map_pos.x) * image->size.x,
-				(map_point.y - last_map_pos.y) * image->size.y}));
+				(t_vector2){i, WIN_Y / 2 - y_screen}, color_ceiling);
 			my_mlx_pixel_put(game_image->addr, game_image->size_line,
-				(t_vector2){i, WIN_Y / 2 + y_screen - 1}, get_color_at(image2->addr, image2->size_line,
-				(t_vector2){(map_point.x - last_map_pos.x) * image2->size.x,
-				(map_point.y - last_map_pos.y) * image2->size.y}));
+				(t_vector2){i, WIN_Y / 2 + y_screen - 1}, color_floor);
 		}
 		map_point.x += step_dir.x; 
 		map_point.y += step_dir.y;
@@ -75,15 +127,15 @@ void	draw_line_ceiling(t_game *game, t_fvector2 xdist_yscreen, t_fvector2 cos_si
 	float				dist_to_left;
 	float				h;
 	t_fvector2			a;
-	t_fvector2			map_point;
-	t_fvector2			left_p;
+	t_dvector2			map_point;
+	t_dvector2			left_p;
 
-	dist_to_left = fabs((game->constants[TAN_HALF_FOV]) * xdist_yscreen.x);
+	dist_to_left = fabsf(game->constants[TAN_HALF_FOV] * xdist_yscreen.x);
 	h = xdist_yscreen.x / game->constants[COS_HALF_FOV];
 	left_p.x = cos_sin.x * h;
 	left_p.y = cos_sin.y * h;
-	a.y = ((hit.y - left_p.y) / dist_to_left) * fabs(dist_to_left * 2) / WIN_X;
-	a.x = ((hit.x - left_p.x) / dist_to_left) * fabs(dist_to_left * 2) / WIN_X;
+	a.y = ((hit.y - left_p.y) / dist_to_left) * fabsf(dist_to_left * 2) / WIN_X;
+	a.x = ((hit.x - left_p.x) / dist_to_left) * fabsf(dist_to_left * 2) / WIN_X;
 	map_point.x = game->player->f_real_pos.x + left_p.x;
 	map_point.y = game->player->f_real_pos.y + left_p.y;
 	draw_pixel_line(game, map_point, a, xdist_yscreen.y);
@@ -100,10 +152,10 @@ void	draw_ceiling(t_game *game)
 
 	y_screen = WIN_Y / 2.;
 
-	cos_sin2.x = cos((game->player->angle - 90 - FOV / 2.) * TO_RADIAN);
-	cos_sin2.y = sin((game->player->angle - 90 - FOV / 2.) * TO_RADIAN);
-	cos_sin1.x = cos((game->player->angle - 90) * TO_RADIAN);
-	cos_sin1.y = sin((game->player->angle - 90) * TO_RADIAN);
+	cos_sin2.x = cosf((game->player->angle - 90 - FOV / 2.) * TO_RADIAN);
+	cos_sin2.y = sinf((game->player->angle - 90 - FOV / 2.) * TO_RADIAN);
+	cos_sin1.x = cosf((game->player->angle - 90) * TO_RADIAN);
+	cos_sin1.y = sinf((game->player->angle - 90) * TO_RADIAN);
 	while (y_screen > 0)
 	{
 		x_dist = (0.5 * (game->constants[0] / y_screen));

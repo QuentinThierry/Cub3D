@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:13:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/08 16:43:41 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/11 14:42:28 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ t_image	*get_image_wall(t_game *game, t_ray ray, int *x_door)
 	}
 }
 
-t_image	*get_image_non_wall(t_game *game, t_fvector2 hit, enum e_orientation orient)
+t_image	*get_image_non_wall(t_game *game, t_dvector2 hit, enum e_orientation orient)
 {
 	t_sprite	*sprite;
 	t_image		*image;

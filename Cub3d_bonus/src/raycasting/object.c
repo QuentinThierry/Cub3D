@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:39:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/08 19:57:01 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/11 15:23:22 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,29 @@ static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, in
 	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
 }
 
+__attribute__((always_inline))
+static inline unsigned int	dark_with_dist(int color, float dark_quantity)
+{
+	unsigned char	red;
+	unsigned char	green;
+	unsigned char	blue;
+	float			color_quantity;
+
+	if (dark_quantity >= 1)
+		return (DARK_COLOR);
+	if (dark_quantity == 0)
+		return (color);
+	color_quantity = 1 - dark_quantity;
+	red = ((color >> 16) & 0xFF) * color_quantity;
+	red += ((DARK_COLOR >> 16) & 0xff) * dark_quantity;
+	green = ((color >> 8) & 0xFF) * color_quantity;
+	green += ((DARK_COLOR >> 8) & 0xff) * dark_quantity;
+	blue = (color & 0xFF) * color_quantity;
+	blue += (DARK_COLOR & 0xff) * dark_quantity;
+	// printf("red : %x green : %x	blue : %x\n", red, green, blue);
+	return (red << 16 | green << 8 | blue);
+}
+
 void	draw_object_projection(t_game *game, t_object *object, float object_dist, int x_pos)
 {
 	float		height;
@@ -38,6 +61,7 @@ void	draw_object_projection(t_game *game, t_object *object, float object_dist, i
 	float		y_ratio;
 	float		size_ratio;
 	t_pixel32	color;
+	float		dark_quantity;
 
 	if (object_dist <= 0. || object_dist <= -0.)
 		return ;
@@ -52,6 +76,10 @@ void	draw_object_projection(t_game *game, t_object *object, float object_dist, i
 
 	x_ratio = image->size.x / width;
 	y_ratio = image->size.y / height;
+	if (object->dist >= DIST_MIN_DARK)
+		dark_quantity = (-DIST_MIN_DARK + object->dist) / (DIST_MAX_DARK - DIST_MIN_DARK);
+	else
+		dark_quantity = 0;
 	x = 0;
 	if (x_pos < 0)
 		x = -x_pos;
@@ -81,7 +109,7 @@ void	draw_object_projection(t_game *game, t_object *object, float object_dist, i
 
 			color = get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img});
 			if (color != GREEN_SCREEN)
-				my_mlx_pixel_put(game->image->addr, game->image->size_line, (t_vector2){x + x_pos, y_pos + y}, color);
+				my_mlx_pixel_put(game->image->addr, game->image->size_line, (t_vector2){x + x_pos, y_pos + y}, dark_with_dist(color, dark_quantity));
 			y++;
 		}
 		x++;
@@ -91,7 +119,7 @@ void	draw_object_projection(t_game *game, t_object *object, float object_dist, i
 
 void	find_object_projection(t_game *game, t_object *object, t_player *player)
 {
-	t_fvector2	relative_pos;
+	t_dvector2	relative_pos;
 	float		angle;
 	float		arctan2;
 	float		player_angle;
@@ -100,7 +128,7 @@ void	find_object_projection(t_game *game, t_object *object, t_player *player)
 	player_angle = player->angle;
 	relative_pos.x = (object->map_pos.x - player->f_real_pos.x);
 	relative_pos.y = (object->map_pos.y - player->f_real_pos.y);
-	arctan2 = (atan2(-relative_pos.y, relative_pos.x) * 180 / M_PI);
+	arctan2 = (atan2f(-relative_pos.y, relative_pos.x) * 180 / M_PI);
 
 	if (arctan2 > 0) // positive
 	{
@@ -120,23 +148,23 @@ void	find_object_projection(t_game *game, t_object *object, t_player *player)
 		else if (player_angle >= 90 && player_angle < 180) // 90-180
 			angle = (FOV / 2.) - (player_angle - 90) - arctan2;
 		else if (player_angle >= 180 && player_angle < 270) // 180-270
-			angle = fabs(arctan2) - (player_angle - 90 - FOV / 2.);
+			angle = fabsf(arctan2) - (player_angle - 90 - FOV / 2.);
 		else // 270 - 360
-			angle = fabs(arctan2) - (player_angle - 90 - FOV / 2.);
+			angle = fabsf(arctan2) - (player_angle - 90 - FOV / 2.);
 	}
 	if (angle < FOV / 2.)
 		angle = -(FOV / 2. - angle);
 	else
 		angle = angle - FOV / 2.;
 
-	x_screen = tan(angle * TO_RADIAN) * game->constants[0];
-	draw_object_projection(game, object, object->dist * cos(angle * TO_RADIAN), x_screen + WIN_X / 2);
+	x_screen = WIN_X / 2. + tanf(angle * TO_RADIAN) * game->constants[0];
+	draw_object_projection(game, object, object->dist * cosf(angle * TO_RADIAN), x_screen);
 }
 
 static void	fill_object_dist(t_game *game)
 {
 	int			i;
-	t_fvector2	relative_pos;
+	t_dvector2	relative_pos;
 	
 	i = 0;
 	while (i < game->nb_objects)

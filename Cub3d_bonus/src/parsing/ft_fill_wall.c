@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/08 17:47:06 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/11 14:52:22 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ bool fill_object_and_doors(t_game *game)
 			{
 				game->object_array[cpt_objects] = game->map[y][x].arg;
 				game->object_array[cpt_objects]->map_pos =
-					(t_fvector2){x + 0.5f, y + 0.5f};
+					(t_dvector2){x + 0.5f, y + 0.5f};
 				cpt_objects++;
 			}
 			else if ((game->map[y][x].type & DOOR_CLOSE) == DOOR_CLOSE)
@@ -113,10 +113,12 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			{
 				game->nb_objects++;
 				map[i].type |= OBJECT;
-				map[i].type ^= WALL;
-				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_floor);
-				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_ceiling);
-				map[i].sprite[e_object_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_object);
+				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file
+					, map[i].symbol, e_floor);
+				map[i].sprite[e_ceiling] = fill_texture(game->filename
+					, game->nb_file, map[i].symbol, e_ceiling);
+				map[i].sprite[e_object_image] = fill_texture(game->filename
+					, game->nb_file, map[i].symbol, e_object_wall);
 				map[i].arg = ft_calloc(1, sizeof(t_object));
 				if (map[i].arg == NULL)
 					return (perror("Error"), false);
@@ -133,6 +135,20 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			map[i].sprite[e_west].index = -1;
 			map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_floor);
 			map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_ceiling);
+			if (is_object(line[i], game->filename, game->nb_file))
+			{
+				game->nb_objects++;
+				map[i].type |= OBJECT;
+				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file
+					, map[i].symbol, e_floor);
+				map[i].sprite[e_ceiling] = fill_texture(game->filename
+					, game->nb_file, map[i].symbol, e_ceiling);
+				map[i].sprite[e_object_image] = fill_texture(game->filename
+					, game->nb_file, map[i].symbol, e_object_entity);
+				map[i].arg = ft_calloc(1, sizeof(t_object));
+				if (map[i].arg == NULL)
+					return (perror("Error"), false);
+			}
 		}
 		i++;
 	}

@@ -1,9 +1,10 @@
 NO ./assets/smiley.xpm
 SO ./assets/cobble.xpm
-WE ./assets/blue.xpm
-EA ./assets/wood_light.xpm
-F 220,100,0
-C 225,30,0
+WE ./assets/smiley.xpm
+EA ./assets/cobble.xpm
+F ./assets/floor_wood_plank.xpm
+C ./assets/floor_wood_plank.xpm
+MAP
 1111111111111111111111111111111111
 1000000000000000000000000000000001
 1000000000000000000000000000000001

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/11 14:56:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/11 15:13:01 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,18 @@
 static t_ray	_get_wall_hit_se(t_dvector2 fpos,
 								t_map **map, float angle) // change game to game->time ?
 {
-	t_dvector2	step;
+	t_fvector2	step;
 	t_dvector2	comp;
 	t_vector2	map_pos;
 	t_dvector2	door;
 	float		player_angle;
 
 	player_angle = angle;
-	angle = fabs(tan(angle * TO_RADIAN));
+	angle = fabsf(tanf(angle * TO_RADIAN));
 	map_pos = (t_vector2){(int)fpos.x + 1, (int)fpos.y + 1};
 	comp.x = fpos.x + fabs(fpos.y - map_pos.y) * angle;
 	comp.y = fpos.y + fabs(fpos.x - map_pos.x) / angle;
-	step = (t_dvector2){angle, 1 / angle};
+	step = (t_fvector2){angle, 1 / angle};
 	while (true)
 	{
 		if (map_pos.y >= comp.y)
@@ -75,18 +75,18 @@ static t_ray	_get_wall_hit_se(t_dvector2 fpos,
 static t_ray	_get_wall_hit_ne(t_dvector2 fpos,
 								t_map **map, float angle)
 {
-	t_dvector2	step;
+	t_fvector2	step;
 	t_dvector2	comp;
 	t_dvector2	door;
 	t_vector2	map_pos;
 	float		player_angle;
 
 	player_angle = angle;
-	angle = fabs(tan(angle * TO_RADIAN));
+	angle = fabsf(tanf(angle * TO_RADIAN));
 	map_pos = (t_vector2){(int)fpos.x + 1, (int)fpos.y};
 	comp.x = fpos.x + fabs(fpos.y - map_pos.y) * angle;
 	comp.y = fpos.y + fabs(fpos.x - map_pos.x) / angle * -1;
-	step = (t_dvector2){angle, 1 / angle * -1};
+	step = (t_fvector2){angle, 1 / angle * -1};
 	while (true)
 	{
 		if (map_pos.y <= comp.y)
@@ -135,18 +135,18 @@ static t_ray	_get_wall_hit_ne(t_dvector2 fpos,
 static t_ray	_get_wall_hit_sw(t_dvector2 fpos,
 								t_map **map, float angle)
 {
-	t_dvector2	step;
+	t_fvector2	step;
 	t_dvector2	comp;
 	t_dvector2	door;
 	t_vector2	map_pos;
 	float		player_angle;
 
 	player_angle = angle;
-	angle = fabs(tan(angle * TO_RADIAN));
+	angle = fabsf(tanf(angle * TO_RADIAN));
 	map_pos = (t_vector2){(int)fpos.x, (int)fpos.y + 1};
 	comp.x = fpos.x + fabs(fpos.y - map_pos.y) * angle * -1;
 	comp.y = fpos.y + fabs(fpos.x - map_pos.x) / angle;
-	step = (t_dvector2){angle * -1, 1 / angle};
+	step = (t_fvector2){angle * -1, 1 / angle};
 	while (true)
 	{
 		if (map_pos.y >= comp.y)
@@ -194,18 +194,18 @@ static t_ray	_get_wall_hit_sw(t_dvector2 fpos,
 static t_ray	_get_wall_hit_nw(t_dvector2 fpos,
 								t_map **map, float angle)
 {
-	t_dvector2	step;
+	t_fvector2	step;
 	t_dvector2	comp;
 	t_dvector2	door;
 	t_vector2	map_pos;
 	float		player_angle;
 
 	player_angle = angle;
-	angle = fabs(tan(angle * TO_RADIAN));
+	angle = fabsf(tanf(angle * TO_RADIAN));
 	map_pos = (t_vector2){(int)fpos.x, (int)fpos.y};
 	comp.x = fpos.x + fabs(fpos.y - map_pos.y) * angle * -1;
 	comp.y = fpos.y + fabs(fpos.x - map_pos.x) / angle * -1;
-	step = (t_dvector2){angle * -1, 1 / angle * -1};
+	step = (t_fvector2){angle * -1, 1 / angle * -1};
 	while (true)
 	{
 		
@@ -265,5 +265,4 @@ t_ray	get_wall_hit(t_dvector2 fpos, t_map **map, float angle)
 		return (_get_wall_hit_sw(fpos, map, angle));
 	else
 		return (_get_wall_hit_nw(fpos, map, angle));
-	return ((t_ray){});
 }

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 01:05:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/11 14:48:54 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/11 15:10:36 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,11 @@ void	check_colliding(t_player *player, t_dvector2 new_pos, t_map **map)
 	dir_y = ((player->f_real_pos.y - new_pos.y) > 0) * 2 -1;
 	new_pos.x -= DIST_TO_WALL * dir_x;
 	new_pos.y -= DIST_TO_WALL * dir_y;
-	// player->f_real_pos.x += DIST_TO_WALL;
 	player->f_real_pos = get_collision(player->f_real_pos, map, new_pos);
-	// player->f_real_pos.x -= DIST_TO_WALL;
 	if (player->f_real_pos.x == new_pos.x)
 		player->f_real_pos.x += DIST_TO_WALL * dir_x;
 	if (player->f_real_pos.y == new_pos.y)
 		player->f_real_pos.y += DIST_TO_WALL * dir_y;
-
-
 }
 
 static t_dvector2	slide_wall_x(t_dvector2 fpos, t_map **map, t_dvector2 dest)
@@ -267,5 +263,4 @@ inline t_dvector2	get_collision(t_dvector2 fpos, t_map **map, t_dvector2 new_pos
 		return (_get_collision_sw(fpos, map, new_pos));
 	else
 		return (_get_collision_nw(fpos, map, new_pos));
-	return ((t_dvector2){0});
 }

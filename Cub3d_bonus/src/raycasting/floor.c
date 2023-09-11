@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/11 14:58:12 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/11 15:09:06 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,10 @@ static inline unsigned int	dark_with_dist(unsigned int color, float dark_quantit
 	blue = (color & 0xFF) * color_quantity;
 	blue += (DARK_COLOR & 0xff) * dark_quantity;
 	return (red << 16 | green << 8 | blue);
-	// return (color);
 }
 
 __attribute__((always_inline))
-static inline void	draw_pixel_line(t_game *game, t_dvector2 map_point, t_dvector2 step_dir, int y_screen)
+static inline void	draw_pixel_line(t_game *game, t_dvector2 map_point, t_fvector2 step_dir, int y_screen)
 {
 	int				i;
 	const t_image	*game_image = game->image;
@@ -123,20 +122,20 @@ static inline void	draw_pixel_line(t_game *game, t_dvector2 map_point, t_dvector
 	}
 }
 
-void	draw_line_ceiling(t_game *game, t_dvector2 xdist_yscreen, t_dvector2 cos_sin, t_dvector2 hit)
+void	draw_line_ceiling(t_game *game, t_fvector2 xdist_yscreen, t_fvector2 cos_sin, t_fvector2 hit)
 {
 	float				dist_to_left;
 	float				h;
-	t_dvector2			a;
+	t_fvector2			a;
 	t_dvector2			map_point;
 	t_dvector2			left_p;
 
-	dist_to_left = fabs((game->constants[TAN_HALF_FOV]) * xdist_yscreen.x);
+	dist_to_left = fabsf(game->constants[TAN_HALF_FOV] * xdist_yscreen.x);
 	h = xdist_yscreen.x / game->constants[COS_HALF_FOV];
 	left_p.x = cos_sin.x * h;
 	left_p.y = cos_sin.y * h;
-	a.y = ((hit.y - left_p.y) / dist_to_left) * fabs(dist_to_left * 2) / WIN_X;
-	a.x = ((hit.x - left_p.x) / dist_to_left) * fabs(dist_to_left * 2) / WIN_X;
+	a.y = ((hit.y - left_p.y) / dist_to_left) * fabsf(dist_to_left * 2) / WIN_X;
+	a.x = ((hit.x - left_p.x) / dist_to_left) * fabsf(dist_to_left * 2) / WIN_X;
 	map_point.x = game->player->f_real_pos.x + left_p.x;
 	map_point.y = game->player->f_real_pos.y + left_p.y;
 	draw_pixel_line(game, map_point, a, xdist_yscreen.y);
@@ -145,24 +144,24 @@ void	draw_line_ceiling(t_game *game, t_dvector2 xdist_yscreen, t_dvector2 cos_si
 // if odd WIN_Y, draw 1 floor pixel more than ceiling
 void	draw_ceiling(t_game *game)
 {
-	t_dvector2	hit;
-	t_dvector2	cos_sin1;
-	t_dvector2	cos_sin2;
+	t_fvector2	hit;
+	t_fvector2	cos_sin1;
+	t_fvector2	cos_sin2;
 	int			y_screen;
 	float		x_dist;
 
 	y_screen = WIN_Y / 2.;
 
-	cos_sin2.x = cos((game->player->angle - 90 - FOV / 2.) * TO_RADIAN);
-	cos_sin2.y = sin((game->player->angle - 90 - FOV / 2.) * TO_RADIAN);
-	cos_sin1.x = cos((game->player->angle - 90) * TO_RADIAN);
-	cos_sin1.y = sin((game->player->angle - 90) * TO_RADIAN);
+	cos_sin2.x = cosf((game->player->angle - 90 - FOV / 2.) * TO_RADIAN);
+	cos_sin2.y = sinf((game->player->angle - 90 - FOV / 2.) * TO_RADIAN);
+	cos_sin1.x = cosf((game->player->angle - 90) * TO_RADIAN);
+	cos_sin1.y = sinf((game->player->angle - 90) * TO_RADIAN);
 	while (y_screen > 0)
 	{
 		x_dist = (0.5 * (game->constants[0] / y_screen));
 		hit.x = cos_sin1.x * x_dist;
 		hit.y = cos_sin1.y * x_dist;
-		draw_line_ceiling(game, (t_dvector2){x_dist, y_screen}, cos_sin2, hit);
+		draw_line_ceiling(game, (t_fvector2){x_dist, y_screen}, cos_sin2, hit);
 		y_screen--;
 	}
 }

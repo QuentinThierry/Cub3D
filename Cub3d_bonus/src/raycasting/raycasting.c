@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/11 14:51:49 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/11 15:16:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static inline float	get_dist(t_dvector2 fpos, t_dvector2 wall)
 	return (sqrtf((wall.x - fpos.x) * (wall.x - fpos.x) + (wall.y - fpos.y) * (wall.y - fpos.y)));
 }
 
-t_vector2	get_sign(double angle)
+t_vector2	get_sign(float angle)
 {
 	t_vector2	sign;
 
@@ -37,7 +37,7 @@ void	raycasting(t_game *game)
 {
 	int			x;
 	double		height;
-	double		angle;
+	float		angle;
 	t_ray		ray;
 	t_dvector2	fpos;
 	float		dist; 
@@ -47,24 +47,23 @@ void	raycasting(t_game *game)
 	x = -WIN_X / 2;
 	while (x < WIN_X / 2)
 	{
-		angle = atan(x / game->constants[0]) * 180 / M_PI;
-		// printf("angle : %f\n", angle);
+		angle = atanf(x / game->constants[0]) * 180 / M_PI;
 		if (game->player->angle + angle >= 360)
 			angle = angle - 360;
 		if (game->player->angle + angle < 0)
 			angle = angle + 360;
 		ray = get_wall_hit(fpos, game->map, game->player->angle + angle);
-		if (ray.hit.x == -1)
-			height = 0;
-		else
-		{
-			dist = get_dist(game->player->f_real_pos, ray.hit);
-			game->dist_tab[x + WIN_X / 2] = dist;
-			dist *= cos(angle * TO_RADIAN);
-			if (dist == 0)
-				dist = 0.01;
-			height = 1 / dist * game->constants[0];		//div par 0 if sin == 0
-		}
+		// if (ray.hit.x == -1)
+		// 	height = 0;
+		// else
+		// {
+		dist = get_dist(game->player->f_real_pos, ray.hit);
+		game->dist_tab[x + WIN_X / 2] = dist;
+		dist *= cosf(angle * TO_RADIAN);
+		if (dist == 0)
+			dist = 0.01;
+		height = 1 / dist * game->constants[0];
+		// }
 		draw_vert(game, x + WIN_X / 2, ray, height);
 		x++;
 	}

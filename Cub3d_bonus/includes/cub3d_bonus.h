@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/11 14:57:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/11 15:24:19 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ typedef	struct s_player
 {
 	t_dvector2 	f_real_pos;
 	t_vector2 	mouse_pos;
-	double		angle;
+	float		angle;
 	t_vector2	dir;
 	int			view;
 	int			speed;
@@ -265,7 +265,7 @@ typedef struct s_game
 	t_minimap		*minimap;
 	double			delta_time;
 	long int		time;
-	const double	*constants;
+	const float	*constants;
 	int				nb_objects;
 	t_object		**object_array;
 	int				nb_doors;
@@ -332,7 +332,7 @@ void		check_colliding(t_player *player, t_dvector2 new_pos, t_map **map);
 t_ray		get_wall_hit(t_dvector2 fpos, t_map **map, float angle);
 double		get_wall_dist(t_game *game, double angle);
 void		raycasting(t_game *game);
-t_vector2	get_sign(double angle);
+t_vector2	get_sign(float angle);
 void		draw_objects(t_game *game);
 
 

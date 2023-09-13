@@ -3,11 +3,11 @@ ADD :
 - [X] random for similar sprites for walls
 - [X] organise texture
 - [X] objects
+- [X] max view distance
 - [ ] sounds (ambiance music)
 - [ ] exit + enigmes
 - [ ] random events (lightning, planks cracks, little girl)
 - [ ] menu settings
-- [ ] max view distance
 
 Obligation :
 - [x] minimap
@@ -33,9 +33,9 @@ FIX :
 <!-- - texture floor and ceiling beug -->
 <!-- - animation for object -->
 <!-- - open doors and instantly turn around would not open the door for player -->
+<!-- - collision vibration when hit object -->
 - protect text draw outside of the screen
 - file structure for bonus and mandatory
-- collision vibration when it objet
 
 Minimap : 
 <!-- - if screen is too small, do not draw minimap -->

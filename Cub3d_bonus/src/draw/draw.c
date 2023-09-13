@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/13 16:48:46 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/13 20:34:00 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 			x_img = (ray.hit.y - (int)ray.hit.y) * image->size.x;
 		if (orient == e_west || orient == e_south)
 			x_img = image->size.x - x_img - 1;
-		if (x_door != 0)
+		if (x_door != -1)
 			x_img = x_door;
 	}
 	addr = game->image->addr;

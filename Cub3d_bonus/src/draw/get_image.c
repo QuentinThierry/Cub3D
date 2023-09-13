@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_image.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:13:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/11 14:42:28 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/13 21:14:03 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_image	*get_image_wall(t_game *game, t_ray ray, int *x_door)
 	t_vector2	wall;
 	float		dist;
 	
-	*x_door = 0;
+	*x_door = -1;
 	dist = -1;
 	wall.x = (int)ray.hit.x;
 	wall.y = (int)ray.hit.y;
@@ -70,21 +70,53 @@ t_image	*get_image_wall(t_game *game, t_ray ray, int *x_door)
 
 	if (ray.orient == e_south)
 	{
-		if ((game->map[wall.y - 1][wall.x].type & DOOR_CLOSE) == DOOR_CLOSE)
-			dist = get_texture_door(ray);
 		sprite = &(game->map[wall.y - 1][wall.x].sprite[ray.orient]);
+		if ((game->map[wall.y - 1][wall.x].type & DOOR_SOUTH) == DOOR_SOUTH)
+		{
+			if (ray.hit.x < (int)ray.hit.x + 0.5)
+			{
+				sprite = &(game->map[wall.y][wall.x].sprite[ray.orient]);
+				dist = (int)ray.hit.x + 0.5 - ray.hit.x;
+			}
+		}
+		else if ((game->map[wall.y - 1][wall.x].type & DOOR) == DOOR)
+			dist = get_texture_door(ray);
 	}
 	else if (ray.orient == e_north || ray.orient == e_west)
 	{
-		if ((game->map[wall.y][wall.x].type & DOOR_CLOSE) == DOOR_CLOSE)
-			dist = get_texture_door(ray);
 		sprite = &(game->map[wall.y][wall.x].sprite[ray.orient]);
-	}
-	if (ray.orient == e_east)
-	{
-		if ((game->map[wall.y][wall.x - 1].type & DOOR_CLOSE) == DOOR_CLOSE)
+		if ((game->map[wall.y][wall.x].type & DOOR_NORTH) == DOOR_NORTH)
+		{
+			if (ray.hit.x < (int)ray.hit.x + 0.5)
+			{
+				sprite = &(game->map[wall.y - 1][wall.x].sprite[ray.orient]);
+				dist = 1 - ((int)ray.hit.x - ray.hit.x + 0.5);
+			}
+		}
+		else if ((game->map[wall.y][wall.x].type & DOOR_WEST) == DOOR_WEST)
+		{
+			if (ray.hit.y > (int)ray.hit.y + 0.5)
+			{
+				sprite = &(game->map[wall.y][wall.x - 1].sprite[ray.orient]);
+				dist = (int)ray.hit.y + 1 - ray.hit.y + 0.5;
+			}
+		}
+		else if ((game->map[wall.y][wall.x].type & DOOR) == DOOR)
 			dist = get_texture_door(ray);
+	}
+	else if (ray.orient == e_east)
+	{
 		sprite = &(game->map[wall.y][wall.x - 1].sprite[ray.orient]);
+		if ((game->map[wall.y][wall.x - 1].type & DOOR_EAST) == DOOR_EAST)
+		{
+			if (ray.hit.y > (int)ray.hit.y + 0.5)
+			{
+				sprite = &(game->map[wall.y][wall.x].sprite[ray.orient]);
+				dist = ray.hit.y - (int)ray.hit.y - 0.5;
+			}
+		}
+		else if ((game->map[wall.y][wall.x - 1].type & DOOR) == DOOR)
+			dist = get_texture_door(ray);
 	}
 	if (sprite->frame == -1)
 	{

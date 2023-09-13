@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/11 21:51:07 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/13 21:12:20 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,8 +291,8 @@ t_dvector2	door_hit_hor_nw(t_dvector2 hit, float step, float door_angle, float p
 
 float	get_texture_door(t_ray ray)
 {
-	t_dvector2	delta;
-	double		dist;
+	t_fvector2	delta;
+	float		dist;
 	bool		left_door;
 
 	left_door = false;
@@ -318,7 +318,7 @@ float	get_texture_door(t_ray ray)
 			delta.y = ((int)ray.hit.y + 1) - ray.hit.y;
 		}
 	}
-	dist = sqrt((delta.x * delta.x + delta.y * delta.y));
+	dist = sqrtf((delta.x * delta.x + delta.y * delta.y));
 	if (left_door)
 		dist = 1 - dist;
 	return (dist);
@@ -328,41 +328,66 @@ void	open_door(t_game *game)
 {
 	t_ray			hit;
 	struct timespec	time;
+	t_door			*door;
 
-	hit = get_object_hit((t_launch_ray){'\0', DOOR_CLOSE, 1}, game, game->player->f_real_pos, game->player->angle);
+	hit = get_object_hit((t_launch_ray){'\0', DOOR, 1}, game, game->player->f_real_pos, game->player->angle);
 	if (hit.hit.x != -1)
 	{
-		clock_gettime(CLOCK_REALTIME, &time);
-		if (((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door == 1)
+		door = game->map[(int)hit.hit.y][(int)hit.hit.x].arg;
+		if (door->is_opening_door == 1)
 		{
-			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = -1;
-			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent -= game->delta_time * SPEEP_DOOR_OPENING;
-			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
+			door->is_opening_door = -1;
+			door->time = game->time;
+		}
+		else if (door->is_opening_door == -1)
+		{
+			door->is_opening_door = 1;
+			door->time = game->time;
 		}
 		else
 		{
-			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = 1;
-			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent += game->delta_time * SPEEP_DOOR_OPENING;
-			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
-		}
-	}
-	else
-	{
-		hit = get_object_hit((t_launch_ray){'\0', DOOR_OPEN, 1}, game, game->player->f_real_pos, game->player->angle);
-		if (hit.hit.x != -1)
-		{
-			clock_gettime(CLOCK_REALTIME, &time);
-			game->map[(int)hit.hit.y][(int)hit.hit.x].type |= DOOR_CLOSE;
-			game->map[(int)hit.hit.y][(int)hit.hit.x].type ^= DOOR_OPEN;
-			game->map[(int)hit.hit.y][(int)hit.hit.x].type |= WALL;
-			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->is_opening_door = -1;
-			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->door_percent -= game->delta_time * SPEEP_DOOR_OPENING;
-			((t_door *)game->map[(int)hit.hit.y][(int)hit.hit.x].arg)->time = time_to_long(&time);
+			if (door->door_percent == 0)
+			{
+				door->is_opening_door = 1;
+				door->time = game->time;
+			}
+			else
+			{
+				door->is_opening_door = -1;
+				game->map[(int)hit.hit.y][(int)hit.hit.x].type |= WALL;
+				door->time = game->time;
+			}
 		}
 	}
 }
 
-static void	_step_door_open(t_door *door, long time, t_map *map_cell)
+void	change_adjacent_wall(t_map **map, t_vector2 map_pos, bool is_add_flag)
+{
+	if (is_add_flag)
+	{
+		if (map[map_pos.y][map_pos.x + 1].type == WALL)
+			map[map_pos.y][map_pos.x + 1].type |= DOOR_WEST;
+		if (map[map_pos.y][map_pos.x - 1].type == WALL)
+			map[map_pos.y][map_pos.x - 1].type |= DOOR_EAST;
+		if (map[map_pos.y + 1][map_pos.x].type == WALL)
+			map[map_pos.y + 1][map_pos.x].type |= DOOR_NORTH;
+		if (map[map_pos.y - 1][map_pos.x].type == WALL)
+			map[map_pos.y - 1][map_pos.x].type |= DOOR_SOUTH;
+	}
+	else
+	{
+		if ((map[map_pos.y][map_pos.x + 1].type & DOOR_WEST) == DOOR_WEST)
+			map[map_pos.y][map_pos.x + 1].type ^= DOOR_WEST;
+		if ((map[map_pos.y][map_pos.x - 1].type & DOOR_EAST) == DOOR_EAST)
+			map[map_pos.y][map_pos.x - 1].type ^= DOOR_EAST;
+		if ((map[map_pos.y + 1][map_pos.x].type & DOOR_NORTH) == DOOR_NORTH)
+			map[map_pos.y + 1][map_pos.x].type ^= DOOR_NORTH;
+		if ((map[map_pos.y - 1][map_pos.x].type & DOOR_SOUTH) == DOOR_SOUTH)
+			map[map_pos.y - 1][map_pos.x].type ^= DOOR_SOUTH;
+	}
+}
+
+static void	_step_door_open(t_door *door, long time, t_map *map_cell, t_map **map)
 {
 	long	tmp;
 
@@ -373,17 +398,17 @@ static void	_step_door_open(t_door *door, long time, t_map *map_cell)
 		door->time = time;
 		if (door->door_percent > 90)
 		{
-			map_cell->type ^= DOOR_CLOSE;
-			map_cell->type |= DOOR_OPEN;
 			map_cell->type ^= WALL;
 			door->door_percent = 90;
 			door->is_opening_door = 0;
+			change_adjacent_wall(map, door->map_pos, true);
 		}
 	}
 	else
 	{
 		door->door_percent -= tmp / 1000.0 * SPEEP_DOOR_OPENING;
 		door->time = time;
+		change_adjacent_wall(map, door->map_pos, false);
 		if (door->door_percent < 0)
 		{
 			door->door_percent = 0;
@@ -392,7 +417,7 @@ static void	_step_door_open(t_door *door, long time, t_map *map_cell)
 	}
 }
 
-void	update_doors(t_map **doors, int	nb_doors, long time)
+void	update_doors(t_map **doors, int	nb_doors, long time, t_map **map)
 {
 	int	i;
 
@@ -400,7 +425,9 @@ void	update_doors(t_map **doors, int	nb_doors, long time)
 	while (i < nb_doors)
 	{
 		if (((t_door *)doors[i]->arg)->is_opening_door != 0)
-			_step_door_open(doors[i]->arg, time, doors[i]);
+		{
+			_step_door_open(doors[i]->arg, time, doors[i], map);
+		}
 		i++;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/11 18:54:49 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/13 19:26:10 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 # define CHUNK_SIZE 100
 # define FOV 80		//
 # define SPEED 100
-# define SPRINT_BOOST 100
+# define SPRINT_BOOST 300
 # define ROTATION_KEYBOARD 125	//
 # define ROTATION_MOUSE 20		// + keyboard binds + play + quit + activer sous-titre 
 # define SPEEP_DOOR_OPENING 100
@@ -71,7 +71,7 @@
 
 # define NB_MAX_SOUNDS 16
 
-// info for loading screen
+// infos for loading screen
 # define LOADING_SCREEN "./assets/smiley.xpm"
 # define LOADING_BORDURE "./assets/loading_bordure.xpm"
 # define LOADING_CENTER "./assets/loading_center.xpm"
@@ -88,9 +88,12 @@
 // t_type for arg
 # define NONE 0b0
 # define WALL 0b1
-# define DOOR_CLOSE 0b10
-# define DOOR_OPEN 0b100
-# define OBJECT 0b1000
+# define DOOR 0b10
+# define OBJECT 0b100
+# define DOOR_NORTH 0b1000
+# define DOOR_EAST 0b10000
+# define DOOR_SOUTH 0b100000
+# define DOOR_WEST 0b1000000
 
 extern long tot_fps;
 extern long nb_fps;
@@ -197,6 +200,7 @@ typedef struct s_door
 	float		door_percent;
 	int			is_opening_door;
 	long int	time;
+	t_vector2	map_pos;
 }	t_door;
 
 /**
@@ -368,7 +372,7 @@ t_dvector2	door_hit_hor_sw(t_dvector2 hit, float step, float door_angle, float p
 t_dvector2	door_hit_ver_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
 t_dvector2	door_hit_hor_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
 float		get_texture_door(t_ray ray);
-void		update_doors(t_map **doors, int	nb_doors, long time);
+void		update_doors(t_map **doors, int	nb_doors, long time, t_map **map);
 void		open_door(t_game *game);
 
 

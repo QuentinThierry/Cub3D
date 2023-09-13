@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:13:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/11 14:42:28 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/13 18:11:30 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,21 +70,30 @@ t_image	*get_image_wall(t_game *game, t_ray ray, int *x_door)
 
 	if (ray.orient == e_south)
 	{
-		if ((game->map[wall.y - 1][wall.x].type & DOOR_CLOSE) == DOOR_CLOSE)
-			dist = get_texture_door(ray);
 		sprite = &(game->map[wall.y - 1][wall.x].sprite[ray.orient]);
+		if ((game->map[wall.y - 1][wall.x].type & DOOR_CLOSE) == DOOR_CLOSE)
+		{
+			dist = get_texture_door(ray);
+			sprite = &(game->map[wall.y - 1][wall.x].sprite[e_door_image]);
+		}
 	}
 	else if (ray.orient == e_north || ray.orient == e_west)
 	{
-		if ((game->map[wall.y][wall.x].type & DOOR_CLOSE) == DOOR_CLOSE)
-			dist = get_texture_door(ray);
 		sprite = &(game->map[wall.y][wall.x].sprite[ray.orient]);
+		if ((game->map[wall.y][wall.x].type & DOOR_CLOSE) == DOOR_CLOSE)
+		{
+			dist = get_texture_door(ray);
+			sprite = &(game->map[wall.y][wall.x].sprite[e_door_image]);
+		}
 	}
 	if (ray.orient == e_east)
 	{
-		if ((game->map[wall.y][wall.x - 1].type & DOOR_CLOSE) == DOOR_CLOSE)
-			dist = get_texture_door(ray);
 		sprite = &(game->map[wall.y][wall.x - 1].sprite[ray.orient]);
+		if ((game->map[wall.y][wall.x - 1].type & DOOR_CLOSE) == DOOR_CLOSE)
+		{
+			dist = get_texture_door(ray);
+			sprite = &(game->map[wall.y][wall.x - 1].sprite[e_door_image]);
+		}
 	}
 	if (sprite->frame == -1)
 	{

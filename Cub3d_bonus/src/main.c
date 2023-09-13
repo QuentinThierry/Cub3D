@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/12 18:44:50 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/13 16:27:59 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int main(int argc, char **argv)
 		return (free(game.filename), perror("Error"), 1);
 	if (!parse_file(argv[1], &game))
 		return (1);
+	printf_texture(&game);
 	if (!check_map(&game))
 		return (1);
 	if (init_mlx(&game) == -1)

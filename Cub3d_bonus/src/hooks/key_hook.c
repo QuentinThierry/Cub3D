@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/11 16:17:47 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/13 13:09:03 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ int	mouse_leave(t_game *game)
 
 int	mouse_click(int button, int x, int y,t_game *game)
 {
+	(void)x;
+	(void)y;
 	if (button == 1)
 		open_door(game);
 	return (0);

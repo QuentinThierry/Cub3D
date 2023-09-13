@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/11 18:54:49 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/13 18:11:14 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,9 @@
 # define DOOR_CLOSE 0b10
 # define DOOR_OPEN 0b100
 # define OBJECT 0b1000
+# define OBJECT_INTERACTIVE 0b10000
+# define RECEPTACLE 0b100000
+# define DOOR_LOCK 0b1000000
 
 extern long tot_fps;
 extern long nb_fps;
@@ -110,8 +113,22 @@ enum e_orientation
 	e_wall,
 	e_door,
 	e_object_wall,
-	e_object_entity,
-	e_object_image = e_north
+	e_object_entity,		//transparent
+	e_object_interactive,
+	e_object_interactive_hand,
+	e_object_interactive_before,
+	e_object_interactive_after,
+	e_receptacle_empty,
+	e_receptacle_full,
+	e_exit,
+	e_object_image = e_north,
+	e_door_image = e_north,
+	e_object_interactive_image = e_north,
+	e_object_interactive_hand_image,
+	e_object_interactive_before_image,
+	e_object_interactive_after_image,
+	e_receptacle_empty_image = e_north,
+	e_receptacle_full_image
 };
 
 typedef struct s_vector2
@@ -145,14 +162,6 @@ typedef struct s_launch_ray
 	float	dist;
 }	t_launch_ray;
 
-typedef struct s_object
-{
-	t_dvector2	map_pos;
-	bool		visited;
-	float		dist;
-	long int	time;	//for animation
-}	t_object;
-
 typedef	struct s_player
 {
 	t_dvector2 	f_real_pos;
@@ -162,6 +171,15 @@ typedef	struct s_player
 	int			view;
 	int			speed;
 }	t_player;
+
+typedef struct s_object
+{
+	t_dvector2	map_pos;
+	bool		visited;
+	float		dist;
+	long int	time;	//for animation
+	char		symbol_receptacle;
+}	t_object;
 
 typedef struct s_image
 {
@@ -227,6 +245,7 @@ typedef struct s_texture
 	int					total;					//all
 	enum e_orientation	orient;					//all
 	char				symbol;					//all
+	char				symbol_receptacle;		//all
 }	t_texture;
 
 typedef struct s_minimap
@@ -303,8 +322,10 @@ bool		find_player(t_game *game);
 bool		check_map(t_game *game);
 bool		ft_read_config(t_animation *animation, int index);
 bool		parse_texture(int fd, t_game *game, int *nb_line, char **rest);
-bool		is_door(char symbol, t_texture *tab, int len);
+bool		is_door(char symbol, t_texture *tab, int len, enum e_orientation *type_door);
 bool		is_object(char symbol, t_texture *tab, int len);
+bool		is_object_interactive(char symbol, t_texture *tab, int len);
+bool		is_receptacle(char symbol, t_texture *tab, int len, char *c);
 bool		fill_object_and_doors(t_game *game);
 
 // -------Print--------

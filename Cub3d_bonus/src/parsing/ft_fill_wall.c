@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/11 14:52:22 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/13 18:11:19 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,9 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 {
 	int	i;
 	int	len;
+	enum e_orientation	type_door;
 	bool	error;
+	char	c;
 
 	i = 0;
 	len = ft_strlen(line);
@@ -99,29 +101,58 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			map[i].sprite[e_west] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_west);
 			map[i].sprite[e_floor].index = -1;
 			map[i].sprite[e_ceiling].index = -1;
-			if (is_door(line[i], game->filename, game->nb_file))
+			if (is_door(line[i], game->filename, game->nb_file, &type_door))
 			{
 				game->nb_doors++;
 				map[i].type |= DOOR_CLOSE;
+				if (type_door == e_exit)
+					map[i].type |= DOOR_LOCK; 
 				map[i].arg = ft_calloc(1, sizeof(t_door));
 				if (map[i].arg == NULL)
 					return (perror("Error"), false);
 				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_floor);
 				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_ceiling);
+				map[i].sprite[e_door_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, type_door);
 			}
 			else if (is_object(line[i], game->filename, game->nb_file))
 			{
 				game->nb_objects++;
 				map[i].type |= OBJECT;
-				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file
-					, map[i].symbol, e_floor);
-				map[i].sprite[e_ceiling] = fill_texture(game->filename
-					, game->nb_file, map[i].symbol, e_ceiling);
-				map[i].sprite[e_object_image] = fill_texture(game->filename
-					, game->nb_file, map[i].symbol, e_object_wall);
+				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_floor);
+				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_ceiling);
+				map[i].sprite[e_object_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_object_wall);
 				map[i].arg = ft_calloc(1, sizeof(t_object));
 				if (map[i].arg == NULL)
 					return (perror("Error"), false);
+			}
+			else if (is_object_interactive(line[i], game->filename, game->nb_file))
+			{
+				game->nb_objects++;
+				map[i].type |= OBJECT;
+				map[i].type |= OBJECT_INTERACTIVE;
+				map[i].sprite[e_object_interactive_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_object_interactive);
+				map[i].sprite[e_object_interactive_hand_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_object_interactive_hand);
+				map[i].sprite[e_object_interactive_before_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_object_interactive_before);
+				map[i].sprite[e_object_interactive_after_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_object_interactive_after);
+				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_floor);
+				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_ceiling);
+				map[i].arg = ft_calloc(1, sizeof(t_object));
+				if (map[i].arg == NULL)
+					return (perror("Error"), false);
+			}
+			else if (is_receptacle(line[i], game->filename, game->nb_file, &c))
+			{
+				game->nb_objects++;
+				map[i].type |= OBJECT;
+				map[i].type |= RECEPTACLE;
+				map[i].sprite[e_receptacle_empty_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_receptacle_empty);
+				map[i].sprite[e_receptacle_full_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_receptacle_full);
+				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_floor);
+				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_ceiling);
+				map[i].arg = ft_calloc(1, sizeof(t_object));
+				if (map[i].arg == NULL)
+					return (perror("Error"), false);
+				((t_object *)map[i].arg)->symbol_receptacle = c;
 			}
 		}
 		else
@@ -139,12 +170,22 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			{
 				game->nb_objects++;
 				map[i].type |= OBJECT;
-				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file
-					, map[i].symbol, e_floor);
-				map[i].sprite[e_ceiling] = fill_texture(game->filename
-					, game->nb_file, map[i].symbol, e_ceiling);
-				map[i].sprite[e_object_image] = fill_texture(game->filename
-					, game->nb_file, map[i].symbol, e_object_entity);
+				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_floor);
+				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_ceiling);
+				map[i].sprite[e_object_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_object_entity);
+				map[i].arg = ft_calloc(1, sizeof(t_object));
+				if (map[i].arg == NULL)
+					return (perror("Error"), false);
+			}
+			else if (is_object_interactive(line[i], game->filename, game->nb_file))
+			{
+				game->nb_objects++;
+				map[i].type |= OBJECT;
+				map[i].type |= OBJECT_INTERACTIVE;
+				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_floor);
+				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_ceiling);
+				map[i].sprite[e_object_interactive_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_object_interactive);
+				map[i].sprite[e_object_interactive_hand_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_object_interactive_hand);
 				map[i].arg = ft_calloc(1, sizeof(t_object));
 				if (map[i].arg == NULL)
 					return (perror("Error"), false);

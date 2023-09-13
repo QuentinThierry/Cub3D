@@ -36,6 +36,7 @@ FIX :
 <!-- - collision vibration when hit object -->
 - protect text draw outside of the screen
 - file structure for bonus and mandatory
+- white space at the end of a texture printf error because file not found
 
 Minimap : 
 <!-- - if screen is too small, do not draw minimap -->

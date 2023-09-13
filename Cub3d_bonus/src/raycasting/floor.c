@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   floor.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/11 15:09:06 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/13 16:49:20 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,12 @@ static inline float	get_dist(t_dvector2 fpos, t_dvector2 wall)
 __attribute__((always_inline))
 static inline unsigned int	dark_with_dist(unsigned int color, float dark_quantity)
 {
-	unsigned char	red;
-	unsigned char	green;
-	unsigned char	blue;
-	float			color_quantity;
+	float	color_quantity;
 
 	color_quantity = 1 - dark_quantity;
-	red = ((color >> 16) & 0xFF) * color_quantity;
-	red += ((DARK_COLOR >> 16) & 0xff) * dark_quantity;
-	green = ((color >> 8) & 0xFF) * color_quantity;
-	green += ((DARK_COLOR >> 8) & 0xff) * dark_quantity;
-	blue = (color & 0xFF) * color_quantity;
-	blue += (DARK_COLOR & 0xff) * dark_quantity;
-	return (red << 16 | green << 8 | blue);
+	return (((unsigned char)(((color >> 16) & 0xFF) * color_quantity + ((DARK_COLOR >> 16) & 0xff) * dark_quantity) << 16)
+		| ((unsigned char)(((color >> 8) & 0xFF) * color_quantity + ((DARK_COLOR >> 8) & 0xff) * dark_quantity) << 8)
+		| (unsigned char)((color & 0xFF) * color_quantity + (DARK_COLOR & 0xff) * dark_quantity));
 }
 
 __attribute__((always_inline))

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 18:53:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 22:34:14 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,11 @@ int	mouse_click(int button, int x, int y,t_game *game)
 	(void)x;
 	(void)y;
 	if (button == 1)
-		drop_object(game->player, game->map);
+	{
+		if (game->player->has_item == true)
+			drop_object(game->player, game->map);
+		else
+			take_object_click(game, game->player, game->map);
+	}
 	return (0);
 }

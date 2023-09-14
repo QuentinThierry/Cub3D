@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 19:01:26 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 22:38:22 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,40 @@ void	take_object(t_player *player, t_map *cell_map)
 	}
 }
 
+void	take_object_click(t_game *game, t_player *player, t_map **map)
+{
+	t_dvector2	pos;
+	t_vector2	dir;
+	
+	pos.x = sin(player->angle * TO_RADIAN) * M_SQRT2;
+	pos.y = -cos(player->angle * TO_RADIAN) * M_SQRT2;
+	if (pos.x > 1)
+		pos.x = 1;
+	if (pos.x < -1)
+		pos.x = -1;
+	if (pos.y > 1)
+		pos.y = 1;
+	if (pos.y < -1)
+		pos.y = -1;
+	pos.x += player->f_real_pos.x;
+	pos.y += player->f_real_pos.y;
+	if ((map[(int)pos.y][(int)pos.x].type & WALL) == WALL
+		&& (map[(int)pos.y][(int)pos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE
+		&& (map[(int)pos.y][(int)pos.x].type & OBJECT) == OBJECT)
+	{
+		player->item.symbol = map[(int)pos.y][(int)pos.x].symbol;
+		player->item.type = map[(int)pos.y][(int)pos.x].type;
+		player->item.type ^= WALL;
+		player->item.sprite[e_object_interactive_image] = map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_image];
+		player->item.sprite[e_object_interactive_hand_image] = map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_hand_image];
+		player->item.arg = find_empty_object(game);
+		((t_object *)player->item.arg)->map_pos = pos;
+		player->has_item = true;
+		map[(int)pos.y][(int)pos.x].type ^= OBJECT_INTERACTIVE;
+		map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_image] = map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_after_image];
+	}
+}
+
 void	drop_object(t_player *player, t_map **map)
 {
 	t_dvector2	pos;
@@ -34,8 +68,16 @@ void	drop_object(t_player *player, t_map **map)
 	
 	if (player->has_item == true)
 	{
-		pos.x = sin(player->angle * TO_RADIAN) * sqrt(2.);
-		pos.y = -cos(player->angle * TO_RADIAN) * sqrt(2.);
+		pos.x = sin(player->angle * TO_RADIAN) * M_SQRT2;
+		pos.y = -cos(player->angle * TO_RADIAN) * M_SQRT2;
+		if (pos.x > 1)
+			pos.x = 1;
+		if (pos.x < -1)
+			pos.x = -1;
+		if (pos.y > 1)
+			pos.y = 1;
+		if (pos.y < -1)
+			pos.y = -1;
 		pos.x += player->f_real_pos.x;
 		pos.y += player->f_real_pos.y;
 		pos.x = (int)pos.x + 0.5;
@@ -51,12 +93,13 @@ void	drop_object(t_player *player, t_map **map)
 			map[(int)pos.y][(int)pos.x].type = player->item.type;
 			map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_image] = player->item.sprite[e_object_interactive_image];
 			map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_hand_image] = player->item.sprite[e_object_interactive_hand_image];
+			printf("drop\n");
 			player->has_item = false;
 		}
 		else if ((map[(int)pos.y][(int)pos.x].type & RECEPTACLE) == RECEPTACLE
 			&& ((t_object *)map[(int)pos.y][(int)pos.x].arg)->symbol_receptacle == player->item.symbol)
 		{
-			((t_object *)player->item.arg)->is_full = true;
+			((t_object *)player->item.arg)->is_completed = true;
 			player->has_item = false;
 			printf("okayyyy\n");
 		}

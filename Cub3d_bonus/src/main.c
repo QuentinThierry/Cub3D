@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 19:01:41 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 20:21:00 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	on_update(t_game *game)
 	player_move(game->player, game->delta_time, game->map);
 	update_doors(game->door_array, game->nb_doors, game->time, game->map);
 	raycasting(game);
+	// draw_hand_item();
 	zoom_hook_handle(game->minimap, game->delta_time);
 	draw_minimap(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);

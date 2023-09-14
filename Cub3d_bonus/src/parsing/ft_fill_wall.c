@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 19:01:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 22:29:01 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,15 @@ bool fill_object_and_doors(t_game *game)
 			x++;
 		}
 		y++;
+	}
+	while (cpt_objects < game->nb_objects)
+	{
+		game->object_array[cpt_objects] = ft_calloc(1, sizeof(t_object));
+		if (game->object_array[cpt_objects] == NULL)
+			return (perror("Error"), false);
+		game->object_array[cpt_objects]->dist = -1;
+		game->object_array[cpt_objects]->map_pos = (t_dvector2){-1, -1};
+		cpt_objects++;
 	}
 	return (true);
 }
@@ -107,7 +116,10 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 				game->nb_doors++;
 				map[i].type |= DOOR;
 				if (type_door == e_exit)
-					map[i].type |= DOOR_LOCK; 
+				{
+					map[i].type |= DOOR_LOCK;
+					map[i].type |= EXIT;
+				}
 				map[i].arg = ft_calloc(1, sizeof(t_door));
 				if (map[i].arg == NULL)
 					return (perror("Error"), false);
@@ -128,7 +140,7 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			}
 			else if (is_object_interactive(line[i], game->filename, game->nb_file))
 			{
-				game->nb_objects++;
+				game->nb_objects += 2;
 				map[i].type |= OBJECT;
 				map[i].type |= OBJECT_INTERACTIVE;
 				map[i].sprite[e_object_interactive_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_object_interactive);

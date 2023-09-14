@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   door.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 18:22:52 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/14 21:13:46 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,6 +324,32 @@ float	get_texture_door(t_ray ray)
 	return (dist);
 }
 
+void	change_adjacent_wall(t_map **map, t_vector2 map_pos, bool is_add_flag)
+{
+	if (is_add_flag)
+	{
+		if (map[map_pos.y][map_pos.x + 1].type == WALL)
+			map[map_pos.y][map_pos.x + 1].type |= DOOR_WEST;
+		if (map[map_pos.y][map_pos.x - 1].type == WALL)
+			map[map_pos.y][map_pos.x - 1].type |= DOOR_EAST;
+		if (map[map_pos.y + 1][map_pos.x].type == WALL)
+			map[map_pos.y + 1][map_pos.x].type |= DOOR_NORTH;
+		if (map[map_pos.y - 1][map_pos.x].type == WALL)
+			map[map_pos.y - 1][map_pos.x].type |= DOOR_SOUTH;
+	}
+	else
+	{
+		if ((map[map_pos.y][map_pos.x + 1].type & DOOR_WEST) == DOOR_WEST)
+			map[map_pos.y][map_pos.x + 1].type ^= DOOR_WEST;
+		if ((map[map_pos.y][map_pos.x - 1].type & DOOR_EAST) == DOOR_EAST)
+			map[map_pos.y][map_pos.x - 1].type ^= DOOR_EAST;
+		if ((map[map_pos.y + 1][map_pos.x].type & DOOR_NORTH) == DOOR_NORTH)
+			map[map_pos.y + 1][map_pos.x].type ^= DOOR_NORTH;
+		if ((map[map_pos.y - 1][map_pos.x].type & DOOR_SOUTH) == DOOR_SOUTH)
+			map[map_pos.y - 1][map_pos.x].type ^= DOOR_SOUTH;
+	}
+}
+
 void	open_door(t_game *game)
 {
 	t_ray			hit;
@@ -333,6 +359,8 @@ void	open_door(t_game *game)
 	hit = get_object_hit((t_launch_ray){'\0', DOOR, 1}, game, game->player->f_real_pos, game->player->angle);
 	if (hit.hit.x != -1)
 	{
+		if ((game->map[(int)hit.hit.y][(int)hit.hit.x].type & DOOR_LOCK) == DOOR_LOCK)
+			return ;
 		door = game->map[(int)hit.hit.y][(int)hit.hit.x].arg;
 		if (door->is_opening_door == 1)
 		{
@@ -358,32 +386,6 @@ void	open_door(t_game *game)
 				door->time = game->time;
 			}
 		}
-	}
-}
-
-void	change_adjacent_wall(t_map **map, t_vector2 map_pos, bool is_add_flag)
-{
-	if (is_add_flag)
-	{
-		if (map[map_pos.y][map_pos.x + 1].type == WALL)
-			map[map_pos.y][map_pos.x + 1].type |= DOOR_WEST;
-		if (map[map_pos.y][map_pos.x - 1].type == WALL)
-			map[map_pos.y][map_pos.x - 1].type |= DOOR_EAST;
-		if (map[map_pos.y + 1][map_pos.x].type == WALL)
-			map[map_pos.y + 1][map_pos.x].type |= DOOR_NORTH;
-		if (map[map_pos.y - 1][map_pos.x].type == WALL)
-			map[map_pos.y - 1][map_pos.x].type |= DOOR_SOUTH;
-	}
-	else
-	{
-		if ((map[map_pos.y][map_pos.x + 1].type & DOOR_WEST) == DOOR_WEST)
-			map[map_pos.y][map_pos.x + 1].type ^= DOOR_WEST;
-		if ((map[map_pos.y][map_pos.x - 1].type & DOOR_EAST) == DOOR_EAST)
-			map[map_pos.y][map_pos.x - 1].type ^= DOOR_EAST;
-		if ((map[map_pos.y + 1][map_pos.x].type & DOOR_NORTH) == DOOR_NORTH)
-			map[map_pos.y + 1][map_pos.x].type ^= DOOR_NORTH;
-		if ((map[map_pos.y - 1][map_pos.x].type & DOOR_SOUTH) == DOOR_SOUTH)
-			map[map_pos.y - 1][map_pos.x].type ^= DOOR_SOUTH;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/14 20:40:57 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 22:30:42 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@
 # define OBJECT_INTERACTIVE 0b10000000
 # define RECEPTACLE 0b100000000
 # define DOOR_LOCK 0b1000000000
+# define EXIT 0b10000000000
 
 extern long tot_fps;
 extern long nb_fps;
@@ -173,7 +174,7 @@ typedef struct s_object
 	float		dist;
 	long int	time;	//for animation
 	char		symbol_receptacle;
-	bool		is_full;
+	bool		is_completed;	//receptacle
 }	t_object;
 
 typedef struct s_image
@@ -417,8 +418,10 @@ bool		update_loading_screen(t_game *game, t_loading *loading_screen);
 void		free_loading_screen(t_game *game);
 
 // ------ Object interactive -----
+void		take_object_click(t_game *game, t_player *player, t_map **map);
 void		take_object(t_player *player, t_map *cell_map);
 void		drop_object(t_player *player, t_map **map);
+t_object	*find_empty_object(t_game *game);
 
 
 

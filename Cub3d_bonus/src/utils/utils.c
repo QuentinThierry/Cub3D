@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 20:42:04 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 22:30:44 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,4 +248,18 @@ int	ft_strlen(char *str)
 	while (str[i])
 		i++;
 	return (i);
+}
+
+t_object	*find_empty_object(t_game *game)
+{
+	int i;
+
+	i = 0;
+	while (i < game->nb_objects)
+	{
+		if (game->object_array[i]->map_pos.x == -1 && game->object_array[i]->map_pos.x == -1)
+			return (game->object_array[i]);
+		i++;
+	}
+	return (NULL);
 }

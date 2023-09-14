@@ -49,3 +49,13 @@ Door :
 <!-- - opti door open -->
 <!-- - door parsing -->
 <!-- - doors on side of map -->
+
+Objet interactif :
+<!-- - take objet on walk -->
+<!-- -- take objet with click -->
+<!-- -- change image printf if object wall to after -->
+- draw image hand
+<!-- - drop objet ->draw objet alone on the floor ->become object none wall -->
+<!-- - check receptacle if correct change image for receptacle completed -->
+- increase door exit loading bar
+- bug for calcutating the distance to take on click or drop the object

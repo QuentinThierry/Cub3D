@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/14 22:30:42 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 23:04:32 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,6 +314,7 @@ void		*ft_memcpy(void *dest, const void *src, size_t n);
 void		free_filename(t_game *game);
 void		free_tab(void **str, int size);
 void		free_map(t_map **map, t_vector2 size);
+void		free_tab_object(t_object **str, int size);
 void		free_str(char **str);
 char		*ft_strjoin(char *str, char *str1);
 char		*ft_strjoin_slash(char *str, char *str1, bool add_slash);

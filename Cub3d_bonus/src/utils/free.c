@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 16:27:51 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/04 16:50:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 23:04:13 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,20 @@ void	free_tab(void **str, int size)
 	while (i < size)
 	{
 		free(str[i]);
+		i++;
+	}
+	free(str);
+}
+
+void	free_tab_object(t_object **str, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		if (str[i]->map_pos.x == -1 && str[i]->map_pos.y == -1)
+			free(str[i]);
 		i++;
 	}
 	free(str);

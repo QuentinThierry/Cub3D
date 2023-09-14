@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 22:29:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 23:07:00 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,6 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			}
 			else if (is_receptacle(line[i], game->filename, game->nb_file, &c))
 			{
-				printf("receptacle	symbol : %c	%c\n", map[i].symbol, c);
 				game->nb_objects++;
 				map[i].type |= OBJECT;
 				map[i].type |= RECEPTACLE;

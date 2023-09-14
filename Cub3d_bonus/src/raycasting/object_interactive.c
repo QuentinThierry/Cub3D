@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 22:38:22 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 23:12:34 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	drop_object(t_player *player, t_map **map)
 		else if ((map[(int)pos.y][(int)pos.x].type & RECEPTACLE) == RECEPTACLE
 			&& ((t_object *)map[(int)pos.y][(int)pos.x].arg)->symbol_receptacle == player->item.symbol)
 		{
-			((t_object *)player->item.arg)->is_completed = true;
+			((t_object *)map[(int)pos.y][(int)pos.x].arg)->is_completed = true;
 			player->has_item = false;
 			printf("okayyyy\n");
 		}

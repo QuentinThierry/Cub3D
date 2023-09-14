@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 18:21:50 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 19:01:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,10 @@ bool fill_object_and_doors(t_game *game)
 					(t_dvector2){x + 0.5f, y + 0.5f};
 				cpt_objects++;
 			}
-			else if ((game->map[y][x].type & DOOR_CLOSE) == DOOR_CLOSE)
+			else if ((game->map[y][x].type & DOOR) == DOOR)
 			{
 				game->door_array[cpt_doors] = &game->map[y][x];
+				((t_door *)game->door_array[cpt_doors]->arg)->map_pos = (t_vector2){x, y};
 				cpt_doors++;
 			}
 			x++;
@@ -104,7 +105,7 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			if (is_door(line[i], game->filename, game->nb_file, &type_door))
 			{
 				game->nb_doors++;
-				map[i].type |= DOOR_CLOSE;
+				map[i].type |= DOOR;
 				if (type_door == e_exit)
 					map[i].type |= DOOR_LOCK; 
 				map[i].arg = ft_calloc(1, sizeof(t_door));

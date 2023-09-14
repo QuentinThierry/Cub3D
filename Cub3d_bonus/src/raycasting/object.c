@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:39:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/11 15:23:22 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/13 16:49:11 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,26 +25,14 @@ static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, in
 }
 
 __attribute__((always_inline))
-static inline unsigned int	dark_with_dist(int color, float dark_quantity)
+static inline unsigned int	dark_with_dist(unsigned int color, float dark_quantity)
 {
-	unsigned char	red;
-	unsigned char	green;
-	unsigned char	blue;
-	float			color_quantity;
+	float	color_quantity;
 
-	if (dark_quantity >= 1)
-		return (DARK_COLOR);
-	if (dark_quantity == 0)
-		return (color);
 	color_quantity = 1 - dark_quantity;
-	red = ((color >> 16) & 0xFF) * color_quantity;
-	red += ((DARK_COLOR >> 16) & 0xff) * dark_quantity;
-	green = ((color >> 8) & 0xFF) * color_quantity;
-	green += ((DARK_COLOR >> 8) & 0xff) * dark_quantity;
-	blue = (color & 0xFF) * color_quantity;
-	blue += (DARK_COLOR & 0xff) * dark_quantity;
-	// printf("red : %x green : %x	blue : %x\n", red, green, blue);
-	return (red << 16 | green << 8 | blue);
+	return (((unsigned char)(((color >> 16) & 0xFF) * color_quantity + ((DARK_COLOR >> 16) & 0xff) * dark_quantity) << 16)
+		| ((unsigned char)(((color >> 8) & 0xFF) * color_quantity + ((DARK_COLOR >> 8) & 0xff) * dark_quantity) << 8)
+		| (unsigned char)((color & 0xFF) * color_quantity + (DARK_COLOR & 0xff) * dark_quantity));
 }
 
 void	draw_object_projection(t_game *game, t_object *object, float object_dist, int x_pos)

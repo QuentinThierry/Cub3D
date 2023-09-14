@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/11 14:57:51 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/13 20:34:00 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,24 +24,15 @@ static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, in
 	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
 }
 
-
 __attribute__((always_inline))
-static inline unsigned int	dark_with_dist1(unsigned int color, float dark_quantity)
+static inline unsigned int	dark_with_dist(unsigned int color, float dark_quantity)
 {
-	unsigned char	red;
-	unsigned char	green;
-	unsigned char	blue;
-	float			color_quantity;
+	float	color_quantity;
 
 	color_quantity = 1 - dark_quantity;
-	red = ((color >> 16) & 0xFF) * color_quantity;
-	red += ((DARK_COLOR >> 16) & 0xff) * dark_quantity;
-	green = ((color >> 8) & 0xFF) * color_quantity;
-	green += ((DARK_COLOR >> 8) & 0xff) * dark_quantity;
-	blue = (color & 0xFF) * color_quantity;
-	blue += (DARK_COLOR & 0xff) * dark_quantity;
-	return (red << 16 | green << 8 | blue);
-	// return (color);
+	return (((unsigned char)(((color >> 16) & 0xFF) * color_quantity + ((DARK_COLOR >> 16) & 0xff) * dark_quantity) << 16)
+		| ((unsigned char)(((color >> 8) & 0xFF) * color_quantity + ((DARK_COLOR >> 8) & 0xff) * dark_quantity) << 8)
+		| (unsigned char)((color & 0xFF) * color_quantity + (DARK_COLOR & 0xff) * dark_quantity));
 }
 
 void	draw_vert(t_game *game, int x, t_ray ray, double height)
@@ -88,7 +79,7 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 			x_img = (ray.hit.y - (int)ray.hit.y) * image->size.x;
 		if (orient == e_west || orient == e_south)
 			x_img = image->size.x - x_img - 1;
-		if (x_door != 0)
+		if (x_door != -1)
 			x_img = x_door;
 	}
 	addr = game->image->addr;
@@ -115,7 +106,7 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	{
 		while (i < y1)
 		{
-			my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, dark_with_dist1(get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}), dark_quantity));
+			my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, dark_with_dist(get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img}), dark_quantity));
 			y_img += delta_y_img;
 			i++;
 		}

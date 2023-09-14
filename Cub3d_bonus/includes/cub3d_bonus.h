@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/14 18:53:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 18:57:59 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@
 
 # define NB_MAX_SOUNDS 16
 
-// info for loading screen
+// infos for loading screen
 # define LOADING_SCREEN "./assets/smiley.xpm"
 # define LOADING_BORDURE "./assets/loading_bordure.xpm"
 # define LOADING_CENTER "./assets/loading_center.xpm"
@@ -88,12 +88,15 @@
 // t_type for arg
 # define NONE 0b0
 # define WALL 0b1
-# define DOOR_CLOSE 0b10
-# define DOOR_OPEN 0b100
-# define OBJECT 0b1000
-# define OBJECT_INTERACTIVE 0b10000
-# define RECEPTACLE 0b100000
-# define DOOR_LOCK 0b1000000
+# define DOOR 0b10
+# define OBJECT 0b100
+# define DOOR_NORTH 0b1000
+# define DOOR_EAST 0b10000
+# define DOOR_SOUTH 0b100000
+# define DOOR_WEST 0b1000000
+# define OBJECT_INTERACTIVE 0b10000000
+# define RECEPTACLE 0b100000000
+# define DOOR_LOCK 0b1000000000
 
 extern long tot_fps;
 extern long nb_fps;
@@ -218,6 +221,7 @@ typedef struct s_door
 	float		door_percent;
 	int			is_opening_door;
 	long int	time;
+	t_vector2	map_pos;
 }	t_door;
 
 /**
@@ -392,7 +396,7 @@ t_dvector2	door_hit_hor_sw(t_dvector2 hit, float step, float door_angle, float p
 t_dvector2	door_hit_ver_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
 t_dvector2	door_hit_hor_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
 float		get_texture_door(t_ray ray);
-void		update_doors(t_map **doors, int	nb_doors, long time);
+void		update_doors(t_map **doors, int	nb_doors, long time, t_map **map);
 void		open_door(t_game *game);
 
 

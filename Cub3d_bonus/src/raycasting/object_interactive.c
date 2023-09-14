@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 18:52:25 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 19:01:26 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	drop_object(t_player *player, t_map **map)
 		pos.x = (int)pos.x + 0.5;
 		pos.y = (int)pos.y + 0.5;
 		if ((map[(int)pos.y][(int)pos.x].type & WALL) != WALL
-			&& (map[(int)pos.y][(int)pos.x].type & DOOR_CLOSE) != DOOR_CLOSE
+			&& (map[(int)pos.y][(int)pos.x].type & DOOR) != DOOR
 			&& (map[(int)pos.y][(int)pos.x].type & OBJECT) != OBJECT
 			&& (map[(int)pos.y][(int)pos.x].type & OBJECT_INTERACTIVE) != OBJECT_INTERACTIVE)
 		{

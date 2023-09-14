@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/08 17:25:15 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/13 19:02:55 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ bool	find_player(t_game *game)
 		index.y++;
 	}
 	player->speed = SPEED;
+	player->has_item = false;
 	game->player = player;
 	if (is_player == false)
 		printf("Error : No player found on the map\n");

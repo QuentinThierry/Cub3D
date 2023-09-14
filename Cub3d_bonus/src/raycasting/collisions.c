@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 01:05:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/12 18:43:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 18:07:01 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static t_dvector2	slide_wall_y(t_dvector2 fpos, t_map **map, t_dvector2 dest)
 
 // xy (1, 1)
 static t_dvector2	_get_collision_se(t_dvector2 fpos,
-								t_map **map, t_dvector2 new_pos)
+								t_map **map, t_dvector2 new_pos, t_player *player)
 {
 	t_dvector2	step;
 	t_dvector2	comp;
@@ -81,6 +81,8 @@ static t_dvector2	_get_collision_se(t_dvector2 fpos,
 		{
 			if (map_pos.x > new_pos.x)
 				return (new_pos);
+			if ((map[(int)(comp.y + DIST_TO_WALL)][(int)(map_pos.x + DIST_TO_WALL)].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
+				take_object(player, &map[(int)(comp.y + DIST_TO_WALL)][(int)(map_pos.x + DIST_TO_WALL)]);
 			if ((map[(int)(comp.y + DIST_TO_WALL)][(int)(map_pos.x + DIST_TO_WALL)].type & WALL) == WALL
 				|| (map[(int)(comp.y - DIST_TO_WALL)][(int)(map_pos.x + DIST_TO_WALL)].type & WALL) == WALL)
 			{
@@ -94,6 +96,8 @@ static t_dvector2	_get_collision_se(t_dvector2 fpos,
 		{
 			if (map_pos.y > new_pos.y)
 				return (new_pos);
+			if ((map[(int)(map_pos.y + DIST_TO_WALL)][(int)(comp.x + DIST_TO_WALL)].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
+				take_object(player, &map[(int)(map_pos.y + DIST_TO_WALL)][(int)(comp.x + DIST_TO_WALL)]);
 			if ((map[(int)(map_pos.y + DIST_TO_WALL)][(int)(comp.x + DIST_TO_WALL)].type & WALL) == WALL
 				|| (map[(int)(map_pos.y + DIST_TO_WALL)][(int)(comp.x - DIST_TO_WALL)].type & WALL) == WALL)
 			{
@@ -108,7 +112,7 @@ static t_dvector2	_get_collision_se(t_dvector2 fpos,
 
 // xy (1, -1)
 static t_dvector2	_get_collision_ne(t_dvector2 fpos,
-								t_map **map, t_dvector2 new_pos)
+								t_map **map, t_dvector2 new_pos, t_player *player)
 {
 	t_dvector2	step;
 	t_dvector2	comp;
@@ -131,6 +135,8 @@ static t_dvector2	_get_collision_ne(t_dvector2 fpos,
 		{
 			if (map_pos.x > new_pos.x)
 				return (new_pos);
+			if ((map[(int)(comp.y - DIST_TO_WALL)][(int)(map_pos.x + DIST_TO_WALL)].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
+				take_object(player, &map[(int)(comp.y - DIST_TO_WALL)][(int)(map_pos.x + DIST_TO_WALL)]);
 			if ((map[(int)(comp.y + DIST_TO_WALL)][(int)(map_pos.x + DIST_TO_WALL)].type & WALL) == WALL
 				|| (map[(int)(comp.y - DIST_TO_WALL)][(int)(map_pos.x + DIST_TO_WALL)].type & WALL) == WALL)
 			{
@@ -144,6 +150,8 @@ static t_dvector2	_get_collision_ne(t_dvector2 fpos,
 		{
 			if (map_pos.y < new_pos.y)
 				return (new_pos);
+			if ((map[(int)(map_pos.y) - 1][((int)(comp.x + DIST_TO_WALL))].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
+				take_object(player, &map[(int)(map_pos.y) - 1][((int)(comp.x + DIST_TO_WALL))]);
 			if ((map[(int)(map_pos.y) - 1][((int)(comp.x + DIST_TO_WALL))].type & WALL) == WALL
 				|| (map[(int)(map_pos.y) - 1][((int)(comp.x - DIST_TO_WALL))].type & WALL) == WALL)
 			{
@@ -158,7 +166,7 @@ static t_dvector2	_get_collision_ne(t_dvector2 fpos,
 
 // xy (-1, 1)
 static t_dvector2	_get_collision_sw(t_dvector2 fpos,
-								t_map **map, t_dvector2 new_pos)
+								t_map **map, t_dvector2 new_pos, t_player *player)
 {
 	t_dvector2	step;
 	t_dvector2	comp;
@@ -181,6 +189,8 @@ static t_dvector2	_get_collision_sw(t_dvector2 fpos,
 		{
 			if (map_pos.x < new_pos.x)
 				return (new_pos);
+			if ((map[(int)(comp.y + DIST_TO_WALL)][(int)(map_pos.x) - 1].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
+				take_object(player, &map[(int)(comp.y + DIST_TO_WALL)][(int)(map_pos.x) - 1]);
 			if ((map[(int)(comp.y + DIST_TO_WALL)][(int)(map_pos.x) - 1].type & WALL) == WALL
 				|| (map[(int)(comp.y - DIST_TO_WALL)][(int)(map_pos.x) - 1].type & WALL) == WALL)
 			{
@@ -194,6 +204,8 @@ static t_dvector2	_get_collision_sw(t_dvector2 fpos,
 		{
 			if (map_pos.y > new_pos.y)
 				return (new_pos);
+			if ((map[(int)(map_pos.y + DIST_TO_WALL)][(int)(comp.x - DIST_TO_WALL)].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
+				take_object(player, &map[(int)(map_pos.y + DIST_TO_WALL)][(int)(comp.x - DIST_TO_WALL)]);
 			if ((map[(int)(map_pos.y + DIST_TO_WALL)][((int)(comp.x + DIST_TO_WALL))].type & WALL) == WALL
 				|| (map[(int)(map_pos.y + DIST_TO_WALL)][((int)(comp.x - DIST_TO_WALL))].type & WALL) == WALL)
 			{
@@ -208,7 +220,7 @@ static t_dvector2	_get_collision_sw(t_dvector2 fpos,
 
 // xy (-1, -1)
 static t_dvector2	_get_collision_nw(t_dvector2 fpos,
-								t_map **map, t_dvector2 new_pos)
+								t_map **map, t_dvector2 new_pos, t_player *player)
 {
 	t_dvector2	step;
 	t_dvector2	comp;
@@ -231,6 +243,8 @@ static t_dvector2	_get_collision_nw(t_dvector2 fpos,
 		{
 			if (map_pos.x < new_pos.x)
 				return (new_pos);
+			if ((map[(int)(comp.y - DIST_TO_WALL)][(int)(map_pos.x) - 1].type & OBJECT) == OBJECT)
+				take_object(player, &map[(int)(comp.y - DIST_TO_WALL)][(int)(map_pos.x) - 1]);
 			if ((map[(int)(comp.y + DIST_TO_WALL)][(int)(map_pos.x) - 1].type & WALL) == WALL
 				|| (map[(int)(comp.y - DIST_TO_WALL)][(int)(map_pos.x) - 1].type & WALL) == WALL)
 			{
@@ -244,6 +258,8 @@ static t_dvector2	_get_collision_nw(t_dvector2 fpos,
 		{
 			if (map_pos.y < new_pos.y)
 				return (new_pos);
+			if ((map[(int)(map_pos.y) - 1][((int)(comp.x - DIST_TO_WALL))].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
+				take_object(player, &map[(int)(map_pos.y) - 1][((int)(comp.x - DIST_TO_WALL))]);
 			if ((map[(int)(map_pos.y) - 1][((int)(comp.x + DIST_TO_WALL))].type & WALL) == WALL
 				|| (map[(int)(map_pos.y) - 1][((int)(comp.x - DIST_TO_WALL))].type & WALL) == WALL)
 			{
@@ -256,7 +272,7 @@ static t_dvector2	_get_collision_nw(t_dvector2 fpos,
 	}
 }
 
-void	check_colliding(t_player *player, t_dvector2 new_pos, t_map **map)
+t_dvector2	check_colliding(t_player *player, t_dvector2 new_pos, t_map **map)
 {
 	t_vector2	sign;
 
@@ -269,11 +285,11 @@ void	check_colliding(t_player *player, t_dvector2 new_pos, t_map **map)
 	else
 		sign.y = -1;
 	if (sign.x == 1 && sign.y == 1)
-		player->f_real_pos = _get_collision_se(player->f_real_pos, map, new_pos);
+		return (_get_collision_se(player->f_real_pos, map, new_pos, player));
 	else if (sign.x == 1 && sign.y == -1)
-		player->f_real_pos = _get_collision_ne(player->f_real_pos, map, new_pos);
+		return (_get_collision_ne(player->f_real_pos, map, new_pos, player));
 	else if (sign.x == -1 && sign.y == 1)
-		player->f_real_pos = _get_collision_sw(player->f_real_pos, map, new_pos);
+		return (_get_collision_sw(player->f_real_pos, map, new_pos, player));
 	else
-		player->f_real_pos = _get_collision_nw(player->f_real_pos, map, new_pos);
+		return (_get_collision_nw(player->f_real_pos, map, new_pos, player));
 }

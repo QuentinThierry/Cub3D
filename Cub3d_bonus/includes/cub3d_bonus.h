@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/13 18:11:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 18:53:14 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@
 # define WIN_X 1280 //1920 - 918 - 1280
 # define WIN_Y 720 //1080 - 468 - 720
 # define CHUNK_SIZE 100
-# define FOV 80		//
+# define FOV 80
 # define SPEED 100
 # define SPRINT_BOOST 100
-# define ROTATION_KEYBOARD 125	//
-# define ROTATION_MOUSE 20		// + keyboard binds + play + quit + activer sous-titre 
+# define ROTATION_KEYBOARD 125
+# define ROTATION_MOUSE 20
 # define SPEEP_DOOR_OPENING 100
 # define TO_RADIAN .01745329251994
 # define DARK_COLOR 0x00ff00
@@ -162,16 +162,6 @@ typedef struct s_launch_ray
 	float	dist;
 }	t_launch_ray;
 
-typedef	struct s_player
-{
-	t_dvector2 	f_real_pos;
-	t_vector2 	mouse_pos;
-	float		angle;
-	t_vector2	dir;
-	int			view;
-	int			speed;
-}	t_player;
-
 typedef struct s_object
 {
 	t_dvector2	map_pos;
@@ -179,6 +169,7 @@ typedef struct s_object
 	float		dist;
 	long int	time;	//for animation
 	char		symbol_receptacle;
+	bool		is_full;
 }	t_object;
 
 typedef struct s_image
@@ -209,6 +200,18 @@ typedef struct s_map
 	void		*arg;
 	t_sprite	sprite[6];
 }	t_map;
+
+typedef	struct s_player
+{
+	t_dvector2	f_real_pos;
+	t_vector2	mouse_pos;
+	float		angle;
+	t_vector2	dir;
+	int			view;
+	int			speed;
+	bool		has_item;
+	t_map		item;
+}	t_player;
 
 typedef struct s_door
 {
@@ -347,7 +350,7 @@ void		player_move(t_player *player, double delta_time, t_map **map);
 int			mouse_click(int button, int x, int y,t_game *game);
 int			ft_close(t_game *game);
 
-void		check_colliding(t_player *player, t_dvector2 new_pos, t_map **map);
+t_dvector2	check_colliding(t_player *player, t_dvector2 new_pos, t_map **map);
 
 // -------Raycasting-----
 t_ray		get_wall_hit(t_dvector2 fpos, t_map **map, float angle);
@@ -406,6 +409,12 @@ void		draw_ceiling(t_game *game);
 bool		loading_screen(t_game *game);
 bool		update_loading_screen(t_game *game, t_loading *loading_screen);
 void		free_loading_screen(t_game *game);
+
+// ------ Object interactive -----
+void		take_object(t_player *player, t_map *cell_map);
+void		drop_object(t_player *player, t_map **map);
+
+
 
 // unsigned int	dark_with_dist(int color, float dark_quantity);
 

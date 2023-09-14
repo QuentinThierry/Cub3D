@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/13 13:09:03 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 18:53:53 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	player_move(t_player *player, double delta_time, t_map **map)
 	{
 		move_value.x = player->f_real_pos.x + move_value.x * delta_time / 100;
 		move_value.y = player->f_real_pos.y + move_value.y * delta_time / 100;
-		check_colliding(player, move_value, map);
+		player->f_real_pos = check_colliding(player, move_value, map);
 	}
 }
 
@@ -119,6 +119,6 @@ int	mouse_click(int button, int x, int y,t_game *game)
 	(void)x;
 	(void)y;
 	if (button == 1)
-		open_door(game);
+		drop_object(game->player, game->map);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   floor.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/13 16:49:20 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/14 20:41:35 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static inline void	draw_pixel_line(t_game *game, t_dvector2 map_point, t_fvector
 	last_map_pos.y = -(int)map_point.y;
 	while (i < WIN_X)
 	{
-		if (map_point.x >= game->map_size.x || map_point.x < 0 || map_point.y >= game->map_size.y || map_point.y < 0)
+		if (!is_in_map(map_point, game->map, game->map_size))
 		{
 			map_point.x += step_dir.x;
 			map_point.y += step_dir.y;

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/14 18:57:59 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 20:40:57 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@
 # define ROTATION_MOUSE 20
 # define SPEEP_DOOR_OPENING 100
 # define TO_RADIAN .01745329251994
-# define DARK_COLOR 0x00ff00
+
+# define DARK_COLOR 0x101010
 # define DIST_MAX_DARK 15.
 # define DIST_MIN_DARK 3.
 
@@ -317,6 +318,7 @@ char		*ft_strjoin(char *str, char *str1);
 char		*ft_strjoin_slash(char *str, char *str1, bool add_slash);
 int			ft_atoi(const char *str);
 int			get_len_texture(t_texture *texture, int len);
+bool		is_in_map(t_dvector2 pos, t_map **map, t_vector2 size_map);
 
 // -------Parsing-------
 bool		parse_file(char *filename, t_game *game);

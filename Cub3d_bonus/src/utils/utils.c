@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/13 18:00:35 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 20:42:04 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,14 @@ bool	is_receptacle(char symbol, t_texture *tab, int len, char *c)
 		}
 		i++;
 	}
+	return (false);
+}
+
+bool	is_in_map(t_dvector2 pos, t_map **map, t_vector2 size_map)
+{
+	if (pos.x < size_map.x && pos.x >= 0 && pos.y < size_map.y && pos.y >= 0
+		&& map[(int)pos.y][(int)pos.x].symbol != ' ')
+		return (true);
 	return (false);
 }
 

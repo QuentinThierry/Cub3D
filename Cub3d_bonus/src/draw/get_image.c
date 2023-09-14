@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:13:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 19:02:06 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 19:08:10 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_image	*get_image_wall(t_game *game, t_ray ray, int *x_door)
 		{
 			if (ray.hit.x < (int)ray.hit.x + 0.5)
 			{
-				sprite = &(game->map[wall.y][wall.x].sprite[ray.orient]);
+				sprite = &(game->map[wall.y][wall.x].sprite[e_door_image]);
 				dist = (int)ray.hit.x + 0.5 - ray.hit.x;
 			}
 		}
@@ -92,7 +92,7 @@ t_image	*get_image_wall(t_game *game, t_ray ray, int *x_door)
 		{
 			if (ray.hit.x < (int)ray.hit.x + 0.5)
 			{
-				sprite = &(game->map[wall.y - 1][wall.x].sprite[ray.orient]);
+				sprite = &(game->map[wall.y - 1][wall.x].sprite[e_door_image]);
 				dist = 1 - ((int)ray.hit.x - ray.hit.x + 0.5);
 			}
 		}
@@ -110,7 +110,7 @@ t_image	*get_image_wall(t_game *game, t_ray ray, int *x_door)
 		{
 			if (ray.hit.y > (int)ray.hit.y + 0.5)
 			{
-				sprite = &(game->map[wall.y][wall.x - 1].sprite[ray.orient]);
+				sprite = &(game->map[wall.y][wall.x - 1].sprite[e_door_image]);
 				dist = (int)ray.hit.y + 1 - ray.hit.y + 0.5;
 			}
 		}
@@ -127,7 +127,7 @@ t_image	*get_image_wall(t_game *game, t_ray ray, int *x_door)
 		{
 			if (ray.hit.y > (int)ray.hit.y + 0.5)
 			{
-				sprite = &(game->map[wall.y][wall.x].sprite[ray.orient]);
+				sprite = &(game->map[wall.y][wall.x].sprite[e_door_image]);
 				dist = ray.hit.y - (int)ray.hit.y - 0.5;
 			}
 		}

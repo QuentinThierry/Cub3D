@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:13:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/13 21:14:03 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/14 18:20:48 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ t_image	*get_image_wall(t_game *game, t_ray ray, int *x_door)
 		else if ((game->map[wall.y - 1][wall.x].type & DOOR) == DOOR)
 			dist = get_texture_door(ray);
 	}
-	else if (ray.orient == e_north || ray.orient == e_west)
+	else if (ray.orient == e_north)
 	{
 		sprite = &(game->map[wall.y][wall.x].sprite[ray.orient]);
 		if ((game->map[wall.y][wall.x].type & DOOR_NORTH) == DOOR_NORTH)
@@ -93,7 +93,14 @@ t_image	*get_image_wall(t_game *game, t_ray ray, int *x_door)
 				dist = 1 - ((int)ray.hit.x - ray.hit.x + 0.5);
 			}
 		}
-		else if ((game->map[wall.y][wall.x].type & DOOR_WEST) == DOOR_WEST)
+
+		else if ((game->map[wall.y][wall.x].type & DOOR) == DOOR)
+			dist = get_texture_door(ray);
+	}
+	else if (ray.orient == e_west)
+	{
+		sprite = &(game->map[wall.y][wall.x].sprite[ray.orient]);
+		if ((game->map[wall.y][wall.x].type & DOOR_WEST) == DOOR_WEST)
 		{
 			if (ray.hit.y > (int)ray.hit.y + 0.5)
 			{

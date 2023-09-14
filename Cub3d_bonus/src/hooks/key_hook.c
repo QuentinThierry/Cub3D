@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/11 16:17:47 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 23:26:49 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
+#include <X11/Xlib.h>
 
 int	key_press_hook(int key, t_game *game)
 {
@@ -37,6 +38,7 @@ int	key_press_hook(int key, t_game *game)
 		game->minimap->zoom_dir += 1;
 	else if (key == ' ')
 		open_door(game);
+	draw_menu(game, key);
 	return (0);
 }
 

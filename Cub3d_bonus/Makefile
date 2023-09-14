@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
+#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/09/11 14:05:05 by jvigny           ###   ########.fr        #
+#    Updated: 2023/09/14 20:44:11 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -88,7 +88,11 @@ SRC_DRAW = 	draw.c \
 
 HOOKS = hooks/
 SRC_HOOKS = key_hook.c \
-			ft_close.c 
+			ft_close.c
+
+MENU = menu/
+SRC_MENU = \
+			pause_menu.c
 
 AUDIO = audio/
 SRC_AUDIO = \
@@ -101,6 +105,7 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			$(addprefix $(MINIMAP), $(SRC_MINIMAP)) \
 			$(addprefix $(DRAW), $(SRC_DRAW)) \
 			$(addprefix $(HOOKS), $(SRC_HOOKS)) \
+			$(addprefix $(MENU), $(SRC_MENU)) \
 			print.c \
 			loading_screen.c \
 			main.c
@@ -148,6 +153,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)$(UTILS)
 	@mkdir -p $(OBJ_DIR)$(MINIMAP)
 	@mkdir -p $(OBJ_DIR)$(PARSING)
+	@mkdir -p $(OBJ_DIR)$(MENU)
 
 $(MINILIBX):
 	@echo "${GREEN}~-~-~-~-~ COMPILING MINILIBX ~-~-~-~-~${RESET_COLOR}"

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   collisions.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 01:05:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/12 18:43:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/14 20:29:37 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static t_dvector2	_get_collision_se(t_dvector2 fpos,
 			comp.y += step.y;
 			map_pos.x += 1;
 		}
-		else 
+		else
 		{
 			if (map_pos.y > new_pos.y)
 				return (new_pos);

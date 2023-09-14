@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/13 19:26:10 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/14 23:00:01 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@
 
 # include "raudio/src/raudio.h"
 
-# include <X11/X.h>
+// define for XK keybinds handle only in latin qwerty
+#include <X11/keysym.h>
+
 
 # define WIN_X 1280 //1920 - 918 - 1280
 # define WIN_Y 720 //1080 - 468 - 720
@@ -45,10 +47,11 @@
 # define ROTATION_MOUSE 20		// + keyboard binds + play + quit + activer sous-titre 
 # define SPEEP_DOOR_OPENING 100
 # define TO_RADIAN .01745329251994
-# define DARK_COLOR 0x00ff00
+# define DARK_COLOR 0x101010
 # define DIST_MAX_DARK 15.
 # define DIST_MIN_DARK 3.
 
+#define NB_BUTTONS 10
 
 // MINIMAP
 # define PATH_MMAP_PLAYER "../assets/minimap_player.xpm"
@@ -252,6 +255,22 @@ typedef struct s_loading
 	int			nb_image_load;
 }	t_loading;
 
+typedef struct s_button
+{
+	t_image		*base_image;
+	t_image		*hovered_image;
+	t_vector2	pos;
+	t_vector2	size;
+	const char	*text;
+	bool		hovered;
+}	t_button;
+
+typedef struct s_menu
+{
+	t_button	buttons[NB_BUTTONS];
+	
+}	t_menu;
+
 typedef struct s_game
 {
 	t_image			*image;
@@ -269,7 +288,7 @@ typedef struct s_game
 	t_minimap		*minimap;
 	double			delta_time;
 	long int		time;
-	const float	*constants;
+	const float		*constants;
 	int				nb_objects;
 	t_object		**object_array;
 	int				nb_doors;
@@ -277,6 +296,8 @@ typedef struct s_game
 	t_music			*music_array;
 	float			*dist_tab;
 	t_loading		*loading_screen;
+	t_menu			*menu;
+	int				*keybinds;
 }	t_game;
 
 // ------ Utils------
@@ -389,6 +410,12 @@ void		draw_ceiling(t_game *game);
 bool		loading_screen(t_game *game);
 bool		update_loading_screen(t_game *game, t_loading *loading_screen);
 void		free_loading_screen(t_game *game);
+void		draw_image_with_transparence(char *dest_addr, t_image *src
+				, t_vector2 begin_src, t_vector2 size_src);
+
+// ------- menu ----------
+// void	draw_menu(t_game *game);
+void	draw_menu(t_game *game, int key);
 
 // unsigned int	dark_with_dist(int color, float dark_quantity);
 

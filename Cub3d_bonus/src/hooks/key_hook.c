@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 23:26:49 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:22:56 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	key_press_hook(int key, t_game *game)
 		game->minimap->zoom_dir += 1;
 	else if (key == ' ')
 		open_door(game);
+	printf("key : %s, %x\n", XKeysymToString(key), key);
 	draw_menu(game, key);
 	return (0);
 }

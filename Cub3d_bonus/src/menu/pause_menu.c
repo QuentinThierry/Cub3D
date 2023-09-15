@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/14 23:30:21 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/15 16:34:45 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,18 @@ static const int	g_special_key_int[]
 	XK_KP_Right, XK_Shift_L, XK_Shift_R, XK_Up, XK_KP_End, XK_KP_Down,
 	XK_KP_Next, XK_KP_Enter, XK_Control_L, XK_Alt_L, XK_ISO_Level3_Shift,
 	XK_Menu, XK_Control_R, XK_Left, XK_Down, XK_Right, XK_KP_Insert,
-	XK_KP_Delete};
+	XK_KP_Delete, XK_KP_Equal, 0};
 
 static const char	*g_special_key_str[]
 	= {"F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10",
 	"F11", "F12", "Dead_Grave", "BackSpace", "Insert", "Home", "PageUp",
-	"Num_Lock", "PAD_Divide", "PAD_Multiply", "PAD_Subtract", "Tabulation",
-	"Delete", "End", "Next", "PAD_7", "PAD_8", "PAD_9", "PAD_Add",
+	"Num_Lock", "PAD_/", "PAD_*", "PAD_-", "Tabulation",
+	"Delete", "End", "Next", "PAD_7", "PAD_8", "PAD_9", "PAD_+",
 	"Caps_Lock", "Dead_Acute", "Return", "PAD_4", "PAD_5",
 	"PAD_6", "Left_Shift", "Right_Shift", "Up", "PAD_1", "PAD_2",
 	"PAD_3", "PAD_Enter", "Left_Control", "Left_Alt", "AltGr",
 	"Menu", "Right_Control", "Left", "Down", "Right", "PAD_0",
-	"PAD_."};
+	"PAD_.", "PAD_=", "(null)"};
 
 void	init_menu(t_menu *menu)
 {
@@ -61,7 +61,7 @@ static const char	*get_key_str(int key)
 	else
 	{
 		i = 0;
-		while (i < 52)
+		while (i < 54)
 		{
 			if (key == g_special_key_int[i])
 				return (g_special_key_str[i]);

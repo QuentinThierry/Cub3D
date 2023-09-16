@@ -3,38 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/08 15:41:32 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 15:33:25 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-int	init_mlx(t_game *game)
+bool	init_mlx(t_game *game)
 {
 	game->image = ft_calloc(1, sizeof(t_image));
 	if (game->image == NULL)
-		return (-1);
+		return (false);
 	game->mlx_ptr = mlx_init();
 	if (game->mlx_ptr == NULL)
-		return (-1);
+		return (false);
 	game->win = mlx_new_window(game->mlx_ptr, WIN_X, WIN_Y, "cub3d");
 	if (game->win == NULL)
-		return (-1);
+		return (false);
 	game->image->img = mlx_new_image(game->mlx_ptr, WIN_X, WIN_Y);
 	if (game->win == NULL)
-		return (-1);
+		return (false);
 	game->image->addr = mlx_get_data_addr(game->image->img,
 		&game->image->opp, &game->image->size_line, &game->image->endian);
 	if (game->image->opp != 32)
-		return (-1); // If mlx returns a number of plane different that 4, stop the program
+		return (false); // If mlx returns a number of plane different that 4, stop the program
 	game->image->size = (t_vector2){WIN_X, WIN_Y};
 	game->image->opp /= 8;
 	if (game->win == NULL)
-		return (-1);
-	return (0);
+		return (false);
+	return (true);
 }
 
 void	init_mouse(t_game *game)
@@ -114,6 +114,69 @@ bool	load_image_tab(t_game *game)
 				}
 				j++;
 			}
+		}
+		i++;
+	}
+	return (true);
+}
+
+bool	init_keybinds(t_game *game)
+{
+	game->keybinds = ft_calloc(NB_OPTIONS_BUTTONS, sizeof(int));
+	if (!game->keybinds)
+		return (false);
+	game->keybinds[e_key_left_move] = DFL_KEY_LEFT_MOVE;
+	game->keybinds[e_key_right_move] = DFL_KEY_RIGHT_MOVE;
+	game->keybinds[e_key_forward_move] = DFL_KEY_FORWARD_MOVE;
+	game->keybinds[e_key_backward_move] = DFL_KEY_BACKWARD_MOVE;
+	game->keybinds[e_key_left_look] = DFL_KEY_LEFT_LOOK;
+	game->keybinds[e_key_right_look] = DFL_KEY_RIGHT_LOOK;
+	game->keybinds[e_key_pause] = DFL_KEY_PAUSE;
+	game->keybinds[e_key_minimap_zoom] = DFL_KEY_MINIMAP_ZOOM;
+	game->keybinds[e_key_minimap_dezoom] = DFL_KEY_MINIMAP_DEZOOM;
+	game->keybinds[e_key_interact_door] = DFL_KEY_INTERACT_DOOR;
+	game->keybinds[e_key_sprint] = DFL_KEY_SPRINT;
+	return (true);
+}
+
+bool	init_pause_menu(t_game *game)
+{
+	int		i;
+	t_image	*button;
+	t_image	*button_hovered;
+
+	if (!init_keybinds(game))
+		return (false);
+	game->menu = ft_calloc(1, sizeof(t_menu));
+	if (!game->menu)
+		return (false);
+	game->menu->image = btmlx_new_image(game->mlx_ptr, (t_vector2){WIN_X, WIN_Y});
+	if (!game->menu->image)
+		return (false);
+	game->menu->button_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button.xpm", (t_vector2){200, 80});
+	if (!game->menu->button_image)
+		return (false);
+	game->menu->button_hovered_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button_hovered.xpm", (t_vector2){200, 80});
+	if (!game->menu->button_hovered_image)
+		return (false);
+	i = 0;
+	while (i < NB_OPTIONS_BUTTONS)
+	{
+		game->menu->buttons[i].base_image = game->menu->button_image;
+		game->menu->buttons[i].size = (t_vector2){200, 80};
+		game->menu->buttons[i].hovered_image = game->menu->button_hovered_image;
+		game->menu->buttons[i].text = get_key_str(game->keybinds[i]);
+		if (i < NB_OPTIONS_BUTTONS / 2 + (NB_OPTIONS_BUTTONS & 1))
+		{
+			game->menu->buttons[i].pos =
+				(t_vector2){200, i * game->menu->buttons[i].size.y + 20 * (i + 1)};
+		}
+		else
+		{
+			game->menu->buttons[i].pos =
+				(t_vector2){WIN_X / 2 + 200, (i - NB_OPTIONS_BUTTONS / 2 - (NB_OPTIONS_BUTTONS & 1))
+				* game->menu->buttons[i].size.y + 20
+				* (i - NB_OPTIONS_BUTTONS / 2 + ((NB_OPTIONS_BUTTONS & 1) == 0))};
 		}
 		i++;
 	}

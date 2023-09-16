@@ -6,64 +6,70 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/15 16:22:56 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/16 15:40:41 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
-#include <X11/Xlib.h>
 
-int	key_press_hook(int key, t_game *game)
+void	key_press_hook(t_keybind key, t_game *game)
 {
-
-	if (key == 65307 ) // esc
+	if (key == XK_Escape)
 		ft_close(game);
-	else if (key == 65361) // left rrow
+	else if (key == game->keybinds[e_key_left_look])
 		game->player->view -= 1;
-	else if (key == 65363) // right arrow
+	else if (key == game->keybinds[e_key_right_look])
 		game->player->view += 1;
-	else if (key == 'd')
+	else if (key == game->keybinds[e_key_right_move])
 		game->player->dir.x += 1;
-	else if (key == 'a' || key == 'q')
+	else if (key == game->keybinds[e_key_left_move])
 		game->player->dir.x -= 1;
-	else if (key == 'w' || key == 'z')
+	else if (key == game->keybinds[e_key_forward_move])
 		game->player->dir.y -= 1;
-	else if (key == 's')
+	else if (key == game->keybinds[e_key_backward_move])
 		game->player->dir.y += 1;
-	else if (key == 65505) // shift
+	else if (key == game->keybinds[e_key_sprint])
 		game->player->speed += SPRINT_BOOST;
-	else if (key == '-' || key == 65453)
+	else if (key == game->keybinds[e_key_minimap_dezoom])
 		game->minimap->zoom_dir -= 1;
-	else if (key == '=' || key == '+' || key == 65451)
+	else if (key == game->keybinds[e_key_minimap_zoom])
 		game->minimap->zoom_dir += 1;
-	else if (key == ' ')
+	else if (key == game->keybinds[e_key_interact_door])
 		open_door(game);
-	printf("key : %s, %x\n", XKeysymToString(key), key);
-	draw_menu(game, key);
-	return (0);
+	else if (key == game->keybinds[e_key_pause])
+	{
+		mlx_hook(game->win, 2, (1L << 0), (void *)menu_key_hook, game);
+		mlx_hook(game->win, 3, (1L << 1), NULL, game);
+		mlx_mouse_hook(game->win, (void *)menu_mouse_click, game);
+		mlx_mouse_show(game->mlx_ptr, game->win);
+		mlx_hook(game->win, 6, (1L << 6) | (1L << 2) , NULL, game);
+		mlx_loop_hook(game->mlx_ptr, menu_loop_hook, game);
+		mlx_hook(game->win, 8, (1L << 5), NULL, game);
+		game->menu->state = OPTION_MENU;
+
+	}
 }
 
-int	key_release_hook(int key, t_game *game)
+void	key_release_hook(t_keybind key, t_game *game)
 {
-	if (key == 65361) // left rrow
+	if (key == game->keybinds[e_key_left_look])
 		game->player->view += 1;
-	if (key == 65363) // right arrow
+	else if (key == game->keybinds[e_key_right_look])
 		game->player->view -= 1;
-	if (key == 'd')
+	else if (key == game->keybinds[e_key_right_move])
 		game->player->dir.x -= 1;
-	if (key == 'a' || key == 'q')
+	else if (key == game->keybinds[e_key_left_move])
 		game->player->dir.x += 1;
-	if (key == 'w' || key == 'z')
+	else if (key == game->keybinds[e_key_forward_move])
 		game->player->dir.y += 1;
-	if (key == 's')
+	else if (key == game->keybinds[e_key_backward_move])
 		game->player->dir.y -= 1;
-	if (key == 65505) // shift
+	else if (key == game->keybinds[e_key_sprint])
 		game->player->speed -= SPRINT_BOOST;
-	else if (key == '-' || key == 65453)
+	else if (key == game->keybinds[e_key_minimap_dezoom])
 		game->minimap->zoom_dir += 1;
-	else if (key == '=' || key == '+' || key == 65451)
+	else if (key == game->keybinds[e_key_minimap_zoom])
 		game->minimap->zoom_dir -= 1;
-	return (0);
 }
 
 void	player_move(t_player *player, double delta_time, t_map **map)

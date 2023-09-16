@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/14 23:00:01 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/16 16:10:52 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@
 # define DARK_COLOR 0x101010
 # define DIST_MAX_DARK 15.
 # define DIST_MIN_DARK 3.
-
-#define NB_BUTTONS 10
+# define DIST_TO_WALL 0.0999
 
 // MINIMAP
 # define PATH_MMAP_PLAYER "../assets/minimap_player.xpm"
@@ -84,9 +83,26 @@
 # define HEIGHT_ALPHA 34
 # define GREEN_SCREEN 0x00ff00
 
+// MENU
+# define PAUSE_MENU 0
+# define OPTION_MENU 1
+# define CHOOSING_KEY_MENU 2
 
-#define DIST_TO_WALL 0.0999
+# define DARK_PERCENT_OPTION 0.5
+# define NB_OPTIONS_BUTTONS 11
 
+// KEYBINDS
+# define DFL_KEY_LEFT_MOVE 'a'
+# define DFL_KEY_RIGHT_MOVE 'd'
+# define DFL_KEY_FORWARD_MOVE 'w'
+# define DFL_KEY_BACKWARD_MOVE 's'
+# define DFL_KEY_LEFT_LOOK XK_Left
+# define DFL_KEY_RIGHT_LOOK XK_Right
+# define DFL_KEY_PAUSE 'p'
+# define DFL_KEY_MINIMAP_ZOOM '='
+# define DFL_KEY_MINIMAP_DEZOOM '-'
+# define DFL_KEY_INTERACT_DOOR ' '
+# define DFL_KEY_SPRINT XK_Shift_L
 
 // t_type for arg
 # define NONE 0b0
@@ -103,6 +119,7 @@ extern long nb_fps;
 
 typedef u_int32_t	t_pixel32;
 typedef u_int32_t	t_type;
+typedef u_int32_t	t_keybind;
 typedef Music		t_music;
 
 enum e_orientation
@@ -118,6 +135,21 @@ enum e_orientation
 	e_object_wall,
 	e_object_entity,
 	e_object_image = e_north
+};
+
+enum e_keybinds
+{
+	e_key_left_move,
+	e_key_right_move,
+	e_key_forward_move,
+	e_key_backward_move,
+	e_key_left_look,
+	e_key_right_look,
+	e_key_pause,
+	e_key_minimap_zoom,
+	e_key_minimap_dezoom,
+	e_key_interact_door,
+	e_key_sprint
 };
 
 typedef struct s_vector2
@@ -262,13 +294,17 @@ typedef struct s_button
 	t_vector2	pos;
 	t_vector2	size;
 	const char	*text;
-	bool		hovered;
+	bool		is_hovered;
 }	t_button;
 
 typedef struct s_menu
 {
-	t_button	buttons[NB_BUTTONS];
-	
+	t_image		*image;
+	t_image		*button_image;
+	t_image		*button_hovered_image;
+	t_button	buttons[NB_OPTIONS_BUTTONS];
+	int			pressed_button;
+	char		state;
 }	t_menu;
 
 typedef struct s_game
@@ -297,7 +333,7 @@ typedef struct s_game
 	float			*dist_tab;
 	t_loading		*loading_screen;
 	t_menu			*menu;
-	int				*keybinds;
+	t_keybind		*keybinds;
 }	t_game;
 
 // ------ Utils------
@@ -337,13 +373,15 @@ void		printf_texture(t_game *game);
 void		print_map(t_game *game);
 
 // -------Init---------
-int			init_mlx(t_game *game);
+bool		init_mlx(t_game *game);
 bool		load_image_tab(t_game *game);
+bool		init_pause_menu(t_game *game);
 void		init_mouse(t_game *game);
 
+
 // -------Hook---------
-int			key_press_hook(int key, t_game *game);
-int			key_release_hook(int key, t_game *game);
+void		key_press_hook(t_keybind key, t_game *game);
+void		key_release_hook(t_keybind key, t_game *game);
 int			mouse_leave(t_game *game);
 int			mouse_hook(int x,int y, t_game *game);
 int			on_update(t_game *game);
@@ -414,8 +452,13 @@ void		draw_image_with_transparence(char *dest_addr, t_image *src
 				, t_vector2 begin_src, t_vector2 size_src);
 
 // ------- menu ----------
-// void	draw_menu(t_game *game);
-void	draw_menu(t_game *game, int key);
+void		draw_menu(t_game *game);
+void		draw_menu(t_game *game);
+int			menu_loop_hook(t_game *game);
+const char	*get_key_str(t_keybind key);
+void		menu_mouse_click(int button, int x, int y, t_game *game);
+void		menu_key_hook(t_keybind key, t_game *game);
+
 
 // unsigned int	dark_with_dist(int color, float dark_quantity);
 

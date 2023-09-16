@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/15 16:44:49 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 14:20:17 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,6 +240,8 @@ bool	is_existing(t_game *game, int index, char symbol, enum e_orientation orient
 	 	is_wall = false;
 	while (i < game->nb_file)
 	{
+		if (orient == e_exit && game->filename[i].orient == e_exit)
+			return (true);
 		if (game->filename[i].symbol == symbol)
 		{
 			if (game->filename[i].orient == orient)

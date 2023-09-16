@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/16 13:48:17 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 14:11:53 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,6 @@ void	take_object(t_player *player, t_map *cell_map)
 		cell_map->type ^= OBJECT_INTERACTIVE;
 		cell_map->type ^= OBJECT;
 		player->has_item = true;
-		// printf("take item\n\n\n");
-		// printf("has item : %c %d %p\n", player->item.symbol, player->item.type, player->item.arg);
-		// printf("map : %c %d %p\n", cell_map->symbol, cell_map->type, cell_map->arg);
 	}
 }
 
@@ -36,11 +33,11 @@ void	take_object_click(t_game *game, t_player *player, t_map **map)
 	pos.y = -cos(player->angle * TO_RADIAN) * M_SQRT2;
 	if (pos.x > 1)
 		pos.x = 1;
-	if (pos.x < -1)
+	else if (pos.x < -1)
 		pos.x = -1;
 	if (pos.y > 1)
 		pos.y = 1;
-	if (pos.y < -1)
+	else if (pos.y < -1)
 		pos.y = -1;
 	pos.x += player->f_real_pos.x;
 	pos.y += player->f_real_pos.y;
@@ -48,7 +45,6 @@ void	take_object_click(t_game *game, t_player *player, t_map **map)
 		&& (map[(int)pos.y][(int)pos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE
 		&& (map[(int)pos.y][(int)pos.x].type & OBJECT) == OBJECT)
 	{
-		// printf("take item\n\n\n");
 		player->item.symbol = map[(int)pos.y][(int)pos.x].symbol;
 		player->item.type = map[(int)pos.y][(int)pos.x].type;
 		player->item.type ^= WALL;
@@ -67,7 +63,7 @@ void	drop_object(t_player *player, t_map **map, t_map *exit, t_game *game)
 	t_dvector2	pos;
 	t_vector2	dir;
 	t_door		*door;
-	float			frame;
+	float		frame;
 	
 	if (player->has_item == true)
 	{
@@ -75,11 +71,11 @@ void	drop_object(t_player *player, t_map **map, t_map *exit, t_game *game)
 		pos.y = -cos(player->angle * TO_RADIAN) * M_SQRT2;
 		if (pos.x > 1)
 			pos.x = 1;
-		if (pos.x < -1)
+		else if (pos.x < -1)
 			pos.x = -1;
 		if (pos.y > 1)
 			pos.y = 1;
-		if (pos.y < -1)
+		else if (pos.y < -1)
 			pos.y = -1;
 		pos.x += player->f_real_pos.x;
 		pos.y += player->f_real_pos.y;
@@ -96,7 +92,6 @@ void	drop_object(t_player *player, t_map **map, t_map *exit, t_game *game)
 			map[(int)pos.y][(int)pos.x].type = player->item.type;
 			map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_image] = player->item.sprite[e_object_interactive_image];
 			map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_hand_image] = player->item.sprite[e_object_interactive_hand_image];
-			// printf("drop item\n");
 			player->has_item = false;
 		}
 		else if ((map[(int)pos.y][(int)pos.x].type & RECEPTACLE) == RECEPTACLE
@@ -108,7 +103,6 @@ void	drop_object(t_player *player, t_map **map, t_map *exit, t_game *game)
 			player->has_item = false;
 			if (exit != NULL && exit->arg != NULL)
 			{
-				// printf("receptacle\n\n");
 				door = exit->arg;
 				door->nb_receptacle_completed++;
 				frame  = (float)door->nb_receptacle_completed * (game->tab_images[exit->sprite[e_door_image].index].nb_total_frame - 1) / game->total_receptacle ;

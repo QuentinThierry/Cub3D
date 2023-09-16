@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/16 13:54:07 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 14:17:18 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int	on_update(t_game *game)
 	if (game->player->angle + game->player->angle < 0)
 		game->player->angle = game->player->angle + 360;
 	player_move(game->player, game->delta_time, game->map);
-	// printf("player x : %f	y : %f\n", game->player->f_real_pos.x, game->player->f_real_pos.y);
+	if ((game->map[(int)game->player->f_real_pos.y][(int)game->player->f_real_pos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
+		take_object(game->player, &game->map[(int)game->player->f_real_pos.y][(int)game->player->f_real_pos.x]);
 	update_doors(game->door_array, game->nb_doors, game->time, game->map);
 	raycasting(game);
 	if (game->player->has_item == true)

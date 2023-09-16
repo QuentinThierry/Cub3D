@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/16 17:05:12 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 19:32:09 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@
 # define WIN_Y 720 //1080 - 468 - 720
 # define CHUNK_SIZE 100
 # define FOV 80
-# define SPEED 100
-# define SPRINT_BOOST 100
+# define SPEED 1
+# define SPRINT_BOOST 1
 # define ROTATION_KEYBOARD 125
 # define ROTATION_MOUSE 20
 # define SPEEP_DOOR_OPENING 100
@@ -214,7 +214,7 @@ typedef	struct s_player
 	float		angle;
 	t_vector2	dir;
 	int			view;
-	int			speed;
+	float		speed;
 	bool		has_item;
 	t_map		item;
 }	t_player;
@@ -278,6 +278,13 @@ typedef struct s_loading
 	int			nb_image_load;
 }	t_loading;
 
+typedef struct s_end
+{
+	t_fvector2	dest;
+	int			dest_angle;
+	bool		is_moving;
+}	t_end;
+
 typedef struct s_game
 {
 	t_image			*image;
@@ -305,6 +312,7 @@ typedef struct s_game
 	t_loading		*loading_screen;
 	t_map			*exit;
 	int				total_receptacle;
+	t_end			*end;
 }	t_game;
 
 // ------ Utils------
@@ -431,6 +439,8 @@ void		drop_object(t_player *player, t_map **map, t_map *exit, t_game *game);
 t_object	*find_empty_object(t_game *game);
 void		draw_hand_item(t_game *game, t_player *player);
 
+// ----------END ------------
+void		end_of_the_game(t_game *game, enum e_orientation orient);
 
 
 // unsigned int	dark_with_dist(int color, float dark_quantity);

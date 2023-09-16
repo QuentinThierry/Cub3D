@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/16 13:53:50 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 19:25:05 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,15 +81,15 @@ void	player_move(t_player *player, double delta_time, t_map **map)
 		move_value.x += cosf(player->angle * TO_RADIAN) * player->speed * player->dir.x;
 		move_value.y += sinf(player->angle * TO_RADIAN) * player->speed * player->dir.x;
 	}
-	if (player->dir.x != 0 || player->dir.y != 0)
+	if (player->dir.x != 0 && player->dir.y != 0)
 	{
 		move_value.x *= 0.707;
 		move_value.y *= 0.707;
 	}
 	if (player->dir.x != 0 || player->dir.y != 0)
 	{
-		move_value.x = player->f_real_pos.x + move_value.x * delta_time / 100;
-		move_value.y = player->f_real_pos.y + move_value.y * delta_time / 100;
+		move_value.x = player->f_real_pos.x + move_value.x * delta_time;
+		move_value.y = player->f_real_pos.y + move_value.y * delta_time;
 		player->f_real_pos = check_colliding(player, move_value, map);
 	}
 }

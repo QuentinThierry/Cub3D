@@ -34,6 +34,8 @@ FIX :
 <!-- - animation for object -->
 <!-- - open doors and instantly turn around would not open the door for player -->
 <!-- - collision vibration when hit object -->
+<!-- - si la duree des animation est de 0ms ?? -->
+<!-- - on est dans le mur quand on ferme une porte de trop pres -->
 - protect text draw outside of the screen
 - file structure for bonus and mandatory
 - white space at the end of a texture printf error because file not found
@@ -63,5 +65,10 @@ Objet interactif :
 <!-- - fix can't take object on our case -->
 <!-- - no random texture for the exit at the beginning and no animation -->
 
-<!-- - si la duree des animation est de 0ms ?? -->
-- on est dans le mur quand on ferme une porte de trop pres
+Exit door :
+- stop the player
+- mouv the player behind to door on the center of the cell with view angle on the door
+- anim the door open with light
+- walk under the door
+- the end screen
+

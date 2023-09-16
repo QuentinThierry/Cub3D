@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/16 16:44:40 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 20:03:51 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,15 @@ int	on_update(t_game *game)
 
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
-	// usleep(100000);
 	clock_gettime(CLOCK_REALTIME, &time);
 	game->time = time_to_long(&time);
+	if ((game->map[(int)game->player->f_real_pos.y][(int)game->player->f_real_pos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
+		take_object(game->player, &game->map[(int)game->player->f_real_pos.y][(int)game->player->f_real_pos.x]);
+	player_move(game->player, game->delta_time, game->map);
 	if (game->player->angle + game->player->angle >= 360)
 		game->player->angle = game->player->angle - 360;
 	if (game->player->angle + game->player->angle < 0)
 		game->player->angle = game->player->angle + 360;
-	player_move(game->player, game->delta_time, game->map);
-	if ((game->map[(int)game->player->f_real_pos.y][(int)game->player->f_real_pos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
-		take_object(game->player, &game->map[(int)game->player->f_real_pos.y][(int)game->player->f_real_pos.x]);
 	update_doors(game->door_array, game->nb_doors, game->time, game->map);
 	raycasting(game);
 	if (game->player->has_item == true)
@@ -69,8 +68,9 @@ int main(int argc, char **argv)
 		return (perror("Error"), 1);
 	game.nb_file = 6;
 	game.dist_tab = ft_calloc(WIN_X, sizeof(float));
-	if (game.filename == NULL)
-		return (free(game.filename), perror("Error"), 1);
+	game.end = ft_calloc(1, sizeof(t_end));
+	if (game.dist_tab == NULL || game.end == NULL)
+		return (perror("Error"), 1);
 	if (!parse_file(argv[1], &game))
 		return (1);
 	if (!check_map(&game))

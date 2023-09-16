@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/16 14:17:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 16:44:40 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int	on_update(t_game *game)
 int main(int argc, char **argv)
 {
 	t_game	game;
+	bool	error;
 
 	game = (t_game){0};
 	if (argc != 2)
@@ -78,8 +79,12 @@ int main(int argc, char **argv)
 		return (perror("Error"), ft_close(&game), 1);
 	if (!loading_screen(&game))
 		return (perror("Error"), ft_close(&game), 1);
-	if (!load_image_tab(&game))
-		return (perror("Error"), ft_close(&game), 1);
+	if (!load_image_tab(&game, &error))
+	{
+		if (error == true)
+			perror("Error");
+		return (ft_close(&game), 1);
+	}
 	free_filename(&game);
 	free_loading_screen(&game);
 	game.constants = (float[5]){(WIN_X / 2.) / tan((FOV / 2.) * TO_RADIAN)

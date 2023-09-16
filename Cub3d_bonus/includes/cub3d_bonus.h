@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/16 13:54:00 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 16:43:25 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <pthread.h>
 # include <signal.h>
 # include <float.h>
+#include <errno.h>
 
 # include "minilibx-linux/mlx.h"
 # include "get_next_line.h"
@@ -348,7 +349,7 @@ void		print_map(t_game *game);
 
 // -------Init---------
 int			init_mlx(t_game *game);
-bool		load_image_tab(t_game *game);
+bool		load_image_tab(t_game *game, bool *print_error);
 void		init_mouse(t_game *game);
 
 // -------Hook---------

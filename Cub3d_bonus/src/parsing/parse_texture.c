@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/16 14:20:17 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 16:33:54 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,15 @@ bool	ft_read_config(t_animation *animation, int index)
 	if (fd == -1)
 		return (perror("Error"), false);
 	buffer = get_next_line(fd);
-	animation->time_sprite = ft_atoi(buffer);
+	animation->time_sprite = ft_atoi(buffer);		//if NULL !
 	free(buffer);
+	if (animation->time_sprite <= 0)
+		(error = true, printf("Error : Wrong format of config file\n"));
 	buffer = get_next_line(fd);
-	animation->time_animation = ft_atoi(buffer);
+	animation->time_animation = ft_atoi(buffer);		//if NULL !
 	free(buffer);
+	if (animation->time_animation <= 0)
+		(error = true, printf("Error : Wrong format of config file\n"));
 	buffer = get_next_line(fd);
 	while (buffer != NULL)
 	{
@@ -48,9 +52,7 @@ bool	ft_read_config(t_animation *animation, int index)
 		buffer = get_next_line(fd);
 	}
 	close(fd);
-	if (error)
-		return (false);
-	return (true);
+	return (!error);
 }
 
 void	swap(char **str, int a, int b)

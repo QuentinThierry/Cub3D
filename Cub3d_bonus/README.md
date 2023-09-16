@@ -60,9 +60,8 @@ Objet interactif :
 <!-- - increase door exit loading bar -->
 <!-- - bug for calcutating the distance to take on click or drop the object -->
 <!-- - propect only one exit door -->
-- protect can drop object on our case
-- fix can't take object on our case
-- no random texture for the exit at the beginning and no animation
+<!-- - fix can't take object on our case -->
+<!-- - no random texture for the exit at the beginning and no animation -->
 
-- si la duree des animation est de 0ms ??
+<!-- - si la duree des animation est de 0ms ?? -->
 - on est dans le mur quand on ferme une porte de trop pres

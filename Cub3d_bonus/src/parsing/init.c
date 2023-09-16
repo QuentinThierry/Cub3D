@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/15 19:04:31 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 16:45:28 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ bool	load_resize_image(t_game *game, t_image *img, char *filename, t_vector2 dst
 	return (true);
 }
 
-bool	load_image_tab(t_game *game)
+bool	load_image_tab(t_game *game, bool *print_error)
 {
 	t_image		*tab_image;
 	int			i;
@@ -134,6 +134,7 @@ bool	load_image_tab(t_game *game)
 	int			h;
 	int			index;
 
+	*print_error = true;
 	game->nb_images = get_len_texture(game->filename, game->nb_file);
 	game->tab_images = ft_calloc(game->nb_images, sizeof(t_image));
 	if (game->tab_images == NULL)
@@ -174,7 +175,7 @@ bool	load_image_tab(t_game *game)
 			{
 				h = 1;
 				if (!ft_read_config(&(game->filename[i].animation[j]), 0))
-					return (false);
+					return (*print_error = false, false);
 				while (h < game->filename[i].animation[j].nb_sprite)
 				{
 					if (game->filename[i].orient == e_object_interactive_hand)

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/16 13:50:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 17:40:13 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,19 +349,30 @@ void	change_adjacent_wall(t_map **map, t_vector2 map_pos, bool is_add_flag)
 			map[map_pos.y - 1][map_pos.x].type ^= DOOR_SOUTH;
 	}
 }
+bool	possible_to_open_door(enum e_orientation orient, t_dvector2 hit, t_dvector2 pos)
+{
+	if (orient == e_north && hit.y - pos.y < DIST_TO_WALL)
+		return (false);
+	else if (orient == e_south && (hit.y + 1 - pos.y) * -1 < DIST_TO_WALL)
+		return (false);
+	else if (orient == e_west && hit.x - pos.x < DIST_TO_WALL)
+		return (false);
+	else if (orient == e_east && (hit.x + 1 - pos.x) * -1 < DIST_TO_WALL)
+		return (false);
+	return (true);
+}
 
 void	open_door(t_game *game)
 {
-	t_ray			hit;
-	struct timespec	time;
+	t_ray			ray;
 	t_door			*door;
 
-	hit = get_object_hit((t_launch_ray){'\0', DOOR, 1}, game->map, game->player->f_real_pos, game->player->angle);
-	if (hit.hit.x != -1)
+	ray = get_object_hit((t_launch_ray){'\0', DOOR, 1}, game->map, game->player->f_real_pos, game->player->angle);
+	if (ray.hit.x != -1)
 	{
-		if ((game->map[(int)hit.hit.y][(int)hit.hit.x].type & DOOR_LOCK) == DOOR_LOCK)
+		if ((game->map[(int)ray.hit.y][(int)ray.hit.x].type & DOOR_LOCK) == DOOR_LOCK)
 			return ;
-		door = game->map[(int)hit.hit.y][(int)hit.hit.x].arg;
+		door = game->map[(int)ray.hit.y][(int)ray.hit.x].arg;
 		if (door->is_opening_door == 1)
 		{
 			door->is_opening_door = -1;
@@ -381,8 +392,10 @@ void	open_door(t_game *game)
 			}
 			else
 			{
+				if (possible_to_open_door(ray.orient, ray.hit, game->player->f_real_pos) == false)
+					return ;
 				door->is_opening_door = -1;
-				game->map[(int)hit.hit.y][(int)hit.hit.x].type |= WALL;
+				game->map[(int)ray.hit.y][(int)ray.hit.x].type |= WALL;
 				door->time = game->time;
 			}
 		}

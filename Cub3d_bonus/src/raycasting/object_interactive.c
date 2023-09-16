@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/16 14:11:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 16:58:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	take_object_click(t_game *game, t_player *player, t_map **map)
 void	drop_object(t_player *player, t_map **map, t_map *exit, t_game *game)
 {
 	t_dvector2	pos;
-	t_vector2	dir;
 	t_door		*door;
 	float		frame;
 	
@@ -122,11 +121,9 @@ void	drop_object(t_player *player, t_map **map, t_map *exit, t_game *game)
 void	draw_hand_item(t_game *game, t_player *player)
 {
 	t_image	*image;
-	t_image	new;
 	int		begin;
 	
 	image = &game->tab_images[player->item.sprite[e_object_interactive_hand_image].index];
 	begin = (WIN_Y - image->size.y) * game->image->size_line + (WIN_X - image->size.x) * 4;
-	//{WIN_X - image->size.x, WIN_Y - image->size.y
 	draw_image_with_transparence(game->image->addr + begin, image, (t_vector2){0}, image->size);
 }

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:13:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/16 12:58:57 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 17:02:24 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,6 @@ t_image	*get_image_wall(t_game *game, t_ray ray, int *x_door)
 {
 	t_sprite	*sprite;
 	t_image		*image;
-	t_vector2	wall;
 	float		dist;
 	int			type;
 	
@@ -169,7 +168,7 @@ t_image	*get_image_wall(t_game *game, t_ray ray, int *x_door)
 		sprite = _get_image_north(game->map, ray, &dist, &type);
 	else if (ray.orient == e_west)
 		sprite = _get_image_west(game->map, ray, &dist, &type);
-	else if (ray.orient == e_east)
+	else
 		sprite = _get_image_east(game->map, ray, &dist, &type);
 	if ((type & EXIT) == EXIT)
 	{

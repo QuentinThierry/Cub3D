@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 21:13:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 13:50:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -356,7 +356,7 @@ void	open_door(t_game *game)
 	struct timespec	time;
 	t_door			*door;
 
-	hit = get_object_hit((t_launch_ray){'\0', DOOR, 1}, game, game->player->f_real_pos, game->player->angle);
+	hit = get_object_hit((t_launch_ray){'\0', DOOR, 1}, game->map, game->player->f_real_pos, game->player->angle);
 	if (hit.hit.x != -1)
 	{
 		if ((game->map[(int)hit.hit.y][(int)hit.hit.x].type & DOOR_LOCK) == DOOR_LOCK)

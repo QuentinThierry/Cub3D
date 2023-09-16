@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 18:21:21 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/11 14:56:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 13:50:10 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,17 +197,17 @@ static t_ray	_get_object_nw(t_dvector2 begin,
 	}
 }
 
-t_ray	get_object_hit(t_launch_ray object, t_game *game, t_dvector2 begin, float angle)
+t_ray	get_object_hit(t_launch_ray object, t_map **map, t_dvector2 begin, float angle)
 {
 	t_vector2	sign;
 
 	sign = get_sign(angle);
 	if (sign.x == 1 && sign.y == 1)
-		return (_get_object_se(begin, game->map, object, angle));
+		return (_get_object_se(begin, map, object, angle));
 	else if (sign.x == 1 && sign.y == -1)
-		return (_get_object_ne(begin, game->map, object, angle));
+		return (_get_object_ne(begin, map, object, angle));
 	else if (sign.x == -1 && sign.y == 1)
-		return (_get_object_sw(begin, game->map, object, angle));
+		return (_get_object_sw(begin, map, object, angle));
 	else
-		return (_get_object_nw(begin, game->map, object, angle));
+		return (_get_object_nw(begin, map, object, angle));
 }

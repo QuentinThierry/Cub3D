@@ -54,8 +54,15 @@ Objet interactif :
 <!-- - take objet on walk -->
 <!-- -- take objet with click -->
 <!-- -- change image printf if object wall to after -->
-- draw image hand
+<!-- - draw image hand -->
 <!-- - drop objet ->draw objet alone on the floor ->become object none wall -->
 <!-- - check receptacle if correct change image for receptacle completed -->
-- increase door exit loading bar
+<!-- - increase door exit loading bar -->
 - bug for calcutating the distance to take on click or drop the object
+- propect only one exit door
+- protect can drop object on our case
+- fix can't take object on our case
+- no random texture for the exit at the beginning and no animation
+
+- si la duree des animation est de 0ms ??
+- on est dans le mur quand on ferme une porte de trop pres

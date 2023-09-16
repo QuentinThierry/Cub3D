@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 18:51:49 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/11 14:56:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/15 18:42:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_image	*btmlx_new_image(void *mlx_ptr, t_vector2 size)
 	return (image);
 }
 
-t_image	*resize_img(void *mlx, t_image *src,
+t_image	*resize_img_malloc(void *mlx, t_image *src,
 					t_vector2 dst_size)
 {
 	t_dvector2	ratio;
@@ -81,7 +81,7 @@ t_image	*btmlx_xpm_file_to_image(void *mlx, char *path,
 	if ((src_size.x == dst_size.x && src_size.y == dst_size.y)
 		|| (dst_size.x == 0 || dst_size.y == 0))
 		return (src);
-	dst = resize_img(mlx, src, dst_size);
+	dst = resize_img_malloc(mlx, src, dst_size);
 	mlx_destroy_image(mlx, src->img);
 	free(src);
 	return (dst);

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:13:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 21:00:57 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 12:58:57 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,20 @@ static void	update_anim(long int time, t_sprite *sprite, t_image *img)
 	}
 }
 
-static t_sprite	*_get_image_south(t_map **map, t_ray ray, t_vector2 wall, float *dist)
+static t_sprite	*_get_image_south(t_map **map, t_ray ray, float *dist, int *type)
 {
+	t_vector2	wall;
+	
+	wall.x = (int)ray.hit.x;
+	wall.y = (int)ray.hit.y;
 	if (ray.orient == e_south)
 		wall.y = (int)ceil(ray.hit.y);
+	*type = map[wall.y - 1][wall.x].type;
 	if ((map[wall.y - 1][wall.x].type & DOOR_SOUTH) == DOOR_SOUTH)
 	{
 		if (ray.hit.x < (int)ray.hit.x + 0.5)
 		{
+			*type = map[wall.y][wall.x].type;
 			*dist = (int)ray.hit.x + 0.5 - ray.hit.x;
 			return (&(map[wall.y][wall.x].sprite[e_door_image]));
 		}
@@ -72,17 +78,22 @@ static t_sprite	*_get_image_south(t_map **map, t_ray ray, t_vector2 wall, float 
 	return (&(map[wall.y - 1][wall.x].sprite[ray.orient]));
 }
 
-static t_sprite	*_get_image_north(t_map **map, t_ray ray, t_vector2 wall, float *dist)
+static t_sprite	*_get_image_north(t_map **map, t_ray ray, float *dist, int *type)
 {
+	t_vector2	wall;
+	
+	wall.x = (int)ray.hit.x;
+	wall.y = (int)ray.hit.y;
+	*type = map[wall.y][wall.x].type;
 	if ((map[wall.y][wall.x].type & DOOR_NORTH) == DOOR_NORTH)
 	{
 		if (ray.hit.x < (int)ray.hit.x + 0.5)
 		{
+			*type = map[wall.y - 1][wall.x].type;
 			*dist = 1 - ((int)ray.hit.x - ray.hit.x + 0.5);
 			return (&(map[wall.y - 1][wall.x].sprite[e_door_image]));
 		}
 	}
-
 	else if ((map[wall.y][wall.x].type & DOOR) == DOOR)
 	{
 		*dist = get_texture_door(ray);
@@ -91,12 +102,18 @@ static t_sprite	*_get_image_north(t_map **map, t_ray ray, t_vector2 wall, float 
 	return (&(map[wall.y][wall.x].sprite[ray.orient]));
 }
 
-static t_sprite	*_get_image_west(t_map **map, t_ray ray, t_vector2 wall, float *dist)
+static t_sprite	*_get_image_west(t_map **map, t_ray ray, float *dist, int *type)
 {
+	t_vector2	wall;
+	
+	wall.x = (int)ray.hit.x;
+	wall.y = (int)ray.hit.y;
+	*type = map[wall.y][wall.x].type;
 	if ((map[wall.y][wall.x].type & DOOR_WEST) == DOOR_WEST)
 	{
 		if (ray.hit.y > (int)ray.hit.y + 0.5)
 		{
+			*type = map[wall.y][wall.x - 1].type;
 			*dist = (int)ray.hit.y + 1 - ray.hit.y + 0.5;
 			return (&(map[wall.y][wall.x - 1].sprite[e_door_image]));
 		}
@@ -109,14 +126,20 @@ static t_sprite	*_get_image_west(t_map **map, t_ray ray, t_vector2 wall, float *
 	return (&(map[wall.y][wall.x].sprite[ray.orient]));
 }
 
-static t_sprite	*_get_image_east(t_map **map, t_ray ray, t_vector2 wall, float *dist)
+static t_sprite	*_get_image_east(t_map **map, t_ray ray, float *dist, int *type)
 {
+	t_vector2	wall;
+	
+	wall.x = (int)ray.hit.x;
+	wall.y = (int)ray.hit.y;
 	if (ray.orient == e_east)
 		wall.x = (int)ceil(ray.hit.x);
+	*type = map[wall.y][wall.x - 1].type;
 	if ((map[wall.y][wall.x - 1].type & DOOR_EAST) == DOOR_EAST)
 	{
 		if (ray.hit.y > (int)ray.hit.y + 0.5)
 		{
+			*type = map[wall.y][wall.x].type;
 			*dist = ray.hit.y - (int)ray.hit.y - 0.5;
 			return (&(map[wall.y][wall.x].sprite[e_door_image]));
 		}
@@ -135,20 +158,25 @@ t_image	*get_image_wall(t_game *game, t_ray ray, int *x_door)
 	t_image		*image;
 	t_vector2	wall;
 	float		dist;
+	int			type;
 	
 	*x_door = -1;
 	dist = -1;
-	wall.x = (int)ray.hit.x;
-	wall.y = (int)ray.hit.y;
 
 	if (ray.orient == e_south)
-		sprite = _get_image_south(game->map, ray, wall, &dist);
+		sprite = _get_image_south(game->map, ray, &dist, &type);
 	else if (ray.orient == e_north)
-		sprite = _get_image_north(game->map, ray, wall, &dist);
+		sprite = _get_image_north(game->map, ray, &dist, &type);
 	else if (ray.orient == e_west)
-		sprite = _get_image_west(game->map, ray, wall, &dist);
+		sprite = _get_image_west(game->map, ray, &dist, &type);
 	else if (ray.orient == e_east)
-		sprite = _get_image_east(game->map, ray, wall, &dist);
+		sprite = _get_image_east(game->map, ray, &dist, &type);
+	if ((type & EXIT) == EXIT)
+	{
+		if (dist != -1)
+			*x_door = game->tab_images[sprite->index].size.x * dist;
+		return(&(game->tab_images[sprite->index + sprite->frame]));
+	}
 	if (sprite->frame == -1)
 	{
 		if (dist != -1)

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/14 23:04:32 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 13:54:00 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@
 # define SPEEP_DOOR_OPENING 100
 # define TO_RADIAN .01745329251994
 
-# define DARK_COLOR 0x101010
+# define DARK_COLOR 0x00FF00
 # define DIST_MAX_DARK 15.
 # define DIST_MIN_DARK 3.
 
@@ -224,6 +224,7 @@ typedef struct s_door
 	int			is_opening_door;
 	long int	time;
 	t_vector2	map_pos;
+	int			nb_receptacle_completed;
 }	t_door;
 
 /**
@@ -293,7 +294,7 @@ typedef struct s_game
 	t_minimap		*minimap;
 	double			delta_time;
 	long int		time;
-	const float	*constants;
+	const float		*constants;
 	int				nb_objects;
 	t_object		**object_array;
 	int				nb_doors;
@@ -301,6 +302,8 @@ typedef struct s_game
 	t_music			*music_array;
 	float			*dist_tab;
 	t_loading		*loading_screen;
+	t_map			*exit;
+	int				total_receptacle;
 }	t_game;
 
 // ------ Utils------
@@ -404,7 +407,7 @@ void		update_doors(t_map **doors, int	nb_doors, long time, t_map **map);
 void		open_door(t_game *game);
 
 
-t_ray		get_object_hit(t_launch_ray object, t_game *game, t_dvector2 begin, float angle);
+t_ray		get_object_hit(t_launch_ray object, t_map **map, t_dvector2 begin, float angle);
 void		draw_objects(t_game *game);
 // float		get_dist(t_dvector2 fpos, t_dvector2 wall);
 
@@ -417,12 +420,15 @@ void		draw_ceiling(t_game *game);
 bool		loading_screen(t_game *game);
 bool		update_loading_screen(t_game *game, t_loading *loading_screen);
 void		free_loading_screen(t_game *game);
+void		draw_image_with_transparence(char *dest_addr, t_image *src
+					, t_vector2 begin_src, t_vector2 size_src);
 
 // ------ Object interactive -----
 void		take_object_click(t_game *game, t_player *player, t_map **map);
 void		take_object(t_player *player, t_map *cell_map);
-void		drop_object(t_player *player, t_map **map);
+void		drop_object(t_player *player, t_map **map, t_map *exit, t_game *game);
 t_object	*find_empty_object(t_game *game);
+void		draw_hand_item(t_game *game, t_player *player);
 
 
 

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 23:07:00 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/15 20:33:01 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 				{
 					map[i].type |= DOOR_LOCK;
 					map[i].type |= EXIT;
+					game->exit = map + i;
 				}
 				map[i].arg = ft_calloc(1, sizeof(t_door));
 				if (map[i].arg == NULL)
@@ -156,6 +157,7 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			else if (is_receptacle(line[i], game->filename, game->nb_file, &c))
 			{
 				game->nb_objects++;
+				game->total_receptacle++;
 				map[i].type |= OBJECT;
 				map[i].type |= RECEPTACLE;
 				map[i].sprite[e_receptacle_empty_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_receptacle_empty);

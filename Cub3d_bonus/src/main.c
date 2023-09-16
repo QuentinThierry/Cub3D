@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 23:07:11 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 13:54:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	on_update(t_game *game)
 
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
+	// usleep(100000);
 	clock_gettime(CLOCK_REALTIME, &time);
 	game->time = time_to_long(&time);
 	if (game->player->angle + game->player->angle >= 360)
@@ -31,9 +32,11 @@ int	on_update(t_game *game)
 	if (game->player->angle + game->player->angle < 0)
 		game->player->angle = game->player->angle + 360;
 	player_move(game->player, game->delta_time, game->map);
+	// printf("player x : %f	y : %f\n", game->player->f_real_pos.x, game->player->f_real_pos.y);
 	update_doors(game->door_array, game->nb_doors, game->time, game->map);
 	raycasting(game);
-	// draw_hand_item();
+	if (game->player->has_item == true)
+		draw_hand_item(game, game->player);
 	zoom_hook_handle(game->minimap, game->delta_time);
 	draw_minimap(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
@@ -81,13 +84,13 @@ int main(int argc, char **argv)
 	game.constants = (float[5]){(WIN_X / 2.) / tan((FOV / 2.) * TO_RADIAN)
 					, tanf((FOV / 2.0) * TO_RADIAN), cos((FOV / 2.0) * TO_RADIAN)};
 	init_minimap(&game);
-	// init_mouse(&game);
+	init_mouse(&game);
 	mlx_do_key_autorepeatoff(game.mlx_ptr);
 	mlx_hook(game.win, 2, (1L<<0), key_press_hook, &game);
 	mlx_hook(game.win, 3, (1L<<1), key_release_hook, &game);
 	mlx_hook(game.win, 17, (1L << 8), ft_close, &game);
-	// mlx_hook(game.win, 6, (1L << 6) | (1L << 2) , mouse_hook, &game);
-	// mlx_hook(game.win, 8, (1L << 5), mouse_leave, &game);
+	mlx_hook(game.win, 6, (1L << 6) | (1L << 2) , mouse_hook, &game);
+	mlx_hook(game.win, 8, (1L << 5), mouse_leave, &game);
 	mlx_mouse_hook(game.win, mouse_click, &game);
 	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	// sleep(1);

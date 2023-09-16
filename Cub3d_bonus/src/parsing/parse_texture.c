@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/16 16:33:54 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/16 16:49:03 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,27 +31,28 @@ bool	ft_read_config(t_animation *animation, int index)
 	if (fd == -1)
 		return (perror("Error"), false);
 	buffer = get_next_line(fd);
-	animation->time_sprite = ft_atoi(buffer);		//if NULL !
+	if (buffer != NULL)
+		animation->time_sprite = ft_atoi(buffer);
 	free(buffer);
 	if (animation->time_sprite <= 0)
-		(error = true, printf("Error : Wrong format of config file\n"));
+		error = true;
 	buffer = get_next_line(fd);
-	animation->time_animation = ft_atoi(buffer);		//if NULL !
+	if (buffer != NULL)
+		animation->time_animation = ft_atoi(buffer);
 	free(buffer);
 	if (animation->time_animation <= 0)
-		(error = true, printf("Error : Wrong format of config file\n"));
+		error = true;
 	buffer = get_next_line(fd);
 	while (buffer != NULL)
 	{
 		if (!(buffer[0] == '\n' || buffer[0] == '\0'))
-		{
-			printf("Error : Wrong format of config file\n");
 			error = true;
-		}
 		free(buffer);
 		buffer = get_next_line(fd);
 	}
 	close(fd);
+	if (error == true)
+		printf("Error : Wrong format of config file\n");
 	return (!error);
 }
 

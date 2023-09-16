@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/16 16:10:52 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/16 20:04:00 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,10 +117,11 @@
 extern long tot_fps;
 extern long nb_fps;
 
-typedef u_int32_t	t_pixel32;
-typedef u_int32_t	t_type;
-typedef u_int32_t	t_keybind;
-typedef Music		t_music;
+typedef unsigned char	t_byte;
+typedef u_int32_t		t_pixel32;
+typedef u_int32_t		t_type;
+typedef u_int32_t		t_keybind;
+typedef Music			t_music;
 
 enum e_orientation
 {
@@ -300,11 +301,12 @@ typedef struct s_button
 typedef struct s_menu
 {
 	t_image		*image;
+	t_image		*background_image;
 	t_image		*button_image;
 	t_image		*button_hovered_image;
 	t_button	buttons[NB_OPTIONS_BUTTONS];
-	int			pressed_button;
-	char		state;
+	t_byte		pressed_button;
+	t_byte		state;
 }	t_menu;
 
 typedef struct s_game

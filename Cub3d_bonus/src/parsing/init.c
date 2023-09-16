@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/16 15:33:25 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/16 16:20:15 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,9 @@ bool	init_pause_menu(t_game *game)
 		return (false);
 	game->menu->image = btmlx_new_image(game->mlx_ptr, (t_vector2){WIN_X, WIN_Y});
 	if (!game->menu->image)
+		return (false);
+	game->menu->background_image = btmlx_new_image(game->mlx_ptr, (t_vector2){WIN_X, WIN_Y});
+	if (!game->menu->background_image)
 		return (false);
 	game->menu->button_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button.xpm", (t_vector2){200, 80});
 	if (!game->menu->button_image)

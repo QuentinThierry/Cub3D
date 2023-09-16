@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/16 15:39:50 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/16 20:04:33 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,34 +129,135 @@ static inline t_pixel32	darken_pixel(t_pixel32 pixel)
 	| (unsigned char)((pixel & 0xFF) * dark_quantity + (DARK_COLOR & 0xff) * DARK_PERCENT_OPTION));
 }
 
-static void	apply_menu_dark_filter(t_image *menu_image)
-{
-	int			x;
-	int			y;
-	const int	img_size_x = menu_image->size.x;
-	const int	img_size_y = menu_image->size.y;
-	t_pixel32	*pix_addr;
+#define SIZE_BOX_BLUR 21.
 
+static void	set_to_average_pix(t_image *src, t_image *dest, int ori_pos_x, int ori_pos_y)
+{
+	t_pixel32	*pix;
+	float		red;
+	float		green;
+	float		blue;
+	int			y_start;
+	int			x_start;
+	int			x_end;
+	int			y_end;
+	int			x;
+	int			nb_pixels;
+
+	red = 0;
+	green = 0;
+	blue = 0;
 	x = 0;
-	y = 0;
-	pix_addr = (t_pixel32 *)(menu_image->addr + y * menu_image->size_line + x * 4);
-	while (y < img_size_y)
+	x_start = -SIZE_BOX_BLUR / 2;
+	y_start = -SIZE_BOX_BLUR / 2;
+	x_end = SIZE_BOX_BLUR / 2;
+	y_end = SIZE_BOX_BLUR / 2;
+	if (ori_pos_y + y_start < 0)
+		y_start = -ori_pos_y;
+	if (ori_pos_y + SIZE_BOX_BLUR > dest->size.y)
+		y_end -= ori_pos_y + SIZE_BOX_BLUR / 2 - dest->size.y;
+	if (ori_pos_x + x_start < 0)
+		x_start = -ori_pos_x;
+	if (ori_pos_x + SIZE_BOX_BLUR > dest->size.x)
+		x_end -= ori_pos_x + SIZE_BOX_BLUR / 2 - dest->size.x;
+	nb_pixels = (y_end - y_start) * (x_end - x_start);
+	
+	while (y_start < y_end)
 	{
 		x = 0;
-		while (x < img_size_x)
+		pix = (t_pixel32 *)(src->addr + ((ori_pos_y + y_start)
+			* src->size_line + (ori_pos_x + x_start) * 4));
+		while (x + x_start < x_end)
 		{
-			*pix_addr = darken_pixel(*pix_addr);
-			pix_addr++;
+			red += ((*(pix + x) >> 16) & 0xff);
+			green += ((*(pix + x) >> 8) & 0xff);
+			blue += (*(pix + x) & 0xff);
+			x++;
+		}
+		y_start++;
+	}
+	red /= nb_pixels;
+	green /= nb_pixels;
+	blue /= nb_pixels;
+	*(t_pixel32*)(dest->addr + (ori_pos_y * dest->size_line + ori_pos_x * 4))
+		= ((t_byte)red) << 16 | ((t_byte)green << 8) | (t_byte)blue;
+	*(t_pixel32*)(dest->addr + (ori_pos_y * dest->size_line + ori_pos_x * 4) + 4)
+		= ((t_byte)red) << 16 | ((t_byte)green << 8) | (t_byte)blue;
+	*(t_pixel32*)(dest->addr + (ori_pos_y * dest->size_line + ori_pos_x * 4) + dest->size_line)
+		= ((t_byte)red) << 16 | ((t_byte)green << 8) | (t_byte)blue;
+	*(t_pixel32*)(dest->addr + (ori_pos_y * dest->size_line + ori_pos_x * 4) + 4 + dest->size_line)
+		= ((t_byte)red) << 16 | ((t_byte)green << 8) | (t_byte)blue;
+}
+
+void	blur_image(t_image *dest, t_image *src)
+{
+	int			y;
+	int			x;
+	t_pixel32	pix;
+
+	static struct timespec	last_time = {0};
+	struct timespec			cur_time;
+	struct timespec			time;
+	double					fps;
+
+	if (last_time.tv_sec == 0)
+		clock_gettime(CLOCK_REALTIME, &last_time);
+	clock_gettime(CLOCK_REALTIME, &time);
+
+	y = 0;
+	
+	while (y < dest->size.y)
+	{
+		x = 0;
+		while (x < dest->size.x)
+		{
+			set_to_average_pix(src, dest, x, y);
+			x++;
 			x++;
 		}
 		y++;
+		y++;
 	}
+
+
+	clock_gettime(CLOCK_REALTIME, &cur_time);
+	fps = (cur_time.tv_sec - last_time.tv_sec
+			+ (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
+	printf("time : %lf\n", fps);
+	last_time = cur_time;
+	
+}
+
+
+
+static void	apply_menu_dark_filter(t_image *menu_image)
+{
+	// int			x;
+	// int			y;
+	// const int	img_size_x = menu_image->size.x;
+	// const int	img_size_y = menu_image->size.y;
+	// t_pixel32	*pix_addr;
+
+	// x = 0;
+	// y = 0;
+	// pix_addr = (t_pixel32 *)(menu_image->addr + y * menu_image->size_line + x * 4);
+	// while (y < img_size_y)
+	// {
+	// 	x = 0;
+	// 	while (x < img_size_x)
+	// 	{
+	// 		*pix_addr = darken_pixel(*pix_addr);
+	// 		pix_addr++;
+	// 		x++;
+	// 	}
+	// 	y++;
+	// }
 }
 
 void	menu_key_hook(t_keybind key, t_game *game)
 {
 	if (key == game->keybinds[e_key_pause])
-		printf("retur at last menu\n");
+		printf("return at last menu\n");
 		// quit pause or return to previous menu
 	if (key == XK_Escape)
 		ft_close(game);
@@ -164,6 +265,8 @@ void	menu_key_hook(t_keybind key, t_game *game)
 
 void	choose_key_hook(t_keybind key, t_game *game)
 {
+	if (key == XK_Escape)
+		ft_close(game);
 	game->menu->buttons[game->menu->pressed_button].text
 		= get_key_str(key);
 	game->menu->state = OPTION_MENU;
@@ -175,7 +278,7 @@ void	menu_mouse_click(int mouse_button, int x, int y, t_game *game)
 {
 	t_menu		*menu;
 	t_button	*button;
-	int			i;
+	t_byte		i;
 
 	menu = game->menu;
 	if (menu->state == OPTION_MENU)
@@ -189,6 +292,7 @@ void	menu_mouse_click(int mouse_button, int x, int y, t_game *game)
 			{
 				menu->state = CHOOSING_KEY_MENU;
 				apply_menu_dark_filter(menu->image);
+				blur_image(menu->image, game->image);
 				menu->pressed_button = i;
 				mlx_hook(game->win, 2, (1L << 0), (void *)choose_key_hook, game);
 				break ;
@@ -206,6 +310,9 @@ void	draw_menu(t_game *game)
 	menu = game->menu;
 	// if (menu->state == PAUSE_MENU)
 	// 	draw_base_menu(game);
+	if (menu->state != CHOOSING_KEY_MENU)
+		ft_memcpy(game->menu->image->addr,
+				game->menu->background_image->addr, WIN_X * WIN_Y * 4);
 	if (menu->state == OPTION_MENU)
 		draw_option_menu(game);
 	if (menu->state == CHOOSING_KEY_MENU)

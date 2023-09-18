@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/16 20:04:33 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/18 19:57:17 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,65 +129,217 @@ static inline t_pixel32	darken_pixel(t_pixel32 pixel)
 	| (unsigned char)((pixel & 0xFF) * dark_quantity + (DARK_COLOR & 0xff) * DARK_PERCENT_OPTION));
 }
 
-#define SIZE_BOX_BLUR 21.
+// static void	set_to_average_pix(t_image *src, t_image *dest, int ori_pos_x, int ori_pos_y)
+// {
+// 	t_pixel32	*pix;
+// 	float		red;
+// 	float		green;
+// 	float		blue;
+// 	int			y_start;
+// 	int			x_start;
+// 	int			x_end;
+// 	int			y_end;
+// 	int			x;
+// 	int			nb_pixels;
 
-static void	set_to_average_pix(t_image *src, t_image *dest, int ori_pos_x, int ori_pos_y)
-{
-	t_pixel32	*pix;
-	float		red;
-	float		green;
-	float		blue;
-	int			y_start;
-	int			x_start;
-	int			x_end;
-	int			y_end;
-	int			x;
-	int			nb_pixels;
-
-	red = 0;
-	green = 0;
-	blue = 0;
-	x = 0;
-	x_start = -SIZE_BOX_BLUR / 2;
-	y_start = -SIZE_BOX_BLUR / 2;
-	x_end = SIZE_BOX_BLUR / 2;
-	y_end = SIZE_BOX_BLUR / 2;
-	if (ori_pos_y + y_start < 0)
-		y_start = -ori_pos_y;
-	if (ori_pos_y + SIZE_BOX_BLUR > dest->size.y)
-		y_end -= ori_pos_y + SIZE_BOX_BLUR / 2 - dest->size.y;
-	if (ori_pos_x + x_start < 0)
-		x_start = -ori_pos_x;
-	if (ori_pos_x + SIZE_BOX_BLUR > dest->size.x)
-		x_end -= ori_pos_x + SIZE_BOX_BLUR / 2 - dest->size.x;
-	nb_pixels = (y_end - y_start) * (x_end - x_start);
+// 	red = 0;
+// 	green = 0;
+// 	blue = 0;
+// 	x = 0;
+// 	x_start = -SIZE_BOX_BLUR / 2;
+// 	y_start = -SIZE_BOX_BLUR / 2;
+// 	x_end = SIZE_BOX_BLUR / 2;
+// 	y_end = SIZE_BOX_BLUR / 2;
+// 	if (ori_pos_y + y_start < 0)
+// 		y_start = -ori_pos_y;
+// 	if (ori_pos_y + SIZE_BOX_BLUR > dest->size.y)
+// 		y_end -= ori_pos_y + SIZE_BOX_BLUR / 2 - dest->size.y;
+// 	if (ori_pos_x + x_start < 0)
+// 		x_start = -ori_pos_x;
+// 	if (ori_pos_x + SIZE_BOX_BLUR > dest->size.x)
+// 		x_end -= ori_pos_x + SIZE_BOX_BLUR / 2 - dest->size.x;
+// 	nb_pixels = (y_end - y_start) * (x_end - x_start);
 	
-	while (y_start < y_end)
+// 	while (y_start < y_end)
+// 	{
+// 		x = 0;
+// 		pix = (t_pixel32 *)(src->addr + ((ori_pos_y + y_start)
+// 			* src->size_line + (ori_pos_x + x_start) * 4));
+// 		while (x + x_start < x_end)
+// 		{
+// 			red += ((*(pix + x) >> 16) & 0xff);
+// 			green += ((*(pix + x) >> 8) & 0xff);
+// 			blue += (*(pix + x) & 0xff);
+// 			x++;
+// 		}
+// 		y_start++;
+// 	}
+// 	red /= nb_pixels;
+// 	green /= nb_pixels;
+// 	blue /= nb_pixels;
+// 	*(t_pixel32*)(dest->addr + (ori_pos_y * dest->size_line + ori_pos_x * 4))
+// 		= ((t_byte)red) << 16 | ((t_byte)green << 8) | (t_byte)blue;
+// 	*(t_pixel32*)(dest->addr + (ori_pos_y * dest->size_line + ori_pos_x * 4) + 4)
+// 		= ((t_byte)red) << 16 | ((t_byte)green << 8) | (t_byte)blue;
+// 	*(t_pixel32*)(dest->addr + (ori_pos_y * dest->size_line + ori_pos_x * 4) + dest->size_line)
+// 		= ((t_byte)red) << 16 | ((t_byte)green << 8) | (t_byte)blue;
+// 	*(t_pixel32*)(dest->addr + (ori_pos_y * dest->size_line + ori_pos_x * 4) + 4 + dest->size_line)
+// 		= ((t_byte)red) << 16 | ((t_byte)green << 8) | (t_byte)blue;
+// }
+
+#define SIZE_BOX_BLUR 21
+
+static void	horizontal_blur(t_image *dest, t_image *src)
+{
+	int			i;
+	int			size_image;
+	t_pixel32	*pix_src;
+	t_pixel32	*pix_dest;
+	int			red;
+	int			green;
+	int			blue;
+
+	size_image = src->size.x * src->size.y;
+	pix_src = (t_pixel32 *)src->addr;
+	pix_dest = (t_pixel32 *)dest->addr;
+	pix_dest[0] = pix_src[0];
+	pix_dest[1] = pix_src[1];
+	i = 2;
+	while (i < size_image - 1)
 	{
-		x = 0;
-		pix = (t_pixel32 *)(src->addr + ((ori_pos_y + y_start)
-			* src->size_line + (ori_pos_x + x_start) * 4));
-		while (x + x_start < x_end)
-		{
-			red += ((*(pix + x) >> 16) & 0xff);
-			green += ((*(pix + x) >> 8) & 0xff);
-			blue += (*(pix + x) & 0xff);
-			x++;
-		}
-		y_start++;
+		red = ((pix_dest[i - 1] >> 16) & 0xff) -
+		((pix_src[i - SIZE_BOX_BLUR / 2 - 1] >> 16) & 0xff) / SIZE_BOX_BLUR +
+		((pix_src[i + SIZE_BOX_BLUR / 2] >> 16) & 0xff) / SIZE_BOX_BLUR;
+		if (red < 0)
+			red = 0;
+		if (red > 255)
+			red = 255;
+		green = ((pix_dest[i - 1] >> 8) & 0xff) -
+		((pix_src[i - SIZE_BOX_BLUR / 2 - 1] >> 8) & 0xff) / SIZE_BOX_BLUR +
+		((pix_src[i + SIZE_BOX_BLUR / 2] >> 8) & 0xff) / SIZE_BOX_BLUR;
+		if (green < 0)
+			green = 0;
+		if (green > 255)
+			green = 255;
+		blue = ((pix_dest[i - 1]) & 0xff) -
+		(pix_src[i - SIZE_BOX_BLUR / 2 - 1] & 0xff) / SIZE_BOX_BLUR +
+		(pix_src[i + SIZE_BOX_BLUR / 2] & 0xff) / SIZE_BOX_BLUR;
+		if (blue < 0)
+			blue = 0;
+		if (blue > 255)
+			blue = 255;
+		pix_dest[i] = red << 16 | green << 8 | blue;
+		i++;
 	}
-	red /= nb_pixels;
-	green /= nb_pixels;
-	blue /= nb_pixels;
-	*(t_pixel32*)(dest->addr + (ori_pos_y * dest->size_line + ori_pos_x * 4))
-		= ((t_byte)red) << 16 | ((t_byte)green << 8) | (t_byte)blue;
-	*(t_pixel32*)(dest->addr + (ori_pos_y * dest->size_line + ori_pos_x * 4) + 4)
-		= ((t_byte)red) << 16 | ((t_byte)green << 8) | (t_byte)blue;
-	*(t_pixel32*)(dest->addr + (ori_pos_y * dest->size_line + ori_pos_x * 4) + dest->size_line)
-		= ((t_byte)red) << 16 | ((t_byte)green << 8) | (t_byte)blue;
-	*(t_pixel32*)(dest->addr + (ori_pos_y * dest->size_line + ori_pos_x * 4) + 4 + dest->size_line)
-		= ((t_byte)red) << 16 | ((t_byte)green << 8) | (t_byte)blue;
+
 }
+
+// static void	horizontal_blur(t_image *dest, t_image *src)
+// {
+// 	int			i;
+// 	int			size_image;
+// 	t_pixel32	*pix_src;
+// 	t_pixel32	*pix_dest;
+// 	float		red;
+// 	float		green;
+// 	float		blue;
+
+// 	size_image = src->size.x * src->size.y;
+// 	pix_src = (t_pixel32 *)src->addr;
+// 	pix_dest = (t_pixel32 *)dest->addr;
+// 	pix_dest[0] = pix_src[0];
+// 	pix_dest[1] = pix_src[1];
+// 	i = 2;
+// 	while (i < size_image - 1)
+// 	{
+// 		red = ((pix_dest[i - 1] >> 16) & 0xff) -
+// 		((pix_src[i - SIZE_BOX_BLUR / 2 - 1] >> 16) & 0xff) / (float)SIZE_BOX_BLUR +
+// 		((pix_src[i + SIZE_BOX_BLUR / 2] >> 16) & 0xff) / (float)SIZE_BOX_BLUR;
+// 		if (red < 0)
+// 			red = 0;
+// 		if (red > 255)
+// 			red = 255;
+// 		green = ((pix_dest[i - 1] >> 8) & 0xff) -
+// 		((pix_src[i - SIZE_BOX_BLUR / 2 - 1] >> 8) & 0xff) / (float)SIZE_BOX_BLUR +
+// 		((pix_src[i + SIZE_BOX_BLUR / 2] >> 8) & 0xff) / (float)SIZE_BOX_BLUR;
+// 		if (green < 0)
+// 			green = 0;
+// 		if (green > 255)
+// 			green = 255;
+// 		blue = ((pix_dest[i - 1]) & 0xff) -
+// 		(pix_src[i - SIZE_BOX_BLUR / 2 - 1] & 0xff) / (float)SIZE_BOX_BLUR +
+// 		(pix_src[i + SIZE_BOX_BLUR / 2] & 0xff) / (float)SIZE_BOX_BLUR;
+// 		if (blue < 0)
+// 			blue = 0;
+// 		if (blue > 255)
+// 			blue = 255;
+// 		printf("r %f, g %f, b %f\n", red, green, blue);
+// 		pix_dest[i] = (int)(red + 0.5) << 16 | (int)(green + 0.5) << 8 | (int)(blue + 0.5);
+// 		i++;
+// 	}
+// }
+
+static void	vertical_blur(t_image *dest, t_image *src)
+{
+	int			x;
+	int			y;
+	int			size_x;
+	int			size_y;
+	t_pixel32	*pix_src;
+	t_pixel32	*pix_dest;
+
+	int			red;
+	int			green;
+	int			blue;
+
+	size_y = src->size.y;
+	size_x = src->size.x;
+	
+	ft_memcpy(dest->addr, src->addr, src->size_line);
+	pix_src = ((t_pixel32 *)src->addr) + size_x;
+	pix_dest = ((t_pixel32 *)dest->addr) + size_x;
+	x = 0;
+	while (x < size_x)
+	{
+		y = SIZE_BOX_BLUR / 2 + 1;
+		while (y < size_y)
+		{
+			// red = ((*(pix_dest - size_x) >> 16) & 0xff)
+			// 	- (((*(pix_src - size_x * (SIZE_BOX_BLUR / 2 + 1))) >> 16) & 0xff) / SIZE_BOX_BLUR
+			// 	+ (((*(pix_src + size_x * (SIZE_BOX_BLUR / 2))) >> 16) & 0xff) / SIZE_BOX_BLUR;
+
+			// printf("pix - 1 : %x\n", ((*(pix_dest - size_x) >> 16) & 0xff));
+			// printf("%x - %x + %x = %x\n",
+			// (*(pix_dest - size_x) >> 16) & 0xff,
+			// (((*(pix_src - size_x * (SIZE_BOX_BLUR / 2 + 1))) >> 16) & 0xff) / SIZE_BOX_BLUR,
+			// (((*(pix_src + size_x * (SIZE_BOX_BLUR / 2))) >> 16) & 0xff) / SIZE_BOX_BLUR,
+
+			// ((*(pix_dest - size_x) >> 16) & 0xff)
+			// 	- (((*(pix_src - size_x * (SIZE_BOX_BLUR / 2 + 1))) >> 16) & 0xff) / SIZE_BOX_BLUR
+			// 	+ (((*(pix_src + size_x * (SIZE_BOX_BLUR / 2))) >> 16) & 0xff) / SIZE_BOX_BLUR
+			// );
+
+
+			// green = ((*(pix_dest - size_x) >> 8) & 0xff)
+			// 	- (((*(pix_src - size_x * (SIZE_BOX_BLUR / 2 + 1))) >> 8) & 0xff) / SIZE_BOX_BLUR
+			// 	+ (((*(pix_src + size_x * (SIZE_BOX_BLUR / 2))) >> 8) & 0xff) / SIZE_BOX_BLUR;
+			// blue = ((*(pix_dest - size_x)) & 0xff)
+			// 	- ((*(pix_src - size_x * (SIZE_BOX_BLUR / 2 + 1))) & 0xff) / SIZE_BOX_BLUR
+			// 	+ ((*(pix_src + size_x * (SIZE_BOX_BLUR / 2))) & 0xff) / SIZE_BOX_BLUR;
+			*pix_dest = (red << 16) | (green << 8) | blue;
+			pix_src += size_x;
+			pix_dest += size_x;
+			y++;
+			// usleep(100000);
+		}
+		// printf("%p, %p\n", pix_src, ((t_pixel32 *)src->addr) + x + size_x);
+
+		pix_src = ((t_pixel32 *)src->addr) + x + size_x;
+		pix_dest = ((t_pixel32 *)dest->addr) + x + size_x;
+		x++;
+	}
+}
+
 
 void	blur_image(t_image *dest, t_image *src)
 {
@@ -195,7 +347,7 @@ void	blur_image(t_image *dest, t_image *src)
 	int			x;
 	t_pixel32	pix;
 
-	static struct timespec	last_time = {0};
+	struct timespec	last_time = {0};
 	struct timespec			cur_time;
 	struct timespec			time;
 	double					fps;
@@ -204,21 +356,9 @@ void	blur_image(t_image *dest, t_image *src)
 		clock_gettime(CLOCK_REALTIME, &last_time);
 	clock_gettime(CLOCK_REALTIME, &time);
 
-	y = 0;
-	
-	while (y < dest->size.y)
-	{
-		x = 0;
-		while (x < dest->size.x)
-		{
-			set_to_average_pix(src, dest, x, y);
-			x++;
-			x++;
-		}
-		y++;
-		y++;
-	}
-
+	horizontal_blur(dest, src);
+	// exit(0);
+	// vertical_blur(src, dest);
 
 	clock_gettime(CLOCK_REALTIME, &cur_time);
 	fps = (cur_time.tv_sec - last_time.tv_sec
@@ -343,8 +483,8 @@ int	menu_loop_hook(t_game *game)
 	fps = (long)(1.0 / game->delta_time);
 	tot_fps += fps;
 	nb_fps++;
-	if ((nb_fps % 500) == 0)
-		printf("fps : %ld\n", fps);
+	// if ((nb_fps % 500) == 0)
+	// 	printf("fps : %ld\n", fps);
 	last_time = cur_time;
 	
 	return (0);

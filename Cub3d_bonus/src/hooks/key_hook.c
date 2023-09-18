@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/16 19:25:05 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/18 13:51:58 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 int	key_press_hook(int key, t_game *game)
 {
-
-	if (key == 65307 ) // esc
+	if (key == 65307) // esc
 		ft_close(game);
 	else if (key == 65361) // left rrow
 		game->player->view -= 1;
@@ -40,9 +39,16 @@ int	key_press_hook(int key, t_game *game)
 	return (0);
 }
 
+int	exit_hook(int key, t_game *game)
+{
+	if (key == 65307) // esc
+		ft_close(game);
+	return (0);
+}
+
 int	key_release_hook(int key, t_game *game)
 {
-	if (key == 65361) // left rrow
+	if (key == 65361) // left arrow
 		game->player->view += 1;
 	if (key == 65363) // right arrow
 		game->player->view -= 1;

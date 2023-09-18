@@ -66,8 +66,9 @@ Objet interactif :
 <!-- - no random texture for the exit at the beginning and no animation -->
 
 Exit door :
-- stop the player
-- mouv the player behind to door on the center of the cell with view angle on the door
+<!-- - desactive the mouv of the player -->
+<!-- - stop the player -->
+<!-- - mouv the player behind to door on the center of the cell with view angle on the door -->
 - anim the door open with light
 - walk under the door
 - the end screen

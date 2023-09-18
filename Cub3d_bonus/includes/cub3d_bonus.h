@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/18 12:46:26 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/18 13:50:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,6 +363,7 @@ void		init_mouse(t_game *game);
 
 // -------Hook---------
 int			key_press_hook(int key, t_game *game);
+int			exit_hook(int key, t_game *game);
 int			key_release_hook(int key, t_game *game);
 int			mouse_leave(t_game *game);
 int			mouse_hook(int x,int y, t_game *game);

@@ -51,6 +51,7 @@ Door :
 <!-- - opti door open -->
 <!-- - door parsing -->
 <!-- - doors on side of map -->
+- time for door usefull ?? for animation or door open when do I need to update it ???
 
 Objet interactif :
 <!-- - take objet on walk -->
@@ -64,6 +65,7 @@ Objet interactif :
 <!-- - propect only one exit door -->
 <!-- - fix can't take object on our case -->
 <!-- - no random texture for the exit at the beginning and no animation -->
+- if 0 receptacle door is lock PROBLEM
 
 Exit door :
 <!-- - desactive the mouv of the player -->

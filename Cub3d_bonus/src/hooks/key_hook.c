@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/18 13:51:58 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/18 15:24:04 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,17 @@ void	player_move(t_player *player, double delta_time, t_map **map)
 int	mouse_hook(int x, int y, t_game *game)
 {
 	game->player->angle -= (double)(game->player->mouse_pos.x - x) / ROTATION_MOUSE;
+	if (x != WIN_X / 2 || y != WIN_Y / 2)
+	{
+		mlx_mouse_move(game->mlx_ptr, game->win, WIN_X / 2, WIN_Y / 2);
+		game->player->mouse_pos.x = WIN_X / 2;
+		game->player->mouse_pos.y = WIN_Y / 2;
+	}
+	return (0);
+}
+
+int	mouse_stay_in_window_hook(int x, int y, t_game *game)
+{
 	if (x != WIN_X / 2 || y != WIN_Y / 2)
 	{
 		mlx_mouse_move(game->mlx_ptr, game->win, WIN_X / 2, WIN_Y / 2);

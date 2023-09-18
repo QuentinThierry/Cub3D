@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/15 20:33:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/18 16:12:03 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 				{
 					map[i].type |= DOOR_LOCK;
 					map[i].type |= EXIT;
+					if (game->exit != NULL)
+						return (printf("Error : Multiple exit on the map\n"), false);
 					game->exit = map + i;
 				}
 				map[i].arg = ft_calloc(1, sizeof(t_door));

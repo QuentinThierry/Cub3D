@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/18 13:48:31 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/18 16:29:10 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,7 @@ int main(int argc, char **argv)
 		return (perror("Error"), 1);
 	game.nb_file = 6;
 	game.dist_tab = ft_calloc(WIN_X, sizeof(float));
-	game.end = ft_calloc(1, sizeof(t_end));
-	if (game.dist_tab == NULL || game.end == NULL)
+	if (game.dist_tab == NULL)
 		return (perror("Error"), 1);
 	if (!parse_file(argv[1], &game))
 		return (1);
@@ -78,6 +77,8 @@ int main(int argc, char **argv)
 	if (init_mlx(&game) == -1)
 		return (perror("Error"), ft_close(&game), 1);
 	if (!loading_screen(&game))
+		return (perror("Error"), ft_close(&game), 1);
+	if (!init_end_screen(&game))
 		return (perror("Error"), ft_close(&game), 1);
 	if (!load_image_tab(&game, &error))
 	{

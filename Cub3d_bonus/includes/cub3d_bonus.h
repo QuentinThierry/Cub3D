@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/18 13:50:31 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/18 17:19:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define WIN_X 1280 //1920 - 918 - 1280
 # define WIN_Y 720 //1080 - 468 - 720
 # define CHUNK_SIZE 100
-# define FOV 80
+# define FOV 100
 # define SPEED 1
 # define SPRINT_BOOST 1
 # define ROTATION_KEYBOARD 125
@@ -126,6 +126,7 @@ enum e_orientation
 	e_receptacle_empty,
 	e_receptacle_full,
 	e_exit,
+	e_end_screen,
 	e_object_image = e_north,
 	e_door_image = e_north,
 	e_object_interactive_image = e_north,
@@ -277,13 +278,23 @@ typedef struct s_loading
 	int			nb_image_load;
 }	t_loading;
 
+enum e_status
+{
+	e_go_in_font_of_door = 0,
+	e_open_door,
+	e_walk_through_door,
+	e_end
+};
+
 typedef struct s_end
 {
-	t_fvector2	dest;
-	t_fvector2	dir;
-	float		dir_angle;
-	int			dest_angle;
-	bool		is_moving;
+	enum e_status	status;
+	t_fvector2		dest;
+	t_fvector2		dir;
+	float			dir_angle;
+	int				dest_angle;
+	enum e_orientation orient;
+	t_image			*end_screen;
 }	t_end;
 
 typedef struct s_game
@@ -367,6 +378,7 @@ int			exit_hook(int key, t_game *game);
 int			key_release_hook(int key, t_game *game);
 int			mouse_leave(t_game *game);
 int			mouse_hook(int x,int y, t_game *game);
+int			mouse_stay_in_window_hook(int x, int y, t_game *game);
 int			on_update(t_game *game);
 void		player_move(t_player *player, double delta_time, t_map **map);
 int			mouse_click(int button, int x, int y,t_game *game);
@@ -414,6 +426,7 @@ t_dvector2	door_hit_hor_sw(t_dvector2 hit, float step, float door_angle, float p
 t_dvector2	door_hit_ver_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
 t_dvector2	door_hit_hor_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
 float		get_texture_door(t_ray ray);
+void		step_door_open(t_door *door, long time, t_map *map_cell, t_map **map);
 void		update_doors(t_map **doors, int	nb_doors, long time, t_map **map);
 void		open_door(t_game *game);
 
@@ -442,8 +455,9 @@ t_object	*find_empty_object(t_game *game);
 void		draw_hand_item(t_game *game, t_player *player);
 
 // ----------END ------------
+bool		init_end_screen(t_game *game);
 void		end_of_the_game(t_game *game, enum e_orientation orient);
-
+t_ray		get_wall_hit_end(t_dvector2 fpos, t_map **map, float angle, enum e_status status);
 
 // unsigned int	dark_with_dist(int color, float dark_quantity);
 

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/16 19:32:09 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/18 12:46:26 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 # include <pthread.h>
 # include <signal.h>
 # include <float.h>
-#include <errno.h>
 
 # include "minilibx-linux/mlx.h"
 # include "get_next_line.h"
@@ -281,6 +280,8 @@ typedef struct s_loading
 typedef struct s_end
 {
 	t_fvector2	dest;
+	t_fvector2	dir;
+	float		dir_angle;
 	int			dest_angle;
 	bool		is_moving;
 }	t_end;

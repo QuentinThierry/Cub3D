@@ -6,32 +6,29 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:22:02 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/16 20:01:31 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/18 13:10:42 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-void	move_to_dest(t_player *player, t_end *end, double delta_time)
+void	move_to_dest(t_player *player, t_end *end, const double delta_time)
 {
-	t_dvector2	dir;
-	float		dir_angle;
-
-	if (end->is_moving)
-	{
-		dir_angle = end->dest_angle - player->angle;
-		// if (dir_angle > 180)
-		// 	dir_angle = dir_angle - 360;
-		dir.x = end->dest.x - player->f_real_pos.x;
-		dir.y = end->dest.y - player->f_real_pos.y;
-		printf("dir : %f %f angle :%f\n", dir.x, dir.y, dir_angle);
-		player->f_real_pos.x += dir.x * SPEED * delta_time;
-		player->f_real_pos.y += dir.y * SPEED * delta_time;
-		// player->angle += dir_angle * delta_time;
-		if (player->f_real_pos.x == end->dest.x && player->f_real_pos.y == end->dest.y
-			&& player->angle == end->dest_angle)
-			end->is_moving = false;
-	}
+	player->f_real_pos.x += end->dir.x * SPEED * delta_time;
+	player->f_real_pos.y += end->dir.y * SPEED * delta_time;
+	player->angle += end->dir_angle * delta_time;
+	if ((end->dir.x < 0 && player->f_real_pos.x < end->dest.x)
+		|| (end->dir.x > 0 && player->f_real_pos.x > end->dest.x))
+		player->f_real_pos.x = end->dest.x;
+	if ((end->dir.y < 0 && player->f_real_pos.y < end->dest.y)
+		|| (end->dir.y > 0 && player->f_real_pos.y > end->dest.y))
+		player->f_real_pos.y = end->dest.y;
+	if ((end->dir_angle < 0 && player->angle < end->dest_angle)
+		|| (end->dir_angle > 0 && player->angle > end->dest_angle))
+		player->angle = end->dest_angle;
+	if (player->f_real_pos.x == end->dest.x && player->f_real_pos.y == end->dest.y
+		&& player->angle == end->dest_angle)
+		end->is_moving = false;
 }
 
 int	update_end(t_game *game)
@@ -45,10 +42,9 @@ int	update_end(t_game *game)
 		clock_gettime(CLOCK_REALTIME, &last_time);
 	clock_gettime(CLOCK_REALTIME, &time);
 	game->time = time_to_long(&time);
-	// usleep(1000000);
-	printf("player : %f %f angle : %f\n", game->player->f_real_pos.x, game->player->f_real_pos.y, game->player->angle);
-	move_to_dest(game->player, game->end, game->delta_time);
-	printf("player : %f %f angle : %f\n\n\n", game->player->f_real_pos.x, game->player->f_real_pos.y, game->player->angle);
+	
+	if (game->end->is_moving)
+		move_to_dest(game->player, game->end, game->delta_time);
 	if (game->player->angle + game->player->angle >= 360)
 		game->player->angle = game->player->angle - 360;
 	if (game->player->angle + game->player->angle < 0)
@@ -69,33 +65,44 @@ int	update_end(t_game *game)
 	return (0);
 }
 
-void	end_of_the_game(t_game *game, enum e_orientation orient)
+void	find_dest(t_end *end, const enum e_orientation orient
+		, const t_vector2 pos_exit, const t_player * const player)
 {
-	t_vector2 pos_door;
-
-	pos_door = ((t_door *)game->exit->arg)->map_pos;
 	if (orient == e_north)
 	{
-		game->end->dest = (t_fvector2){pos_door.x + .5, pos_door.y - .5};
-		game->end->dest_angle = 180;
+		end->dest = (t_fvector2){pos_exit.x + .5, pos_exit.y - .5};
+		end->dest_angle = 180;
 	}
 	else if (orient == e_south)
 	{
-		game->end->dest = (t_fvector2){pos_door.x + .5, pos_door.y + 1.5};
-		game->end->dest_angle = 0;
+		end->dest = (t_fvector2){pos_exit.x + .5, pos_exit.y + 1.5};
+		end->dest_angle = 360;
 	}
-	else if (orient == e_west)
+	else if (orient == e_east)
 	{
-		game->end->dest = (t_fvector2){pos_door.x + 1.5, pos_door.y + .5};
-		game->end->dest_angle = 270;
+		end->dest = (t_fvector2){pos_exit.x + 1.5, pos_exit.y + .5};
+		end->dest_angle = 270;
 	}
 	else
 	{
-		game->end->dest = (t_fvector2){pos_door.x - .5, pos_door.y + .5};
-		game->end->dest_angle = 90;
+		end->dest = (t_fvector2){pos_exit.x - .5, pos_exit.y + .5};
+		end->dest_angle = 90;
 	}
-	printf("exit : %d %d	orient : %d\n", pos_door.x, pos_door.y, orient);
-	printf("dest : %f %f	angle :%d\n", game->end->dest.x, game->end->dest.y, game->end->dest_angle);
+	end->dir.x = end->dest.x - player->f_real_pos.x;
+	end->dir.y = end->dest.y - player->f_real_pos.y;
+	end->dir_angle = end->dest_angle - player->angle;
+	if (end->dir_angle > 180)
+		end->dir_angle = end->dir_angle - 360;
+	if (end->dir_angle < -180)
+		end->dir_angle = 360 + end->dir_angle;
+	if (orient == e_south && end->dir_angle < 0)
+		end->dest_angle = 0;
+}
+
+void	end_of_the_game(t_game *game, enum e_orientation orient)
+{
+	find_dest(game->end, orient, ((t_door *)game->exit->arg)->map_pos, game->player);
+	
 	game->end->is_moving = true;
 	mlx_loop_hook(game->mlx_ptr, update_end, game);
 }

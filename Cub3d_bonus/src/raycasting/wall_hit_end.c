@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/18 19:32:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/18 19:42:59 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static t_ray	_get_wall_hit_se_end(t_dvector2 fpos,
 						, (float)((t_door *)map[(int)(comp.y)][map_pos.x].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_west});
-					else if (door.x != -2)
+					else if (status == e_open_door && comp.y + step.y / 2 < (int)comp.y + 1)
 						return ((t_ray){{map_pos.x + 0.5, comp.y + step.y / 2}, e_end_screen});
 				}
 				else
@@ -105,7 +105,7 @@ static t_ray	_get_wall_hit_ne_end(t_dvector2 fpos,
 						, (float)((t_door *)map[(int)(comp.y)][map_pos.x].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_west});
-					else if (door.x != -2)
+					else if (status == e_open_door && comp.y + step.y / 2 > (int)comp.y)
 						return ((t_ray){{map_pos.x + .5, comp.y + step.y / 2}, e_end_screen});
 				}
 				else
@@ -126,7 +126,7 @@ static t_ray	_get_wall_hit_ne_end(t_dvector2 fpos,
 						, (float)((t_door *)map[map_pos.y - 1][(int)comp.x].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_south});
-					else if (door.x != -2)
+					else if (status == e_open_door && comp.x + step.x / 2 < (int)comp.x + 1)
 						return ((t_ray){{comp.x + step.x / 2, map_pos.y - .5}, e_end_screen});
 				}
 				else
@@ -254,7 +254,7 @@ static t_ray	_get_wall_hit_nw_end(t_dvector2 fpos,
 						, (float)((t_door *)map[map_pos.y - 1][(int)comp.x].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_south});
-					else if (door.x != -2)
+					else if (status == e_open_door && comp.x + step.x / 2 > (int)comp.x)
 						return ((t_ray){{comp.x + step.x / 2, map_pos.y - .5}, e_end_screen});
 				}
 				else

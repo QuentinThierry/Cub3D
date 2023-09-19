@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/16 20:04:00 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:47:06 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,6 +304,8 @@ typedef struct s_menu
 	t_image		*background_image;
 	t_image		*button_image;
 	t_image		*button_hovered_image;
+	uint16_t	*h_rgb_blur_buffer;
+	uint16_t	*v_rgb_blur_buffer;
 	t_button	buttons[NB_OPTIONS_BUTTONS];
 	t_byte		pressed_button;
 	t_byte		state;

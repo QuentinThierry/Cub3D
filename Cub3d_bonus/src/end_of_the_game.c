@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:22:02 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/19 16:33:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/19 18:09:55 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,13 @@ int	update_end(t_game *game)
 		if (move_to_dest(game->player, game->end, game->delta_time))
 		{
 			if (game->end->orient == e_south)
-				game->end->dest.y -= 1.5;
+				game->end->dest.y -= 1 + DIST_TO_WALL;
 			else if (game->end->orient == e_north)
-				game->end->dest.y += 1.5;
+				game->end->dest.y += 1 + DIST_TO_WALL;
 			else if (game->end->orient == e_east)
-				game->end->dest.x -= 1.5;
+				game->end->dest.x -= 1 + DIST_TO_WALL;
 			else
-				game->end->dest.x += 1.5;
+				game->end->dest.x += 1 + DIST_TO_WALL;
 			game->end->dir.x = game->end->dest.x - game->player->f_real_pos.x;
 			game->end->dir.y = game->end->dest.y - game->player->f_real_pos.y;
 			game->end->dir_angle = 0;
@@ -94,33 +94,27 @@ int	update_end(t_game *game)
 	last_time = cur_time;
 	return (0);
 }
-	// fps = (long)(1.0 / game->delta_time);
-	// tot_fps += fps;
-	// nb_fps++;
-	// if ((nb_fps % 50) == 0)
-	// 	printf("end fps : %ld\n", fps);
-
 void	find_dest(t_end *end, const enum e_orientation orient
 		, const t_vector2 pos_exit, const t_player * const player)
 {
 	if (orient == e_north)
 	{
-		end->dest = (t_fvector2){pos_exit.x + .5, pos_exit.y - .5};
+		end->dest = (t_fvector2){pos_exit.x + .5, pos_exit.y - DIST_TO_WALL};
 		end->dest_angle = 180;
 	}
 	else if (orient == e_south)
 	{
-		end->dest = (t_fvector2){pos_exit.x + .5, pos_exit.y + 1.5};
+		end->dest = (t_fvector2){pos_exit.x + .5, pos_exit.y + 1 + DIST_TO_WALL};
 		end->dest_angle = 360;
 	}
 	else if (orient == e_east)
 	{
-		end->dest = (t_fvector2){pos_exit.x + 1.5, pos_exit.y + .5};
+		end->dest = (t_fvector2){pos_exit.x + 1 + DIST_TO_WALL, pos_exit.y + .5};
 		end->dest_angle = 270;
 	}
 	else
 	{
-		end->dest = (t_fvector2){pos_exit.x - .5, pos_exit.y + .5};
+		end->dest = (t_fvector2){pos_exit.x - DIST_TO_WALL, pos_exit.y + .5};
 		end->dest_angle = 90;
 	}
 	end->dir.x = end->dest.x - player->f_real_pos.x;
@@ -154,29 +148,28 @@ static inline float	get_dist(t_dvector2 fpos, t_dvector2 wall)
 
 float	draw_light(t_game *game, t_ray *ray, int x, float angle)
 {
-	if (game->end->orient == e_north && ray->hit.y >= game->end->dest.y)
+	if (game->end->orient == e_north && ray->hit.y > game->end->dest.y)
 	{
 		ray->hit.x = game->end->dest.x;
-		printf("ray : %f\n", ray->hit.x);
 		ray->hit.y = game->end->dest.y;
 		ray->orient = e_end_screen_pull;
 		return (get_dist(game->player->f_real_pos, ray->hit));
 	}
-	else if (game->end->orient == e_south && ray->hit.y <= game->end->dest.y + .5)
+	else if (game->end->orient == e_south && ray->hit.y < game->end->dest.y + .5)
 	{
 		ray->hit.x = game->end->dest.x;
 		ray->hit.y = game->end->dest.y + .5;
 		ray->orient = e_end_screen_pull;
 		return (get_dist(game->player->f_real_pos, ray->hit));
 	}
-	else if (game->end->orient == e_east && ray->hit.x <= game->end->dest.x)
+	else if (game->end->orient == e_east && ray->hit.x < game->end->dest.x)
 	{
 		ray->hit.x = game->end->dest.x;
 		ray->hit.y = game->end->dest.y;
 		ray->orient = e_end_screen_pull;
 		return (get_dist(game->player->f_real_pos, ray->hit));
 	}
-	else if (game->end->orient == e_west && ray->hit.x >= game->end->dest.x - .5)
+	else if (game->end->orient == e_west && ray->hit.x > game->end->dest.x - .5)
 	{
 		ray->hit.x = game->end->dest.x - .5;
 		ray->hit.y = game->end->dest.y;
@@ -191,6 +184,7 @@ void	raycasting_end(t_game *game)
 	int			x;
 	double		height;
 	float		angle;
+	t_ray		last_ray;
 	t_ray		ray;
 	t_dvector2	fpos;
 	float		dist;
@@ -202,7 +196,6 @@ void	raycasting_end(t_game *game)
 	while (x < WIN_X / 2)
 	{
 		angle = atanf(x / game->constants[0]) * 180 / M_PI;
-		// printf("angle : %f\n", angle);
 		if (game->player->angle + angle >= 360)
 			angle = angle - 360;
 		if (game->player->angle + angle < 0)
@@ -211,10 +204,7 @@ void	raycasting_end(t_game *game)
 		if (game->end->status == e_open_door || game->end->status == e_walk_through_door || game->end->status == e_end)
 			dist = draw_light(game, &ray, x, angle);
 		else
-		{
-			dist = get_dist(fpos, ray.hit);
-			dist *= cosf(angle * TO_RADIAN);
-		}
+			dist = get_dist(fpos, ray.hit) * cosf(angle * TO_RADIAN);
 		game->dist_tab[x + WIN_X / 2] = dist;
 		if (dist == 0)
 			dist = 0.01;

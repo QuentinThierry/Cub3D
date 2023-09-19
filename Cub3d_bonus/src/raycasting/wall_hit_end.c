@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/18 19:42:59 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/19 15:04:11 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static t_ray	_get_wall_hit_se_end(t_dvector2 fpos,
 					if (door.x >= 0)
 						return ((t_ray){door, e_west});
 					else if (status == e_open_door && comp.y + step.y / 2 < (int)comp.y + 1)
-						return ((t_ray){{map_pos.x + 0.5, comp.y + step.y / 2}, e_end_screen});
+						return ((t_ray){{map_pos.x + 0.5, comp.y + step.y / 2}, e_end_screen_pull});
 				}
 				else
 					return ((t_ray){{map_pos.x, comp.y}, e_west});
@@ -64,7 +64,7 @@ static t_ray	_get_wall_hit_se_end(t_dvector2 fpos,
 					if (door.x >= 0)
 						return ((t_ray){door, e_north});
 					else if (door.x != -2)
-						return ((t_ray){{comp.x + step.x / 2., map_pos.y + .5}, e_end_screen});
+						return ((t_ray){{comp.x + step.x / 2., map_pos.y + .5}, e_end_screen_push});
 				}
 				else
 					return ((t_ray){{comp.x, map_pos.y}, e_north});
@@ -106,7 +106,7 @@ static t_ray	_get_wall_hit_ne_end(t_dvector2 fpos,
 					if (door.x >= 0)
 						return ((t_ray){door, e_west});
 					else if (status == e_open_door && comp.y + step.y / 2 > (int)comp.y)
-						return ((t_ray){{map_pos.x + .5, comp.y + step.y / 2}, e_end_screen});
+						return ((t_ray){{map_pos.x + .5, comp.y + step.y / 2}, e_end_screen_pull});
 				}
 				else
 					return ((t_ray){{map_pos.x, comp.y}, e_west});
@@ -127,7 +127,7 @@ static t_ray	_get_wall_hit_ne_end(t_dvector2 fpos,
 					if (door.x >= 0)
 						return ((t_ray){door, e_south});
 					else if (status == e_open_door && comp.x + step.x / 2 < (int)comp.x + 1)
-						return ((t_ray){{comp.x + step.x / 2, map_pos.y - .5}, e_end_screen});
+						return ((t_ray){{comp.x + step.x / 2, map_pos.y - .5}, e_end_screen_pull});
 				}
 				else
 					return ((t_ray){{comp.x, map_pos.y}, e_south});
@@ -170,7 +170,7 @@ static t_ray	_get_wall_hit_sw_end(t_dvector2 fpos,
 					if (door.x >= 0)
 						return ((t_ray){door, e_east});
 					else if (door.x != -2)
-						return ((t_ray){{map_pos.x - .5, comp.y + step.y / 2}, e_end_screen});
+						return ((t_ray){{map_pos.x - .5, comp.y + step.y / 2}, e_end_screen_push});
 				}
 				else
 					return ((t_ray){{map_pos.x, comp.y}, e_east});
@@ -191,7 +191,7 @@ static t_ray	_get_wall_hit_sw_end(t_dvector2 fpos,
 					if (door.x >= 0)
 						return ((t_ray){door, e_north});
 					else if (door.x != -2)
-						return ((t_ray){{comp.x + step.x / 2, map_pos.y + .5}, e_end_screen});
+						return ((t_ray){{comp.x + step.x / 2, map_pos.y + .5}, e_end_screen_push});
 				}
 				else
 					return ((t_ray){{comp.x, map_pos.y}, e_north});
@@ -234,7 +234,7 @@ static t_ray	_get_wall_hit_nw_end(t_dvector2 fpos,
 					if (door.x >= 0)
 						return ((t_ray){door, e_east});
 					else if (door.x != -2)
-						return ((t_ray){{map_pos.x - .5, comp.y + step.y / 2}, e_end_screen});
+						return ((t_ray){{map_pos.x - .5, comp.y + step.y / 2}, e_end_screen_push});
 				}
 				else
 					return ((t_ray){{map_pos.x, comp.y}, e_east});
@@ -255,7 +255,7 @@ static t_ray	_get_wall_hit_nw_end(t_dvector2 fpos,
 					if (door.x >= 0)
 						return ((t_ray){door, e_south});
 					else if (status == e_open_door && comp.x + step.x / 2 > (int)comp.x)
-						return ((t_ray){{comp.x + step.x / 2, map_pos.y - .5}, e_end_screen});
+						return ((t_ray){{comp.x + step.x / 2, map_pos.y - .5}, e_end_screen_pull});
 				}
 				else
 					return ((t_ray){{comp.x, map_pos.y}, e_south});

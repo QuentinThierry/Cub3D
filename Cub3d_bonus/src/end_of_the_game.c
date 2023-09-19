@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:22:02 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/18 19:32:52 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/19 16:33:53 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,11 @@ void	open_exit(t_game *game, t_door *door, t_end *end)
 		door->is_opening_door = 1;
 		door->time = game->time;
 	}
-	door->time += (game->time - door->time) / 2.;
+	door->time += (game->time - door->time) / 5. * 4;
 	step_door_open(door, game->time, game->exit, game->map);
 	if (door->door_percent == 90)
 	{
 		end->status = e_walk_through_door;
-		if (end->orient == e_south)
-			end->dest.y -= 1.5;
-		else if (end->orient == e_north)
-			end->dest.y += 1.5;
-		else if (end->orient == e_east)
-			end->dest.x -= 1.5;
-		else
-			end->dest.x += 1.5;
-		end->dir.x = end->dest.x - game->player->f_real_pos.x;
-		end->dir.y = end->dest.y - game->player->f_real_pos.y;
-		end->dir_angle = 0;
 	}
 }
 
@@ -74,14 +63,27 @@ int	update_end(t_game *game)
 	if (game->end->status == e_go_in_font_of_door)
 	{
 		if (move_to_dest(game->player, game->end, game->delta_time))
+		{
+			if (game->end->orient == e_south)
+				game->end->dest.y -= 1.5;
+			else if (game->end->orient == e_north)
+				game->end->dest.y += 1.5;
+			else if (game->end->orient == e_east)
+				game->end->dest.x -= 1.5;
+			else
+				game->end->dest.x += 1.5;
+			game->end->dir.x = game->end->dest.x - game->player->f_real_pos.x;
+			game->end->dir.y = game->end->dest.y - game->player->f_real_pos.y;
+			game->end->dir_angle = 0;
 			game->end->status = e_open_door;
+		}
 	}
 	else if (game->end->status == e_open_door)
 		open_exit(game, game->exit->arg, game->end);
 	else if (game->end->status == e_walk_through_door)
 	{
-		// if (move_to_dest(game->player, game->end, game->delta_time))
-		// 	game->end->status = e_end;
+		if (move_to_dest(game->player, game->end, game->delta_time))
+			game->end->status = e_end;
 	}
 	raycasting_end(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
@@ -150,6 +152,40 @@ static inline float	get_dist(t_dvector2 fpos, t_dvector2 wall)
 	return (sqrtf((wall.x - fpos.x) * (wall.x - fpos.x) + (wall.y - fpos.y) * (wall.y - fpos.y)));
 }
 
+float	draw_light(t_game *game, t_ray *ray, int x, float angle)
+{
+	if (game->end->orient == e_north && ray->hit.y >= game->end->dest.y)
+	{
+		ray->hit.x = game->end->dest.x;
+		printf("ray : %f\n", ray->hit.x);
+		ray->hit.y = game->end->dest.y;
+		ray->orient = e_end_screen_pull;
+		return (get_dist(game->player->f_real_pos, ray->hit));
+	}
+	else if (game->end->orient == e_south && ray->hit.y <= game->end->dest.y + .5)
+	{
+		ray->hit.x = game->end->dest.x;
+		ray->hit.y = game->end->dest.y + .5;
+		ray->orient = e_end_screen_pull;
+		return (get_dist(game->player->f_real_pos, ray->hit));
+	}
+	else if (game->end->orient == e_east && ray->hit.x <= game->end->dest.x)
+	{
+		ray->hit.x = game->end->dest.x;
+		ray->hit.y = game->end->dest.y;
+		ray->orient = e_end_screen_pull;
+		return (get_dist(game->player->f_real_pos, ray->hit));
+	}
+	else if (game->end->orient == e_west && ray->hit.x >= game->end->dest.x - .5)
+	{
+		ray->hit.x = game->end->dest.x - .5;
+		ray->hit.y = game->end->dest.y;
+		ray->orient = e_end_screen_pull;
+		return (get_dist(game->player->f_real_pos, ray->hit));
+	}
+	return (get_dist(game->player->f_real_pos, ray->hit) * cosf(angle * TO_RADIAN));
+}
+
 void	raycasting_end(t_game *game)
 {
 	int			x;
@@ -157,25 +193,33 @@ void	raycasting_end(t_game *game)
 	float		angle;
 	t_ray		ray;
 	t_dvector2	fpos;
-	float		dist; 
-	
+	float		dist;
+
 	draw_ceiling(game);
 	fpos = game->player->f_real_pos;
+		
 	x = -WIN_X / 2;
 	while (x < WIN_X / 2)
 	{
 		angle = atanf(x / game->constants[0]) * 180 / M_PI;
+		// printf("angle : %f\n", angle);
 		if (game->player->angle + angle >= 360)
 			angle = angle - 360;
 		if (game->player->angle + angle < 0)
 			angle = angle + 360;
 		ray = get_wall_hit_end(fpos, game->map, game->player->angle + angle, game->end->status);
-		dist = get_dist(game->player->f_real_pos, ray.hit);
+		if (game->end->status == e_open_door || game->end->status == e_walk_through_door || game->end->status == e_end)
+			dist = draw_light(game, &ray, x, angle);
+		else
+		{
+			dist = get_dist(fpos, ray.hit);
+			dist *= cosf(angle * TO_RADIAN);
+		}
 		game->dist_tab[x + WIN_X / 2] = dist;
-		dist *= cosf(angle * TO_RADIAN);
 		if (dist == 0)
 			dist = 0.01;
-		height = 1 / dist * game->constants[0];
+		if (ray.orient != e_end_screen_push)
+			height = 1 / dist * game->constants[0];
 		draw_vert(game, x + WIN_X / 2, ray, height);
 		x++;
 	}

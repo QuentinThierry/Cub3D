@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/18 17:19:07 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/19 15:44:57 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,8 @@ enum e_orientation
 	e_receptacle_empty,
 	e_receptacle_full,
 	e_exit,
-	e_end_screen,
+	e_end_screen_pull,
+	e_end_screen_push,
 	e_object_image = e_north,
 	e_door_image = e_north,
 	e_object_interactive_image = e_north,

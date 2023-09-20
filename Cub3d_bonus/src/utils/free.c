@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 16:27:51 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 23:04:13 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 19:26:08 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,18 @@ void	free_tab(void **str, int size)
 	free(str);
 }
 
-void	free_tab_object(t_object **str, int size)
+void	free_tab_object(t_object **object, int size)
 {
 	int	i;
 
 	i = 0;
 	while (i < size)
 	{
-		if (str[i]->map_pos.x == -1 && str[i]->map_pos.y == -1)
-			free(str[i]);
+		// if (object[i]->map_pos.x == -1 && object[i]->map_pos.y == -1)
+		free(object[i]);
 		i++;
 	}
-	free(str);
+	free(object);
 }
 
 void	free_map(t_map **map, t_vector2 size)
@@ -84,7 +84,7 @@ void	free_map(t_map **map, t_vector2 size)
 		j = 0;
 		while (j < size.x)
 		{
-			if (map[i][j].arg != NULL)
+			if ((map[i][j].type & OBJECT) != OBJECT && map[i][j].arg != NULL)
 				free(map[i][j].arg);
 			j++;
 		}

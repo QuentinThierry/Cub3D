@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 23:11:11 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 19:29:19 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,28 @@ int	ft_close(t_game *game)
 {
 	int	i;
 
+	if (game == NULL)
+		exit(0);
+	if (game->end != NULL)
+	{
+		if (game->end->end_screen != NULL)
+		{
+			if (game->end->end_screen->img != NULL)
+				mlx_destroy_image(game->mlx_ptr, game->end->end_screen->img);
+			free(game->end->end_screen);
+		}
+		free(game->end);
+	}
 	if (game->object_array != NULL)
 		free_tab_object(game->object_array, game->nb_objects);
-	if (game->player->has_item == true && game->player->item.arg != NULL)
-		free(game->player->item.arg);
+	if (game->player != NULL)
+	{
+		// if (game->player->has_item == true && game->player->item.arg != NULL)
+		// 	free(game->player->item.arg);
+		free(game->player);
+	}
 	if (game->map != NULL)
 		free_map((void *)game->map, game->map_size);
-	if (game->player != NULL)
-		free(game->player);
 	if (game->filename != NULL)
 		free_filename(game);
 	free(game->dist_tab);
@@ -39,11 +53,6 @@ int	ft_close(t_game *game)
 			i++;
 		}
 		free(game->tab_images);
-		if (game->image != NULL)
-		{
-			mlx_destroy_image(game->mlx_ptr, game->image->img);
-			free(game->image);
-		}
 		if (game->font != NULL)
 		{
 			if (game->font->img != NULL)	
@@ -68,6 +77,12 @@ int	ft_close(t_game *game)
 			free(game->minimap->player_img);
 			free(game->minimap->bounds);
 			free(game->minimap);
+		if (game->image != NULL)
+		{
+			if (game->image->img != NULL)
+				mlx_destroy_image(game->mlx_ptr, game->image->img);
+			free(game->image);
+		}
 		}
 		mlx_destroy_display(game->mlx_ptr);
 		free(game->mlx_ptr);

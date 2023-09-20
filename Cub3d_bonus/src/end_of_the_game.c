@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:22:02 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 17:46:16 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 19:33:37 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,10 +130,10 @@ void	end_of_the_game(t_game *game, const enum e_orientation orient)
 	find_dest(game->end, orient, ((t_door *)game->exit->arg)->map_pos, game->player);
 	game->end->orient = orient;
 	game->end->status = e_go_in_font_of_door;
-	mlx_hook(game->win, 3, 0L, NULL, game);
+	mlx_hook(game->win, 2, (1L << 0), exit_hook, game);
 	mlx_hook(game->win, 6, (1L << 6), mouse_stay_in_window_hook, game);
-	mlx_hook(game->win, 4, 0L, NULL, game);
-	mlx_hook(game->win, 2, (1L << 0), exit_hook, &game);
+	mlx_hook(game->win, 3, 0L, NULL, NULL);
+	mlx_hook(game->win, 4, 0L, NULL, NULL);
 	mlx_loop_hook(game->mlx_ptr, update_end, game);
 }
 

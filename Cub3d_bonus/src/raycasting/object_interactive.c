@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/16 16:58:31 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 19:23:53 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	take_object(t_player *player, t_map *cell_map)
 {
 	if (player->has_item == false && (cell_map->type & WALL) != WALL)
 	{
+		((t_object *)cell_map->arg)->map_pos = (t_dvector2){-1, -1};
 		player->item = *cell_map;
 		cell_map->symbol = '0';
 		cell_map->arg = NULL;
@@ -99,6 +100,7 @@ void	drop_object(t_player *player, t_map **map, t_map *exit, t_game *game)
 		{
 			((t_object *)map[(int)pos.y][(int)pos.x].arg)->is_completed = true;
 			map[(int)pos.y][(int)pos.x].sprite[e_receptacle_empty_image] = map[(int)pos.y][(int)pos.x].sprite[e_receptacle_full_image];
+			
 			player->has_item = false;
 			if (exit != NULL && exit->arg != NULL)
 			{
@@ -106,7 +108,6 @@ void	drop_object(t_player *player, t_map **map, t_map *exit, t_game *game)
 				door->nb_receptacle_completed++;
 				frame  = (float)door->nb_receptacle_completed * (game->tab_images[exit->sprite[e_door_image].index].nb_total_frame - 1) / game->total_receptacle ;
 				frame = roundf(frame);
-				fflush(stdout);
 				if (frame != exit->sprite[e_door_image].frame)
 					exit->sprite[e_door_image].frame = frame;
 				if (frame == game->tab_images[exit->sprite[e_door_image].index].nb_total_frame - 1)

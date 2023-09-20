@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/20 19:46:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 19:58:01 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -352,6 +352,7 @@ int			get_len_texture(t_texture *texture, int len);
 bool		is_in_map(t_dvector2 pos, t_map **map, t_vector2 size_map);
 
 // -------Parsing-------
+void	exit_door_no_receptacle(t_map *exit, int nb_receptacle, t_image *tab_image);
 bool		parse_file(char *filename, t_game *game);
 t_sprite	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient);
 t_vector2	get_dimension_maps(int fd, char *line, bool *error);

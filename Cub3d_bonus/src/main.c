@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 18:52:04 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 20:00:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int main(int argc, char **argv)
 	free_loading_screen(&game);
 	game.constants = (float[5]){(WIN_X / 2.) / tan((FOV / 2.) * TO_RADIAN)
 					, tanf((FOV / 2.0) * TO_RADIAN), cos((FOV / 2.0) * TO_RADIAN)};
+	exit_door_no_receptacle(game.exit, game.total_receptacle, game.tab_images);
 	init_minimap(&game);
 	init_mouse(&game);
 	mlx_do_key_autorepeatoff(game.mlx_ptr);

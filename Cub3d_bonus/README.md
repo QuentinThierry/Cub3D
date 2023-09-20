@@ -5,7 +5,7 @@ ADD :
 - [X] objects
 - [X] max view distance
 - [ ] sounds (ambiance music)
-- [ ] exit + enigmes
+- [X] exit + enigmes
 - [ ] random events (lightning, planks cracks, little girl)
 - [ ] menu settings
 
@@ -65,13 +65,13 @@ Objet interactif :
 <!-- - propect only one exit door -->
 <!-- - fix can't take object on our case -->
 <!-- - no random texture for the exit at the beginning and no animation -->
-- if 0 receptacle door is lock PROBLEM
+<!-- - if 0 receptacle door is lock PROBLEM -->
 
 Exit door :
 <!-- - desactive the mouv of the player -->
 <!-- - stop the player -->
 <!-- - mouv the player behind to door on the center of the cell with view angle on the door -->
-- anim the door open with light
-- walk under the door
-- the end screen
+<!-- - anim the door open with light -->
+<!-- - walk under the door -->
+<!-- - the end screen -->
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 21:27:20 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/13 18:19:32 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/20 19:57:45 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,13 @@ bool	check_map(t_game *game)
 		y++;
 	}
 	return (true);
+}
+
+void	exit_door_no_receptacle(t_map *exit, int nb_receptacle, t_image *tab_image)
+{
+	if (nb_receptacle == 0 && exit != NULL)
+	{
+		exit->sprite[e_door_image].frame = tab_image[exit->sprite[e_door_image].index].nb_total_frame - 1;
+		exit->type ^= DOOR_LOCK;
+	}
 }

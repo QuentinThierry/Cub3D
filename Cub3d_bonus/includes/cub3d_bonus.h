@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/19 18:47:06 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/20 20:39:34 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@
 # define OPTION_MENU 1
 # define CHOOSING_KEY_MENU 2
 
+#define SIZE_BOX_BLUR 17
 # define DARK_PERCENT_OPTION 0.5
 # define NB_OPTIONS_BUTTONS 11
 
@@ -304,8 +305,8 @@ typedef struct s_menu
 	t_image		*background_image;
 	t_image		*button_image;
 	t_image		*button_hovered_image;
-	uint16_t	*h_rgb_blur_buffer;
-	uint16_t	*v_rgb_blur_buffer;
+	int			*h_rgb_blur_buffer;
+	int			*v_rgb_blur_buffer;
 	t_button	buttons[NB_OPTIONS_BUTTONS];
 	t_byte		pressed_button;
 	t_byte		state;
@@ -356,6 +357,7 @@ char		*ft_strjoin(char *str, char *str1);
 char		*ft_strjoin_slash(char *str, char *str1, bool add_slash);
 int			ft_atoi(const char *str);
 int			get_len_texture(t_texture *texture, int len);
+void		ft_bzero(void *s, size_t n);
 
 // -------Parsing-------
 bool		parse_file(char *filename, t_game *game);

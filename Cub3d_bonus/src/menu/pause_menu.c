@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/19 22:49:59 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/20 20:39:57 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,214 +187,166 @@ static inline t_pixel32	darken_pixel(t_pixel32 pixel)
 // 		= ((t_byte)red) << 16 | ((t_byte)green << 8) | (t_byte)blue;
 // }
 
-#define SIZE_BOX_BLUR 21
 
-static void	horizontal_blur(t_image *dest, t_image *src, uint16_t *h_rgb_blur_buffer)
+static void	horizontal_blur(t_image *src, int *h_rgb_blur_buffer)
 {
-	int			i;
-	int			i_rgb;
-	int			size_image;
-	t_pixel32	*pix_src;
-	t_pixel32	*pix_dest;
-
-	size_image = src->size.x * src->size.y;
-	pix_src = (t_pixel32 *)src->addr;
-	pix_dest = (t_pixel32 *)dest->addr;
-	h_rgb_blur_buffer[0] =
-		((pix_src[0] >> 16) & 0xff) +
-		((pix_src[1] >> 16) & 0xff) +
-		((pix_src[2] >> 16) & 0xff);
-	h_rgb_blur_buffer[1] =
-		((pix_src[0] >> 8) & 0xff) +
-		((pix_src[1] >> 8) & 0xff) +
-		((pix_src[2] >> 8) & 0xff);
-	h_rgb_blur_buffer[2] =
-		((pix_src[0]) & 0xff) +
-		((pix_src[1]) & 0xff) +
-		((pix_src[2]) & 0xff);
-	h_rgb_blur_buffer+=3;
-	h_rgb_blur_buffer[0] =
-		((pix_src[0] >> 16) & 0xff) +
-		((pix_src[1] >> 16) & 0xff) +
-		((pix_src[2] >> 16) & 0xff);
-	h_rgb_blur_buffer[1] =
-		((pix_src[0] >> 8) & 0xff) +
-		((pix_src[1] >> 8) & 0xff) +
-		((pix_src[2] >> 8) & 0xff);
-	h_rgb_blur_buffer[2] =
-		((pix_src[0]) & 0xff) +
-		((pix_src[1]) & 0xff) +
-		((pix_src[2]) & 0xff);
-	h_rgb_blur_buffer+=3;
-	i = 0;
-	// while (i < SIZE_BOX_BLUR / 2 + 1)
-	i = 2;
-	while (i < size_image - 1)
-	{
-		h_rgb_blur_buffer[0] = h_rgb_blur_buffer[-3]
-		- ((pix_src[i - 2] >> 16) & 0xff)
-		+ ((pix_src[i + 1] >> 16) & 0xff);
-
-		h_rgb_blur_buffer[1] = h_rgb_blur_buffer[-2]
-		- ((pix_src[i - 2] >> 8) & 0xff)
-		+ ((pix_src[i + 1] >> 8) & 0xff);
-
-		h_rgb_blur_buffer[2] = h_rgb_blur_buffer[-1]
-		- ((pix_src[i - 2]) & 0xff)
-		+ ((pix_src[i + 1]) & 0xff);
-
-		i++;
-		h_rgb_blur_buffer+=3;
-	}
-}
-
-static void	vertical_blur(t_image *dest, t_image *src, uint16_t *h_rgb_blur_buffer, uint16_t *v_rgb_blur_buffer)
-{
-	int			i;
 	int			x;
 	int			y;
+	int			size_x_3;
 	int			size_x;
 	int			size_y;
 	t_pixel32	*pix_src;
-	t_pixel32	*pix_dest;
-	int			red;
-	int			green;
-	int			blue;
 
 	size_x = src->size.x;
 	size_y = src->size.y;
-	pix_dest = (t_pixel32 *)dest->addr;
+	size_x_3 = src->size.x * 3;
+	pix_src = (t_pixel32 *)src->addr;
 
-	x = 0;
-	// for all x,0
-	while (x < size_x)
+	y = 0;
+	while (y < size_y)
 	{
-		v_rgb_blur_buffer[x * 3] = 
-			h_rgb_blur_buffer[x * 3] +
-			h_rgb_blur_buffer[x * 3 + size_x * 3];
-		v_rgb_blur_buffer[x * 3 + 1] = 
-			h_rgb_blur_buffer[x * 3 + 1] +
-			h_rgb_blur_buffer[x * 3 + size_x * 3 + 1];
-		v_rgb_blur_buffer[x * 3 + 2] = 
-			h_rgb_blur_buffer[x * 3 + 2] +
-			h_rgb_blur_buffer[x * 3 + size_x * 3 + 2];
-		x++;
-	}
-	x = 0;
-	// for all x,1
-	while (x < size_x)
-	{
-		v_rgb_blur_buffer[x * 3 + size_x * 3] = 
-			h_rgb_blur_buffer[x * 3] +
-			h_rgb_blur_buffer[x * 3 + size_x * 3] +
-			h_rgb_blur_buffer[x * 3 + 2 * size_x * 3];
-
-		v_rgb_blur_buffer[x * 3 + size_x * 3 + 1] = 
-			h_rgb_blur_buffer[x * 3 + 1] +
-			h_rgb_blur_buffer[x * 3 + size_x * 3 + 1] +
-			h_rgb_blur_buffer[x * 3 + 2 * size_x * 3 + 1];
-
-		v_rgb_blur_buffer[x * 3 + size_x * 3 + 2] = 
-			h_rgb_blur_buffer[x * 3 + 2] +
-			h_rgb_blur_buffer[x * 3 + size_x * 3 + 2] +
-			h_rgb_blur_buffer[x * 3 + 2 * size_x * 3 + 2];
-		x++;
-	}
-	x = 0;
-	while (x < size_x)
-	{
-		y = 2;
-		while (y < size_y - 1)
+		h_rgb_blur_buffer[y * size_x_3] = 0;
+		h_rgb_blur_buffer[y * size_x_3 + 1] = 0;
+		h_rgb_blur_buffer[y * size_x_3 + 2] = 0;
+		x = 0;
+		while (x <= SIZE_BOX_BLUR / 2)
 		{
-			v_rgb_blur_buffer[y * size_x * 3 + x * 3] =
-				v_rgb_blur_buffer[(y - 1) * size_x * 3 + x * 3]
-				- h_rgb_blur_buffer[(y - 2) * size_x * 3 + x * 3]
-				+ h_rgb_blur_buffer[(y + 1) * size_x * 3 + x * 3];
-
-			v_rgb_blur_buffer[y * size_x * 3 + x * 3 + 1] =
-				v_rgb_blur_buffer[(y - 1) * size_x * 3 + x * 3 + 1]
-				- h_rgb_blur_buffer[(y - 2) * size_x * 3 + x * 3 + 1]
-				+ h_rgb_blur_buffer[(y + 1) * size_x * 3 + x * 3 + 1];
-
-			v_rgb_blur_buffer[y * size_x * 3 + x * 3 + 2] =
-				v_rgb_blur_buffer[(y - 1) * size_x * 3 + x * 3 + 2]
-				- h_rgb_blur_buffer[(y - 2) * size_x * 3 + x * 3 + 2]
-				+ h_rgb_blur_buffer[(y + 1) * size_x * 3 + x * 3 + 2];
-
-			pix_dest[y * size_x + x] =
-				((v_rgb_blur_buffer[y * size_x * 3 + x * 3] / 9) << 16) |
-				((v_rgb_blur_buffer[y * size_x * 3 + x * 3 + 1] / 9) << 8) |
-				(v_rgb_blur_buffer[y * size_x * 3 + x * 3 + 2] / 9);
-			y++;
+			h_rgb_blur_buffer[y * size_x_3] +=
+				((pix_src[y * size_x + x] >> 16) & 0xff);
+			h_rgb_blur_buffer[y * size_x_3 + 1] +=
+				((pix_src[y * size_x + x] >> 8) & 0xff);
+			h_rgb_blur_buffer[y * size_x_3 + 2] +=
+				((pix_src[y * size_x + x]) & 0xff);
+			x++;
 		}
-		x++;
+		y++;
 	}
-
-
-
-
-	// v_rgb_blur_buffer +=3;
-
-	// x = 0;
-	// while (x < size_x)
-	// {
-	// 	y = 2;
-	// 	while (y < size_y - 1)
-	// 	{
-	// 		red = ((pix_dest[(y - 1) * size_x + x] >> 16) & 0xff) * 3
-	// 		- (h_rgb_blur_buffer[(y - 2) * size_x * 3]) / 3
-	// 		+ (h_rgb_blur_buffer[(y + 1) * size_x * 3]) / 3;
-	// 		green = ((pix_dest[(y - 1) * size_x + x] >> 8) & 0xff) * 3
-	// 		- (h_rgb_blur_buffer[(y - 2) * size_x * 3 + 1]) / 3
-	// 		+ (h_rgb_blur_buffer[(y + 1) * size_x * 3 + 1]) / 3;
-	// 		blue = ((pix_dest[(y - 1) * size_x + x]) & 0xff) * 3
-	// 		- (h_rgb_blur_buffer[(y - 2) * size_x * 3 + 2]) / 3
-	// 		+ (h_rgb_blur_buffer[(y + 1) * size_x * 3 + 2]) / 3;
-	// 		pix_dest[y * size_x + x] = (((red / 3) << 16)) | (((green / 3) << 8)) | ((blue / 3));
-	// 		y++;
-	// 	}
-	// 	h_rgb_blur_buffer += 3;
-	// 	x++;
-	// }
-
-
-
-	// while (x < size_x)
-	// {
-	// 	y = 1;
-	// 	while (y < size_y - 1)
-	// 	{
-	// 		red = h_rgb_blur_buffer[((y - 1) * size_x * 3)]
-	// 		+ h_rgb_blur_buffer[(y * size_x * 3)]
-	// 		+ h_rgb_blur_buffer[((y + 1) * size_x * 3)];
-			
-	// 		green = h_rgb_blur_buffer[((y - 1) * size_x * 3) + 1]
-	// 		+ h_rgb_blur_buffer[(y * size_x * 3) + 1]
-	// 		+ h_rgb_blur_buffer[((y + 1) * size_x * 3) + 1];
-
-	// 		blue = h_rgb_blur_buffer[((y - 1) * size_x * 3) + 2]
-	// 		+ h_rgb_blur_buffer[(y * size_x * 3) + 2]
-	// 		+ h_rgb_blur_buffer[((y + 1) * size_x * 3) + 2];
-
-	// 		pix_dest[y * size_x + x] = ((red / 9) << 16) | ((green / 9) << 8) | (blue / 9);
-	// 		y++;
-	// 	}
-	// 	h_rgb_blur_buffer += 3;
-	// 	x++;
-	// }
-	// for (int i = 0; i < src->size.x * src->size.y; i++) {
-	// 	pix_dest[i] = ((h_rgb_blur_buffer[i * 3] / 3) << 16) | ((h_rgb_blur_buffer[i * 3 + 1] / 3) << 8)
-	// 		| (h_rgb_blur_buffer[i * 3 + 2] / 3);
-	// }
+	y = 0;
+	while (y < size_y)
+	{
+		x = 1;
+		while (x < size_x)
+		{
+			h_rgb_blur_buffer[x * 3] =
+				h_rgb_blur_buffer[x * 3 - 3];
+			if (x + SIZE_BOX_BLUR / 2 < size_x)
+				h_rgb_blur_buffer[x * 3] +=
+					((pix_src[x + SIZE_BOX_BLUR / 2] >> 16) & 0xff);
+			if (x - SIZE_BOX_BLUR / 2 - 1 >= 0)
+				h_rgb_blur_buffer[x * 3] -=
+					((pix_src[x - SIZE_BOX_BLUR / 2 - 1] >> 16) & 0xff);
+			h_rgb_blur_buffer[x * 3 + 1] = 
+				h_rgb_blur_buffer[x * 3 - 2];
+			if (x + SIZE_BOX_BLUR / 2 < size_x)
+				h_rgb_blur_buffer[x * 3 + 1] +=
+					((pix_src[x + SIZE_BOX_BLUR / 2] >> 8) & 0xff);
+			if (x - SIZE_BOX_BLUR / 2 - 1 >= 0)
+				h_rgb_blur_buffer[x * 3 + 1] -=
+					((pix_src[x - SIZE_BOX_BLUR / 2 - 1] >> 8) & 0xff);
+			h_rgb_blur_buffer[x * 3 + 2] =
+				h_rgb_blur_buffer[x * 3 - 1];
+			if (x + SIZE_BOX_BLUR / 2 < size_x)
+				h_rgb_blur_buffer[x * 3 + 2] +=
+					((pix_src[x + SIZE_BOX_BLUR / 2]) & 0xff);
+			if (x - SIZE_BOX_BLUR / 2 - 1 >= 0)
+				h_rgb_blur_buffer[x * 3 + 2] -=
+					((pix_src[x - SIZE_BOX_BLUR / 2 - 1]) & 0xff);
+			x++;
+		}
+		h_rgb_blur_buffer += size_x_3;
+		pix_src += size_x;
+		y++;
+	}
 }
 
-
-void	blur_image(t_image *dest, t_image *src, uint16_t *h_rgb_blur_buffer, uint16_t *v_rgb_blur_buffer)
+static void	vertical_blur(t_image *dest, int *h_rgb_blur_buffer, int *v_rgb_blur_buffer)
 {
-	int			y;
 	int			x;
-	t_pixel32	pix;
+	int			y;
+	int			size_x_3;
+	int			size_y;
+	t_pixel32	*pix_dest;
+	int			nb_pixel_div;
 
+	size_x_3 = dest->size.x * 3;
+	size_y = dest->size.y;
+	pix_dest = (t_pixel32 *)dest->addr;
+
+	ft_bzero(v_rgb_blur_buffer, WIN_X * 3 * sizeof(int));
+	x = 0;
+	while (x < dest->size.x)
+	{
+		y = 0;
+		while (y <= SIZE_BOX_BLUR / 2)
+		{
+			v_rgb_blur_buffer[x * 3] += 
+				h_rgb_blur_buffer[x * 3 + y * size_x_3];
+
+			v_rgb_blur_buffer[x * 3 + 1] +=
+				h_rgb_blur_buffer[x * 3 + y * size_x_3 + 1];
+
+			v_rgb_blur_buffer[x * 3 + 2] +=
+				h_rgb_blur_buffer[x * 3 + y * size_x_3 + 2];
+			y++;
+		}
+		nb_pixel_div = SIZE_BOX_BLUR - (x - SIZE_BOX_BLUR / 2 - 1 < 0) * (-1 * (x - SIZE_BOX_BLUR / 2 - 1) - 1)
+				- (x + SIZE_BOX_BLUR / 2 >= dest->size.x) * (x + SIZE_BOX_BLUR / 2 - dest->size.x + 1);
+		pix_dest[x] =
+			((v_rgb_blur_buffer[x * 3] / (nb_pixel_div * (SIZE_BOX_BLUR / 2 + 1))) << 16) |
+			((v_rgb_blur_buffer[x * 3 + 1] / (nb_pixel_div * (SIZE_BOX_BLUR / 2 + 1))) << 8) |
+			(v_rgb_blur_buffer[x * 3 + 2] / (nb_pixel_div * (SIZE_BOX_BLUR / 2 + 1)));
+		x++;
+	}
+	x = 0;
+	while (x < dest->size.x)
+	{
+		y = 1;
+		while (y < size_y)
+		{
+			v_rgb_blur_buffer[y * size_x_3] = 
+				v_rgb_blur_buffer[(y - 1) * size_x_3];
+			if (y + SIZE_BOX_BLUR / 2 < size_y)
+				v_rgb_blur_buffer[y * size_x_3] +=
+					h_rgb_blur_buffer[(y + SIZE_BOX_BLUR / 2) * size_x_3];
+			if (y - SIZE_BOX_BLUR / 2 - 1 >= 0)
+				v_rgb_blur_buffer[y * size_x_3] -=
+					h_rgb_blur_buffer[(y - SIZE_BOX_BLUR / 2 - 1) * size_x_3];
+			v_rgb_blur_buffer[y * size_x_3 + 1] = 
+				v_rgb_blur_buffer[(y - 1) * size_x_3 + 1];
+			if (y + SIZE_BOX_BLUR / 2 < size_y)
+				v_rgb_blur_buffer[y * size_x_3 + 1] +=
+					h_rgb_blur_buffer[(y + SIZE_BOX_BLUR / 2) * size_x_3 + 1];
+			if (y - SIZE_BOX_BLUR / 2 - 1 >= 0)
+				v_rgb_blur_buffer[y * size_x_3 + 1] -=
+					h_rgb_blur_buffer[(y - SIZE_BOX_BLUR / 2 - 1) * size_x_3 + 1];
+			v_rgb_blur_buffer[y * size_x_3 + 2] = 
+				v_rgb_blur_buffer[(y - 1) * size_x_3 + 2];
+			if (y + SIZE_BOX_BLUR / 2 < size_y)
+				v_rgb_blur_buffer[y * size_x_3 + 2] +=
+					h_rgb_blur_buffer[(y + SIZE_BOX_BLUR / 2) * size_x_3 + 2];
+			if (y - SIZE_BOX_BLUR / 2 - 1 >= 0)
+				v_rgb_blur_buffer[y * size_x_3 + 2] -=
+					h_rgb_blur_buffer[(y - SIZE_BOX_BLUR / 2 - 1) * size_x_3 + 2];
+			nb_pixel_div = (SIZE_BOX_BLUR - (y + SIZE_BOX_BLUR / 2 >= size_y) * (y + SIZE_BOX_BLUR / 2 - size_y + 1)
+				- (y - SIZE_BOX_BLUR / 2 - 1 < 0) * (-1 * (y - SIZE_BOX_BLUR / 2 - 1) - 1))
+				* (SIZE_BOX_BLUR - (x - SIZE_BOX_BLUR / 2 - 1 < 0) * (-1 * (x - SIZE_BOX_BLUR / 2 - 1) - 1)
+				- (x + SIZE_BOX_BLUR / 2 >= dest->size.x) * (x + SIZE_BOX_BLUR / 2 - dest->size.x + 1)
+			);
+			pix_dest[y * dest->size.x + x] =
+				((v_rgb_blur_buffer[y * size_x_3] / nb_pixel_div) << 16) |
+				((v_rgb_blur_buffer[y * size_x_3 + 1] / nb_pixel_div) << 8) |
+				(v_rgb_blur_buffer[y * size_x_3 + 2] / nb_pixel_div);
+			y++;
+		}
+		v_rgb_blur_buffer += 3;
+		h_rgb_blur_buffer += 3;
+		x++;
+	}
+}
+
+// apply 3 times a box_blur to approximate a gaussian blur
+void	blur_image(t_image *dest, t_image *src, int *h_rgb_blur_buffer, int *v_rgb_blur_buffer)
+{
 	struct timespec	last_time = {0};
 	struct timespec			cur_time;
 	struct timespec			time;
@@ -404,8 +356,13 @@ void	blur_image(t_image *dest, t_image *src, uint16_t *h_rgb_blur_buffer, uint16
 		clock_gettime(CLOCK_REALTIME, &last_time);
 	clock_gettime(CLOCK_REALTIME, &time);
 
-	horizontal_blur(dest, src, h_rgb_blur_buffer);
-	vertical_blur(dest, src, h_rgb_blur_buffer, v_rgb_blur_buffer);
+	horizontal_blur(src, h_rgb_blur_buffer);
+	vertical_blur(dest, h_rgb_blur_buffer, v_rgb_blur_buffer);
+	horizontal_blur(src, h_rgb_blur_buffer);
+	vertical_blur(src, h_rgb_blur_buffer, v_rgb_blur_buffer);
+	horizontal_blur(dest, h_rgb_blur_buffer);
+	vertical_blur(dest, h_rgb_blur_buffer, v_rgb_blur_buffer);
+
 	// exit(0);
 
 	clock_gettime(CLOCK_REALTIME, &cur_time);

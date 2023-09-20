@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/19 18:47:21 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/20 18:19:12 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,10 +150,10 @@ bool	init_pause_menu(t_game *game)
 	game->menu = ft_calloc(1, sizeof(t_menu));
 	if (!game->menu)
 		return (false);
-	game->menu->h_rgb_blur_buffer = ft_calloc(WIN_X * WIN_Y * 3, sizeof(uint16_t));
+	game->menu->h_rgb_blur_buffer = ft_calloc(WIN_X * WIN_Y * 3, sizeof(int));
 	if (!game->menu->h_rgb_blur_buffer)
 		return (false);
-	game->menu->v_rgb_blur_buffer = ft_calloc(WIN_X * WIN_Y * 3, sizeof(uint16_t));
+	game->menu->v_rgb_blur_buffer = ft_calloc(WIN_X * WIN_Y * 3, sizeof(int));
 	if (!game->menu->v_rgb_blur_buffer)
 		return (false);
 	game->menu->image = btmlx_new_image(game->mlx_ptr, (t_vector2){WIN_X, WIN_Y});

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/18 16:10:54 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 20:23:27 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,18 +253,19 @@ bool	is_existing(t_game *game, int index, char symbol, enum e_orientation orient
 			{
 				if (game->filename[i].orient == e_floor || game->filename[i].orient == e_ceiling 
 					|| game->filename[i].orient == e_door || game->filename[i].orient == e_object_wall
-					|| game->filename[i].orient == e_object_entity 
+					|| game->filename[i].orient == e_object_entity || game->filename[i].orient == e_door_lock 
 					|| game->filename[i].orient == e_object_interactive || game->filename[i].orient == e_receptacle_empty
 					|| game->filename[i].orient == e_exit)
 					return (true);
 					
 			}
 			else if ((orient == e_object_entity || orient == e_object_wall
-				|| orient == e_object_interactive || orient == e_door 
+				|| orient == e_object_interactive || orient == e_door || orient == e_door_lock
 				|| orient == e_exit || orient == e_receptacle_empty)
 				&& (game->filename[i].orient == e_object_entity || game->filename[i].orient == e_object_wall
 				|| game->filename[i].orient == e_object_interactive || game->filename[i].orient == e_door 
-				|| game->filename[i].orient == e_exit || game->filename[i].orient == e_receptacle_empty))
+				|| game->filename[i].orient == e_exit || game->filename[i].orient == e_receptacle_empty
+				|| game->filename[i].orient == e_door_lock))
 				return (true);
 			else if ((is_wall == false) 
 				&& (game->filename[i].orient == e_north || game->filename[i].orient == e_east 
@@ -290,10 +291,11 @@ static int	_find_next_wsp(char *line , int i)
 	return (i);
 }
 
-bool	multiple_texture(t_game *game, int *index, char * str, int nb_file)
+bool	multiple_texture(t_game *game, int *index, char * str, enum e_orientation orient)
 {
 	
 	int		cpt;
+	int		nb_file;
 	int		i;
 	int		len;
 	DIR		*dir;
@@ -301,6 +303,10 @@ bool	multiple_texture(t_game *game, int *index, char * str, int nb_file)
 
 	i = 0;
 	cpt = 0;
+	if (orient == e_receptacle_empty || orient == e_door_lock)
+		nb_file = 2;
+	else
+		nb_file = 4;
 	while (cpt < nb_file)
 	{
 		i += skip_whitespace(str + i);
@@ -327,9 +333,14 @@ bool	multiple_texture(t_game *game, int *index, char * str, int nb_file)
 				return (perror("Error"), false);
 			game->nb_file = *index + 1;
 		}
-		if (nb_file == 2)
+		if (orient == e_receptacle_empty)
 		{
 			game->filename[*index].orient = e_receptacle_empty + cpt;
+			game->filename[*index].symbol_receptacle = *(str - 3);
+		}
+		else if (orient == e_door_lock)
+		{
+			game->filename[*index].orient = e_door_lock + cpt;
 			game->filename[*index].symbol_receptacle = *(str - 3);
 		}
 		else
@@ -367,10 +378,10 @@ static bool	_find_texture(t_game *game, char *str, int index, enum e_orientation
 
 	if (is_existing(game, index, *(str - 1), orient))
 		return (printf("Error : Multiples definition of a texture\n"), false);
-	if (orient == e_receptacle_empty)
-		return (multiple_texture(game, &index, str, 2));
+	if (orient == e_receptacle_empty || orient == e_door_lock)
+		return (multiple_texture(game, &index, str, orient));
 	else if (orient == e_object_interactive)
-		return (multiple_texture(game, &index, str, 4));
+		return (multiple_texture(game, &index, str, orient));
 	if (index >= game->nb_file)
 	{
 		game->filename = ft_realloc(game->filename
@@ -473,6 +484,8 @@ static bool	_cmp_texture(char *line, t_game *game, int i, bool *is_end)
 	{
 		if (ft_strncmp(line + i, "R_", 2) == 0)
 			return (_find_texture(game, line + i + 5, game->nb_file, e_receptacle_empty));
+		if (ft_strncmp(line + i, "D_", 2) == 0)
+			return (_find_texture(game, line + i + 5, game->nb_file, e_door_lock));
 	}
 	return (printf("Error : invalid identifier\n"), false);
 }

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/20 19:58:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 20:39:36 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,8 @@ enum e_orientation
 	e_ceiling,
 	e_wall,
 	e_door,
+	e_door_lock,
+	e_door_unlock,
 	e_object_wall,
 	e_object_entity,		//transparent
 	e_object_interactive,
@@ -230,6 +232,7 @@ typedef struct s_door
 	int			is_opening_door;
 	long int	time;
 	t_vector2	map_pos;
+	char		symbol_unlock_door;
 	int			nb_receptacle_completed;
 }	t_door;
 
@@ -363,7 +366,7 @@ bool		find_player(t_game *game);
 bool		check_map(t_game *game);
 bool		ft_read_config(t_animation *animation, int index);
 bool		parse_texture(int fd, t_game *game, int *nb_line, char **rest);
-bool		is_door(char symbol, t_texture *tab, int len, enum e_orientation *type_door);
+bool		is_door(char symbol, t_texture *tab, int len, t_texture *type_door);
 bool		is_object(char symbol, t_texture *tab, int len);
 bool		is_object_interactive(char symbol, t_texture *tab, int len);
 bool		is_receptacle(char symbol, t_texture *tab, int len, char *c);

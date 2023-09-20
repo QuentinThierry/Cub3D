@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 19:23:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 20:35:06 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,15 @@ void	drop_object(t_player *player, t_map **map, t_map *exit, t_game *game)
 			map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_hand_image] = player->item.sprite[e_object_interactive_hand_image];
 			player->has_item = false;
 		}
-		else if ((map[(int)pos.y][(int)pos.x].type & RECEPTACLE) == RECEPTACLE
+		else if ((map[(int)pos.y][(int)pos.x].type & RECEPTACLE) == RECEPTACLE && (map[(int)pos.y][(int)pos.x].type & DOOR_LOCK) == DOOR_LOCK
+			&& ((t_door *)map[(int)pos.y][(int)pos.x].arg)->symbol_unlock_door == player->item.symbol)
+		{
+			map[(int)pos.y][(int)pos.x].type ^= DOOR_LOCK;
+			map[(int)pos.y][(int)pos.x].sprite[e_door_image] = map[(int)pos.y][(int)pos.x].sprite[e_door_image + 1];
+			
+			player->has_item = false;
+		}
+		else if ((map[(int)pos.y][(int)pos.x].type & RECEPTACLE) == RECEPTACLE && (map[(int)pos.y][(int)pos.x].type & OBJECT) == OBJECT
 			&& ((t_object *)map[(int)pos.y][(int)pos.x].arg)->symbol_receptacle == player->item.symbol
 			&& ((t_object *)map[(int)pos.y][(int)pos.x].arg)->is_completed != true)
 		{

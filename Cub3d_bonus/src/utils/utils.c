@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 22:30:44 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 20:38:21 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,9 @@ bool	is_wall(char symbol, t_texture *tab, int len, bool *error)
 					|| tab[i].orient == e_east || tab[i].orient == e_west || tab[i].orient == e_door
 					|| tab[i].orient == e_object_wall || tab[i].orient == e_receptacle_empty
 					|| tab[i].orient == e_receptacle_full || tab[i].orient == e_exit
-					|| tab[i].orient == e_object_interactive_after ||tab[i].orient == e_object_interactive_before)
+					|| tab[i].orient == e_object_interactive_after 
+					|| tab[i].orient == e_object_interactive_before
+					|| tab[i].orient == e_door_lock)
 				return (true);
 			else
 				find_floor_ceiling = true;
@@ -132,16 +134,17 @@ bool	is_wall(char symbol, t_texture *tab, int len, bool *error)
 	return (*error = true, false);
 }
 
-bool	is_door(char symbol, t_texture *tab, int len, enum e_orientation *type_door)
+bool	is_door(char symbol, t_texture *tab, int len, t_texture *type_door)
 {
 	int i;
 
 	i = 0;
 	while (i < len)
 	{
-		if (tab[i].symbol == symbol && (tab[i].orient == e_door || tab[i].orient == e_exit))
+		if (tab[i].symbol == symbol && (tab[i].orient == e_door
+			|| tab[i].orient == e_exit || tab[i].orient == e_door_lock))
 		{
-			*type_door = tab[i].orient;
+			*type_door = tab[i];
 			return (true);
 		}
 		i++;

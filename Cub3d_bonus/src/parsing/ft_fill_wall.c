@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/18 16:12:03 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 20:40:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 {
 	int	i;
 	int	len;
-	enum e_orientation	type_door;
+	t_texture	type_door;
 	bool	error;
 	char	c;
 
@@ -113,9 +113,12 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			map[i].sprite[e_ceiling].index = -1;
 			if (is_door(line[i], game->filename, game->nb_file, &type_door))
 			{
+				map[i].arg = ft_calloc(1, sizeof(t_door));
+				if (map[i].arg == NULL)
+					return (perror("Error"), false);
 				game->nb_doors++;
 				map[i].type |= DOOR;
-				if (type_door == e_exit)
+				if (type_door.orient == e_exit)
 				{
 					map[i].type |= DOOR_LOCK;
 					map[i].type |= EXIT;
@@ -123,12 +126,17 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 						return (printf("Error : Multiple exit on the map\n"), false);
 					game->exit = map + i;
 				}
-				map[i].arg = ft_calloc(1, sizeof(t_door));
-				if (map[i].arg == NULL)
-					return (perror("Error"), false);
+				if (type_door.orient == e_door_lock)
+				{
+					printf("coucou %c\n", type_door.symbol_receptacle);
+					map[i].type |= DOOR_LOCK;
+					map[i].type |= RECEPTACLE;
+					((t_door *)map[i].arg)->symbol_unlock_door = type_door.symbol_receptacle;
+					map[i].sprite[e_door_image + 1] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_door_unlock);
+				}
 				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_floor);
 				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_ceiling);
-				map[i].sprite[e_door_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, type_door);
+				map[i].sprite[e_door_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, type_door.orient);
 			}
 			else if (is_object(line[i], game->filename, game->nb_file))
 			{

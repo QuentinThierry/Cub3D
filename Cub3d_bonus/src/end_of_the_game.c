@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:22:02 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 16:20:08 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 17:46:16 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	raycasting_end(t_game *game);
 
-bool	move_to_dest(t_player *player, t_end *end, const double delta_time)
+bool	move_to_dest(t_player *player, const t_end *end, const double delta_time)
 {
 	player->f_real_pos.x += end->dir.x * SPEED / 3. * delta_time;
 	player->f_real_pos.y += end->dir.y * SPEED / 3. * delta_time;
@@ -47,7 +47,7 @@ void	open_exit(t_game *game, t_door *door, t_end *end)
 }
 
 void	find_dest(t_end *end, const enum e_orientation orient
-		, const t_vector2 pos_exit, const t_player * const player)
+		, const t_vector2 pos_exit, const t_player * player)
 {
 	if (orient == e_north)
 	{
@@ -80,7 +80,7 @@ void	find_dest(t_end *end, const enum e_orientation orient
 		end->dest_angle = 0;
 }
 
-void	next_dest(t_end *end, t_dvector2 player_pos)
+void	next_dest(t_end *end, const t_dvector2 player_pos)
 {
 	if (end->orient == e_south)
 		end->dest.y -= 1 + DIST_TO_WALL;
@@ -125,7 +125,7 @@ int	update_end(t_game *game)
 	return (0);
 }
 
-void	end_of_the_game(t_game *game, enum e_orientation orient)
+void	end_of_the_game(t_game *game, const enum e_orientation orient)
 {
 	find_dest(game->end, orient, ((t_door *)game->exit->arg)->map_pos, game->player);
 	game->end->orient = orient;

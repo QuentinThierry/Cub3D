@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 16:10:10 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 18:43:03 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -414,7 +414,7 @@ static void	_step_door_open(t_door *door, long time, t_map *map_cell, t_map **ma
 	{
 		door->door_percent += tmp / 1000.0 * SPEEP_DOOR_OPENING;
 		door->time = time;
-		if (door->door_percent > 90)
+		if (door->door_percent > 89)
 		{
 			map_cell->type ^= WALL;
 			door->door_percent = 90;
@@ -427,7 +427,7 @@ static void	_step_door_open(t_door *door, long time, t_map *map_cell, t_map **ma
 		door->door_percent -= tmp / 1000.0 * SPEEP_DOOR_OPENING;
 		door->time = time;
 		change_adjacent_wall(map, door->map_pos, false);
-		if (door->door_percent < 0)
+		if (door->door_percent <= 0)
 		{
 			door->door_percent = 0;
 			door->is_opening_door = 0;

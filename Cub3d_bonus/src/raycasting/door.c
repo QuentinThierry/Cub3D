@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/18 19:26:52 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 16:10:10 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,6 +349,7 @@ void	change_adjacent_wall(t_map **map, t_vector2 map_pos, bool is_add_flag)
 			map[map_pos.y - 1][map_pos.x].type ^= DOOR_SOUTH;
 	}
 }
+
 bool	possible_to_open_door(enum e_orientation orient, t_dvector2 hit, t_dvector2 pos)
 {
 	if (orient == e_north && hit.y - pos.y < DIST_TO_WALL)
@@ -394,7 +395,7 @@ void	open_door(t_game *game)
 			}
 			else
 			{
-				if (possible_to_open_door(ray.orient, ray.hit, game->player->f_real_pos) == false)
+				if (!possible_to_open_door(ray.orient, ray.hit, game->player->f_real_pos))
 					return ;
 				door->is_opening_door = -1;
 				game->map[(int)ray.hit.y][(int)ray.hit.x].type |= WALL;
@@ -404,7 +405,7 @@ void	open_door(t_game *game)
 	}
 }
 
-void	step_door_open(t_door *door, long time, t_map *map_cell, t_map **map)
+static void	_step_door_open(t_door *door, long time, t_map *map_cell, t_map **map)
 {
 	long	tmp;
 
@@ -443,9 +444,8 @@ void	update_doors(t_map **doors, int	nb_doors, long time, t_map **map)
 	{
 		if (((t_door *)doors[i]->arg)->is_opening_door != 0)
 		{
-			step_door_open(doors[i]->arg, time, doors[i], map);
+			_step_door_open(doors[i]->arg, time, doors[i], map);
 		}
 		i++;
 	}
 }
-

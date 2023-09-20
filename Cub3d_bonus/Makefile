@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/09/18 14:59:10 by jvigny           ###   ########.fr        #
+#    Updated: 2023/09/20 16:10:25 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -106,6 +106,7 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			print.c \
 			loading_screen.c \
 			end_of_the_game.c \
+			exit_door.c \
 			main.c
 
 #			$(addprefix $(SOUND), $(SRC_SOUND)) \

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:13:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/18 16:29:54 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 15:55:55 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,16 @@ static t_sprite	*_get_image_south(t_map **map, t_ray ray, float *dist, int *type
 			return (&(map[wall.y][wall.x].sprite[e_door_image]));
 		}
 	}
+	else if ((map[wall.y - 1][wall.x].type & DOOR_SOUTH_END) == DOOR_SOUTH_END)
+	{
+		
+		if (ray.hit.x >= (int)ray.hit.x + 0.5)
+		{
+			*type = map[wall.y][wall.x].type;
+			*dist = ray.hit.x - ((int)ray.hit.x + 0.5);
+			return (&(map[wall.y][wall.x].sprite[e_door_image]));
+		}
+	}
 	else if ((map[wall.y - 1][wall.x].type & DOOR) == DOOR)
 	{
 		*dist = get_texture_door(ray);
@@ -91,6 +101,15 @@ static t_sprite	*_get_image_north(t_map **map, t_ray ray, float *dist, int *type
 		{
 			*type = map[wall.y - 1][wall.x].type;
 			*dist = 1 - ((int)ray.hit.x - ray.hit.x + 0.5);
+			return (&(map[wall.y - 1][wall.x].sprite[e_door_image]));
+		}
+	}
+	else if ((map[wall.y][wall.x].type & DOOR_NORTH_END) == DOOR_NORTH_END)
+	{
+		if (ray.hit.x >= (int)ray.hit.x + 0.5)
+		{
+			*type = map[wall.y - 1][wall.x].type;
+			*dist = 1 -(ray.hit.x - ((int)ray.hit.x + 0.5));
 			return (&(map[wall.y - 1][wall.x].sprite[e_door_image]));
 		}
 	}
@@ -118,6 +137,15 @@ static t_sprite	*_get_image_west(t_map **map, t_ray ray, float *dist, int *type)
 			return (&(map[wall.y][wall.x - 1].sprite[e_door_image]));
 		}
 	}
+	else if ((map[wall.y][wall.x].type & DOOR_WEST_END) == DOOR_WEST_END)
+	{
+		if (ray.hit.y <= (int)ray.hit.y + 0.5)
+		{
+			*type = map[wall.y][wall.x - 1].type;
+			*dist = (ray.hit.y - (int)ray.hit.y + 0.5);
+			return (&(map[wall.y][wall.x - 1].sprite[e_door_image]));
+		}
+	}
 	else if ((map[wall.y][wall.x].type & DOOR) == DOOR)
 	{
 		*dist = get_texture_door(ray);
@@ -141,6 +169,15 @@ static t_sprite	*_get_image_east(t_map **map, t_ray ray, float *dist, int *type)
 		{
 			*type = map[wall.y][wall.x].type;
 			*dist = ray.hit.y - (int)ray.hit.y - 0.5;
+			return (&(map[wall.y][wall.x].sprite[e_door_image]));
+		}
+	}
+	else if ((map[wall.y][wall.x - 1].type & DOOR_EAST_END) == DOOR_EAST_END)
+	{
+		if (ray.hit.y <= (int)ray.hit.y + 0.5)
+		{
+			*type = map[wall.y][wall.x].type;
+			*dist = 0.5 - (ray.hit.y - (int)ray.hit.y);
 			return (&(map[wall.y][wall.x].sprite[e_door_image]));
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/19 17:15:54 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 15:03:46 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,14 @@
 # define DOOR_EAST 0b10000
 # define DOOR_SOUTH 0b100000
 # define DOOR_WEST 0b1000000
-# define OBJECT_INTERACTIVE 0b10000000
-# define RECEPTACLE 0b100000000
-# define DOOR_LOCK 0b1000000000
-# define EXIT 0b10000000000
+# define DOOR_NORTH_END 0b10000000
+# define DOOR_EAST_END 0b100000000
+# define DOOR_SOUTH_END 0b1000000000
+# define DOOR_WEST_END 0b10000000000
+# define OBJECT_INTERACTIVE 0b100000000000
+# define RECEPTACLE 0b1000000000000
+# define DOOR_LOCK 0b10000000000000
+# define EXIT 0b100000000000000
 
 extern long tot_fps;
 extern long nb_fps;
@@ -126,8 +130,7 @@ enum e_orientation
 	e_receptacle_empty,
 	e_receptacle_full,
 	e_exit,
-	e_end_screen_pull,
-	e_end_screen_push,
+	e_end_screen,
 	e_object_image = e_north,
 	e_door_image = e_north,
 	e_object_interactive_image = e_north,
@@ -427,7 +430,7 @@ t_dvector2	door_hit_hor_sw(t_dvector2 hit, float step, float door_angle, float p
 t_dvector2	door_hit_ver_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
 t_dvector2	door_hit_hor_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
 float		get_texture_door(t_ray ray);
-void		step_door_open(t_door *door, long time, t_map *map_cell, t_map **map);
+void	end_step_door_open(long time, t_map *map_cell, t_map **map, t_end *end);
 void		update_doors(t_map **doors, int	nb_doors, long time, t_map **map);
 void		open_door(t_game *game);
 

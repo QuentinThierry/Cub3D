@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:22:02 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/19 18:09:55 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 16:20:08 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	raycasting_end(t_game *game);
 
 bool	move_to_dest(t_player *player, t_end *end, const double delta_time)
 {
-	player->f_real_pos.x += end->dir.x * SPEED / 2. * delta_time;
-	player->f_real_pos.y += end->dir.y * SPEED / 2. * delta_time;
-	player->angle += end->dir_angle / 2. * delta_time;
+	player->f_real_pos.x += end->dir.x * SPEED / 3. * delta_time;
+	player->f_real_pos.y += end->dir.y * SPEED / 3. * delta_time;
+	player->angle += end->dir_angle / 3. * delta_time;
 	if ((end->dir.x < 0 && player->f_real_pos.x < end->dest.x)
 		|| (end->dir.x > 0 && player->f_real_pos.x > end->dest.x))
 		player->f_real_pos.x = end->dest.x;
@@ -41,59 +41,11 @@ void	open_exit(t_game *game, t_door *door, t_end *end)
 		door->time = game->time;
 	}
 	door->time += (game->time - door->time) / 5. * 4;
-	step_door_open(door, game->time, game->exit, game->map);
+	end_step_door_open(game->time, game->exit, game->map, end);
 	if (door->door_percent == 90)
-	{
 		end->status = e_walk_through_door;
-	}
 }
 
-int	update_end(t_game *game)
-{
-	static struct timespec	last_time = {0};
-	struct timespec			cur_time;
-	struct timespec			time;
-	// long					fps;
-
-	if (last_time.tv_sec == 0)
-		clock_gettime(CLOCK_REALTIME, &last_time);
-	clock_gettime(CLOCK_REALTIME, &time);
-	game->time = time_to_long(&time);
-	
-	if (game->end->status == e_go_in_font_of_door)
-	{
-		if (move_to_dest(game->player, game->end, game->delta_time))
-		{
-			if (game->end->orient == e_south)
-				game->end->dest.y -= 1 + DIST_TO_WALL;
-			else if (game->end->orient == e_north)
-				game->end->dest.y += 1 + DIST_TO_WALL;
-			else if (game->end->orient == e_east)
-				game->end->dest.x -= 1 + DIST_TO_WALL;
-			else
-				game->end->dest.x += 1 + DIST_TO_WALL;
-			game->end->dir.x = game->end->dest.x - game->player->f_real_pos.x;
-			game->end->dir.y = game->end->dest.y - game->player->f_real_pos.y;
-			game->end->dir_angle = 0;
-			game->end->status = e_open_door;
-		}
-	}
-	else if (game->end->status == e_open_door)
-		open_exit(game, game->exit->arg, game->end);
-	else if (game->end->status == e_walk_through_door)
-	{
-		if (move_to_dest(game->player, game->end, game->delta_time))
-			game->end->status = e_end;
-	}
-	raycasting_end(game);
-	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
-
-	clock_gettime(CLOCK_REALTIME, &cur_time);
-	game->delta_time = (cur_time.tv_sec - last_time.tv_sec
-			+ (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
-	last_time = cur_time;
-	return (0);
-}
 void	find_dest(t_end *end, const enum e_orientation orient
 		, const t_vector2 pos_exit, const t_player * const player)
 {
@@ -128,6 +80,51 @@ void	find_dest(t_end *end, const enum e_orientation orient
 		end->dest_angle = 0;
 }
 
+void	next_dest(t_end *end, t_dvector2 player_pos)
+{
+	if (end->orient == e_south)
+		end->dest.y -= 1 + DIST_TO_WALL;
+	else if (end->orient == e_north)
+		end->dest.y += 1 + DIST_TO_WALL;
+	else if (end->orient == e_east)
+		end->dest.x -= 1 + DIST_TO_WALL;
+	else
+		end->dest.x += 1 + DIST_TO_WALL;
+	end->dir.x = end->dest.x - player_pos.x;
+	end->dir.y = end->dest.y - player_pos.y;
+	end->dir_angle = 0;
+	end->status = e_open_door;
+}
+
+int	update_end(t_game *game)
+{
+	static struct timespec	last_time = {0};
+	struct timespec			cur_time;
+	struct timespec			time;
+
+	if (last_time.tv_sec == 0)
+		clock_gettime(CLOCK_REALTIME, &last_time);
+	clock_gettime(CLOCK_REALTIME, &time);
+	game->time = time_to_long(&time);
+	if (game->end->status == e_go_in_font_of_door)
+	{
+		if (move_to_dest(game->player, game->end, game->delta_time))
+			next_dest(game->end, game->player->f_real_pos);
+	}
+	else if (game->end->status == e_open_door)
+		open_exit(game, game->exit->arg, game->end);
+	else if (game->end->status == e_walk_through_door)
+		if (move_to_dest(game->player, game->end, game->delta_time))
+			game->end->status = e_end;
+	raycasting_end(game);
+	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
+	clock_gettime(CLOCK_REALTIME, &cur_time);
+	game->delta_time = (cur_time.tv_sec - last_time.tv_sec
+			+ (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
+	last_time = cur_time;
+	return (0);
+}
+
 void	end_of_the_game(t_game *game, enum e_orientation orient)
 {
 	find_dest(game->end, orient, ((t_door *)game->exit->arg)->map_pos, game->player);
@@ -148,32 +145,28 @@ static inline float	get_dist(t_dvector2 fpos, t_dvector2 wall)
 
 float	draw_light(t_game *game, t_ray *ray, int x, float angle)
 {
-	if (game->end->orient == e_north && ray->hit.y > game->end->dest.y)
+	if (game->end->orient == e_north && ray->hit.y > game->end->dest.y - .5)
 	{
-		ray->hit.x = game->end->dest.x;
-		ray->hit.y = game->end->dest.y;
-		ray->orient = e_end_screen_pull;
+		ray->hit = (t_dvector2){game->end->dest.x, game->end->dest.y - .5};
+		ray->orient = e_end_screen;
 		return (get_dist(game->player->f_real_pos, ray->hit));
 	}
 	else if (game->end->orient == e_south && ray->hit.y < game->end->dest.y + .5)
 	{
-		ray->hit.x = game->end->dest.x;
-		ray->hit.y = game->end->dest.y + .5;
-		ray->orient = e_end_screen_pull;
+		ray->hit = (t_dvector2){game->end->dest.x, game->end->dest.y + .5};
+		ray->orient = e_end_screen;
 		return (get_dist(game->player->f_real_pos, ray->hit));
 	}
-	else if (game->end->orient == e_east && ray->hit.x < game->end->dest.x)
+	else if (game->end->orient == e_east && ray->hit.x < game->end->dest.x + .5)
 	{
-		ray->hit.x = game->end->dest.x;
-		ray->hit.y = game->end->dest.y;
-		ray->orient = e_end_screen_pull;
+		ray->hit = (t_dvector2){game->end->dest.x + .5, game->end->dest.y};
+		ray->orient = e_end_screen;
 		return (get_dist(game->player->f_real_pos, ray->hit));
 	}
 	else if (game->end->orient == e_west && ray->hit.x > game->end->dest.x - .5)
 	{
-		ray->hit.x = game->end->dest.x - .5;
-		ray->hit.y = game->end->dest.y;
-		ray->orient = e_end_screen_pull;
+		ray->hit = (t_dvector2){game->end->dest.x - .5, game->end->dest.y};
+		ray->orient = e_end_screen;
 		return (get_dist(game->player->f_real_pos, ray->hit));
 	}
 	return (get_dist(game->player->f_real_pos, ray->hit) * cosf(angle * TO_RADIAN));
@@ -182,23 +175,20 @@ float	draw_light(t_game *game, t_ray *ray, int x, float angle)
 void	raycasting_end(t_game *game)
 {
 	int			x;
-	double		height;
 	float		angle;
-	t_ray		last_ray;
 	t_ray		ray;
 	t_dvector2	fpos;
 	float		dist;
 
 	draw_ceiling(game);
 	fpos = game->player->f_real_pos;
-		
 	x = -WIN_X / 2;
 	while (x < WIN_X / 2)
 	{
 		angle = atanf(x / game->constants[0]) * 180 / M_PI;
 		if (game->player->angle + angle >= 360)
 			angle = angle - 360;
-		if (game->player->angle + angle < 0)
+		else if (game->player->angle + angle < 0)
 			angle = angle + 360;
 		ray = get_wall_hit_end(fpos, game->map, game->player->angle + angle, game->end->status);
 		if (game->end->status == e_open_door || game->end->status == e_walk_through_door || game->end->status == e_end)
@@ -208,9 +198,7 @@ void	raycasting_end(t_game *game)
 		game->dist_tab[x + WIN_X / 2] = dist;
 		if (dist == 0)
 			dist = 0.01;
-		if (ray.orient != e_end_screen_push)
-			height = 1 / dist * game->constants[0];
-		draw_vert(game, x + WIN_X / 2, ray, height);
+		draw_vert(game, x + WIN_X / 2, ray, 1 / dist * game->constants[0]);
 		x++;
 	}
 }

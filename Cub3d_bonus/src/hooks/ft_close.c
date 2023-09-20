@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 19:29:19 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 19:36:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,7 @@ int	ft_close(t_game *game)
 	if (game->object_array != NULL)
 		free_tab_object(game->object_array, game->nb_objects);
 	if (game->player != NULL)
-	{
-		// if (game->player->has_item == true && game->player->item.arg != NULL)
-		// 	free(game->player->item.arg);
 		free(game->player);
-	}
 	if (game->map != NULL)
 		free_map((void *)game->map, game->map_size);
 	if (game->filename != NULL)

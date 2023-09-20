@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:22:02 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 19:33:37 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 19:46:17 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 
 void	raycasting_end(t_game *game);
 
+/**
+ * @brief move the player to end->dest and turn his head atthe same time
+ * 
+ * @param player 
+ * @param end 
+ * @param delta_time 
+ * @return true 
+ * @return false 
+ */
 bool	move_to_dest(t_player *player, const t_end *end, const double delta_time)
 {
 	player->f_real_pos.x += end->dir.x * SPEED / 3. * delta_time;
@@ -33,6 +42,15 @@ bool	move_to_dest(t_player *player, const t_end *end, const double delta_time)
 		return (true);
 	return (false);
 }
+
+/**
+ * @brief init hte process of open the exit door and open it until it's totally
+ * 			open
+ * 
+ * @param game 
+ * @param door 
+ * @param end 
+ */
 void	open_exit(t_game *game, t_door *door, t_end *end)
 {
 	if (door->is_opening_door == 0)
@@ -45,7 +63,15 @@ void	open_exit(t_game *game, t_door *door, t_end *end)
 	if (door->door_percent == 90)
 		end->status = e_walk_through_door;
 }
-
+/**
+ * @brief init the struct end with the destination where the player need to go
+ * 	and its view angle
+ * 
+ * @param end 
+ * @param orient 
+ * @param pos_exit 
+ * @param player 
+ */
 void	find_dest(t_end *end, const enum e_orientation orient
 		, const t_vector2 pos_exit, const t_player * player)
 {
@@ -80,6 +106,12 @@ void	find_dest(t_end *end, const enum e_orientation orient
 		end->dest_angle = 0;
 }
 
+/**
+ * @brief init the end->dest to the coordonne behind the door that has been open 
+ * 
+ * @param end 
+ * @param player_pos 
+ */
 void	next_dest(t_end *end, const t_dvector2 player_pos)
 {
 	if (end->orient == e_south)
@@ -96,6 +128,12 @@ void	next_dest(t_end *end, const t_dvector2 player_pos)
 	end->status = e_open_door;
 }
 
+/**
+ * @brief loop for the end's screen
+ * 
+ * @param game 
+ * @return int 
+ */
 int	update_end(t_game *game)
 {
 	static struct timespec	last_time = {0};
@@ -125,6 +163,13 @@ int	update_end(t_game *game)
 	return (0);
 }
 
+/**
+ * @brief launch the end's animation => go in front of the door, then open it,
+ *		and go through it
+ * 
+ * @param game 
+ * @param orient 
+ */
 void	end_of_the_game(t_game *game, const enum e_orientation orient)
 {
 	find_dest(game->end, orient, ((t_door *)game->exit->arg)->map_pos, game->player);
@@ -143,7 +188,15 @@ static inline float	get_dist(t_dvector2 fpos, t_dvector2 wall)
 	return (sqrtf((wall.x - fpos.x) * (wall.x - fpos.x) + (wall.y - fpos.y) * (wall.y - fpos.y)));
 }
 
-float	draw_light(t_game *game, t_ray *ray, int x, float angle)
+/**
+ * @brief draw light behind the opening door
+ * 
+ * @param game 
+ * @param ray 
+ * @param angle 
+ * @return float 
+ */
+float	draw_light(t_game *game, t_ray *ray, float angle)
 {
 	if (game->end->orient == e_north && ray->hit.y > game->end->dest.y - .5)
 	{
@@ -172,6 +225,11 @@ float	draw_light(t_game *game, t_ray *ray, int x, float angle)
 	return (get_dist(game->player->f_real_pos, ray->hit) * cosf(angle * TO_RADIAN));
 }
 
+/**
+ * @brief raycsting to open all the door by pulling them + draw light behind them
+ * 
+ * @param game 
+ */
 void	raycasting_end(t_game *game)
 {
 	int			x;
@@ -192,7 +250,7 @@ void	raycasting_end(t_game *game)
 			angle = angle + 360;
 		ray = get_wall_hit_end(fpos, game->map, game->player->angle + angle, game->end->status);
 		if (game->end->status == e_open_door || game->end->status == e_walk_through_door || game->end->status == e_end)
-			dist = draw_light(game, &ray, x, angle);
+			dist = draw_light(game, &ray, angle);
 		else
 			dist = get_dist(fpos, ray.hit) * cosf(angle * TO_RADIAN);
 		game->dist_tab[x + WIN_X / 2] = dist;
@@ -209,7 +267,7 @@ bool	init_end_screen(t_game *game)
 	if (game->end == NULL)
 		return (false);
 	game->end->end_screen = btmlx_xpm_file_to_image(game->mlx_ptr
-		, "./assets/end.xpm", (t_vector2){100, 100});
+		, END_SCREEN, (t_vector2){100, 100});
 	if (game->end->end_screen == NULL)
 		return (false);
 	return (true);

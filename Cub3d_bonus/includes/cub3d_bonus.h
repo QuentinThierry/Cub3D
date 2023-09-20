@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/20 18:39:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 19:46:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@
 # define WIDTH_LETTER (1880 / 94.)
 # define HEIGHT_ALPHA 34
 # define GREEN_SCREEN 0x00ff00
+# define END_SCREEN "./assets/end.xpm"
 
 
 #define DIST_TO_WALL 0.0999

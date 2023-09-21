@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/20 20:39:34 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/21 19:07:21 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,10 @@
 # define OPTION_MENU 1
 # define CHOOSING_KEY_MENU 2
 
-#define SIZE_BOX_BLUR 17
+# define SIZE_BOX_BLUR 9
 # define DARK_PERCENT_OPTION 0.5
 # define NB_OPTIONS_BUTTONS 11
+# define KEY_TEXT_CHANGE "Press any key"
 
 // KEYBINDS
 # define DFL_KEY_LEFT_MOVE 'a'
@@ -343,7 +344,7 @@ typedef struct s_game
 
 // ------ Utils------
 char		*ft_strdup(const char *s);
-int			ft_strlen(char *str);
+int			ft_strlen(const char *str);
 int			ft_strcmp(const char *s1, const char *s2);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 void		*ft_calloc(size_t nmemb, size_t size);
@@ -459,12 +460,11 @@ void		draw_image_with_transparence(char *dest_addr, t_image *src
 
 // ------- menu ----------
 void		draw_menu(t_game *game);
-void		draw_menu(t_game *game);
 int			menu_loop_hook(t_game *game);
 const char	*get_key_str(t_keybind key);
 void		menu_mouse_click(int button, int x, int y, t_game *game);
 void		menu_key_hook(t_keybind key, t_game *game);
-
+void		set_pause_menu_mode(t_game *game);
 
 // unsigned int	dark_with_dist(int color, float dark_quantity);
 

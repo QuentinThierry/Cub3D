@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/16 16:22:18 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/21 19:34:44 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,7 @@ void	key_press_hook(t_keybind key, t_game *game)
 	else if (key == game->keybinds[e_key_interact_door])
 		open_door(game);
 	else if (key == game->keybinds[e_key_pause])
-	{
-		mlx_hook(game->win, 2, (1L << 0), (void *)menu_key_hook, game);
-		mlx_hook(game->win, 3, (1L << 1), NULL, game);
-		mlx_mouse_hook(game->win, (void *)menu_mouse_click, game);
-		mlx_mouse_show(game->mlx_ptr, game->win);
-		mlx_hook(game->win, 6, (1L << 6) | (1L << 2) , NULL, game);
-		mlx_loop_hook(game->mlx_ptr, menu_loop_hook, game);
-		mlx_hook(game->win, 8, (1L << 5), NULL, game);
-		ft_memcpy(game->menu->background_image->addr,
-			game->image->addr, WIN_X * WIN_Y * 4);
-		game->menu->state = OPTION_MENU;
-	}
+		set_pause_menu_mode(game);
 }
 
 void	key_release_hook(t_keybind key, t_game *game)

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/16 13:24:44 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/22 14:22:33 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,10 @@ int main(int argc, char **argv)
 
 	game = (t_game){0};
 	if (argc != 2)
-		return (printf("Error : Invalid nubmber of arguments\n"), 1);
+		return (printf("Error : Invalid number of arguments\n"), 1);
 	if (WIN_X < 100 || WIN_Y < 100)
-		return (printf("Error : Invalid Window size\n"), 1);
+		return (printf("Error : Invalid window size\n"), 1);
+	game.fov = FOV;
 	game.nb_file = 6;
 	game.filename = ft_calloc(game.nb_file, sizeof(t_texture));
 	if (game.filename == NULL)
@@ -77,14 +78,15 @@ int main(int argc, char **argv)
 		return (perror("Error"), ft_close(&game), 1);
 	free_filename(&game);
 	free_loading_screen(&game);
-	game.constants = (float[5]){(WIN_X / 2.) / tan((FOV / 2.) * TO_RADIAN),
-		tanf((FOV / 2.0) * TO_RADIAN), cos((FOV / 2.0) * TO_RADIAN)};
+	game.constants[0] = (WIN_X / 2.) / tan((FOV / 2.) * TO_RADIAN);
+	game.constants[1] = tanf((FOV / 2.0) * TO_RADIAN);
+	game.constants[2] = cos((FOV / 2.0) * TO_RADIAN);
 	if (!init_minimap(&game))
 		return (perror("Error"), ft_close(&game), 1);
 	if (!init_pause_menu(&game))
 		return (perror("Error"), ft_close(&game), 1);
 	init_mouse(&game);
-	mlx_do_key_autorepeatoff(game.mlx_ptr);
+	// mlx_do_key_autorepeatoff(game.mlx_ptr);
 	mlx_hook(game.win, 2, (1L << 0), (void *)key_press_hook, &game);
 	mlx_hook(game.win, 3, (1L << 1), (void *)key_release_hook, &game);
 	mlx_hook(game.win, 17, (1L << 8), ft_close, &game);

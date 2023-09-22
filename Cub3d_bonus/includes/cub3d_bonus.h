@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/21 19:07:21 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/21 19:46:15 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,9 +328,10 @@ typedef struct s_game
 	t_vector2		map_size;
 	t_player		*player;
 	t_minimap		*minimap;
+	float			fov;
 	double			delta_time;
 	long int		time;
-	const float		*constants;
+	float			constants[3];
 	int				nb_objects;
 	t_object		**object_array;
 	int				nb_doors;

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/13 16:49:20 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/21 19:47:15 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,8 +145,8 @@ void	draw_ceiling(t_game *game)
 
 	y_screen = WIN_Y / 2.;
 
-	cos_sin2.x = cosf((game->player->angle - 90 - FOV / 2.) * TO_RADIAN);
-	cos_sin2.y = sinf((game->player->angle - 90 - FOV / 2.) * TO_RADIAN);
+	cos_sin2.x = cosf((game->player->angle - 90 - game->fov / 2.) * TO_RADIAN);
+	cos_sin2.y = sinf((game->player->angle - 90 - game->fov / 2.) * TO_RADIAN);
 	cos_sin1.x = cosf((game->player->angle - 90) * TO_RADIAN);
 	cos_sin1.y = sinf((game->player->angle - 90) * TO_RADIAN);
 	while (y_screen > 0)

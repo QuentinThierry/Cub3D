@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:39:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/13 16:49:11 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/21 19:47:25 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,29 +121,29 @@ void	find_object_projection(t_game *game, t_object *object, t_player *player)
 	if (arctan2 > 0) // positive
 	{
 		if (player_angle >= 0 && player_angle < 90) // 0-90
-			angle = (90 - player_angle) + FOV / 2. - arctan2;
+			angle = (90 - player_angle) + game->fov / 2. - arctan2;
 		else if (player_angle >= 90 && player_angle < 180) // 90-180
-			angle = (FOV / 2.) - (player_angle - 90) - arctan2;
+			angle = (game->fov / 2.) - (player_angle - 90) - arctan2;
 		else if (player_angle >= 180 && player_angle < 270) // 180-270
-			angle = 360 - (player_angle - 90 - FOV / 2.) - arctan2;
+			angle = 360 - (player_angle - 90 - game->fov / 2.) - arctan2;
 		else // 270-360
-			angle = 360 - (player_angle - 90 - FOV / 2.) - arctan2;
+			angle = 360 - (player_angle - 90 - game->fov / 2.) - arctan2;
 	}
 	else // negative
 	{
 		if (player_angle >= 0 && player_angle < 90) // 0-90
-			angle = (90 - player_angle) + FOV / 2. - arctan2;
+			angle = (90 - player_angle) + game->fov / 2. - arctan2;
 		else if (player_angle >= 90 && player_angle < 180) // 90-180
-			angle = (FOV / 2.) - (player_angle - 90) - arctan2;
+			angle = (game->fov / 2.) - (player_angle - 90) - arctan2;
 		else if (player_angle >= 180 && player_angle < 270) // 180-270
-			angle = fabsf(arctan2) - (player_angle - 90 - FOV / 2.);
+			angle = fabsf(arctan2) - (player_angle - 90 - game->fov / 2.);
 		else // 270 - 360
-			angle = fabsf(arctan2) - (player_angle - 90 - FOV / 2.);
+			angle = fabsf(arctan2) - (player_angle - 90 - game->fov / 2.);
 	}
-	if (angle < FOV / 2.)
-		angle = -(FOV / 2. - angle);
+	if (angle < game->fov / 2.)
+		angle = -(game->fov / 2. - angle);
 	else
-		angle = angle - FOV / 2.;
+		angle = angle - game->fov / 2.;
 
 	x_screen = WIN_X / 2. + tanf(angle * TO_RADIAN) * game->constants[0];
 	draw_object_projection(game, object, object->dist * cosf(angle * TO_RADIAN), x_screen);

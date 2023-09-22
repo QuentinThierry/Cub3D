@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/21 19:34:44 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/21 19:49:13 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,20 @@ void	key_press_hook(t_keybind key, t_game *game)
 		open_door(game);
 	else if (key == game->keybinds[e_key_pause])
 		set_pause_menu_mode(game);
+	else if (key == 't')
+	{
+		game->fov += 1;
+		game->constants[0] = (WIN_X / 2.) / tan((game->fov / 2.) * TO_RADIAN);
+		game->constants[1] = tanf((game->fov / 2.0) * TO_RADIAN);
+		game->constants[2] = cos((game->fov / 2.0) * TO_RADIAN);
+	}
+	else if (key == 'y')
+	{
+		game->fov -= 1;
+		game->constants[0] = (WIN_X / 2.) / tan((game->fov / 2.) * TO_RADIAN);
+		game->constants[1] = tanf((game->fov / 2.0) * TO_RADIAN);
+		game->constants[2] = cos((game->fov / 2.0) * TO_RADIAN);
+	}
 }
 
 void	key_release_hook(t_keybind key, t_game *game)

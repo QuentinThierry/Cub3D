@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/09/14 20:44:11 by qthierry         ###   ########.fr        #
+#    Updated: 2023/09/21 18:44:46 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,6 +58,7 @@ SRC_UTILS = ft_strjoin.c \
 			ft_realloc.c \
 			ft_strdup.c \
 			ft_memcpy.c \
+			ft_bzero.c \
 			free.c \
 			bettermlx.c
 

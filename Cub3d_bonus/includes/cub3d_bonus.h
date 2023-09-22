@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/21 19:46:15 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/22 14:37:08 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@
 # define WIN_X 1280 //1920 - 918 - 1280
 # define WIN_Y 720 //1080 - 468 - 720
 # define CHUNK_SIZE 100
-# define FOV 80		//
-# define SPEED 100
-# define SPRINT_BOOST 300
-# define ROTATION_KEYBOARD 125	//
-# define ROTATION_MOUSE 20		// + keyboard binds + play + quit + activer sous-titre 
+# define FOV 100
+# define SPEED 1
+# define SPRINT_BOOST 1
+# define ROTATION_KEYBOARD 125
+# define ROTATION_MOUSE 20
 # define SPEEP_DOOR_OPENING 100
 # define TO_RADIAN .01745329251994
 # define DARK_COLOR 0x101010
@@ -82,6 +82,7 @@
 # define WIDTH_LETTER (1880 / 94.)
 # define HEIGHT_ALPHA 34
 # define GREEN_SCREEN 0x00ff00
+# define END_SCREEN "./assets/end.xpm"
 
 // MENU
 # define PAUSE_MENU 0
@@ -115,6 +116,14 @@
 # define DOOR_EAST 0b10000
 # define DOOR_SOUTH 0b100000
 # define DOOR_WEST 0b1000000
+# define DOOR_NORTH_END 0b10000000
+# define DOOR_EAST_END 0b100000000
+# define DOOR_SOUTH_END 0b1000000000
+# define DOOR_WEST_END 0b10000000000
+# define OBJECT_INTERACTIVE 0b100000000000
+# define RECEPTACLE 0b1000000000000
+# define DOOR_LOCK 0b10000000000000
+# define EXIT 0b100000000000000
 
 extern long tot_fps;
 extern long nb_fps;
@@ -135,9 +144,26 @@ enum e_orientation
 	e_ceiling,
 	e_wall,
 	e_door,
+	e_door_lock,
+	e_door_unlock,
 	e_object_wall,
-	e_object_entity,
-	e_object_image = e_north
+	e_object_entity,		//transparent
+	e_object_interactive,
+	e_object_interactive_hand,
+	e_object_interactive_before,
+	e_object_interactive_after,
+	e_receptacle_empty,
+	e_receptacle_full,
+	e_exit,
+	e_end_screen,
+	e_object_image = e_north,
+	e_door_image = e_north,
+	e_object_interactive_image = e_north,
+	e_object_interactive_hand_image,
+	e_object_interactive_before_image,
+	e_object_interactive_after_image,
+	e_receptacle_empty_image = e_north,
+	e_receptacle_full_image
 };
 
 enum e_keybinds
@@ -192,17 +218,9 @@ typedef struct s_object
 	bool		visited;
 	float		dist;
 	long int	time;	//for animation
+	char		symbol_receptacle;
+	bool		is_completed;	//receptacle
 }	t_object;
-
-typedef	struct s_player
-{
-	t_dvector2 	f_real_pos;
-	t_vector2 	mouse_pos;
-	float		angle;
-	t_vector2	dir;
-	int			view;
-	int			speed;
-}	t_player;
 
 typedef struct s_image
 {
@@ -233,12 +251,26 @@ typedef struct s_map
 	t_sprite	sprite[6];
 }	t_map;
 
+typedef	struct s_player
+{
+	t_dvector2	f_real_pos;
+	t_vector2	mouse_pos;
+	float		angle;
+	t_vector2	dir;
+	int			view;
+	float		speed;
+	bool		has_item;
+	t_map		item;
+}	t_player;
+
 typedef struct s_door
 {
 	float		door_percent;
 	int			is_opening_door;
 	long int	time;
 	t_vector2	map_pos;
+	char		symbol_unlock_door;
+	int			nb_receptacle_completed;
 }	t_door;
 
 /**
@@ -269,6 +301,7 @@ typedef struct s_texture
 	int					total;					//all
 	enum e_orientation	orient;					//all
 	char				symbol;					//all
+	char				symbol_receptacle;		//all
 }	t_texture;
 
 typedef struct s_minimap
@@ -312,6 +345,24 @@ typedef struct s_menu
 	t_byte		pressed_button;
 	t_byte		state;
 }	t_menu;
+enum e_status
+{
+	e_go_in_font_of_door = 0,
+	e_open_door,
+	e_walk_through_door,
+	e_end
+};
+
+typedef struct s_end
+{
+	enum e_status	status;
+	t_fvector2		dest;
+	t_fvector2		dir;
+	float			dir_angle;
+	int				dest_angle;
+	enum e_orientation orient;
+	t_image			*end_screen;
+}	t_end;
 
 typedef struct s_game
 {
@@ -341,6 +392,9 @@ typedef struct s_game
 	t_loading		*loading_screen;
 	t_menu			*menu;
 	t_keybind		*keybinds;
+	t_map			*exit;
+	int				total_receptacle;
+	t_end			*end;
 }	t_game;
 
 // ------ Utils------
@@ -354,14 +408,17 @@ void		*ft_memcpy(void *dest, const void *src, size_t n);
 void		free_filename(t_game *game);
 void		free_tab(void **str, int size);
 void		free_map(t_map **map, t_vector2 size);
+void		free_tab_object(t_object **str, int size);
 void		free_str(char **str);
 char		*ft_strjoin(char *str, char *str1);
 char		*ft_strjoin_slash(char *str, char *str1, bool add_slash);
 int			ft_atoi(const char *str);
 int			get_len_texture(t_texture *texture, int len);
 void		ft_bzero(void *s, size_t n);
+bool		is_in_map(t_dvector2 pos, t_map **map, t_vector2 size_map);
 
 // -------Parsing-------
+void		exit_door_no_receptacle(t_map *exit, int nb_receptacle, t_image *tab_image);
 bool		parse_file(char *filename, t_game *game);
 t_sprite	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient);
 t_vector2	get_dimension_maps(int fd, char *line, bool *error);
@@ -372,8 +429,10 @@ bool		find_player(t_game *game);
 bool		check_map(t_game *game);
 bool		ft_read_config(t_animation *animation, int index);
 bool		parse_texture(int fd, t_game *game, int *nb_line, char **rest);
-bool		is_door(char symbol, t_texture *tab, int len);
+bool		is_door(char symbol, t_texture *tab, int len, t_texture *type_door);
 bool		is_object(char symbol, t_texture *tab, int len);
+bool		is_object_interactive(char symbol, t_texture *tab, int len);
+bool		is_receptacle(char symbol, t_texture *tab, int len, char *c);
 bool		fill_object_and_doors(t_game *game);
 
 // -------Print--------
@@ -382,22 +441,23 @@ void		print_map(t_game *game);
 
 // -------Init---------
 bool		init_mlx(t_game *game);
-bool		load_image_tab(t_game *game);
-bool		init_pause_menu(t_game *game);
+bool		load_image_tab(t_game *game, bool *print_error);
 void		init_mouse(t_game *game);
 
 
 // -------Hook---------
 void		key_press_hook(t_keybind key, t_game *game);
 void		key_release_hook(t_keybind key, t_game *game);
+int			exit_hook(int key, t_game *game);
 int			mouse_leave(t_game *game);
 int			mouse_hook(int x,int y, t_game *game);
+int			mouse_stay_in_window_hook(int x, int y, t_game *game);
 int			on_update(t_game *game);
 void		player_move(t_player *player, double delta_time, t_map **map);
 int			mouse_click(int button, int x, int y,t_game *game);
 int			ft_close(t_game *game);
 
-void		check_colliding(t_player *player, t_dvector2 new_pos, t_map **map);
+t_dvector2	check_colliding(t_player *player, t_dvector2 new_pos, t_map **map);
 
 // -------Raycasting-----
 t_ray		get_wall_hit(t_dvector2 fpos, t_map **map, float angle);
@@ -439,11 +499,12 @@ t_dvector2	door_hit_hor_sw(t_dvector2 hit, float step, float door_angle, float p
 t_dvector2	door_hit_ver_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
 t_dvector2	door_hit_hor_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
 float		get_texture_door(t_ray ray);
+void	end_step_door_open(long time, t_map *map_cell, t_map **map, t_end *end);
 void		update_doors(t_map **doors, int	nb_doors, long time, t_map **map);
 void		open_door(t_game *game);
 
 
-t_ray		get_object_hit(t_launch_ray object, t_game *game, t_dvector2 begin, float angle);
+t_ray		get_object_hit(t_launch_ray object, t_map **map, t_dvector2 begin, float angle);
 void		draw_objects(t_game *game);
 // float		get_dist(t_dvector2 fpos, t_dvector2 wall);
 
@@ -466,6 +527,19 @@ const char	*get_key_str(t_keybind key);
 void		menu_mouse_click(int button, int x, int y, t_game *game);
 void		menu_key_hook(t_keybind key, t_game *game);
 void		set_pause_menu_mode(t_game *game);
+bool		init_pause_menu(t_game *game);
+
+// ------ Object interactive -----
+void		take_object_click(t_game *game, t_player *player, t_map **map);
+void		take_object(t_player *player, t_map *cell_map);
+void		drop_object(t_player *player, t_map **map, t_map *exit, t_game *game);
+t_object	*find_empty_object(t_game *game);
+void		draw_hand_item(t_game *game, t_player *player);
+
+// ----------END ------------
+bool		init_end_screen(t_game *game);
+void		end_of_the_game(t_game *game, enum e_orientation orient);
+t_ray		get_wall_hit_end(t_dvector2 fpos, t_map **map, float angle, enum e_status status);
 
 // unsigned int	dark_with_dist(int color, float dark_quantity);
 

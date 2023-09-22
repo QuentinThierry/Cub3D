@@ -5,7 +5,7 @@ ADD :
 - [X] objects
 - [X] max view distance
 - [ ] sounds (ambiance music)
-- [ ] exit + enigmes
+- [X] exit + enigmes
 - [ ] random events (lightning, planks cracks, little girl)
 - [ ] menu settings
 
@@ -34,17 +34,44 @@ FIX :
 <!-- - animation for object -->
 <!-- - open doors and instantly turn around would not open the door for player -->
 <!-- - collision vibration when hit object -->
+<!-- - si la duree des animation est de 0ms ?? -->
+<!-- - on est dans le mur quand on ferme une porte de trop pres -->
 - protect text draw outside of the screen
 - file structure for bonus and mandatory
+- white space at the end of a texture printf error because file not found
 
 Minimap : 
 <!-- - if screen is too small, do not draw minimap -->
 <!-- - leaks -->
 
 Door :
-- show when a door is open
+<!-- - show when a door is open -->
 <!-- - open with clic of the mouse -->
 <!-- - texture door only print the half two time -->
 <!-- - opti door open -->
 <!-- - door parsing -->
 <!-- - doors on side of map -->
+- time for door usefull ?? for animation or door open when do I need to update it ???
+
+Objet interactif :
+<!-- - take objet on walk -->
+<!-- -- take objet with click -->
+<!-- -- change image printf if object wall to after -->
+<!-- - draw image hand -->
+<!-- - drop objet ->draw objet alone on the floor ->become object none wall -->
+<!-- - check receptacle if correct change image for receptacle completed -->
+<!-- - increase door exit loading bar -->
+<!-- - bug for calcutating the distance to take on click or drop the object -->
+<!-- - propect only one exit door -->
+<!-- - fix can't take object on our case -->
+<!-- - no random texture for the exit at the beginning and no animation -->
+<!-- - if 0 receptacle door is lock PROBLEM -->
+
+Exit door :
+<!-- - desactive the mouv of the player -->
+<!-- - stop the player -->
+<!-- - mouv the player behind to door on the center of the cell with view angle on the door -->
+<!-- - anim the door open with light -->
+<!-- - walk under the door -->
+<!-- - the end screen -->
+

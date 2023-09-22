@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/22 14:22:33 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/22 14:36:47 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,17 @@ int	on_update(t_game *game)
 		clock_gettime(CLOCK_REALTIME, &last_time);
 	clock_gettime(CLOCK_REALTIME, &time);
 	game->time = time_to_long(&time);
+	if ((game->map[(int)game->player->f_real_pos.y][(int)game->player->f_real_pos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
+		take_object(game->player, &game->map[(int)game->player->f_real_pos.y][(int)game->player->f_real_pos.x]);
+	player_move(game->player, game->delta_time, game->map);
 	if (game->player->angle + game->player->angle >= 360)
 		game->player->angle = game->player->angle - 360;
 	if (game->player->angle + game->player->angle < 0)
 		game->player->angle = game->player->angle + 360;
-	player_move(game->player, game->delta_time, game->map);
 	update_doors(game->door_array, game->nb_doors, game->time, game->map);
 	raycasting(game);
+	if (game->player->has_item == true)
+		draw_hand_item(game, game->player);
 	zoom_hook_handle(game->minimap, game->delta_time);
 	draw_minimap(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
@@ -52,6 +56,7 @@ int	on_update(t_game *game)
 int main(int argc, char **argv)
 {
 	t_game	game;
+	bool	error;
 
 	game = (t_game){0};
 	if (argc != 2)
@@ -64,8 +69,8 @@ int main(int argc, char **argv)
 	if (game.filename == NULL)
 		return (perror("Error"), 1);
 	game.dist_tab = ft_calloc(WIN_X, sizeof(float));
-	if (game.filename == NULL)
-		return (free(game.filename), perror("Error"), 1);
+	if (game.dist_tab == NULL)
+		return (perror("Error"), 1);
 	if (!parse_file(argv[1], &game))
 		return (1);
 	if (!check_map(&game))
@@ -74,8 +79,14 @@ int main(int argc, char **argv)
 		return (perror("Error"), ft_close(&game), 1);
 	if (!loading_screen(&game))
 		return (perror("Error"), ft_close(&game), 1);
-	if (!load_image_tab(&game))
+	if (!init_end_screen(&game))
 		return (perror("Error"), ft_close(&game), 1);
+	if (!load_image_tab(&game, &error))
+	{
+		if (error == true)
+			perror("Error");
+		return (ft_close(&game), 1);
+	}
 	free_filename(&game);
 	free_loading_screen(&game);
 	game.constants[0] = (WIN_X / 2.) / tan((FOV / 2.) * TO_RADIAN);
@@ -85,14 +96,16 @@ int main(int argc, char **argv)
 		return (perror("Error"), ft_close(&game), 1);
 	if (!init_pause_menu(&game))
 		return (perror("Error"), ft_close(&game), 1);
+	exit_door_no_receptacle(game.exit, game.total_receptacle, game.tab_images);
+	init_minimap(&game);
 	init_mouse(&game);
-	// mlx_do_key_autorepeatoff(game.mlx_ptr);
+	mlx_do_key_autorepeatoff(game.mlx_ptr);
 	mlx_hook(game.win, 2, (1L << 0), (void *)key_press_hook, &game);
 	mlx_hook(game.win, 3, (1L << 1), (void *)key_release_hook, &game);
 	mlx_hook(game.win, 17, (1L << 8), ft_close, &game);
-	mlx_hook(game.win, 6, (1L << 6) | (1L << 2) , mouse_hook, &game);
+	mlx_hook(game.win, 6, (1L << 6) , mouse_hook, &game);
 	mlx_hook(game.win, 8, (1L << 5), mouse_leave, &game);
-	mlx_mouse_hook(game.win, mouse_click, &game);
+	mlx_hook(game.win, 4, (1L<< 2), mouse_click, &game);
 	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	sleep(1);
 	mlx_loop(game.mlx_ptr);

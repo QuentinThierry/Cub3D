@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wall_hit.c                                         :+:      :+:    :+:   */
+/*   wall_hit_end.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/19 19:29:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/20 16:10:44 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
-
+t_dvector2	end_door_hit_hor_se(t_dvector2 hit, float step, float door_angle,
+						float player_angle);
+t_dvector2	end_door_hit_hor_sw(t_dvector2 hit, float step, float door_angle,
+						float player_angle);
+t_dvector2	end_door_hit_ver_sw(t_dvector2 hit, float step, float door_angle,
+						float player_angle);
+t_dvector2	end_door_hit_ver_nw(t_dvector2 hit, float step, float door_angle,
+						float player_angle);
 // xy (1, 1)
-static t_ray	_get_wall_hit_se(t_dvector2 fpos,
-								t_map **map, float angle) // change game to game->time ?
+static t_ray	_get_wall_hit_se_end(t_dvector2 fpos,
+								t_map **map, float angle, enum e_status status)
 {
 	t_fvector2	step;
 	t_dvector2	comp;
@@ -42,6 +49,8 @@ static t_ray	_get_wall_hit_se(t_dvector2 fpos,
 						, (float)((t_door *)map[(int)(comp.y)][map_pos.x].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_west});
+					else if (status == e_open_door && comp.y + step.y / 2 < (int)comp.y + 1)
+						return ((t_ray){{map_pos.x + 0.5, comp.y + step.y / 2}, e_end_screen});
 				}
 				else
 					return ((t_ray){{map_pos.x, comp.y}, e_west});
@@ -57,10 +66,12 @@ static t_ray	_get_wall_hit_se(t_dvector2 fpos,
 			{
 				if ((map[map_pos.y][(int)(comp.x)].type & DOOR) == DOOR)
 				{
-					door = door_hit_hor_se((t_dvector2){comp.x, map_pos.y}, step.x
+					door = end_door_hit_hor_se((t_dvector2){comp.x, map_pos.y}, step.x
 						, (float)((t_door *)map[map_pos.y][(int)comp.x].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_north});
+					else if (status == e_open_door && comp.x + step.x / 2. < (int)comp.x + 1)
+						return ((t_ray){{comp.x + step.x / 2., map_pos.y + .5}, e_end_screen});
 				}
 				else
 					return ((t_ray){{comp.x, map_pos.y}, e_north});
@@ -72,8 +83,8 @@ static t_ray	_get_wall_hit_se(t_dvector2 fpos,
 }
 
 // xy (1, -1)
-static t_ray	_get_wall_hit_ne(t_dvector2 fpos,
-								t_map **map, float angle)
+static t_ray	_get_wall_hit_ne_end(t_dvector2 fpos,
+								t_map **map, float angle, enum e_status status)
 {
 	t_fvector2	step;
 	t_dvector2	comp;
@@ -101,6 +112,8 @@ static t_ray	_get_wall_hit_ne(t_dvector2 fpos,
 						, (float)((t_door *)map[(int)(comp.y)][map_pos.x].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_west});
+					else if (status == e_open_door && comp.y + step.y / 2 > (int)comp.y)
+						return ((t_ray){{map_pos.x + .5, comp.y + step.y / 2}, e_end_screen});
 				}
 				else
 					return ((t_ray){{map_pos.x, comp.y}, e_west});
@@ -120,6 +133,8 @@ static t_ray	_get_wall_hit_ne(t_dvector2 fpos,
 						, (float)((t_door *)map[map_pos.y - 1][(int)comp.x].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_south});
+					else if (status == e_open_door && comp.x + step.x / 2 < (int)comp.x + 1)
+						return ((t_ray){{comp.x + step.x / 2, map_pos.y - .5}, e_end_screen});
 				}
 				else
 					return ((t_ray){{comp.x, map_pos.y}, e_south});
@@ -132,8 +147,8 @@ static t_ray	_get_wall_hit_ne(t_dvector2 fpos,
 }
 
 // xy (-1, 1)
-static t_ray	_get_wall_hit_sw(t_dvector2 fpos,
-								t_map **map, float angle)
+static t_ray	_get_wall_hit_sw_end(t_dvector2 fpos,
+								t_map **map, float angle, enum e_status status)
 {
 	t_fvector2	step;
 	t_dvector2	comp;
@@ -157,10 +172,12 @@ static t_ray	_get_wall_hit_sw(t_dvector2 fpos,
 			{
 				if ((map[(int)(comp.y)][map_pos.x - 1].type & DOOR) == DOOR)
 				{
-					door = door_hit_ver_sw((t_dvector2){map_pos.x, comp.y}, step.y
+					door = end_door_hit_ver_sw((t_dvector2){map_pos.x, comp.y}, step.y
 						, (float)((t_door *)map[(int)(comp.y)][map_pos.x - 1].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_east});
+					else if (status == e_open_door && comp.y + step.y / 2 <= (int)comp.y + 1)
+						return ((t_ray){{map_pos.x - .5, comp.y + step.y / 2}, e_end_screen});
 				}
 				else
 					return ((t_ray){{map_pos.x, comp.y}, e_east});
@@ -176,10 +193,12 @@ static t_ray	_get_wall_hit_sw(t_dvector2 fpos,
 			{
 				if ((map[map_pos.y][(int)(comp.x)].type & DOOR) == DOOR)
 				{
-					door = door_hit_hor_sw((t_dvector2){comp.x, map_pos.y}, step.x
+					door = end_door_hit_hor_sw((t_dvector2){comp.x, map_pos.y}, step.x
 						, (float)((t_door *)map[map_pos.y][(int)comp.x].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_north});
+					else if (status == e_open_door && comp.x + step.x / 2. >= (int)comp.x)
+						return ((t_ray){{comp.x + step.x / 2, map_pos.y + .5}, e_end_screen});
 				}
 				else
 					return ((t_ray){{comp.x, map_pos.y}, e_north});
@@ -191,8 +210,8 @@ static t_ray	_get_wall_hit_sw(t_dvector2 fpos,
 }
 
 // xy (-1, -1)
-static t_ray	_get_wall_hit_nw(t_dvector2 fpos,
-								t_map **map, float angle)
+static t_ray	_get_wall_hit_nw_end(t_dvector2 fpos,
+								t_map **map, float angle, enum e_status status)
 {
 	t_fvector2	step;
 	t_dvector2	comp;
@@ -217,10 +236,12 @@ static t_ray	_get_wall_hit_nw(t_dvector2 fpos,
 			{
 				if ((map[(int)(comp.y)][map_pos.x - 1].type & DOOR) == DOOR)
 				{
-					door = door_hit_ver_nw((t_dvector2){map_pos.x, comp.y}, step.y
+					door = end_door_hit_ver_nw((t_dvector2){map_pos.x, comp.y}, step.y
 						, (float)((t_door *)map[(int)(comp.y)][map_pos.x - 1].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_east});
+					else if (status == e_open_door && comp.y + step.y / 2 >= (int)comp.y)
+						return ((t_ray){{map_pos.x - .5, comp.y + step.y / 2}, e_end_screen});
 				}
 				else
 					return ((t_ray){{map_pos.x, comp.y}, e_east});
@@ -240,6 +261,8 @@ static t_ray	_get_wall_hit_nw(t_dvector2 fpos,
 						, (float)((t_door *)map[map_pos.y - 1][(int)comp.x].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_south});
+					else if (status == e_open_door && comp.x + step.x / 2 > (int)comp.x)
+						return ((t_ray){{comp.x + step.x / 2, map_pos.y - .5}, e_end_screen});
 				}
 				else
 					return ((t_ray){{comp.x, map_pos.y}, e_south});
@@ -250,7 +273,7 @@ static t_ray	_get_wall_hit_nw(t_dvector2 fpos,
 	}
 }
 
-t_ray	get_wall_hit(t_dvector2 fpos, t_map **map, float angle)
+t_ray	get_wall_hit_end(t_dvector2 fpos, t_map **map, float angle, enum e_status status)
 {
 	t_vector2	sign;
 
@@ -258,11 +281,11 @@ t_ray	get_wall_hit(t_dvector2 fpos, t_map **map, float angle)
 		((t_object *)map[(int)fpos.y][(int)fpos.x].arg)->visited = true;
 	sign = get_sign(angle);
 	if (sign.x == 1 && sign.y == 1)
-		return (_get_wall_hit_se(fpos, map, angle));
+		return (_get_wall_hit_se_end(fpos, map, angle, status));
 	else if (sign.x == 1 && sign.y == -1)
-		return (_get_wall_hit_ne(fpos, map, angle));
+		return (_get_wall_hit_ne_end(fpos, map, angle, status));
 	else if (sign.x == -1 && sign.y == 1)
-		return (_get_wall_hit_sw(fpos, map, angle));
+		return (_get_wall_hit_sw_end(fpos, map, angle, status));
 	else
-		return (_get_wall_hit_nw(fpos, map, angle));
+		return (_get_wall_hit_nw_end(fpos, map, angle, status));
 }

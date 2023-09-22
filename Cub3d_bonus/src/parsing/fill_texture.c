@@ -6,13 +6,13 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 16:34:46 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/08 19:07:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/15 20:08:46 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-static t_sprite	random_texture(t_texture *texture_tab, int index)
+static t_sprite	random_texture(t_texture *texture_tab, int index, bool is_random)
 {
 	int	nb;
 	int	size;
@@ -32,13 +32,18 @@ static t_sprite	random_texture(t_texture *texture_tab, int index)
 		return ((t_sprite){size, -1, 0});
 	nb = texture_tab[index].nb_file + texture_tab[index].nb_animation;
 	random = 0;
-	if (nb > 1)
-		random = rand() % nb;
-	if (random < texture_tab[index].nb_file)
-		return ((t_sprite){size + random, -1, 0});
-	size += random;
-	random = rand() % (texture_tab[index].animation->nb_sprite - 1);
-	return ((t_sprite){size, random, 0});
+	if (is_random == true)
+	{
+		if (nb > 1)
+			random = rand() % nb;
+		if (random < texture_tab[index].nb_file)
+			return ((t_sprite){size + random, -1, 0});
+		size += random;
+		random = rand() % (texture_tab[index].animation->nb_sprite - 1);
+		return ((t_sprite){size, random, 0});
+	}
+	return ((t_sprite){size, 0, 0});
+	
 }
 
 /**
@@ -64,10 +69,12 @@ t_sprite	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation o
 	{
 		if (tab[i].symbol == symbol)
 		{
-			if (tab[i].orient == orient)
-				return (random_texture(tab, i));
+			if (tab[i].orient == orient && orient == e_exit)
+				return (random_texture(tab, i, false));
+			else if (tab[i].orient == orient)
+				return (random_texture(tab, i, true));
 			else if ((orient == e_north || orient == e_east || orient == e_south
-					|| orient == e_west) && (tab[i].orient == e_wall || tab[i].orient == e_door))
+					|| orient == e_west) && tab[i].orient == e_wall)
 				symbol_ref = i;
 		}
 		if (tab[i].orient == orient && (orient == e_north || orient == e_east || orient == e_south
@@ -80,5 +87,5 @@ t_sprite	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation o
 	}
 	if (symbol_ref == -1)
 		symbol_ref = orient_ref;
-	return (random_texture(tab, symbol_ref));
+	return (random_texture(tab, symbol_ref, true));
 }

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/21 19:49:13 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/22 14:32:49 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,14 @@ void	key_press_hook(t_keybind key, t_game *game)
 	}
 }
 
+
+int	exit_hook(int key, t_game *game)
+{
+	if (key == 65307) // esc
+		ft_close(game);
+	return (0);
+}
+
 void	key_release_hook(t_keybind key, t_game *game)
 {
 	if (key == game->keybinds[e_key_left_look])
@@ -94,22 +102,33 @@ void	player_move(t_player *player, double delta_time, t_map **map)
 		move_value.x += cosf(player->angle * TO_RADIAN) * player->speed * player->dir.x;
 		move_value.y += sinf(player->angle * TO_RADIAN) * player->speed * player->dir.x;
 	}
-	if (player->dir.x != 0 || player->dir.y != 0)
+	if (player->dir.x != 0 && player->dir.y != 0)
 	{
 		move_value.x *= 0.707;
 		move_value.y *= 0.707;
 	}
 	if (player->dir.x != 0 || player->dir.y != 0)
 	{
-		move_value.x = player->f_real_pos.x + move_value.x * delta_time / 100;
-		move_value.y = player->f_real_pos.y + move_value.y * delta_time / 100;
-		check_colliding(player, move_value, map);
+		move_value.x = player->f_real_pos.x + move_value.x * delta_time;
+		move_value.y = player->f_real_pos.y + move_value.y * delta_time;
+		player->f_real_pos = check_colliding(player, move_value, map);
 	}
 }
 
 int	mouse_hook(int x, int y, t_game *game)
 {
 	game->player->angle -= (double)(game->player->mouse_pos.x - x) / ROTATION_MOUSE;
+	if (x != WIN_X / 2 || y != WIN_Y / 2)
+	{
+		mlx_mouse_move(game->mlx_ptr, game->win, WIN_X / 2, WIN_Y / 2);
+		game->player->mouse_pos.x = WIN_X / 2;
+		game->player->mouse_pos.y = WIN_Y / 2;
+	}
+	return (0);
+}
+
+int	mouse_stay_in_window_hook(int x, int y, t_game *game)
+{
 	if (x != WIN_X / 2 || y != WIN_Y / 2)
 	{
 		mlx_mouse_move(game->mlx_ptr, game->win, WIN_X / 2, WIN_Y / 2);
@@ -129,7 +148,14 @@ int	mouse_leave(t_game *game)
 
 int	mouse_click(int button, int x, int y,t_game *game)
 {
+	(void)x;
+	(void)y;
 	if (button == 1)
-		open_door(game);
+	{
+		if (game->player->has_item == true)
+			drop_object(game->player, game->map, game->exit, game);
+		else
+			take_object_click(game, game->player, game->map);
+	}
 	return (0);
 }

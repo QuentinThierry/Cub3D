@@ -6,14 +6,14 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/09/21 18:44:46 by qthierry         ###   ########.fr        #
+#    Updated: 2023/09/22 14:29:49 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3d_bonus
 
 CC = gcc
-CFLAGS = -g -Wall -Wextra #-O3#-fsanitize=address#-Werror
+CFLAGS = -g -Wall -Wextra#-O3#-fsanitize=address#-Werror
 LIBS = -L$(MINILIBX_DIR) -lmlx -lX11 -lXext -lm  -L$(RAUDIO_SRC) -lraudio
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR) -I$(RAUDIO_HEADERS)
 
@@ -74,9 +74,11 @@ RAYCASTING = raycasting/
 SRC_RAYCASTING = raycasting.c \
 			collisions.c \
 			wall_hit.c \
+			wall_hit_end.c \
 			door.c \
 			floor.c \
 			object.c \
+			object_interactive.c \
 			ray_object.c
 
 MINIMAP = minimap/
@@ -109,6 +111,8 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			$(addprefix $(MENU), $(SRC_MENU)) \
 			print.c \
 			loading_screen.c \
+			end_of_the_game.c \
+			exit_door.c \
 			main.c
 
 #			$(addprefix $(SOUND), $(SRC_SOUND)) \

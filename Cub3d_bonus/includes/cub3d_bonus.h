@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/22 14:37:08 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/22 21:03:12 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,11 @@
 # include <pthread.h>
 # include <signal.h>
 # include <float.h>
+# include <X11/keysym.h>
 
 # include "minilibx-linux/mlx.h"
 # include "get_next_line.h"
-
 # include "raudio/src/raudio.h"
-
-// define for XK keybinds handle only in latin qwerty
-#include <X11/keysym.h>
-
 
 # define WIN_X 1280 //1920 - 918 - 1280
 # define WIN_Y 720 //1080 - 468 - 720
@@ -291,6 +287,8 @@ typedef struct s_animation
 	int		time_animation;
 }	t_animation;
 
+char		*ft_strdup(const char *s);
+
 typedef struct s_texture
 {
 	char				*filename;				//file
@@ -337,14 +335,18 @@ typedef struct s_menu
 {
 	t_image		*image;
 	t_image		*background_image;
-	t_image		*button_image;
-	t_image		*button_hovered_image;
+	t_image		*exit_option_image;
 	int			*h_rgb_blur_buffer;
 	int			*v_rgb_blur_buffer;
 	t_button	buttons[NB_OPTIONS_BUTTONS];
-	t_byte		pressed_button;
+	t_button	exit_option_button;
+	t_button	play_button;
+	t_button	option_button;
+	t_button	quit_button;
+	t_byte		pressed_option_button;
 	t_byte		state;
 }	t_menu;
+
 enum e_status
 {
 	e_go_in_font_of_door = 0,
@@ -398,7 +400,6 @@ typedef struct s_game
 }	t_game;
 
 // ------ Utils------
-char		*ft_strdup(const char *s);
 int			ft_strlen(const char *str);
 int			ft_strcmp(const char *s1, const char *s2);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -499,14 +500,13 @@ t_dvector2	door_hit_hor_sw(t_dvector2 hit, float step, float door_angle, float p
 t_dvector2	door_hit_ver_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
 t_dvector2	door_hit_hor_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
 float		get_texture_door(t_ray ray);
-void	end_step_door_open(long time, t_map *map_cell, t_map **map, t_end *end);
+void		end_step_door_open(long time, t_map *map_cell, t_map **map, t_end *end);
 void		update_doors(t_map **doors, int	nb_doors, long time, t_map **map);
 void		open_door(t_game *game);
 
 
 t_ray		get_object_hit(t_launch_ray object, t_map **map, t_dvector2 begin, float angle);
 void		draw_objects(t_game *game);
-// float		get_dist(t_dvector2 fpos, t_dvector2 wall);
 
 long int	time_to_long(struct timespec *time);
 
@@ -521,13 +521,25 @@ void		draw_image_with_transparence(char *dest_addr, t_image *src
 				, t_vector2 begin_src, t_vector2 size_src);
 
 // ------- menu ----------
-void		draw_menu(t_game *game);
 int			menu_loop_hook(t_game *game);
 const char	*get_key_str(t_keybind key);
-void		menu_mouse_click(int button, int x, int y, t_game *game);
+void		menu_mouse_hook(int button, int x, int y, t_game *game);
 void		menu_key_hook(t_keybind key, t_game *game);
 void		set_pause_menu_mode(t_game *game);
 bool		init_pause_menu(t_game *game);
+void		draw_text_in_button(t_game *game, t_image *image, t_button *button);
+void		draw_button(t_button *button, t_image *image);
+void		apply_menu_dark_filter(t_image *menu_image);
+void		draw_option_menu(t_game *game);
+void		resume_menu(t_game *game, t_menu *menu);
+void		draw_pause_menu(t_game *game);
+void		draw_centered_text_at_y(t_game *game, t_image *image, int y, const char *text);
+void		check_mouse_is_in_button(t_game *game,
+				t_button *button, int x, int y);
+
+// ------ Blur ------------
+void		blur_image(t_image *dest, t_image *src,
+				int *h_rgb_blur_buffer, int *v_rgb_blur_buffer);
 
 // ------ Object interactive -----
 void		take_object_click(t_game *game, t_player *player, t_map **map);

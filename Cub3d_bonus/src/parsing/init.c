@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/22 14:30:18 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/22 18:40:19 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,8 +221,8 @@ bool	init_keybinds(t_game *game)
 bool	init_pause_menu(t_game *game)
 {
 	int		i;
-	t_image	*button;
-	t_image	*button_hovered;
+	t_image	*button_image;
+	t_image	*button_hovered_image;
 
 	if (!init_keybinds(game))
 		return (false);
@@ -241,18 +241,21 @@ bool	init_pause_menu(t_game *game)
 	game->menu->background_image = btmlx_new_image(game->mlx_ptr, (t_vector2){WIN_X, WIN_Y});
 	if (!game->menu->background_image)
 		return (false);
-	game->menu->button_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button.xpm", (t_vector2){200, 80});
-	if (!game->menu->button_image)
+	button_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button.xpm", (t_vector2){200, 80});
+	if (!button_image)
 		return (false);
-	game->menu->button_hovered_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button_hovered.xpm", (t_vector2){200, 80});
-	if (!game->menu->button_hovered_image)
+	button_hovered_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button_hovered.xpm", (t_vector2){200, 80});
+	if (!button_hovered_image)
+		return (false);
+	game->menu->exit_option_button.base_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button_exit_option.xpm", (t_vector2){100, 40});
+	if (!game->menu->exit_option_button.base_image)
 		return (false);
 	i = 0;
 	while (i < NB_OPTIONS_BUTTONS)
 	{
-		game->menu->buttons[i].base_image = game->menu->button_image;
+		game->menu->buttons[i].base_image = button_image;
 		game->menu->buttons[i].size = (t_vector2){200, 80};
-		game->menu->buttons[i].hovered_image = game->menu->button_hovered_image;
+		game->menu->buttons[i].hovered_image = button_hovered_image;
 		game->menu->buttons[i].text = get_key_str(game->keybinds[i]);
 		if (i < NB_OPTIONS_BUTTONS / 2 + (NB_OPTIONS_BUTTONS & 1))
 		{
@@ -268,5 +271,33 @@ bool	init_pause_menu(t_game *game)
 		}
 		i++;
 	}
+	game->menu->exit_option_button.hovered_image = button_hovered_image;
+	game->menu->exit_option_button.pos = (t_vector2){10, 10};
+	game->menu->exit_option_button.size = (t_vector2){100, 40};
+	game->menu->exit_option_button.text = "";
+
+	game->menu->play_button.base_image = button_image;
+	game->menu->play_button.hovered_image = button_hovered_image;
+	game->menu->play_button.size = (t_vector2){200, 80};
+	game->menu->play_button.pos =
+		(t_vector2){WIN_X / 2 - game->menu->play_button.size.x / 2,
+		WIN_Y / 3 - game->menu->play_button.size.y / 2};
+	game->menu->play_button.text = "RESUME";
+
+	game->menu->option_button.base_image = button_image;
+	game->menu->option_button.hovered_image = button_hovered_image;
+	game->menu->option_button.size = (t_vector2){200, 80};
+	game->menu->option_button.pos =
+		(t_vector2){WIN_X / 2 - game->menu->option_button.size.x / 2,
+		WIN_Y / 2 - game->menu->option_button.size.y / 2};
+	game->menu->option_button.text = "OPTIONS";
+
+	game->menu->quit_button.base_image = button_image;
+	game->menu->quit_button.hovered_image = button_hovered_image;
+	game->menu->quit_button.size = (t_vector2){200, 80};
+	game->menu->quit_button.pos =
+		(t_vector2){WIN_X / 2 - game->menu->quit_button.size.x / 2,
+		WIN_Y / 3 * 2 - game->menu->quit_button.size.y / 2};
+	game->menu->quit_button.text = "QUIT GAME";
 	return (true);
 }

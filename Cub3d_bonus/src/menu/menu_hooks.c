@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:16:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/23 19:59:13 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/23 22:09:23 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	choose_key_hook(t_keybind key, t_game *game)
 	i = 0;
 	while (i < NB_OPTIONS_BUTTONS)
 	{
-		if (key == game->keybinds[i] && i != game->menu->pressed_option_button)
+		if (key == game->keybinds[i] && i != game->menu->option_menu.pressed_button)
 		{
 			draw_centered_text_at_y(game, game->menu->image,
 				WIN_Y / 2 + 100, "Key is already used.");
@@ -30,14 +30,14 @@ void	choose_key_hook(t_keybind key, t_game *game)
 		}
 		i++;
 	}
-	game->menu->option_menu.buttons[game->menu->pressed_option_button].text
+	game->menu->option_menu.buttons[game->menu->option_menu.pressed_button].text
 		= get_key_str(key);
 	game->menu->state = OPTION_MENU;
-	game->keybinds[game->menu->pressed_option_button] = key;
+	game->keybinds[game->menu->option_menu.pressed_button] = key;
 	mlx_hook(game->win, 2, (1L << 0), (void *)menu_key_hook, game);
 }
 
-void	menu_mouse_hook(int mouse_button, int x, int y, t_game *game)
+void	menu_mouse_down_hook(int mouse_button, int x, int y, t_game *game)
 {
 	t_option_menu	*opt_menu;
 	t_pause_menu	*pause_menu;
@@ -71,7 +71,7 @@ void	menu_mouse_hook(int mouse_button, int x, int y, t_game *game)
 				&& y > button->pos.y && y < button->pos.y + button->size.y)
 			{
 				game->menu->state = CHOOSING_KEY_MENU;
-				game->menu->pressed_option_button = i;
+				opt_menu->pressed_button = i;
 				apply_menu_dark_filter(game->menu->image);
 				draw_centered_text_at_y(game, game->menu->image, WIN_Y / 2. - game->size_letter.y / 2,
 					KEY_TEXT_CHANGE);
@@ -85,8 +85,32 @@ void	menu_mouse_hook(int mouse_button, int x, int y, t_game *game)
 			+ exit_button->size.x && y > exit_button->pos.y
 			&& y < exit_button->pos.y + exit_button->size.y)
 			resume_menu(game, game->menu);
+		if (x > opt_menu->slider_fov.pos.x && x < opt_menu->slider_fov.pos.x
+			+ opt_menu->slider_fov.size.x && y > opt_menu->slider_fov.pos.y
+			&& y < opt_menu->slider_fov.pos.y + opt_menu->slider_fov.size.y)
+			opt_menu->pressed_slider_ref = &opt_menu->slider_fov;
 	}
+}
 
+void	menu_mouse_up_hook(int mouse_button, int x, int y, t_game *game)
+{
+	void			*ref;
+	t_option_menu	*opt_menu;
+
+	printf("up\n");
+	fflush(stdout);
+
+	if (mouse_button != 1)
+		return ;
+	if (game->menu->state == OPTION_MENU)
+	{
+		opt_menu = &game->menu->option_menu;
+		ref = opt_menu->pressed_slider_ref;
+		if (ref == &opt_menu->slider_fov)
+		{
+			opt_menu->pressed_slider_ref = NULL;
+		}
+	}
 }
 
 void	menu_key_hook(t_keybind key, t_game *game)

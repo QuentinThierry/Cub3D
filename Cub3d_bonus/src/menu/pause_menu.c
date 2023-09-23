@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/23 19:59:24 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/23 22:23:12 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,12 +134,13 @@ void	draw_pause_menu(t_game *game, t_pause_menu *pause_menu)
 void	set_pause_menu_mode(t_game *game)
 {
 	mlx_hook(game->win, 2, (1L << 0), (void *)menu_key_hook, game);
-	mlx_hook(game->win, 3, (1L << 1), NULL, game);
-	mlx_mouse_hook(game->win, (void *)menu_mouse_hook, game);
+	mlx_hook(game->win, 3, (1L << 1), NULL, NULL);
+	mlx_hook(game->win, 4, (1L << 2), (void *)menu_mouse_down_hook, game);
+	mlx_hook(game->win, 5, (1L << 3), (void *)menu_mouse_up_hook, game);
+	mlx_hook(game->win, 8, (1L << 5), NULL, NULL);
+	mlx_hook(game->win, 6, (1L << 6) | (1L << 2) , NULL, NULL);
 	mlx_mouse_show(game->mlx_ptr, game->win);
-	mlx_hook(game->win, 6, (1L << 6) | (1L << 2) , NULL, game);
 	mlx_loop_hook(game->mlx_ptr, menu_loop_hook, game);
-	mlx_hook(game->win, 8, (1L << 5), NULL, game);
 	blur_image(game->menu->background_image,
 		game->image, game->menu->h_rgb_blur_buffer,
 		game->menu->v_rgb_blur_buffer);

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/23 19:59:00 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/23 22:11:52 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -331,6 +331,17 @@ typedef struct s_button
 	bool		is_hovered;
 }	t_button;
 
+typedef struct t_slider
+{
+	t_vector2	pos;
+	t_vector2	size;
+	float		percent;
+	float		max_percent;
+	float		min_percent;
+	t_image		*hor_image;
+	t_image		*vert_image;
+}	t_slider;
+
 typedef struct s_pause_menu
 {
 	t_button	play_button;
@@ -342,6 +353,9 @@ typedef struct s_option_menu
 {
 	t_button	buttons[NB_OPTIONS_BUTTONS];
 	t_button	exit_opt_button;
+	t_slider	slider_fov;
+	t_slider	*pressed_slider_ref;
+	t_byte		pressed_button;
 }	t_option_menu;
 
 typedef struct s_menu
@@ -352,7 +366,6 @@ typedef struct s_menu
 	t_byte			state;
 	int				*h_rgb_blur_buffer;
 	int				*v_rgb_blur_buffer;
-	t_byte			pressed_option_button;
 	t_pause_menu	pause_menu;
 	t_option_menu	option_menu;
 }	t_menu;
@@ -532,7 +545,8 @@ void		draw_image_with_transparence(char *dest_addr, t_image *src
 // ------- menu ----------
 int			menu_loop_hook(t_game *game);
 const char	*get_key_str(t_keybind key);
-void		menu_mouse_hook(int button, int x, int y, t_game *game);
+void		menu_mouse_down_hook(int button, int x, int y, t_game *game);
+void		menu_mouse_up_hook(int mouse_button, int x, int y, t_game *game);
 void		menu_key_hook(t_keybind key, t_game *game);
 void		set_pause_menu_mode(t_game *game);
 bool		init_pause_menu(t_game *game);

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:10:09 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/23 19:57:01 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/23 22:11:52 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,39 @@ void	apply_menu_dark_filter(t_image *menu_image)
 	}
 }
 
+__attribute__((always_inline))
+static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, int color)
+{
+	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
+}
+
+void	draw_slider(t_slider *slider, t_image *image)
+{
+	register int	y;
+	int				x_vert;
+
+	y = 0;
+	while (y < slider->hor_image->size.y)
+	{
+		ft_memcpy(image->addr + slider->pos.x * 4 +
+			(y + slider->pos.y + (slider->size.y - slider->hor_image->size.y) / 2) * image->size_line,
+			slider->hor_image->addr + y * slider->hor_image->size_line,
+			slider->hor_image->size_line);
+		y++;
+	}
+	x_vert = slider->pos.x + (slider->percent * slider->hor_image->size.x);
+	y = 0;
+	while (y < slider->vert_image->size.y)
+	{
+		ft_memcpy(image->addr + x_vert * 4 +
+			(y + slider->pos.y)
+			* image->size_line,
+			slider->vert_image->addr + y * slider->vert_image->size_line,
+			slider->vert_image->size_line);
+		y++;
+	}
+}
+
 void	draw_option_menu(t_game *game, t_option_menu *opt_menu)
 {
 	int	i;
@@ -107,6 +140,17 @@ void	draw_option_menu(t_game *game, t_option_menu *opt_menu)
 	int	y_mouse;
 
 	mlx_mouse_get_pos(game->mlx_ptr, game->win, &x_mouse, &y_mouse);
+	if (opt_menu->pressed_slider_ref)
+	{
+		opt_menu->slider_fov.percent =
+			(float)(x_mouse - opt_menu->slider_fov.pos.x
+			- opt_menu->slider_fov.vert_image->size.x / 2.)
+			/ opt_menu->slider_fov.size.x;
+		if (opt_menu->slider_fov.percent < opt_menu->slider_fov.min_percent)
+			opt_menu->slider_fov.percent = opt_menu->slider_fov.min_percent;
+		else if (opt_menu->slider_fov.percent > opt_menu->slider_fov.max_percent)
+			opt_menu->slider_fov.percent = opt_menu->slider_fov.max_percent;
+	}
 	i = 0;
 	while (i < NB_OPTIONS_BUTTONS)
 	{
@@ -116,7 +160,7 @@ void	draw_option_menu(t_game *game, t_option_menu *opt_menu)
 		draw_text_in_button(game, game->menu->image, &opt_menu->buttons[i]);
 		i++;
 	}
-	
-	draw_button(&opt_menu->exit_opt_button, game->image);
+	draw_button(&opt_menu->exit_opt_button, game->menu->image);
+	draw_slider(&opt_menu->slider_fov, game->menu->image);
 }
 

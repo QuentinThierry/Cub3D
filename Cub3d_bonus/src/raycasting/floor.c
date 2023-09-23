@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/22 14:30:30 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/23 19:40:29 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,26 @@ static inline unsigned int	dark_with_dist(unsigned int color, float dark_quantit
 }
 
 __attribute__((always_inline))
-static inline void	draw_pixel_line(t_game *game, t_dvector2 map_point, t_fvector2 step_dir, int y_screen)
+static inline bool	is_in_map(t_dvector2 pos, t_map **map, t_vector2 size_map)
 {
-	int				i;
+	if (pos.x < size_map.x && pos.x >= 0 && pos.y < size_map.y && pos.y >= 0
+		&& map[(int)pos.y][(int)pos.x].symbol != ' ')
+		return (true);
+	return (false);
+}
+
+__attribute__((always_inline))
+static inline void	draw_pixel_line(t_game *game, register t_dvector2 map_point, register t_fvector2 step_dir, int y_screen)
+{
+	register int				i;
 	const t_image	*game_image = game->image;
 	t_vector2		last_map_pos;
 	t_image			*image;
 	t_image			*image2;
-	float			dark_quantity;
-	int				color_ceiling;
-	int				color_floor;
-	float			dist;
+	register float	dark_quantity;
+	register int	color_ceiling;
+	register int	color_floor;
+	register float	dist;
 
 	i = 0;
 	last_map_pos.x = -(int)map_point.x;

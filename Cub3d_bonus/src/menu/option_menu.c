@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:10:09 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/22 20:58:28 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/23 19:57:01 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	apply_menu_dark_filter(t_image *menu_image)
 	}
 }
 
-void	draw_option_menu(t_game *game)
+void	draw_option_menu(t_game *game, t_option_menu *opt_menu)
 {
 	int	i;
 	int	x_mouse;
@@ -110,12 +110,13 @@ void	draw_option_menu(t_game *game)
 	i = 0;
 	while (i < NB_OPTIONS_BUTTONS)
 	{
-		check_mouse_is_in_button(game,
-			&game->menu->buttons[i], x_mouse, y_mouse);
-		draw_button(&game->menu->buttons[i], game->menu->image);
-		draw_text_in_button(game, game->menu->image, &game->menu->buttons[i]);
+		check_mouse_is_in_button(
+			&opt_menu->buttons[i], x_mouse, y_mouse);
+		draw_button(&opt_menu->buttons[i], game->menu->image);
+		draw_text_in_button(game, game->menu->image, &opt_menu->buttons[i]);
 		i++;
 	}
-	draw_button(&game->menu->exit_option_button, game->menu->image);
+	
+	draw_button(&opt_menu->exit_opt_button, game->image);
 }
 

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/23 19:40:35 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/23 19:59:00 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -331,20 +331,30 @@ typedef struct s_button
 	bool		is_hovered;
 }	t_button;
 
-typedef struct s_menu
+typedef struct s_pause_menu
 {
-	t_image		*image;
-	t_image		*background_image;
-	t_image		*exit_option_image;
-	int			*h_rgb_blur_buffer;
-	int			*v_rgb_blur_buffer;
-	t_button	buttons[NB_OPTIONS_BUTTONS];
-	t_button	exit_option_button;
 	t_button	play_button;
 	t_button	option_button;
 	t_button	quit_button;
-	t_byte		pressed_option_button;
-	t_byte		state;
+}	t_pause_menu;
+
+typedef struct s_option_menu
+{
+	t_button	buttons[NB_OPTIONS_BUTTONS];
+	t_button	exit_opt_button;
+}	t_option_menu;
+
+typedef struct s_menu
+{
+	t_image			*image;
+	t_image			*background_image;
+	t_image			*exit_option_image;
+	t_byte			state;
+	int				*h_rgb_blur_buffer;
+	int				*v_rgb_blur_buffer;
+	t_byte			pressed_option_button;
+	t_pause_menu	pause_menu;
+	t_option_menu	option_menu;
 }	t_menu;
 
 enum e_status
@@ -529,12 +539,11 @@ bool		init_pause_menu(t_game *game);
 void		draw_text_in_button(t_game *game, t_image *image, t_button *button);
 void		draw_button(t_button *button, t_image *image);
 void		apply_menu_dark_filter(t_image *menu_image);
-void		draw_option_menu(t_game *game);
+void		draw_option_menu(t_game *game, t_option_menu *opt_menu);
+void		draw_pause_menu(t_game *game, t_pause_menu *pause_menu);
 void		resume_menu(t_game *game, t_menu *menu);
-void		draw_pause_menu(t_game *game);
 void		draw_centered_text_at_y(t_game *game, t_image *image, int y, const char *text);
-void		check_mouse_is_in_button(t_game *game,
-				t_button *button, int x, int y);
+void		check_mouse_is_in_button(t_button *button, int x, int y);
 
 // ------ Blur ------------
 void		blur_image(t_image *dest, t_image *src,

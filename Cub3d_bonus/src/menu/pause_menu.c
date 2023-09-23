@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/22 20:56:17 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/23 19:59:24 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,31 +106,29 @@ void	resume_menu(t_game *game, t_menu *menu)
 		menu->state = PAUSE_MENU;
 }
 
-void	check_mouse_is_in_button(t_game *game,
-			t_button *button, int x, int y)
+void	check_mouse_is_in_button(t_button *button, int x, int y)
 {
-	button->is_hovered =
-		(x > button->pos.x
+	button->is_hovered = (x > button->pos.x
 		&& x < button->pos.x + button->size.x
 		&& y > button->pos.y
 		&& y < button->pos.y + button->size.y);
 }
 
-void	draw_pause_menu(t_game *game)
+void	draw_pause_menu(t_game *game, t_pause_menu *pause_menu)
 {
 	int	x_mouse;
 	int	y_mouse;
 
 	mlx_mouse_get_pos(game->mlx_ptr, game->win, &x_mouse, &y_mouse);
-	check_mouse_is_in_button(game, &game->menu->play_button, x_mouse, y_mouse);
-	draw_button(&game->menu->play_button, game->menu->image);
-	draw_text_in_button(game, game->menu->image, &game->menu->play_button);
-	check_mouse_is_in_button(game, &game->menu->option_button, x_mouse, y_mouse);
-	draw_button(&game->menu->option_button, game->menu->image);
-	draw_text_in_button(game, game->menu->image, &game->menu->option_button);
-	check_mouse_is_in_button(game, &game->menu->quit_button, x_mouse, y_mouse);
-	draw_button(&game->menu->quit_button, game->menu->image);
-	draw_text_in_button(game, game->menu->image, &game->menu->quit_button);
+	check_mouse_is_in_button(&pause_menu->play_button, x_mouse, y_mouse);
+	draw_button(&pause_menu->play_button, game->menu->image);
+	draw_text_in_button(game, game->menu->image, &pause_menu->play_button);
+	check_mouse_is_in_button(&pause_menu->option_button, x_mouse, y_mouse);
+	draw_button(&pause_menu->option_button, game->menu->image);
+	draw_text_in_button(game, game->menu->image, &pause_menu->option_button);
+	check_mouse_is_in_button(&pause_menu->quit_button, x_mouse, y_mouse);
+	draw_button(&pause_menu->quit_button, game->menu->image);
+	draw_text_in_button(game, game->menu->image, &pause_menu->quit_button);
 }
 
 void	set_pause_menu_mode(t_game *game)

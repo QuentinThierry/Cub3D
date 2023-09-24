@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/09/22 14:29:49 by qthierry         ###   ########.fr        #
+#    Updated: 2023/09/24 14:00:30 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -95,6 +95,9 @@ SRC_HOOKS = key_hook.c \
 
 MENU = menu/
 SRC_MENU = \
+			blur.c \
+			menu_hooks.c \
+			option_menu.c \
 			pause_menu.c
 
 AUDIO = audio/

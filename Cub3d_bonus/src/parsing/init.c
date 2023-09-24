@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/23 22:17:33 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/24 15:11:07 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,6 +281,8 @@ bool	init_pause_menu(t_game *game)
 	opt_menu->exit_opt_button.text = "";
 
 
+
+
 	opt_menu->slider_fov.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_hor.xpm",(t_vector2){100, 20});
 	if (!opt_menu->slider_fov.hor_image)
 		return (false);
@@ -289,10 +291,8 @@ bool	init_pause_menu(t_game *game)
 		return (false);
 	opt_menu->slider_fov.size = (t_vector2){100, 33};
 	opt_menu->slider_fov.pos = (t_vector2){WIN_X / 2, WIN_Y / 2};
-	opt_menu->slider_fov.min_percent = 
-		-(opt_menu->slider_fov.vert_image->size.x / 2.) /
-		opt_menu->slider_fov.hor_image->size.x;
-	opt_menu->slider_fov.max_percent = 1 + opt_menu->slider_fov.min_percent;
+
+
 
 	pause_menu->play_button.base_image = button_image;
 	pause_menu->play_button.hovered_image = button_hovered_image;

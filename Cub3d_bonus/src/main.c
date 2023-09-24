@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/23 22:04:55 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/24 14:17:39 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 		return (printf("Error : Invalid number of arguments\n"), 1);
 	if (WIN_X < 100 || WIN_Y < 100)
 		return (printf("Error : Invalid window size\n"), 1);
-	game.fov = FOV;
+	game.fov = DFL_FOV;
 	game.nb_file = 6;
 	game.filename = ft_calloc(game.nb_file, sizeof(t_texture));
 	if (game.filename == NULL)
@@ -89,9 +89,9 @@ int main(int argc, char **argv)
 	}
 	free_filename(&game);
 	free_loading_screen(&game);
-	game.constants[0] = (WIN_X / 2.) / tan((FOV / 2.) * TO_RADIAN);
-	game.constants[1] = tanf((FOV / 2.0) * TO_RADIAN);
-	game.constants[2] = cos((FOV / 2.0) * TO_RADIAN);
+	game.constants[0] = (WIN_X / 2.) / tan((DFL_FOV / 2.) * TO_RADIAN);
+	game.constants[1] = tanf((DFL_FOV / 2.0) * TO_RADIAN);
+	game.constants[2] = cos((DFL_FOV / 2.0) * TO_RADIAN);
 	if (!init_minimap(&game))
 		return (perror("Error"), ft_close(&game), 1);
 	if (!init_pause_menu(&game))
@@ -102,6 +102,7 @@ int main(int argc, char **argv)
 	mlx_do_key_autorepeatoff(game.mlx_ptr);
 	mlx_hook(game.win, 2, (1L << 0), (void *)key_press_hook, &game);
 	mlx_hook(game.win, 3, (1L << 1), (void *)key_release_hook, &game);
+	mlx_hook(game.win, 5, (1L << 3), NULL, &game);
 	mlx_hook(game.win, 17, (1L << 8), ft_close, &game);
 	mlx_hook(game.win, 6, (1L << 6) , mouse_hook, &game);
 	mlx_hook(game.win, 8, (1L << 5), mouse_leave, &game);

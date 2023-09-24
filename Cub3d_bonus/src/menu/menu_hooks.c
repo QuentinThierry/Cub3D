@@ -6,12 +6,13 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:16:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/23 22:09:23 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/24 15:12:01 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
+static const double	max_fps_frequence = 1. / MAX_MENU_FPS;
 
 void	choose_key_hook(t_keybind key, t_game *game)
 {
@@ -97,9 +98,6 @@ void	menu_mouse_up_hook(int mouse_button, int x, int y, t_game *game)
 	void			*ref;
 	t_option_menu	*opt_menu;
 
-	printf("up\n");
-	fflush(stdout);
-
 	if (mouse_button != 1)
 		return ;
 	if (game->menu->state == OPTION_MENU)
@@ -107,9 +105,7 @@ void	menu_mouse_up_hook(int mouse_button, int x, int y, t_game *game)
 		opt_menu = &game->menu->option_menu;
 		ref = opt_menu->pressed_slider_ref;
 		if (ref == &opt_menu->slider_fov)
-		{
 			opt_menu->pressed_slider_ref = NULL;
-		}
 	}
 }
 
@@ -125,17 +121,12 @@ int	menu_loop_hook(t_game *game)
 {
 	static struct timespec	last_time = {0};
 	struct timespec			cur_time;
-	struct timespec			time;
 	long					fps;
+	register double			delay;
+	t_menu					*menu;
 
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
-	clock_gettime(CLOCK_REALTIME, &time);
-	//////////
-
-	
-	t_menu	*menu;
-	
 	menu = game->menu;
 	if (menu->state != CHOOSING_KEY_MENU)
 		ft_memcpy(game->menu->image->addr,
@@ -145,18 +136,15 @@ int	menu_loop_hook(t_game *game)
 	if (menu->state == OPTION_MENU)
 		draw_option_menu(game, &menu->option_menu);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, menu->image->img, 0, 0);
-
-
-	//////////
 	clock_gettime(CLOCK_REALTIME, &cur_time);
-	game->delta_time = (cur_time.tv_sec - last_time.tv_sec
+	delay = (cur_time.tv_sec - last_time.tv_sec
 			+ (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
-	fps = (long)(1.0 / game->delta_time);
-	tot_fps += fps;
-	nb_fps++;
-	if ((nb_fps % 500) == 0)
-		printf("fps : %ld\n", fps);
+	while (delay <= max_fps_frequence - 0.000001)
+	{
+		clock_gettime(CLOCK_REALTIME, &cur_time);
+		delay = (cur_time.tv_sec - last_time.tv_sec
+			+ (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
+	}
 	last_time = cur_time;
-	
 	return (0);
 }

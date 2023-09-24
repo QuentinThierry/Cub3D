@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/23 22:11:52 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/24 15:11:10 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@
 # define WIN_X 1280 //1920 - 918 - 1280
 # define WIN_Y 720 //1080 - 468 - 720
 # define CHUNK_SIZE 100
-# define FOV 100
+# define DFL_FOV 100 // check min is less than min and diff > 0
+# define MIN_FOV 70
+# define MAX_FOV 130
 # define SPEED 1
 # define SPRINT_BOOST 1
 # define ROTATION_KEYBOARD 125
@@ -47,6 +49,7 @@
 # define DIST_MAX_DARK 15.
 # define DIST_MIN_DARK 3.
 # define DIST_TO_WALL 0.0999
+# define MAX_MENU_FPS 120
 
 // MINIMAP
 # define PATH_MMAP_PLAYER "../assets/minimap_player.xpm"
@@ -336,8 +339,6 @@ typedef struct t_slider
 	t_vector2	pos;
 	t_vector2	size;
 	float		percent;
-	float		max_percent;
-	float		min_percent;
 	t_image		*hor_image;
 	t_image		*vert_image;
 }	t_slider;

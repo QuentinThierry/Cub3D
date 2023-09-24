@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:10:09 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/23 22:11:52 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/24 14:44:06 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,22 +109,23 @@ static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, in
 void	draw_slider(t_slider *slider, t_image *image)
 {
 	register int	y;
-	int				x_vert;
+	int				x_pos;
 
+	x_pos = slider->vert_image->size.x / 2;
 	y = 0;
 	while (y < slider->hor_image->size.y)
 	{
-		ft_memcpy(image->addr + slider->pos.x * 4 +
+		ft_memcpy(image->addr + (slider->pos.x + x_pos) * 4 +
 			(y + slider->pos.y + (slider->size.y - slider->hor_image->size.y) / 2) * image->size_line,
 			slider->hor_image->addr + y * slider->hor_image->size_line,
 			slider->hor_image->size_line);
 		y++;
 	}
-	x_vert = slider->pos.x + (slider->percent * slider->hor_image->size.x);
+	x_pos = slider->pos.x + (slider->percent * slider->hor_image->size.x);
 	y = 0;
 	while (y < slider->vert_image->size.y)
 	{
-		ft_memcpy(image->addr + x_vert * 4 +
+		ft_memcpy(image->addr + x_pos * 4 +
 			(y + slider->pos.y)
 			* image->size_line,
 			slider->vert_image->addr + y * slider->vert_image->size_line,
@@ -146,10 +147,10 @@ void	draw_option_menu(t_game *game, t_option_menu *opt_menu)
 			(float)(x_mouse - opt_menu->slider_fov.pos.x
 			- opt_menu->slider_fov.vert_image->size.x / 2.)
 			/ opt_menu->slider_fov.size.x;
-		if (opt_menu->slider_fov.percent < opt_menu->slider_fov.min_percent)
-			opt_menu->slider_fov.percent = opt_menu->slider_fov.min_percent;
-		else if (opt_menu->slider_fov.percent > opt_menu->slider_fov.max_percent)
-			opt_menu->slider_fov.percent = opt_menu->slider_fov.max_percent;
+		if (opt_menu->slider_fov.percent < 0)
+			opt_menu->slider_fov.percent = 0;
+		else if (opt_menu->slider_fov.percent > 1)
+			opt_menu->slider_fov.percent = 1;
 	}
 	i = 0;
 	while (i < NB_OPTIONS_BUTTONS)

@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/09/20 16:10:25 by jvigny           ###   ########.fr        #
+#    Updated: 2023/09/22 18:46:18 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ RAUDIO = $(RAUDIO_SRC)/libraudio.a
 # - RAUDIO_STANDALONE/SUPPORT_MODULE_RAUDIO: compile raudio without all raylib; 
 # - SUPPORT_FILEFORMAT_WAV: support wav format for raudio
 # - 'TRACELOG(level, ...)': override log print function to remove unwanted logs
-RAUDIO_DEFINE = -D RAUDIO_STANDALONE -D SUPPORT_MODULE_RAUDIO -D SUPPORT_FILEFORMAT_WAV -D 'TRACELOG(level, ...)'
+RAUDIO_DEFINE = -D RAUDIO_STANDALONE -D SUPPORT_MODULE_RAUDIO -D SUPPORT_FILEFORMAT_MP3 -D SUPPORT_FILEFORMAT_WAV -D 'TRACELOG(level, ...)'
 #----------------------------------------------
 
 GNL = get_next_line/
@@ -67,7 +67,8 @@ SRC_PARSING = check_map.c \
 			fill_texture.c \
 			init.c \
 			parsing.c \
-			parse_texture.c
+			parse_texture.c \
+			parse_music.c
 
 RAYCASTING = raycasting/
 SRC_RAYCASTING = raycasting.c \
@@ -103,6 +104,7 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			$(addprefix $(MINIMAP), $(SRC_MINIMAP)) \
 			$(addprefix $(DRAW), $(SRC_DRAW)) \
 			$(addprefix $(HOOKS), $(SRC_HOOKS)) \
+			$(addprefix $(AUDIO), $(SRC_AUDIO)) \
 			print.c \
 			loading_screen.c \
 			end_of_the_game.c \
@@ -152,6 +154,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)$(UTILS)
 	@mkdir -p $(OBJ_DIR)$(MINIMAP)
 	@mkdir -p $(OBJ_DIR)$(PARSING)
+	@mkdir -p $(OBJ_DIR)$(AUDIO)
 
 $(MINILIBX):
 	@echo "${GREEN}~-~-~-~-~ COMPILING MINILIBX ~-~-~-~-~${RESET_COLOR}"

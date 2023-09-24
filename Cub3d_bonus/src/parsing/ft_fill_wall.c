@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 20:40:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/22 16:57:43 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			map[i].sprite[e_west] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_west);
 			map[i].sprite[e_floor].index = -1;
 			map[i].sprite[e_ceiling].index = -1;
+			map[i].music = get_music(game->file_music, game->nb_music, line[i]);
+			map[i].narrator = get_narrator(game->file_music, game->nb_music, line[i]);
 			if (is_door(line[i], game->filename, game->nb_file, &type_door))
 			{
 				map[i].arg = ft_calloc(1, sizeof(t_door));
@@ -128,7 +130,6 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 				}
 				if (type_door.orient == e_door_lock)
 				{
-					printf("coucou %c\n", type_door.symbol_receptacle);
 					map[i].type |= DOOR_LOCK;
 					map[i].type |= RECEPTACLE;
 					((t_door *)map[i].arg)->symbol_unlock_door = type_door.symbol_receptacle;
@@ -182,8 +183,10 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 		}
 		else
 		{
-			if (error == true)
+			if (error == true && !is_sound(game->file_music, game->nb_music, line[i]))
 				return (printf("Error : invalid caracter in the map\n"), false);
+			map[i].music = get_music(game->file_music, game->nb_music, line[i]);
+			map[i].narrator = get_narrator(game->file_music, game->nb_music, line[i]);
 			map[i].type = NONE;
 			map[i].sprite[e_north].index = -1;
 			map[i].sprite[e_east].index = -1;

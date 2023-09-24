@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/20 20:39:36 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/24 15:16:53 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,9 @@
 # define END_SCREEN "./assets/end.xpm"
 
 
-#define DIST_TO_WALL 0.0999
+# define DIST_TO_WALL 0.0999
+
+# define BACKGROUND_MUSIC "./assets/sounds/test1.mp3"
 
 
 // t_type for arg
@@ -104,6 +106,8 @@
 # define RECEPTACLE 0b1000000000000
 # define DOOR_LOCK 0b10000000000000
 # define EXIT 0b100000000000000
+# define MUSIC 0b1000000000000000
+# define NARRATOR 0b10000000000000000
 
 extern long tot_fps;
 extern long nb_fps;
@@ -111,6 +115,7 @@ extern long nb_fps;
 typedef u_int32_t	t_pixel32;
 typedef u_int32_t	t_type;
 typedef Music		t_music;
+typedef Sound		t_sound;
 
 enum e_orientation
 {
@@ -133,6 +138,12 @@ enum e_orientation
 	e_receptacle_empty,
 	e_receptacle_full,
 	e_exit,
+	e_music,
+	e_music_receptacle,
+	e_music_receptacle_complete,
+	e_narrator,
+	e_narrator_receptacle,
+	e_narrator_receptacle_complete,
 	e_end_screen,
 	e_object_image = e_north,
 	e_door_image = e_north,
@@ -143,6 +154,7 @@ enum e_orientation
 	e_receptacle_empty_image = e_north,
 	e_receptacle_full_image
 };
+
 
 typedef struct s_vector2
 {
@@ -185,6 +197,15 @@ typedef struct s_object
 	bool		is_completed;	//receptacle
 }	t_object;
 
+typedef struct s_music_name
+{
+	char				*filename;
+	char				*subtitle;
+	enum e_orientation	orient;
+	char				symbol;
+	t_sound				sound;
+}	t_music_name;
+
 typedef struct s_image
 {
 	void		*img;
@@ -208,10 +229,12 @@ typedef struct s_sprite
 // Use to stock the map
 typedef struct s_map
 {
-	char		symbol;
-	t_type		type;
-	void		*arg;
-	t_sprite	sprite[6];
+	char			symbol;
+	t_type			type;
+	void			*arg;
+	t_sprite		sprite[6];
+	t_music_name	*music;
+	t_music_name	*narrator;
 }	t_map;
 
 typedef	struct s_player
@@ -311,11 +334,13 @@ typedef struct s_game
 	void			*mlx_ptr;
 	void			*win;
 	t_image			*tab_images;
+	int				nb_images;
 	t_image			*font;
 	t_dvector2		size_letter;
-	int				nb_images;
 	t_texture		*filename;
 	int				nb_file;
+	t_music_name	*file_music;
+	int				nb_music;
 	t_map			**map;
 	t_vector2		map_size;
 	t_player		*player;
@@ -353,9 +378,10 @@ char		*ft_strjoin_slash(char *str, char *str1, bool add_slash);
 int			ft_atoi(const char *str);
 int			get_len_texture(t_texture *texture, int len);
 bool		is_in_map(t_dvector2 pos, t_map **map, t_vector2 size_map);
+int			find_next_wsp(char *line , int i);
 
 // -------Parsing-------
-void	exit_door_no_receptacle(t_map *exit, int nb_receptacle, t_image *tab_image);
+void		exit_door_no_receptacle(t_map *exit, int nb_receptacle, t_image *tab_image);
 bool		parse_file(char *filename, t_game *game);
 t_sprite	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient);
 t_vector2	get_dimension_maps(int fd, char *line, bool *error);
@@ -370,11 +396,14 @@ bool		is_door(char symbol, t_texture *tab, int len, t_texture *type_door);
 bool		is_object(char symbol, t_texture *tab, int len);
 bool		is_object_interactive(char symbol, t_texture *tab, int len);
 bool		is_receptacle(char symbol, t_texture *tab, int len, char *c);
+bool		is_sound(t_music_name *filename, int nb_music, char symbol);
 bool		fill_object_and_doors(t_game *game);
+bool		find_music(t_game *game, char *str, enum e_orientation orient, int i);
 
 // -------Print--------
 void		printf_texture(t_game *game);
 void		print_map(t_game *game);
+void		printf_music(t_game *game);
 
 // -------Init---------
 int			init_mlx(t_game *game);
@@ -404,8 +433,8 @@ void		draw_objects(t_game *game);
 
 
 enum e_orientation	get_wall_orientation(t_dvector2 player, t_dvector2 wall);
-t_image			*get_image_wall(t_game	*game, t_ray ray, int *x_door);
-t_image			*get_image_non_wall(t_game *game, t_dvector2 hit, enum e_orientation orient);
+t_image		*get_image_wall(t_game	*game, t_ray ray, int *x_door);
+t_image		*get_image_non_wall(t_game *game, t_dvector2 hit, enum e_orientation orient);
 
 // draw
 void		draw_vert(t_game *game, int x, t_ray ray, double height);
@@ -435,7 +464,7 @@ t_dvector2	door_hit_hor_sw(t_dvector2 hit, float step, float door_angle, float p
 t_dvector2	door_hit_ver_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
 t_dvector2	door_hit_hor_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
 float		get_texture_door(t_ray ray);
-void	end_step_door_open(long time, t_map *map_cell, t_map **map, t_end *end);
+void		end_step_door_open(long time, t_map *map_cell, t_map **map, t_end *end);
 void		update_doors(t_map **doors, int	nb_doors, long time, t_map **map);
 void		open_door(t_game *game);
 
@@ -468,6 +497,12 @@ bool		init_end_screen(t_game *game);
 void		end_of_the_game(t_game *game, enum e_orientation orient);
 t_ray		get_wall_hit_end(t_dvector2 fpos, t_map **map, float angle, enum e_status status);
 
-// unsigned int	dark_with_dist(int color, float dark_quantity);
+// -------- Music ----------
+t_music_name	*get_music(t_music_name *filename, int nb_music, char symbol);
+t_music_name	*get_narrator(t_music_name *filename, int nb_music, char symbol);
+bool			init_audio(t_game *game, t_music_name *music_file, int nb_music);
+void			update_sounds(t_music *music_array);
+void			close_audio(t_game *game, t_music *music_tab
+					, t_music_name *music_file, int nb_music);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 20:38:21 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/22 16:58:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,6 +207,49 @@ bool	is_in_map(t_dvector2 pos, t_map **map, t_vector2 size_map)
 		&& map[(int)pos.y][(int)pos.x].symbol != ' ')
 		return (true);
 	return (false);
+}
+
+bool	is_sound(t_music_name *filename, int nb_music, char symbol)
+{
+	int	i = 0;
+
+	while (i < nb_music)
+	{
+		if (filename[i].symbol == symbol)
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
+t_music_name	*get_music(t_music_name *filename, int nb_music, char symbol)
+{
+	int	i = 0;
+
+	while (i < nb_music)
+	{
+		if (filename[i].symbol == symbol && (filename[i].orient == e_music
+			|| filename[i].orient == e_music_receptacle))
+			// || filename[i].orient == e_music_receptacle_complete))
+			return (&filename[i]);
+		i++;
+	}
+	return (NULL);
+}
+
+t_music_name	*get_narrator(t_music_name *filename, int nb_music, char symbol)
+{
+	int	i = 0;
+
+	while (i < nb_music)
+	{
+		if (filename[i].symbol == symbol && (filename[i].orient == e_narrator
+			|| filename[i].orient == e_narrator_receptacle))
+			// || filename[i].orient == e_narrator_receptacle_complete))
+			return (&filename[i]);
+		i++;
+	}
+	return (NULL);
 }
 
 /**

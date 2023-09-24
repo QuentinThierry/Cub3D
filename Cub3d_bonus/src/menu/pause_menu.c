@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/24 14:45:06 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/24 16:15:55 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	resume_menu(t_game *game, t_menu *menu)
 		game->constants[0] = (WIN_X / 2.) / tan((game->fov / 2.) * TO_RADIAN);
 		game->constants[1] = tanf((game->fov / 2.0) * TO_RADIAN);
 		game->constants[2] = cos((game->fov / 2.0) * TO_RADIAN);
+		SetMasterVolume(game->menu->option_menu.sound_fov.percent);
 		mlx_hook(game->win, 2, (1L << 0), (void *)key_press_hook, game);
 		mlx_hook(game->win, 3, (1L << 1), (void *)key_release_hook, game);
 		mlx_hook(game->win, 5, (1L << 3), NULL, NULL);
@@ -145,9 +146,6 @@ void	set_pause_menu_mode(t_game *game)
 	mlx_hook(game->win, 6, (1L << 6) , NULL, NULL);
 	mlx_mouse_show(game->mlx_ptr, game->win);
 	mlx_loop_hook(game->mlx_ptr, menu_loop_hook, game);
-	game->menu->option_menu.slider_fov.percent =
-		(game->fov - MIN_FOV) / (MAX_FOV - MIN_FOV);
-
 	blur_image(game->menu->background_image,
 		game->image, game->menu->h_rgb_blur_buffer,
 		game->menu->v_rgb_blur_buffer);

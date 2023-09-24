@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/24 15:11:10 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/24 16:17:44 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 # define DFL_FOV 100 // check min is less than min and diff > 0
 # define MIN_FOV 70
 # define MAX_FOV 130
+# define DFL_SOUND 0.5 // check between 0 and 1
 # define SPEED 1
 # define SPRINT_BOOST 1
 # define ROTATION_KEYBOARD 125
@@ -355,6 +356,7 @@ typedef struct s_option_menu
 	t_button	buttons[NB_OPTIONS_BUTTONS];
 	t_button	exit_opt_button;
 	t_slider	slider_fov;
+	t_slider	sound_fov;
 	t_slider	*pressed_slider_ref;
 	t_byte		pressed_button;
 }	t_option_menu;

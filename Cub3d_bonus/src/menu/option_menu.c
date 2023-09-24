@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:10:09 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/24 14:44:06 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/24 15:30:07 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,14 +143,14 @@ void	draw_option_menu(t_game *game, t_option_menu *opt_menu)
 	mlx_mouse_get_pos(game->mlx_ptr, game->win, &x_mouse, &y_mouse);
 	if (opt_menu->pressed_slider_ref)
 	{
-		opt_menu->slider_fov.percent =
-			(float)(x_mouse - opt_menu->slider_fov.pos.x
-			- opt_menu->slider_fov.vert_image->size.x / 2.)
-			/ opt_menu->slider_fov.size.x;
-		if (opt_menu->slider_fov.percent < 0)
-			opt_menu->slider_fov.percent = 0;
-		else if (opt_menu->slider_fov.percent > 1)
-			opt_menu->slider_fov.percent = 1;
+		opt_menu->pressed_slider_ref->percent =
+			(float)(x_mouse - opt_menu->pressed_slider_ref->pos.x
+			- opt_menu->pressed_slider_ref->vert_image->size.x / 2.)
+			/ opt_menu->pressed_slider_ref->size.x;
+		if (opt_menu->pressed_slider_ref->percent < 0)
+			opt_menu->pressed_slider_ref->percent = 0;
+		else if (opt_menu->pressed_slider_ref->percent > 1)
+			opt_menu->pressed_slider_ref->percent = 1;
 	}
 	i = 0;
 	while (i < NB_OPTIONS_BUTTONS)
@@ -163,5 +163,6 @@ void	draw_option_menu(t_game *game, t_option_menu *opt_menu)
 	}
 	draw_button(&opt_menu->exit_opt_button, game->menu->image);
 	draw_slider(&opt_menu->slider_fov, game->menu->image);
+	draw_slider(&opt_menu->sound_fov, game->menu->image);
 }
 

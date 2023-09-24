@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/24 15:11:07 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/24 16:14:48 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,16 +283,26 @@ bool	init_pause_menu(t_game *game)
 
 
 
-	opt_menu->slider_fov.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_hor.xpm",(t_vector2){100, 20});
+	opt_menu->slider_fov.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_hor.xpm", (t_vector2){100, 20});
 	if (!opt_menu->slider_fov.hor_image)
 		return (false);
-	opt_menu->slider_fov.vert_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_vert.xpm",(t_vector2){20, 33});
-	if (!opt_menu->slider_fov.hor_image)
+	opt_menu->slider_fov.vert_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_vert.xpm", (t_vector2){20, 33});
+	if (!opt_menu->slider_fov.vert_image)
 		return (false);
 	opt_menu->slider_fov.size = (t_vector2){100, 33};
 	opt_menu->slider_fov.pos = (t_vector2){WIN_X / 2, WIN_Y / 2};
+	game->menu->option_menu.slider_fov.percent = (float)
+		(DFL_FOV - MIN_FOV) / (MAX_FOV - MIN_FOV);
 
-
+	opt_menu->sound_fov.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_hor.xpm", (t_vector2){100, 20});
+	if (!opt_menu->sound_fov.hor_image)
+		return (false);
+	opt_menu->sound_fov.vert_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_vert.xpm", (t_vector2){20, 33});
+	if (!opt_menu->sound_fov.vert_image)
+		return (false);
+	opt_menu->sound_fov.size = (t_vector2){100, 33};
+	opt_menu->sound_fov.pos = (t_vector2){WIN_X / 2, (WIN_Y / 4) * 3};
+	game->menu->option_menu.sound_fov.percent = DFL_SOUND;
 
 	pause_menu->play_button.base_image = button_image;
 	pause_menu->play_button.hovered_image = button_hovered_image;

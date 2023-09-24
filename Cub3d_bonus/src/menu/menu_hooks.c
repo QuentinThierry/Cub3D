@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:16:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/24 15:12:01 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/24 16:17:40 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	choose_key_hook(t_keybind key, t_game *game)
 		if (key == game->keybinds[i] && i != game->menu->option_menu.pressed_button)
 		{
 			draw_centered_text_at_y(game, game->menu->image,
-				WIN_Y / 2 + 100, "Key is already used.");
+				WIN_Y / 2 + WIN_Y / 12, "Key is already used.");
 			return ;
 		}
 		i++;
@@ -90,22 +90,24 @@ void	menu_mouse_down_hook(int mouse_button, int x, int y, t_game *game)
 			+ opt_menu->slider_fov.size.x && y > opt_menu->slider_fov.pos.y
 			&& y < opt_menu->slider_fov.pos.y + opt_menu->slider_fov.size.y)
 			opt_menu->pressed_slider_ref = &opt_menu->slider_fov;
+		if (x > opt_menu->sound_fov.pos.x && x < opt_menu->sound_fov.pos.x
+			+ opt_menu->sound_fov.size.x && y > opt_menu->sound_fov.pos.y
+			&& y < opt_menu->sound_fov.pos.y + opt_menu->sound_fov.size.y)
+			opt_menu->pressed_slider_ref = &opt_menu->sound_fov;
 	}
 }
 
 void	menu_mouse_up_hook(int mouse_button, int x, int y, t_game *game)
 {
 	void			*ref;
-	t_option_menu	*opt_menu;
 
+	(void)x;
+	(void)y;
 	if (mouse_button != 1)
 		return ;
 	if (game->menu->state == OPTION_MENU)
 	{
-		opt_menu = &game->menu->option_menu;
-		ref = opt_menu->pressed_slider_ref;
-		if (ref == &opt_menu->slider_fov)
-			opt_menu->pressed_slider_ref = NULL;
+		game->menu->option_menu.pressed_slider_ref = NULL;
 	}
 }
 
@@ -121,7 +123,6 @@ int	menu_loop_hook(t_game *game)
 {
 	static struct timespec	last_time = {0};
 	struct timespec			cur_time;
-	long					fps;
 	register double			delay;
 	t_menu					*menu;
 
@@ -135,6 +136,7 @@ int	menu_loop_hook(t_game *game)
 		draw_pause_menu(game, &menu->pause_menu);
 	if (menu->state == OPTION_MENU)
 		draw_option_menu(game, &menu->option_menu);
+	SetMasterVolume(game->menu->option_menu.sound_fov.percent);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, menu->image->img, 0, 0);
 	clock_gettime(CLOCK_REALTIME, &cur_time);
 	delay = (cur_time.tv_sec - last_time.tv_sec

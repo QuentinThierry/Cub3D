@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/24 16:17:44 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/24 16:36:15 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -417,6 +417,7 @@ typedef struct s_game
 	t_map			**door_array;
 	t_music			*music_array;
 	float			*dist_tab;
+	float			*height_tab;
 	t_loading		*loading_screen;
 	t_menu			*menu;
 	t_keybind		*keybinds;

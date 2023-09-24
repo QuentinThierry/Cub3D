@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/24 14:17:39 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/24 16:36:00 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,9 @@ int main(int argc, char **argv)
 		return (perror("Error"), 1);
 	game.dist_tab = ft_calloc(WIN_X, sizeof(float));
 	if (game.dist_tab == NULL)
+		return (perror("Error"), 1);
+	game.height_tab = ft_calloc(WIN_X, sizeof(float));
+	if (game.height_tab == NULL)
 		return (perror("Error"), 1);
 	if (!parse_file(argv[1], &game))
 		return (1);

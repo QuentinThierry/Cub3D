@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/18 14:51:38 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/24 16:36:41 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	raycasting(t_game *game)
 	t_dvector2	fpos;
 	float		dist; 
 	
-	draw_ceiling(game);
 	fpos = game->player->f_real_pos;
 	x = -WIN_X / 2;
 	while (x < WIN_X / 2)
@@ -59,8 +58,10 @@ void	raycasting(t_game *game)
 		if (dist == 0)
 			dist = 0.01;
 		height = 1 / dist * game->constants[0];
+		game->height_tab[x + WIN_X / 2] = height / 2;
 		draw_vert(game, x + WIN_X / 2, ray, height);
 		x++;
 	}
+	draw_ceiling(game);
 	draw_objects(game);
 }

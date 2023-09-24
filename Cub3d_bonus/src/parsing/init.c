@@ -6,11 +6,30 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/24 16:14:48 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/24 20:09:05 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
+
+static const t_vector2	g_button_size =
+{
+	WIN_X / 8,
+	WIN_Y / 10
+};
+
+static const int g_button_pos_left_offset_x =
+	WIN_X / 30 + (WIN_X / 8) * 2;
+
+static const int	inter_button_y =
+	(WIN_Y - (WIN_Y / 10) * NB_OPTIONS_BUTTONS / 2) / (NB_OPTIONS_BUTTONS * 2);
+
+static const char	*g_description_opt_button[NB_OPTIONS_BUTTONS] =
+	{"Forward", "Left", "Backward", "Right", "Look Left", "Look Right",
+	"Pause", "Map Zoom", "Map Unzoom", "Door Interact", "Sprint"};
+
+static const char	*g_description_slider_button[NB_SLIDERS] =
+	{"FOV", "SOUND"};
 
 bool	init_mlx(t_game *game)
 {
@@ -243,10 +262,10 @@ bool	init_pause_menu(t_game *game)
 	game->menu->background_image = btmlx_new_image(game->mlx_ptr, (t_vector2){WIN_X, WIN_Y});
 	if (!game->menu->background_image)
 		return (false);
-	button_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button.xpm", (t_vector2){200, 80});
+	button_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button.xpm", g_button_size);
 	if (!button_image)
 		return (false);
-	button_hovered_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button_hovered.xpm", (t_vector2){200, 80});
+	button_hovered_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button_hovered.xpm", g_button_size);
 	if (!button_hovered_image)
 		return (false);
 	opt_menu = &game->menu->option_menu;
@@ -258,19 +277,20 @@ bool	init_pause_menu(t_game *game)
 	while (i < NB_OPTIONS_BUTTONS)
 	{
 		opt_menu->buttons[i].base_image = button_image;
-		opt_menu->buttons[i].size = (t_vector2){200, 80};
+		opt_menu->buttons[i].size = g_button_size;
 		opt_menu->buttons[i].hovered_image = button_hovered_image;
 		opt_menu->buttons[i].text = get_key_str(game->keybinds[i]);
+		opt_menu->buttons[i].linked_text = g_description_opt_button[i];
 		if (i < NB_OPTIONS_BUTTONS / 2 + (NB_OPTIONS_BUTTONS & 1))
 		{
 			opt_menu->buttons[i].pos =
-				(t_vector2){200, i * opt_menu->buttons[i].size.y + 20 * (i + 1)};
+				(t_vector2){g_button_pos_left_offset_x, i * g_button_size.y + inter_button_y * (i + 1)};
 		}
 		else
 		{
 			opt_menu->buttons[i].pos =
-				(t_vector2){WIN_X / 2 + 200, (i - NB_OPTIONS_BUTTONS / 2 - (NB_OPTIONS_BUTTONS & 1))
-				* opt_menu->buttons[i].size.y + 20
+				(t_vector2){WIN_X / 2 + g_button_pos_left_offset_x, (i - NB_OPTIONS_BUTTONS / 2 - (NB_OPTIONS_BUTTONS & 1))
+				* g_button_size.y + inter_button_y
 				* (i - NB_OPTIONS_BUTTONS / 2 + ((NB_OPTIONS_BUTTONS & 1) == 0))};
 		}
 		i++;
@@ -290,9 +310,10 @@ bool	init_pause_menu(t_game *game)
 	if (!opt_menu->slider_fov.vert_image)
 		return (false);
 	opt_menu->slider_fov.size = (t_vector2){100, 33};
-	opt_menu->slider_fov.pos = (t_vector2){WIN_X / 2, WIN_Y / 2};
+	opt_menu->slider_fov.pos = (t_vector2){WIN_X / 2, WIN_Y / 3 * 2};
 	game->menu->option_menu.slider_fov.percent = (float)
 		(DFL_FOV - MIN_FOV) / (MAX_FOV - MIN_FOV);
+	game->menu->option_menu.slider_fov.min_max_value = (t_vector2){MIN_FOV, MAX_FOV};
 
 	opt_menu->sound_fov.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_hor.xpm", (t_vector2){100, 20});
 	if (!opt_menu->sound_fov.hor_image)
@@ -303,6 +324,7 @@ bool	init_pause_menu(t_game *game)
 	opt_menu->sound_fov.size = (t_vector2){100, 33};
 	opt_menu->sound_fov.pos = (t_vector2){WIN_X / 2, (WIN_Y / 4) * 3};
 	game->menu->option_menu.sound_fov.percent = DFL_SOUND;
+	game->menu->option_menu.sound_fov.min_max_value = (t_vector2){0, 100};
 
 	pause_menu->play_button.base_image = button_image;
 	pause_menu->play_button.hovered_image = button_hovered_image;

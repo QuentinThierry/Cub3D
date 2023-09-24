@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:16:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/24 16:17:40 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/24 20:23:29 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ void	menu_mouse_down_hook(int mouse_button, int x, int y, t_game *game)
 	pause_menu = &game->menu->pause_menu;
 	if (game->menu->state == PAUSE_MENU)
 	{
-		if (x > pause_menu->play_button.pos.x && x < pause_menu->play_button.pos.x + pause_menu->play_button.size.x
-				&& y > pause_menu->play_button.pos.y && y < pause_menu->play_button.pos.y + pause_menu->play_button.size.y)
-			resume_menu(game, game->menu);
 		if (x > pause_menu->option_button.pos.x && x < pause_menu->option_button.pos.x + pause_menu->option_button.size.x
 				&& y > pause_menu->option_button.pos.y && y < pause_menu->option_button.pos.y + pause_menu->option_button.size.y)
 			game->menu->state = OPTION_MENU;
-		if (x > pause_menu->quit_button.pos.x && x < pause_menu->quit_button.pos.x + pause_menu->quit_button.size.x
+		else if (x > pause_menu->play_button.pos.x && x < pause_menu->play_button.pos.x + pause_menu->play_button.size.x
+				&& y > pause_menu->play_button.pos.y && y < pause_menu->play_button.pos.y + pause_menu->play_button.size.y)
+			resume_menu(game, game->menu);
+		else if (x > pause_menu->quit_button.pos.x && x < pause_menu->quit_button.pos.x + pause_menu->quit_button.size.x
 				&& y > pause_menu->quit_button.pos.y && y < pause_menu->quit_button.pos.y + pause_menu->quit_button.size.y)
 		ft_close(game);
 	}

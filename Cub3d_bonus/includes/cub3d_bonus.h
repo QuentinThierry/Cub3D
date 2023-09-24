@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/24 16:36:15 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/24 20:27:04 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@
 # define SIZE_BOX_BLUR 9
 # define DARK_PERCENT_OPTION 0.5
 # define NB_OPTIONS_BUTTONS 11
+# define NB_SLIDERS 11
 # define KEY_TEXT_CHANGE "Press any key"
 
 // KEYBINDS
@@ -332,6 +333,7 @@ typedef struct s_button
 	t_vector2	pos;
 	t_vector2	size;
 	const char	*text;
+	const char	*linked_text;
 	bool		is_hovered;
 }	t_button;
 
@@ -339,9 +341,11 @@ typedef struct t_slider
 {
 	t_vector2	pos;
 	t_vector2	size;
-	float		percent;
+	t_vector2	min_max_value;
 	t_image		*hor_image;
 	t_image		*vert_image;
+	const char	*linked_text;
+	float		percent;
 }	t_slider;
 
 typedef struct s_pause_menu
@@ -407,7 +411,7 @@ typedef struct s_game
 	t_vector2		map_size;
 	t_player		*player;
 	t_minimap		*minimap;
-	float			fov;
+	int				fov;
 	double			delta_time;
 	long int		time;
 	float			constants[3];
@@ -562,6 +566,7 @@ void		draw_pause_menu(t_game *game, t_pause_menu *pause_menu);
 void		resume_menu(t_game *game, t_menu *menu);
 void		draw_centered_text_at_y(t_game *game, t_image *image, int y, const char *text);
 void		check_mouse_is_in_button(t_button *button, int x, int y);
+void		draw_text_at(t_game *game, t_image *image, t_vector2 pos, const char *text);
 
 // ------ Blur ------------
 void		blur_image(t_image *dest, t_image *src,

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/24 16:15:55 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/24 19:46:24 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,30 @@ void	draw_centered_text_at_y(t_game *game, t_image *image, int y, const char *te
 	if (ft_strlen(text) * game->size_letter.x > image->size.x)
 		pos.x = 0;
 	pos.y = y;
+	i = 0;
+	while (text[i])
+	{
+		if ((i + 1) * game->size_letter.x + pos.x > image->size.x)
+			return ;
+		if (text[i] == ' ')
+		{
+			i++;
+			continue ;
+		}
+		draw_image_with_transparence(image->addr + (pos.y * image->size_line + (pos.x
+			+ (int)(game->size_letter.x * i)) * 4), game->font,
+		(t_vector2){(game->size_letter.x * (text[i] - '!')), 0},
+		(t_vector2){game->size_letter.x, game->size_letter.y});
+		i++;
+	}
+}
+
+void	draw_text_at(t_game *game, t_image *image, t_vector2 pos, const char *text)
+{
+	int			i;
+
+	if (game->size_letter.y + pos.y > image->size.y)
+		return ;
 	i = 0;
 	while (text[i])
 	{

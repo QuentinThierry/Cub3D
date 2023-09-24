@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/24 15:16:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/24 19:14:55 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,13 @@
 # include <float.h>
 
 # include "minilibx-linux/mlx.h"
+# include "minilibx-linux/mlx_int.h"
 # include "get_next_line.h"
 
 # include "raudio/src/raudio.h"
 
 # include <X11/X.h>
+# include <X11/Xlib.h>
 
 # define WIN_X 1280 //1920 - 918 - 1280
 # define WIN_Y 720 //1080 - 468 - 720
@@ -108,6 +110,8 @@
 # define EXIT 0b100000000000000
 # define MUSIC 0b1000000000000000
 # define NARRATOR 0b10000000000000000
+# define IS_PLAYING_MUSIC 0b100000000000000000
+# define IS_PLAYING_NARRATOR 0b1000000000000000000
 
 extern long tot_fps;
 extern long nb_fps;
@@ -115,7 +119,6 @@ extern long nb_fps;
 typedef u_int32_t	t_pixel32;
 typedef u_int32_t	t_type;
 typedef Music		t_music;
-typedef Sound		t_sound;
 
 enum e_orientation
 {
@@ -203,8 +206,8 @@ typedef struct s_music_name
 	char				*subtitle;
 	enum e_orientation	orient;
 	char				symbol;
-	t_sound				sound;
 }	t_music_name;
+
 
 typedef struct s_image
 {
@@ -233,9 +236,16 @@ typedef struct s_map
 	t_type			type;
 	void			*arg;
 	t_sprite		sprite[6];
-	t_music_name	*music;
+	char			*music;
 	t_music_name	*narrator;
 }	t_map;
+
+typedef struct s_music_game
+{
+	t_music		music;
+	t_map		*map_cell;
+	bool		is_playing;
+}	t_music_game;
 
 typedef	struct s_player
 {
@@ -352,7 +362,7 @@ typedef struct s_game
 	t_object		**object_array;
 	int				nb_doors;
 	t_map			**door_array;
-	t_music			*music_array;
+	t_music_game	*music_array;
 	float			*dist_tab;
 	t_loading		*loading_screen;
 	t_map			*exit;
@@ -418,11 +428,11 @@ int			mouse_leave(t_game *game);
 int			mouse_hook(int x,int y, t_game *game);
 int			mouse_stay_in_window_hook(int x, int y, t_game *game);
 int			on_update(t_game *game);
-void		player_move(t_player *player, double delta_time, t_map **map);
+void		player_move(t_game *game, t_player *player, double delta_time, t_map **map);
 int			mouse_click(int button, int x, int y,t_game *game);
 int			ft_close(t_game *game);
 
-t_dvector2	check_colliding(t_player *player, t_dvector2 new_pos, t_map **map);
+t_dvector2	check_colliding(t_game *game, t_dvector2 new_pos, t_map **map);
 
 // -------Raycasting-----
 t_ray		get_wall_hit(t_dvector2 fpos, t_map **map, float angle);
@@ -487,7 +497,7 @@ void		draw_image_with_transparence(char *dest_addr, t_image *src
 
 // ------ Object interactive -----
 void		take_object_click(t_game *game, t_player *player, t_map **map);
-void		take_object(t_player *player, t_map *cell_map);
+void		take_object(t_player *player, t_map *cell_map, t_music_game *music_tab);
 void		drop_object(t_player *player, t_map **map, t_map *exit, t_game *game);
 t_object	*find_empty_object(t_game *game);
 void		draw_hand_item(t_game *game, t_player *player);
@@ -498,11 +508,13 @@ void		end_of_the_game(t_game *game, enum e_orientation orient);
 t_ray		get_wall_hit_end(t_dvector2 fpos, t_map **map, float angle, enum e_status status);
 
 // -------- Music ----------
-t_music_name	*get_music(t_music_name *filename, int nb_music, char symbol);
+char			*get_music(t_music_name *filename, int nb_music, char symbol);
 t_music_name	*get_narrator(t_music_name *filename, int nb_music, char symbol);
 bool			init_audio(t_game *game, t_music_name *music_file, int nb_music);
-void			update_sounds(t_music *music_array);
-void			close_audio(t_game *game, t_music *music_tab
+void			update_sounds(t_music_game *music_array);
+void			close_audio(t_game *game, t_music_game *music_tab
 					, t_music_name *music_file, int nb_music);
+void			play_music(t_map *map_cell, t_music_game *music_tab);
+void			update_map_cell_music(t_map *map_cell, t_map *old_map_cell, t_music_game *music_array);
 
 #endif

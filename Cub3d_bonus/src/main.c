@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/24 15:07:54 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/24 19:58:55 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	on_update(t_game *game)
 	update_sounds(game->music_array);
 	game->time = time_to_long(&time);
 	if ((game->map[(int)game->player->f_real_pos.y][(int)game->player->f_real_pos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
-		take_object(game->player, &game->map[(int)game->player->f_real_pos.y][(int)game->player->f_real_pos.x]);
-	player_move(game->player, game->delta_time, game->map);
+		take_object(game->player, &game->map[(int)game->player->f_real_pos.y][(int)game->player->f_real_pos.x], game->music_array);
+	player_move(game, game->player, game->delta_time, game->map);
 	if (game->player->angle + game->player->angle >= 360)
 		game->player->angle = game->player->angle - 360;
 	if (game->player->angle + game->player->angle < 0)
@@ -78,10 +78,10 @@ int main(int argc, char **argv)
 		return (1);
 	if (init_mlx(&game) == -1)
 		return (perror("Error"), ft_close(&game), 1);
-	if (!loading_screen(&game))
-		return (perror("Error"), ft_close(&game), 1);
 	if (!init_audio(&game, game.file_music, game.nb_music))
 		return (ft_close(&game), 1);
+	if (!loading_screen(&game))
+		return (perror("Error"), ft_close(&game), 1);
 	if (!init_end_screen(&game))
 		return (perror("Error"), ft_close(&game), 1);
 	if (!load_image_tab(&game, &error))
@@ -96,7 +96,7 @@ int main(int argc, char **argv)
 					, tanf((FOV / 2.0) * TO_RADIAN), cos((FOV / 2.0) * TO_RADIAN)};
 	exit_door_no_receptacle(game.exit, game.total_receptacle, game.tab_images);
 	init_minimap(&game);
-	init_mouse(&game);
+	// init_mouse(&game);
 	mlx_do_key_autorepeatoff(game.mlx_ptr);
 	mlx_hook(game.win, 2, (1L << 0), key_press_hook, &game);
 	mlx_hook(game.win, 3, (1L << 1), key_release_hook, &game);
@@ -106,7 +106,7 @@ int main(int argc, char **argv)
 	mlx_hook(game.win, 4, (1L<< 2), mouse_click, &game);
 	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	sleep(1);
-	PlayMusicStream(game.music_array[0]);
+	PlayMusicStream(game.music_array[0].music);
 	mlx_loop(game.mlx_ptr);
 	return (0);
 }

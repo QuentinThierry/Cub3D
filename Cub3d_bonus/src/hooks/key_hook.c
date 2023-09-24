@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/18 15:24:04 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/24 17:14:13 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	key_release_hook(int key, t_game *game)
 	return (0);
 }
 
-void	player_move(t_player *player, double delta_time, t_map **map)
+void	player_move(t_game *game, t_player *player, double delta_time, t_map **map)
 {
 	t_dvector2 move_value;
 
@@ -96,7 +96,13 @@ void	player_move(t_player *player, double delta_time, t_map **map)
 	{
 		move_value.x = player->f_real_pos.x + move_value.x * delta_time;
 		move_value.y = player->f_real_pos.y + move_value.y * delta_time;
-		player->f_real_pos = check_colliding(player, move_value, map);
+		player->f_real_pos = check_colliding(game, move_value, map);
+		// if ((map[(int)player->f_real_pos.y][(int)player->f_real_pos.x].type & MUSIC) == MUSIC)
+			// && (map[(int)player->f_real_pos.y][(int)player->f_real_pos.x].type & IS_PLAYING_MUSIC) != IS_PLAYING_MUSIC)
+		// 	play_music(&map[(int)player->f_real_pos.y][(int)player->f_real_pos.x], game->music_array);
+		// if ((map[(int)player->f_real_pos.y][(int)player->f_real_pos.x].type & MUSIC) == MUSIC
+		// 	&& (map[(int)player->f_real_pos.y][(int)player->f_real_pos.x].type & IS_PLAYING_MUSIC) != IS_PLAYING_MUSIC)
+		// 	play_narrator();
 	}
 }
 

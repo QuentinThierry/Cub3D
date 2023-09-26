@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/24 20:15:22 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/26 15:39:46 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,28 +67,22 @@ static t_music_game	*find_empty_place(t_music_game *music_tab)
 
 void	play_music(t_map *map_cell, t_music_game *music_tab)
 {
-	printf("play sound\n");
 	t_music_game	*music;
 
 	if ((map_cell->type & IS_PLAYING_MUSIC) == IS_PLAYING_MUSIC)
 		return ;
-	else
-	{
-		printf("start music\n");
-		music = find_empty_place(music_tab);
-		if (music == NULL)
-			return ;
-		printf("test %s\n", map_cell->music);
-		music->music = LoadMusicStream(map_cell->music);
-		printf("test1\n");
-		if (!IsMusicReady(music->music))
-			return ;	//	error
-		music->music.looping = false;
-		music->is_playing = true;
-		music->map_cell = map_cell;
-		map_cell->type |= IS_PLAYING_MUSIC;
-		PlayMusicStream(music->music);
-	}
+	music = find_empty_place(music_tab);
+	if (music == NULL)
+		return ;
+	printf("play %s\n", map_cell->music);
+	music->music = LoadMusicStream(map_cell->music);
+	if (!IsMusicReady(music->music))
+		return ;
+	music->music.looping = false;
+	music->map_cell = map_cell;
+	music->is_playing = true;
+	map_cell->type |= IS_PLAYING_MUSIC;
+	PlayMusicStream(music->music);
 }
 
 void	update_sounds(t_music_game *music_array)
@@ -104,11 +98,10 @@ void	update_sounds(t_music_game *music_array)
 				UpdateMusicStream(music_array[i].music);
 			else
 			{
-				music_array[i].is_playing = false;
 				UnloadMusicStream(music_array[i].music);
 				music_array[i].map_cell->type ^= IS_PLAYING_MUSIC;
 				music_array[i].map_cell = NULL;
-				printf("end : %d\n", i);
+				music_array[i].is_playing = false;
 			}
 		}
 		i++;
@@ -122,8 +115,11 @@ void	update_map_cell_music(t_map *map_cell, t_map *old_map_cell, t_music_game *m
 	i = 0;
 	while (i < NB_MAX_SOUNDS)
 	{
-		if (music_array[i].map_cell != NULL && music_array[i].map_cell == old_map_cell)
+		if (music_array[i].map_cell == old_map_cell)
+		{
 			music_array[i].map_cell = map_cell;
+			return ;
+		}
 		i++;
 	}
 }

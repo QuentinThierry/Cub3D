@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/26 18:43:05 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/26 19:24:36 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,27 @@ void	play_music(t_map *map_cell, t_music_game *music_tab)
 	music->map_cell = map_cell;
 	music->is_playing = true;
 	map_cell->type |= IS_PLAYING_MUSIC;
+	PlayMusicStream(music->music);
+}
+
+void	play_narrator(t_map *map_cell, t_music_game *music_tab)
+{
+	t_music_game	*music;
+
+	if ((map_cell->type & IS_PLAYING_NARRATOR) == IS_PLAYING_NARRATOR)
+		return ;
+	music = &music_tab[1];
+	if (music->is_playing == true)
+		return ;
+	printf("play narrator %s\n", map_cell->music);
+	music->music = LoadMusicStream(map_cell->music);
+	if (!IsMusicReady(music->music))
+		return ;
+	music->music.looping = false;
+	music->map_cell = map_cell;
+	music->is_playing = true;
+	map_cell->type |= IS_PLAYING_NARRATOR;
+	map_cell->type ^= NARRATOR;
 	PlayMusicStream(music->music);
 }
 

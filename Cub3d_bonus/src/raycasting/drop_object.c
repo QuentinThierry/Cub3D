@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:00:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/26 17:37:44 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/26 17:55:20 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static void	_set_object_on_cell(t_map *map_cell, t_player *player, t_dvector2 po
 static void	_unlock_door(t_game *game, t_map *map_cell, t_player *player, t_music_game *music_tab)
 {
 	map_cell->type ^= DOOR_LOCK;
+	map_cell->type |= DOOR_UNLOCK;
 	map_cell->sprite[e_door_image] = map_cell->sprite[e_door_image + 1];
 	if ((map_cell->type & MUSIC) == MUSIC)
 	{

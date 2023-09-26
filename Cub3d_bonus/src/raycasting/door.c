@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/26 17:14:11 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/26 17:56:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -424,6 +424,8 @@ static void	_step_door_open(t_door *door, long time, t_map *map_cell, t_map **ma
 			door->door_percent = 90;
 			door->is_opening_door = 0;
 			change_adjacent_wall(map, door->map_pos, true);
+			if ((map_cell->type & DOOR_UNLOCK )== DOOR_UNLOCK)
+				map_cell->type ^= DOOR;
 		}
 	}
 	else
@@ -435,6 +437,8 @@ static void	_step_door_open(t_door *door, long time, t_map *map_cell, t_map **ma
 		{
 			door->door_percent = 0;
 			door->is_opening_door = 0;
+			if ((map_cell->type & DOOR_UNLOCK )== DOOR_UNLOCK)
+				map_cell->type ^= DOOR;
 		}
 	}
 }

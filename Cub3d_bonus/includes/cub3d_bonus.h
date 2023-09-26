@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/26 17:07:12 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/26 17:54:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@
 # define NARRATOR 0b10000000000000000
 # define IS_PLAYING_MUSIC 0b100000000000000000
 # define IS_PLAYING_NARRATOR 0b1000000000000000000
+# define DOOR_UNLOCK 0b10000000000000000000
 
 extern long tot_fps;
 extern long nb_fps;

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/26 15:39:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/26 18:43:05 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,22 @@ bool	init_audio(t_game *game, t_music_name *music_file, int nb_music)
 	return (true);
 }
 
-void	close_audio(t_game *game, t_music_game *music_tab, t_music_name *music_file, int nb_music)
+void	close_audio(t_music_game *music_tab)
 {
 	int	i;
 
 	if (!IsAudioDeviceReady())
-		return ;
+		return (free(music_tab));
 	i = 0;
 	while (i < NB_MAX_SOUNDS)
 	{
-		if (IsMusicStreamPlaying(music_tab[i].music))
+		if (music_tab[i].is_playing == true && IsMusicStreamPlaying(music_tab[i].music))
 		{
 			StopMusicStream(music_tab[i].music);
 			UnloadMusicStream(music_tab[i].music);
 		}
 		i++;
 	}
-	i = 0;
 	CloseAudioDevice();
 	free(music_tab);
 }

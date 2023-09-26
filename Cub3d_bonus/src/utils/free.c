@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 16:27:51 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 19:26:08 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/26 18:12:03 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,22 @@ void	free_tab(void **str, int size)
 		i++;
 	}
 	free(str);
+}
+
+void	free_music_file(t_music_name *music_tab, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		if (music_tab[i].filename != NULL)
+			free(music_tab[i].filename);
+		if (music_tab[i].subtitle != NULL)
+			free(music_tab[i].subtitle);
+		i++;
+	}
+	free(music_tab);
 }
 
 void	free_tab_object(t_object **object, int size)

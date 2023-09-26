@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/26 17:54:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/26 18:12:21 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -384,6 +384,7 @@ void		free_tab(void **str, int size);
 void		free_map(t_map **map, t_vector2 size);
 void		free_tab_object(t_object **str, int size);
 void		free_str(char **str);
+void		free_music_file(t_music_name *music_tab, int size);
 char		*ft_strjoin(char *str, char *str1);
 char		*ft_strjoin_slash(char *str, char *str1, bool add_slash);
 int			ft_atoi(const char *str);
@@ -513,8 +514,7 @@ char			*get_music(t_music_name *filename, int nb_music, char symbol, enum e_orie
 t_music_name	*get_narrator(t_music_name *filename, int nb_music, char symbol);
 bool			init_audio(t_game *game, t_music_name *music_file, int nb_music);
 void			update_sounds(t_music_game *music_array);
-void			close_audio(t_game *game, t_music_game *music_tab
-					, t_music_name *music_file, int nb_music);
+void			close_audio(t_music_game *music_tab);
 void			play_music(t_map *map_cell, t_music_game *music_tab);
 void			update_map_cell_music(t_map *map_cell, t_map *old_map_cell, t_music_game *music_array);
 

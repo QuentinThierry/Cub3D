@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 19:36:49 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/26 19:13:42 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@ int	ft_close(t_game *game)
 {
 	int	i;
 
+	close_audio(game->music_array);
 	if (game == NULL)
 		exit(0);
+	if (game->file_music != NULL)
+		free_music_file(game->file_music, game->nb_music);
 	if (game->end != NULL)
 	{
 		if (game->end->end_screen != NULL)

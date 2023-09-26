@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/26 16:03:05 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/26 17:42:23 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,12 @@ void	take_object_click(t_game *game, t_player *player, t_map **map)
 	t_dvector2 pos;
 	
 	pos = find_pos(player);
+	if ((map[(int)pos.y][(int)pos.x].type & RECEPTACLE) == RECEPTACLE
+		&& (map[(int)pos.y][(int)pos.x].type & DOOR_LOCK) == DOOR_LOCK)
+		play_music(&map[(int)pos.y][(int)pos.x], game->music_array);
+	else if ((map[(int)pos.y][(int)pos.x].type & RECEPTACLE) == RECEPTACLE
+		&& (map[(int)pos.y][(int)pos.x].type & OBJECT) == OBJECT)
+		play_music(&map[(int)pos.y][(int)pos.x], game->music_array);
 	if (!((map[(int)pos.y][(int)pos.x].type & WALL) == WALL
 		&& (map[(int)pos.y][(int)pos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE
 		&& (map[(int)pos.y][(int)pos.x].type & OBJECT) == OBJECT))

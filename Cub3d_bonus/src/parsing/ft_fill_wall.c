@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/24 17:40:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/26 17:07:43 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			map[i].sprite[e_west] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_west);
 			map[i].sprite[e_floor].index = -1;
 			map[i].sprite[e_ceiling].index = -1;
-			map[i].music = get_music(game->file_music, game->nb_music, line[i]);
+			map[i].music = get_music(game->file_music, game->nb_music, line[i], e_music);
 			if (map[i].music != NULL)
 				map[i].type |= MUSIC;
 			map[i].narrator = get_narrator(game->file_music, game->nb_music, line[i]);
@@ -190,7 +190,7 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			if (error == true && !is_sound(game->file_music, game->nb_music, line[i]))
 				return (printf("Error : invalid caracter in the map\n"), false);
 			map[i].type = NONE;
-			map[i].music = get_music(game->file_music, game->nb_music, line[i]);
+			map[i].music = get_music(game->file_music, game->nb_music, line[i], e_music);
 			if (map[i].music != NULL)
 				map[i].type |= MUSIC;
 			map[i].narrator = get_narrator(game->file_music, game->nb_music, line[i]);

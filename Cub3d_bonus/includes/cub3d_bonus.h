@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/24 19:14:55 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/26 17:07:12 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -508,7 +508,7 @@ void		end_of_the_game(t_game *game, enum e_orientation orient);
 t_ray		get_wall_hit_end(t_dvector2 fpos, t_map **map, float angle, enum e_status status);
 
 // -------- Music ----------
-char			*get_music(t_music_name *filename, int nb_music, char symbol);
+char			*get_music(t_music_name *filename, int nb_music, char symbol, enum e_orientation orient);
 t_music_name	*get_narrator(t_music_name *filename, int nb_music, char symbol);
 bool			init_audio(t_game *game, t_music_name *music_file, int nb_music);
 void			update_sounds(t_music_game *music_array);

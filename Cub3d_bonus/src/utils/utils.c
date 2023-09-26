@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/24 17:40:52 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/26 17:06:44 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,16 +222,17 @@ bool	is_sound(t_music_name *filename, int nb_music, char symbol)
 	return (false);
 }
 
-char	*get_music(t_music_name *filename, int nb_music, char symbol)
+char	*get_music(t_music_name *filename, int nb_music, char symbol, enum e_orientation orient)
 {
 	int	i = 0;
 
 	while (i < nb_music)
 	{
-		if (filename[i].symbol == symbol && (filename[i].orient == e_music
-			|| filename[i].orient == e_music_receptacle))
-			// || filename[i].orient == e_music_receptacle_complete))
-			return (filename[i].filename);
+		if (filename[i].symbol == symbol)
+		{
+			if (filename[i].orient == orient || (orient == e_music && filename[i].orient == e_music_receptacle))
+				return (filename[i].filename);
+		}
 		i++;
 	}
 	return (NULL);

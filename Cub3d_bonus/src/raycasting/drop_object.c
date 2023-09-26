@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:00:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/26 16:05:09 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/26 17:37:44 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,17 @@ static void	_set_object_on_cell(t_map *map_cell, t_player *player, t_dvector2 po
 	player->has_item = false;
 }
 
-static void	_unlock_door(t_map *map_cell, t_player *player)
+static void	_unlock_door(t_game *game, t_map *map_cell, t_player *player, t_music_game *music_tab)
 {
 	map_cell->type ^= DOOR_LOCK;
 	map_cell->sprite[e_door_image] = map_cell->sprite[e_door_image + 1];
+	if ((map_cell->type & MUSIC) == MUSIC)
+	{
+		map_cell->music = get_music(game->file_music, game->nb_music, map_cell->symbol, e_music_receptacle_complete);
+		play_music(map_cell, music_tab);
+		map_cell->type ^= MUSIC;
+		map_cell->music = NULL;
+	}
 	player->has_item = false;
 }
 
@@ -41,6 +48,13 @@ static void	_complete_receptacle(t_game *game, t_map *map_cell, t_player *player
 	t_door		*exit_door;
 	float		frame;
 	
+	if ((map_cell->type & MUSIC) == MUSIC)
+	{
+		map_cell->music = get_music(game->file_music, game->nb_music, map_cell->symbol, e_music_receptacle_complete);
+		play_music(map_cell, game->music_array);
+		map_cell->type ^= MUSIC;
+		map_cell->music = NULL;
+	}
 	((t_object *)map_cell->arg)->is_completed = true;
 	map_cell->sprite[e_receptacle_empty_image] = map_cell->sprite[e_receptacle_full_image];
 	player->has_item = false;
@@ -61,8 +75,6 @@ void	drop_object(t_player *player, t_map **map, t_map *exit, t_game *game)
 {
 	t_dvector2	pos;
 	
-	if (player->has_item == false)
-		return ;
 	pos = find_pos(player);
 	pos.x = (int)pos.x + 0.5;
 	pos.y = (int)pos.y + 0.5;
@@ -71,11 +83,21 @@ void	drop_object(t_player *player, t_map **map, t_map *exit, t_game *game)
 		&& (map[(int)pos.y][(int)pos.x].type & OBJECT) != OBJECT
 		&& (map[(int)pos.y][(int)pos.x].type & OBJECT_INTERACTIVE) != OBJECT_INTERACTIVE)
 		_set_object_on_cell(&map[(int)pos.y][(int)pos.x], player, pos, game->music_array);
-	else if ((map[(int)pos.y][(int)pos.x].type & RECEPTACLE) == RECEPTACLE && (map[(int)pos.y][(int)pos.x].type & DOOR_LOCK) == DOOR_LOCK
-		&& ((t_door *)map[(int)pos.y][(int)pos.x].arg)->symbol_unlock_door == player->item.symbol)
-		_unlock_door(&map[(int)pos.y][(int)pos.x], player);
-	else if ((map[(int)pos.y][(int)pos.x].type & RECEPTACLE) == RECEPTACLE && (map[(int)pos.y][(int)pos.x].type & OBJECT) == OBJECT
-		&& ((t_object *)map[(int)pos.y][(int)pos.x].arg)->symbol_receptacle == player->item.symbol
-		&& ((t_object *)map[(int)pos.y][(int)pos.x].arg)->is_completed != true)
-		_complete_receptacle(game, &map[(int)pos.y][(int)pos.x], player, exit);
+	else if ((map[(int)pos.y][(int)pos.x].type & RECEPTACLE) == RECEPTACLE
+		&& (map[(int)pos.y][(int)pos.x].type & DOOR_LOCK) == DOOR_LOCK)
+	{
+		if (((t_door *)map[(int)pos.y][(int)pos.x].arg)->symbol_unlock_door == player->item.symbol)
+			_unlock_door(game, &map[(int)pos.y][(int)pos.x], player, game->music_array);
+		else if ((map[(int)pos.y][(int)pos.x].type & MUSIC) == MUSIC)
+			play_music(&map[(int)pos.y][(int)pos.x], game->music_array);
+	}
+	else if ((map[(int)pos.y][(int)pos.x].type & RECEPTACLE) == RECEPTACLE
+		&& (map[(int)pos.y][(int)pos.x].type & OBJECT) == OBJECT)
+	{
+		if (((t_object *)map[(int)pos.y][(int)pos.x].arg)->symbol_receptacle == player->item.symbol
+			&& ((t_object *)map[(int)pos.y][(int)pos.x].arg)->is_completed == false)
+			_complete_receptacle(game, &map[(int)pos.y][(int)pos.x], player, exit);
+		else if ((map[(int)pos.y][(int)pos.x].type & MUSIC) == MUSIC)
+			play_music(&map[(int)pos.y][(int)pos.x], game->music_array);
+	}
 }

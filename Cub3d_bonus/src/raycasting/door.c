@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 18:43:03 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/26 17:14:11 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -372,7 +372,11 @@ void	open_door(t_game *game)
 	if (ray.hit.x != -1)
 	{
 		if ((game->map[(int)ray.hit.y][(int)ray.hit.x].type & DOOR_LOCK) == DOOR_LOCK)
+		{
+			if ((game->map[(int)ray.hit.y][(int)ray.hit.x].type & MUSIC) == MUSIC)
+				play_music(&game->map[(int)ray.hit.y][(int)ray.hit.x], game->music_array);
 			return ;
+		}
 		if ((game->map[(int)ray.hit.y][(int)ray.hit.x].type & EXIT) == EXIT)
 			return (end_of_the_game(game, ray.orient));
 		door = game->map[(int)ray.hit.y][(int)ray.hit.x].arg;

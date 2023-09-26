@@ -1,0 +1,16 @@
+{
+	ignore_pulseaudio
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	obj:*/pulseaudio/*
+}
+
+{
+	ignore_libpulse
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	obj:*/libpulse.so.*
+}
+

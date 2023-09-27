@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/27 16:28:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/27 17:49:42 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,15 @@ void	play_narrator(t_map *map_cell, t_music_game *music_tab)
 
 	music = &music_tab[1];
 	if (music->is_playing == true)
-		return ;
-	printf("play narrator %s\n", map_cell->music);
-	music->music = LoadMusicStream(map_cell->music);
+	{
+		StopMusicStream(music->music);
+		UnloadMusicStream(music->music);
+		music->map_cell->type ^= IS_PLAYING_MUSIC;
+		music->map_cell = NULL;
+		music->is_playing = false;
+	}
+	printf("play narrator %s\n", map_cell->narrator->filename);
+	music->music = LoadMusicStream(map_cell->narrator->filename);
 	if (!IsMusicReady(music->music))
 		return ;
 	music->music.looping = false;
@@ -102,13 +108,11 @@ void	play_narrator(t_map *map_cell, t_music_game *music_tab)
 	PlayMusicStream(music->music); //+subtitle
 }
 
-void	set_next_narrator(t_game *game, t_map *map_cell)
+void	set_next_narrator(t_map *map_cell)
 {
 	if ((map_cell->type & NARRATOR) == NARRATOR)
 	{
 		map_cell->type ^= NARRATOR;
-		map_cell->narrator = get_narrator(game->file_music, game->nb_music
-				, map_cell->symbol, e_narrator_receptacle_complete);
 		if (map_cell->narrator != NULL)
 			map_cell->type |= NARRATOR_RECEPTACLE;
 	}
@@ -123,7 +127,7 @@ void	play_sound_fail(t_game *game, t_map *map_cell, t_music_game *music_tab)
 	else if ((map_cell->type & NARRATOR) == NARRATOR)
 	{
 		play_narrator(map_cell, music_tab);
-		set_next_narrator(game, map_cell);
+		set_next_narrator(map_cell);
 	}
 }
 

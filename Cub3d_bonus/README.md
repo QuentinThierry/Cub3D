@@ -78,7 +78,8 @@ Exit door :
 Sound :
 - play sound when walk on an object with already something in the hand
 - ground lose sound if drop object on a case
-- si on prend un objet qui est narrateur alors que le narrateur parle deja
+- take an object while a narrator is played would skip the next narrator
 - same for unlock door ...
+- music during the exit door ??
 
 

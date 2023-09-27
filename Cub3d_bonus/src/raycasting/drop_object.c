@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:00:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/27 16:32:13 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/27 17:59:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static void	_unlock_door(t_game *game, t_map *map_cell, t_player *player, t_musi
 	map_cell->type ^= DOOR_LOCK;
 	map_cell->type |= DOOR_UNLOCK;
 	map_cell->sprite[e_door_image] = map_cell->sprite[e_door_image + 1];
+	((t_door*)map_cell->arg)->is_opening_door = 1;
+	((t_door*)map_cell->arg)->time = game->time;
 	if ((map_cell->type & MUSIC) == MUSIC)
 	{
 		map_cell->music = get_music(game->file_music, game->nb_music, map_cell->symbol, e_music_receptacle_complete);
@@ -47,6 +49,8 @@ static void	_unlock_door(t_game *game, t_map *map_cell, t_player *player, t_musi
 	if (((map_cell->type & NARRATOR) == NARRATOR)
 		||(map_cell->type & NARRATOR_RECEPTACLE) == NARRATOR_RECEPTACLE)
 	{
+		map_cell->narrator = get_narrator(game->file_music, game->nb_music
+				, map_cell->symbol, e_narrator_receptacle_complete);
 		play_narrator(map_cell, music_tab);
 		map_cell->type &= ~NARRATOR & ~NARRATOR_RECEPTACLE;
 	}
@@ -68,6 +72,8 @@ static void	_complete_receptacle(t_game *game, t_map *map_cell, t_player *player
 	if ((map_cell->type & NARRATOR) == NARRATOR
 		|| (map_cell->type & NARRATOR_RECEPTACLE) == NARRATOR_RECEPTACLE)
 	{
+		map_cell->narrator = get_narrator(game->file_music, game->nb_music
+				, map_cell->symbol, e_narrator_receptacle_complete);
 		play_narrator(map_cell, game->music_array);
 		map_cell->type &= ~NARRATOR & ~NARRATOR_RECEPTACLE;
 	}

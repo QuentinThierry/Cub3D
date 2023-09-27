@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/27 16:23:52 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/27 17:43:01 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ void	take_object(t_game *game, t_player *player, t_map *cell_map, t_music_game *
 	((t_object *)player->item.arg)->map_pos = (t_dvector2){-1, -1};
 	cell_map->symbol = '0';
 	cell_map->arg = NULL;
-	if ((cell_map->type & NARRATOR) == NARRATOR || (cell_map->type & NARRATOR_RECEPTACLE) == NARRATOR_RECEPTACLE)
+	if ((cell_map->type & NARRATOR) == NARRATOR)
 	{
 		play_narrator(&player->item, music_tab);
-		set_next_narrator(game, &player->item);
-		cell_map->type &= ~NARRATOR & ~NARRATOR_RECEPTACLE;
+		player->item.type ^= NARRATOR;
+		cell_map->type ^= NARRATOR;
 	}
 	if ((cell_map->type & MUSIC) == MUSIC)
 	{
@@ -93,12 +93,11 @@ void	take_object_click(t_game *game, t_player *player, t_map **map)
 		play_music(&player->item, game->music_array);
 		map[(int)pos.y][(int)pos.x].type ^= MUSIC;
 	}
-	if ((map[(int)pos.y][(int)pos.x].type & NARRATOR) == NARRATOR
-		|| (map[(int)pos.y][(int)pos.x].type & NARRATOR_RECEPTACLE) == NARRATOR_RECEPTACLE)
+	if ((map[(int)pos.y][(int)pos.x].type & NARRATOR) == NARRATOR)
 	{
 		play_narrator(&player->item, game->music_array);
-		set_next_narrator(game, &player->item);
-		map[(int)pos.y][(int)pos.x].type &= ~NARRATOR & ~NARRATOR_RECEPTACLE;
+		player->item.type ^= NARRATOR;
+		map[(int)pos.y][(int)pos.x].type ^= NARRATOR;
 	}
 	map[(int)pos.y][(int)pos.x].type ^= OBJECT_INTERACTIVE;
 	map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_image] = map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_after_image];

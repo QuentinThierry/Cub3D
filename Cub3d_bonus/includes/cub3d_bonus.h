@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/27 16:24:35 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/27 18:01:40 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@
 # define ROTATION_KEYBOARD 125
 # define ROTATION_MOUSE 20
 # define SPEEP_DOOR_OPENING 100
+# define SPEEP_UNLOCK_DOOR_OPENING 50
 # define TO_RADIAN .01745329251994
 
 # define DARK_COLOR 0x00FF00
@@ -520,7 +521,7 @@ void			close_audio(t_music_game *music_tab);
 void			play_music(t_map *map_cell, t_music_game *music_tab);
 void			play_narrator(t_map *map_cell, t_music_game *music_tab);
 void			play_sound_fail(t_game *game, t_map *map_cell, t_music_game *music_tab);
-void			set_next_narrator(t_game *game, t_map *map_cell);
+void			set_next_narrator(t_map *map_cell);
 void			update_map_cell_music(t_map *map_cell, t_map *old_map_cell, t_music_game *music_array);
 
 #endif

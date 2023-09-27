@@ -6,22 +6,26 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/26 17:42:23 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/27 16:23:52 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-void	take_object(t_player *player, t_map *cell_map, t_music_game *music_tab)
+void	take_object(t_game *game, t_player *player, t_map *cell_map, t_music_game *music_tab)
 {
 	if (!(player->has_item == false && (cell_map->type & WALL) != WALL))
 		return ;
 	player->item = *cell_map;
-	// if ((cell_map->type & NARRATOR) == NARRATOR)
-	// 	play_narrator(&player->item, music_tab);
 	((t_object *)player->item.arg)->map_pos = (t_dvector2){-1, -1};
 	cell_map->symbol = '0';
 	cell_map->arg = NULL;
+	if ((cell_map->type & NARRATOR) == NARRATOR || (cell_map->type & NARRATOR_RECEPTACLE) == NARRATOR_RECEPTACLE)
+	{
+		play_narrator(&player->item, music_tab);
+		set_next_narrator(game, &player->item);
+		cell_map->type &= ~NARRATOR & ~NARRATOR_RECEPTACLE;
+	}
 	if ((cell_map->type & MUSIC) == MUSIC)
 	{
 		play_music(&player->item, music_tab);
@@ -32,10 +36,11 @@ void	take_object(t_player *player, t_map *cell_map, t_music_game *music_tab)
 		update_map_cell_music(&player->item, cell_map, music_tab);
 		cell_map->type ^= IS_PLAYING_MUSIC;
 	}
-	// if ((cell_map->type & NARRATOR) == NARRATOR)
-	// 	cell_map->type ^= NARRATOR;
-	// if ((cell_map->type & IS_PLAYING_NARRATOR) == IS_PLAYING_NARRATOR)
-	// 	cell_map->type ^= IS_PLAYING_NARRATOR;
+	if ((cell_map->type & IS_PLAYING_NARRATOR) == IS_PLAYING_NARRATOR)
+	{
+		music_tab[1].map_cell = &player->item;
+		cell_map->type ^= IS_PLAYING_NARRATOR;
+	}
 	cell_map->type ^= OBJECT_INTERACTIVE;
 	cell_map->type ^= OBJECT;
 	player->has_item = true;
@@ -66,11 +71,9 @@ void	take_object_click(t_game *game, t_player *player, t_map **map)
 	
 	pos = find_pos(player);
 	if ((map[(int)pos.y][(int)pos.x].type & RECEPTACLE) == RECEPTACLE
-		&& (map[(int)pos.y][(int)pos.x].type & DOOR_LOCK) == DOOR_LOCK)
-		play_music(&map[(int)pos.y][(int)pos.x], game->music_array);
-	else if ((map[(int)pos.y][(int)pos.x].type & RECEPTACLE) == RECEPTACLE
-		&& (map[(int)pos.y][(int)pos.x].type & OBJECT) == OBJECT)
-		play_music(&map[(int)pos.y][(int)pos.x], game->music_array);
+		&& ((map[(int)pos.y][(int)pos.x].type & DOOR_LOCK) == DOOR_LOCK
+		|| (map[(int)pos.y][(int)pos.x].type & OBJECT) == OBJECT))
+		play_sound_fail(game, &map[(int)pos.y][(int)pos.x], game->music_array);
 	if (!((map[(int)pos.y][(int)pos.x].type & WALL) == WALL
 		&& (map[(int)pos.y][(int)pos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE
 		&& (map[(int)pos.y][(int)pos.x].type & OBJECT) == OBJECT))
@@ -81,6 +84,7 @@ void	take_object_click(t_game *game, t_player *player, t_map **map)
 	player->item.sprite[e_object_interactive_image] = map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_image];
 	player->item.sprite[e_object_interactive_hand_image] = map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_hand_image];
 	player->item.music = map[(int)pos.y][(int)pos.x].music;
+	player->item.narrator = map[(int)pos.y][(int)pos.x].narrator;
 	player->item.arg = find_empty_object(game);
 	((t_object *)player->item.arg)->map_pos = pos;
 	player->has_item = true;
@@ -89,8 +93,13 @@ void	take_object_click(t_game *game, t_player *player, t_map **map)
 		play_music(&player->item, game->music_array);
 		map[(int)pos.y][(int)pos.x].type ^= MUSIC;
 	}
-	if ((map[(int)pos.y][(int)pos.x].type & IS_PLAYING_MUSIC) == IS_PLAYING_MUSIC)		// not sure it can happen
-		map[(int)pos.y][(int)pos.x].type ^= IS_PLAYING_MUSIC;
+	if ((map[(int)pos.y][(int)pos.x].type & NARRATOR) == NARRATOR
+		|| (map[(int)pos.y][(int)pos.x].type & NARRATOR_RECEPTACLE) == NARRATOR_RECEPTACLE)
+	{
+		play_narrator(&player->item, game->music_array);
+		set_next_narrator(game, &player->item);
+		map[(int)pos.y][(int)pos.x].type &= ~NARRATOR & ~NARRATOR_RECEPTACLE;
+	}
 	map[(int)pos.y][(int)pos.x].type ^= OBJECT_INTERACTIVE;
 	map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_image] = map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_after_image];
 }

@@ -5,34 +5,45 @@ EA ./assets/wallpaper_torn_sale.xpm
 F ./assets/anim
 C ./assets/cobble.xpm
 
-OW_f ./assets/chatmignon.xpm
-OE_j ./assets/chandelier.xpm
 D_i ./assets/door.xpm
-c ./assets/griffure.xpm
-o ./assets/griffure.xpm
 
-OI_t ./assets/smiley.xpm ./assets/hand.xpm
+D_c_k ./assets/door.xpm ./assets/door_open.xpm
+MR_k ./assets/sounds/fail.wav ./assets/sounds/CantinaBand3.wav
+OI_c ./assets/key.xpm ./assets/hand.xpm
+M_c ./assets/sounds/sound.wav
+D_z_v ./assets/door.xpm ./assets/door_open.xpm
+OI_z ./assets/key.xpm ./assets/hand.xpm
+
 OI_x ./assets/nounours.xpm ./assets/hand.xpm
-OI_s ./assets/nounours.xpm ./assets/hand.xpm ./assets/table_nounours.xpm ./assets/table.xpm
+M_x ./assets/sounds/stereo.wav
 R_x_g ./assets/lit.xpm ./assets/lit_nounours.xpm
+MR_g ./assets/sounds/game-over.wav ./assets/sounds/test.wav
+OI_q ./assets/nounours.xpm ./assets/hand.xpm
+R_q_w ./assets/lit.xpm ./assets/lit_nounours.xpm
+
+OI_s ./assets/nounours.xpm ./assets/hand.xpm ./assets/table_nounours.xpm ./assets/table.xpm
+M_s ./assets/sounds/stereo.wav
 R_s_l ./assets/smiley.xpm ./assets/cobble.xpm
-R_t_p ./assets/smiley.xpm ./assets/cobble.xpm
+MR_l ./assets/sounds/game-over1.wav ./assets/sounds/stereo.wav
+OI_a ./assets/nounours.xpm ./assets/hand.xpm ./assets/table_nounours.xpm ./assets/table.xpm
+R_a_d ./assets/smiley.xpm ./assets/cobble.xpm
+
 T_5 ./assets/exit
 
 MAP
-1111111111111c1111111111111111
+1111111111111111111111111111
 1000000i0000000001000000001
-1000000c000j00000i00000000c
-100000010000000001000000001
-11111111111511ic11111i11111
-1111cgg0p00000000100000001
-11i11000000N00f00i000000001
-10001x0xt000000s010000000c
-11011000000l000001000000001
-11i10111i11c1111111111111i1
 10000001000000000i000000001
-1000000c0000000001000000001
-1000000i000000000c000000001
+100000010000000001000000001
+111111111v1511i111111i11111
+11111g0000z0000a01000000001
+1100k000000N000d0i000000001
+10001x00c000000s01000000001
+110110q0w000000l01000000001
+11i10111i1111111111111111i1
+10000001000000000i000000001
+100000010000000001000000001
+1000000i0000000001000000001
 111111111111111111111111111
 1
 1

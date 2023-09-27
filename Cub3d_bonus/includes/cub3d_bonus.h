@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/26 19:26:58 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/27 16:24:35 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@
 # define IS_PLAYING_MUSIC 0b100000000000000000
 # define IS_PLAYING_NARRATOR 0b1000000000000000000
 # define DOOR_UNLOCK 0b10000000000000000000
+# define NARRATOR_RECEPTACLE 0b100000000000000000000
 
 extern long tot_fps;
 extern long nb_fps;
@@ -500,7 +501,7 @@ void		draw_image_with_transparence(char *dest_addr, t_image *src
 
 // ------ Object interactive -----
 void		take_object_click(t_game *game, t_player *player, t_map **map);
-void		take_object(t_player *player, t_map *cell_map, t_music_game *music_tab);
+void		take_object(t_game *game, t_player *player, t_map *cell_map, t_music_game *music_tab);
 void		drop_object(t_player *player, t_map **map, t_map *exit, t_game *game);
 t_object	*find_empty_object(t_game *game);
 void		draw_hand_item(t_game *game, t_player *player);
@@ -512,12 +513,14 @@ t_ray		get_wall_hit_end(t_dvector2 fpos, t_map **map, float angle, enum e_status
 
 // -------- Music ----------
 char			*get_music(t_music_name *filename, int nb_music, char symbol, enum e_orientation orient);
-t_music_name	*get_narrator(t_music_name *filename, int nb_music, char symbol);
+t_music_name	*get_narrator(t_music_name *filename, int nb_music, char symbol, enum e_orientation orient);
 bool			init_audio(t_game *game, t_music_name *music_file, int nb_music);
 void			update_sounds(t_music_game *music_array);
 void			close_audio(t_music_game *music_tab);
 void			play_music(t_map *map_cell, t_music_game *music_tab);
 void			play_narrator(t_map *map_cell, t_music_game *music_tab);
+void			play_sound_fail(t_game *game, t_map *map_cell, t_music_game *music_tab);
+void			set_next_narrator(t_game *game, t_map *map_cell);
 void			update_map_cell_music(t_map *map_cell, t_map *old_map_cell, t_music_game *music_array);
 
 #endif

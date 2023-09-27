@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 01:05:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/24 17:13:22 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/27 15:49:59 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static inline void	check_interactive_object(t_game *game, t_map **map, t_dvector
 	ray = get_object_hit((t_launch_ray){'\0', OBJECT_INTERACTIVE, get_dist(game->player->f_real_pos, fpos)}
 		, map, game->player->f_real_pos, game->player->angle);
 	if (ray.hit.x != -1)
-		take_object(game->player, &map[(int)ray.hit.y][(int)ray.hit.x], game->music_array);
+		take_object(game, game->player, &map[(int)ray.hit.y][(int)ray.hit.x], game->music_array);
 }
 static t_dvector2	slide_wall_x(t_game *game, t_dvector2 fpos, t_map **map, t_dvector2 dest)
 {
@@ -39,17 +39,17 @@ static t_dvector2	slide_wall_x(t_game *game, t_dvector2 fpos, t_map **map, t_dve
 	ray = get_object_hit((t_launch_ray){'\0', OBJECT_INTERACTIVE, get_dist(game->player->f_real_pos, fpos)}
 		, map, game->player->f_real_pos, game->player->angle);
 	if (ray.hit.x != -1)
-		take_object(game->player, &map[(int)ray.hit.y][(int)ray.hit.x], game->music_array);
+		take_object(game, game->player, &map[(int)ray.hit.y][(int)ray.hit.x], game->music_array);
 	while ((dir == 1 && x < dest.x) || (dir == -1 && x > dest.x))
 	{
 		if ((map[(int)fpos.y][x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
-			take_object(game->player, &map[(int)fpos.y][x], game->music_array);
+			take_object(game, game->player, &map[(int)fpos.y][x], game->music_array);
 		if ((map[(int)fpos.y][x].type & WALL) == WALL)
 			return ((t_dvector2){x + (dir == -1) + (DIST_TO_WALL + 0.0001) * dir * -1, fpos.y});
 		x += dir;
 	}
 	if (dir == -1 && (map[(int)fpos.y][x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
-			take_object(game->player, &map[(int)fpos.y][x], game->music_array);
+			take_object(game, game->player, &map[(int)fpos.y][x], game->music_array);
 	if (dir == -1 && ((map[(int)fpos.y][x].type & WALL) == WALL))
 		return ((t_dvector2){x + (dir == -1) + (DIST_TO_WALL + 0.0001) * dir * -1, fpos.y});
 	pos = dest.x + DIST_TO_WALL * dir;
@@ -69,17 +69,17 @@ static t_dvector2	slide_wall_y(t_game *game, t_dvector2 fpos, t_map **map, t_dve
 	dir = ((dest.y - fpos.y) > 0) * 2 - 1;
 	ray = get_object_hit((t_launch_ray){'\0', OBJECT_INTERACTIVE, get_dist(game->player->f_real_pos, fpos)}, map, game->player->f_real_pos, game->player->angle);
 	if (ray.hit.x != -1)
-		take_object(game->player, &map[(int)ray.hit.y][(int)ray.hit.x], game->music_array);
+		take_object(game, game->player, &map[(int)ray.hit.y][(int)ray.hit.x], game->music_array);
 	while ((dir == 1 && y < dest.y) || (dir == -1 && y > dest.y))
 	{
 		if ((map[y][(int)fpos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
-			take_object(game->player, &map[y][(int)fpos.x], game->music_array);
+			take_object(game, game->player, &map[y][(int)fpos.x], game->music_array);
 		if ((map[y][(int)fpos.x].type & WALL) == WALL)
 			return ((t_dvector2){fpos.x, y + (dir == -1) + (DIST_TO_WALL + 0.0001) * dir * -1});
 		y += dir;
 	}
 	if (dir == -1 && (map[y][(int)fpos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
-			take_object(game->player, &map[y][(int)fpos.x], game->music_array);
+			take_object(game, game->player, &map[y][(int)fpos.x], game->music_array);
 	if (dir == -1 && (map[y][(int)fpos.x].type & WALL) == WALL)
 		return ((t_dvector2){fpos.x, y + (dir == -1) + (DIST_TO_WALL + 0.0001) * dir * -1});
 	pos = dest.y + DIST_TO_WALL * dir;

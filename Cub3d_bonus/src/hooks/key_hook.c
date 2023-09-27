@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/26 16:21:04 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/27 16:33:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,12 @@ void	player_move(t_game *game, t_player *player, double delta_time, t_map **map)
 		if (((int)move_value.x != (int)player->f_real_pos.x || (int)move_value.y != (int)player->f_real_pos.y)
 			&& (map[(int)move_value.y][(int)move_value.x].type & MUSIC) == MUSIC)
 			play_music(&map[(int)move_value.y][(int)move_value.x], game->music_array);
-		// if ((map[(int)player->f_real_pos.y][(int)player->f_real_pos.x].type & MUSIC) == MUSIC)
-		// 	play_narrator();
+		if (((int)move_value.x != (int)player->f_real_pos.x || (int)move_value.y != (int)player->f_real_pos.y)
+			&& (map[(int)move_value.y][(int)move_value.x].type & NARRATOR) == NARRATOR)
+		{
+			play_narrator(&map[(int)move_value.y][(int)move_value.x], game->music_array);
+			map[(int)move_value.y][(int)move_value.x].type ^= NARRATOR;
+		}
 		game->player->f_real_pos = move_value;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/26 19:13:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/27 16:59:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	on_update(t_game *game)
 	update_sounds(game->music_array);
 	game->time = time_to_long(&time);
 	if ((game->map[(int)game->player->f_real_pos.y][(int)game->player->f_real_pos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
-		take_object(game->player, &game->map[(int)game->player->f_real_pos.y][(int)game->player->f_real_pos.x], game->music_array);
+		take_object(game, game->player, &game->map[(int)game->player->f_real_pos.y][(int)game->player->f_real_pos.x], game->music_array);
 	player_move(game, game->player, game->delta_time, game->map);
 	if (game->player->angle + game->player->angle >= 360)
 		game->player->angle = game->player->angle - 360;
@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 {
 	t_game	game;
 	bool	error;
-
+	
 	game = (t_game){0};
 	if (argc != 2)
 		return (printf("Error : Invalid nubmber of arguments\n"), 1);

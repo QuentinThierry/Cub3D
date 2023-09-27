@@ -75,3 +75,10 @@ Exit door :
 <!-- - walk under the door -->
 <!-- - the end screen -->
 
+Sound :
+- play sound when walk on an object with already something in the hand
+- ground lose sound if drop object on a case
+- si on prend un objet qui est narrateur alors que le narrateur parle deja
+- same for unlock door ...
+
+

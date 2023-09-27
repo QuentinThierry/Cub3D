@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/24 20:09:05 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/27 20:41:02 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static const t_vector2	g_button_size =
 static const int g_button_pos_left_offset_x =
 	WIN_X / 30 + (WIN_X / 8) * 2;
 
-static const int	inter_button_y =
+static const int	g_inter_button_y =
 	(WIN_Y - (WIN_Y / 10) * NB_OPTIONS_BUTTONS / 2) / (NB_OPTIONS_BUTTONS * 2);
 
 static const char	*g_description_opt_button[NB_OPTIONS_BUTTONS] =
@@ -30,6 +30,43 @@ static const char	*g_description_opt_button[NB_OPTIONS_BUTTONS] =
 
 static const char	*g_description_slider_button[NB_SLIDERS] =
 	{"FOV", "SOUND"};
+
+static const t_vector2 g_exit_button_pos =
+{
+	WIN_X / 100,
+	WIN_Y / 100
+};
+
+static const t_vector2 g_exit_button_size =
+{
+	WIN_X / 20,
+	WIN_Y / 20
+};
+
+static const t_vector2 g_slider_fov_pos =
+{
+	WIN_X / 20,
+	(WIN_Y / 5) * 4
+};
+
+static const t_vector2 g_slider_sound_pos =
+{
+	WIN_X / 20 + WIN_X / 2,
+	(WIN_Y / 5) * 4
+};
+
+static const t_vector2 g_slider_hor_size =
+{
+	WIN_X / 3,
+	WIN_Y / 50
+};
+
+static const t_vector2 g_slider_vert_size =
+{
+	WIN_X / 75,
+	WIN_Y / 20
+};
+
 
 bool	init_mlx(t_game *game)
 {
@@ -270,7 +307,7 @@ bool	init_pause_menu(t_game *game)
 		return (false);
 	opt_menu = &game->menu->option_menu;
 	pause_menu = &game->menu->pause_menu;
-	opt_menu->exit_opt_button.base_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button_exit_option.xpm", (t_vector2){100, 40});
+	opt_menu->exit_opt_button.base_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button_exit_option.xpm", g_exit_button_size);
 	if (!opt_menu->exit_opt_button.base_image)
 		return (false);
 	i = 0;
@@ -284,45 +321,44 @@ bool	init_pause_menu(t_game *game)
 		if (i < NB_OPTIONS_BUTTONS / 2 + (NB_OPTIONS_BUTTONS & 1))
 		{
 			opt_menu->buttons[i].pos =
-				(t_vector2){g_button_pos_left_offset_x, i * g_button_size.y + inter_button_y * (i + 1)};
+				(t_vector2){g_button_pos_left_offset_x, i * g_button_size.y + g_inter_button_y * (i + 1)};
 		}
 		else
 		{
 			opt_menu->buttons[i].pos =
 				(t_vector2){WIN_X / 2 + g_button_pos_left_offset_x, (i - NB_OPTIONS_BUTTONS / 2 - (NB_OPTIONS_BUTTONS & 1))
-				* g_button_size.y + inter_button_y
+				* g_button_size.y + g_inter_button_y
 				* (i - NB_OPTIONS_BUTTONS / 2 + ((NB_OPTIONS_BUTTONS & 1) == 0))};
 		}
 		i++;
 	}
 	opt_menu->exit_opt_button.hovered_image = button_hovered_image;
-	opt_menu->exit_opt_button.pos = (t_vector2){10, 10};
-	opt_menu->exit_opt_button.size = (t_vector2){100, 40};
+	opt_menu->exit_opt_button.pos = g_exit_button_pos;
+	opt_menu->exit_opt_button.size = g_exit_button_size;
 	opt_menu->exit_opt_button.text = "";
 
 
 
-
-	opt_menu->slider_fov.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_hor.xpm", (t_vector2){100, 20});
+	opt_menu->slider_fov.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_hor.xpm", g_slider_hor_size);
 	if (!opt_menu->slider_fov.hor_image)
 		return (false);
-	opt_menu->slider_fov.vert_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_vert.xpm", (t_vector2){20, 33});
+	opt_menu->slider_fov.vert_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_vert.xpm", g_slider_vert_size);
 	if (!opt_menu->slider_fov.vert_image)
 		return (false);
-	opt_menu->slider_fov.size = (t_vector2){100, 33};
-	opt_menu->slider_fov.pos = (t_vector2){WIN_X / 2, WIN_Y / 3 * 2};
+	opt_menu->slider_fov.size = (t_vector2){g_slider_hor_size.x, g_slider_vert_size.y};
+	opt_menu->slider_fov.pos = g_slider_fov_pos;
 	game->menu->option_menu.slider_fov.percent = (float)
 		(DFL_FOV - MIN_FOV) / (MAX_FOV - MIN_FOV);
 	game->menu->option_menu.slider_fov.min_max_value = (t_vector2){MIN_FOV, MAX_FOV};
 
-	opt_menu->sound_fov.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_hor.xpm", (t_vector2){100, 20});
+	opt_menu->sound_fov.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_hor.xpm", g_slider_hor_size);
 	if (!opt_menu->sound_fov.hor_image)
 		return (false);
-	opt_menu->sound_fov.vert_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_vert.xpm", (t_vector2){20, 33});
+	opt_menu->sound_fov.vert_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_vert.xpm", g_slider_vert_size);
 	if (!opt_menu->sound_fov.vert_image)
 		return (false);
-	opt_menu->sound_fov.size = (t_vector2){100, 33};
-	opt_menu->sound_fov.pos = (t_vector2){WIN_X / 2, (WIN_Y / 4) * 3};
+	opt_menu->sound_fov.size = (t_vector2){g_slider_hor_size.x, g_slider_vert_size.y};
+	opt_menu->sound_fov.pos = g_slider_sound_pos;
 	game->menu->option_menu.sound_fov.percent = DFL_SOUND;
 	game->menu->option_menu.sound_fov.min_max_value = (t_vector2){0, 100};
 

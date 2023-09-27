@@ -14,3 +14,10 @@
 	obj:*/libpulse.so.*
 }
 
+{
+	ignore_dlopen
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	fun:*_dl_open*
+}

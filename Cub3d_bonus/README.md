@@ -81,7 +81,7 @@ Sound :
 <!-- - ground lose sound if drop object on a case -->
 <!-- - take an object while a narrator is played would skip the next narrator -->
 <!-- - same for unlock door ... -->
-- need check sound if receptacle or no to get the next texture
-- music during the exit door ??
+<!-- - need check sound if receptacle or no to get the next texture -->
+<!-- - music during the exit door ?? -->
 
 

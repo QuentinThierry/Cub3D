@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 14:32:29 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/28 14:41:32 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/28 17:48:34 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,3 +88,4 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 		return (find_music(game, str, orient + 1, i));
 	return (true);
 }
+

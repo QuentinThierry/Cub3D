@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/27 16:33:49 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/27 20:26:46 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,12 @@ void	player_move(t_game *game, t_player *player, double delta_time, t_map **map)
 		move_value.y = player->f_real_pos.y + move_value.y * delta_time;
 		move_value = check_colliding(game, move_value, map);
 		if (((int)move_value.x != (int)player->f_real_pos.x || (int)move_value.y != (int)player->f_real_pos.y)
-			&& (map[(int)move_value.y][(int)move_value.x].type & MUSIC) == MUSIC)
+			&& (map[(int)move_value.y][(int)move_value.x].type & MUSIC) == MUSIC
+			&& (map[(int)move_value.y][(int)move_value.x].type & OBJECT_INTERACTIVE) != OBJECT_INTERACTIVE)
 			play_music(&map[(int)move_value.y][(int)move_value.x], game->music_array);
 		if (((int)move_value.x != (int)player->f_real_pos.x || (int)move_value.y != (int)player->f_real_pos.y)
-			&& (map[(int)move_value.y][(int)move_value.x].type & NARRATOR) == NARRATOR)
+			&& (map[(int)move_value.y][(int)move_value.x].type & NARRATOR) == NARRATOR
+			&& (map[(int)move_value.y][(int)move_value.x].type & OBJECT_INTERACTIVE) != OBJECT_INTERACTIVE)
 		{
 			play_narrator(&map[(int)move_value.y][(int)move_value.x], game->music_array);
 			map[(int)move_value.y][(int)move_value.x].type ^= NARRATOR;

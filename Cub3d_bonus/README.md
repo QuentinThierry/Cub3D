@@ -76,10 +76,10 @@ Exit door :
 <!-- - the end screen -->
 
 Sound :
-- play sound when walk on an object with already something in the hand
+<!-- - play sound when walk on an object with already something in the hand -->
 - ground lose sound if drop object on a case
-- take an object while a narrator is played would skip the next narrator
-- same for unlock door ...
+<!-- - take an object while a narrator is played would skip the next narrator -->
+<!-- - same for unlock door ... -->
 - music during the exit door ??
 
 

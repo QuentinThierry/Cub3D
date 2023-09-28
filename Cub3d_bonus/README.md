@@ -5,8 +5,8 @@ ADD :
 - [X] objects
 - [X] max view distance
 - [x] sounds (ambiance music)
+- [ ] subtitle narrator
 - [X] exit + enigmes
-- [ ] random events (lightning, planks cracks, little girl)
 - [x] menu settings
 
 Obligation :
@@ -45,6 +45,12 @@ Minimap :
 <!-- - if screen is too small, do not draw minimap -->
 <!-- - leaks -->
 
+Menu:
+- when key is already used, several click on already used key would be opaque
+- exit button ugly
+- LEAKS
+
+
 Door :
 <!-- - show when a door is open -->
 <!-- - open with clic of the mouse -->
@@ -75,7 +81,7 @@ Exit door :
 <!-- - anim the door open with light -->
 <!-- - walk under the door -->
 <!-- - the end screen -->
-- beug door stay oen against the wall
+- beug door stay open against the wall
 
 Sound :
 <!-- - play sound when walk on an object with already something in the hand -->

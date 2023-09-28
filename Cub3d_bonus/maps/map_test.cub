@@ -8,23 +8,23 @@ C ./assets/cobble.xpm
 D_i ./assets/door.xpm
 
 D_c_k ./assets/door.xpm ./assets/door_open.xpm
-MR_k ./assets/sounds/game-over.wav ./assets/sounds/countdown.wav
+MR_k ./assets/sounds/fail.wav ./assets/sounds/CantinaBand3.wav
 OI_c ./assets/key.xpm ./assets/hand.xpm
 M_c ./assets/sounds/sound.wav
 D_z_v ./assets/door.xpm ./assets/door_open.xpm
 OI_z ./assets/key.xpm ./assets/hand.xpm
 
 OI_x ./assets/nounours.xpm ./assets/hand.xpm
-M_x ./assets/sounds/baby.wav
+M_x ./assets/sounds/stereo.wav
 R_x_g ./assets/lit.xpm ./assets/lit_nounours.xpm
-MR_g ./assets/sounds/game-over1.wav ./assets/sounds/laugh.wav
+MR_g ./assets/sounds/game-over.wav ./assets/sounds/test.wav
 OI_q ./assets/nounours.xpm ./assets/hand.xpm
 R_q_w ./assets/lit.xpm ./assets/lit_nounours.xpm
 
 OI_s ./assets/nounours.xpm ./assets/hand.xpm ./assets/table_nounours.xpm ./assets/table.xpm
-M_s ./assets/sounds/kid.wav
+M_s ./assets/sounds/stereo.wav
 R_s_l ./assets/smiley.xpm ./assets/cobble.xpm
-MR_l ./assets/sounds/fail.wav ./assets/sounds/baby.wav
+MR_l ./assets/sounds/game-over1.wav ./assets/sounds/stereo.wav
 OI_a ./assets/nounours.xpm ./assets/hand.xpm ./assets/table_nounours.xpm ./assets/table.xpm
 R_a_d ./assets/smiley.xpm ./assets/cobble.xpm
 

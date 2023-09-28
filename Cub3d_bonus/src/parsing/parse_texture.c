@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/22 15:22:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/28 14:41:15 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -482,6 +482,8 @@ static bool	_cmp_texture(char *line, t_game *game, int i, bool *is_end)
 			return (_find_texture(game, line + i + 4, game->nb_file, e_object_interactive));
 		else if (ft_strncmp(line + i, "MR_", 3) == 0)
 			return (find_music(game, line + i + 4, e_music_receptacle, 0));
+		else if (ft_strncmp(line + i, "MO_", 3) == 0)
+			return (find_music(game, line + i + 4, e_music_object, 0));
 		else if (ft_strncmp(line + i, "HR_", 3) == 0)
 			return (find_music(game, line + i + 4, e_narrator_receptacle, 0));
 	}

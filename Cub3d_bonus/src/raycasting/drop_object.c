@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:00:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/27 17:59:07 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/28 16:35:08 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,10 @@ static void	_set_object_on_cell(t_map *map_cell, t_player *player, t_dvector2 po
 	((t_object *)player->item.arg)->map_pos = pos;
 	map_cell->symbol = player->item.symbol;
 	map_cell->arg = player->item.arg;
-	map_cell->type = player->item.type;
-	if ((player->item.type & MUSIC) == MUSIC)
-		map_cell->music = player->item.music;
-	if ((player->item.type & NARRATOR) == NARRATOR)
-		map_cell->narrator = player->item.narrator;
-	if ((player->item.type & IS_PLAYING_MUSIC) == IS_PLAYING_MUSIC)
+	map_cell->type |= player->item.type;
+	if ((player->item.type & MUSIC_OBJECT) == MUSIC_OBJECT)
+		((t_object *)map_cell->arg)->music = ((t_object *)player->item.arg)->music;
+	if ((player->item.type & IS_PLAYING_MUSIC_OBJECT) == IS_PLAYING_MUSIC_OBJECT)
 		update_map_cell_music(map_cell, &player->item, music_tab);
 	if ((player->item.type & IS_PLAYING_NARRATOR) == IS_PLAYING_NARRATOR)
 		music_tab[1].map_cell = map_cell;
@@ -35,7 +33,7 @@ static void	_set_object_on_cell(t_map *map_cell, t_player *player, t_dvector2 po
 
 static void	_unlock_door(t_game *game, t_map *map_cell, t_player *player, t_music_game *music_tab)
 {
-	map_cell->type ^= DOOR_LOCK;
+	map_cell->type &= ~DOOR_LOCK;
 	map_cell->type |= DOOR_UNLOCK;
 	map_cell->sprite[e_door_image] = map_cell->sprite[e_door_image + 1];
 	((t_door*)map_cell->arg)->is_opening_door = 1;
@@ -43,11 +41,11 @@ static void	_unlock_door(t_game *game, t_map *map_cell, t_player *player, t_musi
 	if ((map_cell->type & MUSIC) == MUSIC)
 	{
 		map_cell->music = get_music(game->file_music, game->nb_music, map_cell->symbol, e_music_receptacle_complete);
-		play_music(map_cell, music_tab);
-		map_cell->type ^= MUSIC;
+		play_music(map_cell, music_tab, map_cell->music, IS_PLAYING_MUSIC);
+		map_cell->type &= ~MUSIC;
 	}
 	if (((map_cell->type & NARRATOR) == NARRATOR)
-		||(map_cell->type & NARRATOR_RECEPTACLE) == NARRATOR_RECEPTACLE)
+		|| (map_cell->type & NARRATOR_RECEPTACLE) == NARRATOR_RECEPTACLE)
 	{
 		map_cell->narrator = get_narrator(game->file_music, game->nb_music
 				, map_cell->symbol, e_narrator_receptacle_complete);
@@ -65,9 +63,8 @@ static void	_complete_receptacle(t_game *game, t_map *map_cell, t_player *player
 	if ((map_cell->type & MUSIC) == MUSIC)
 	{
 		map_cell->music = get_music(game->file_music, game->nb_music, map_cell->symbol, e_music_receptacle_complete);
-		play_music(map_cell, game->music_array);
-		map_cell->type ^= MUSIC;
-		map_cell->music = NULL;
+		play_music(map_cell, game->music_array, map_cell->music, IS_PLAYING_MUSIC);
+		map_cell->type &= ~MUSIC;
 	}
 	if ((map_cell->type & NARRATOR) == NARRATOR
 		|| (map_cell->type & NARRATOR_RECEPTACLE) == NARRATOR_RECEPTACLE)
@@ -90,7 +87,7 @@ static void	_complete_receptacle(t_game *game, t_map *map_cell, t_player *player
 	if (frame != exit->sprite[e_door_image].frame)
 		exit->sprite[e_door_image].frame = frame;
 	if (frame == game->tab_images[exit->sprite[e_door_image].index].nb_total_frame - 1)
-		exit->type ^= DOOR_LOCK;
+		exit->type &= ~DOOR_LOCK;
 }
 
 void	drop_object(t_player *player, t_map **map, t_map *exit, t_game *game)

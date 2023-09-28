@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/27 17:43:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/28 16:48:36 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,33 @@
 
 void	take_object(t_game *game, t_player *player, t_map *cell_map, t_music_game *music_tab)
 {
+	printf("type : %d\n", cell_map->type);
 	if (!(player->has_item == false && (cell_map->type & WALL) != WALL))
 		return ;
 	player->item = *cell_map;
 	((t_object *)player->item.arg)->map_pos = (t_dvector2){-1, -1};
-	cell_map->symbol = '0';
-	cell_map->arg = NULL;
+	player->item.type &= ~MUSIC & ~IS_PLAYING_MUSIC;
 	if ((cell_map->type & NARRATOR) == NARRATOR)
 	{
 		play_narrator(&player->item, music_tab);
-		player->item.type ^= NARRATOR;
-		cell_map->type ^= NARRATOR;
+		player->item.type &= ~NARRATOR;
+		cell_map->type &= ~NARRATOR;
 	}
-	if ((cell_map->type & MUSIC) == MUSIC)
-	{
-		play_music(&player->item, music_tab);
-		cell_map->type ^= MUSIC;
-	}
-	if ((cell_map->type & IS_PLAYING_MUSIC) == IS_PLAYING_MUSIC)
-	{
+	if ((cell_map->type & MUSIC_OBJECT) == MUSIC_OBJECT)
+		play_music(&player->item, music_tab
+			, ((t_object *)player->item.arg)->music, IS_PLAYING_MUSIC_OBJECT);
+	if ((cell_map->type & IS_PLAYING_MUSIC_OBJECT) == IS_PLAYING_MUSIC_OBJECT)
 		update_map_cell_music(&player->item, cell_map, music_tab);
-		cell_map->type ^= IS_PLAYING_MUSIC;
-	}
 	if ((cell_map->type & IS_PLAYING_NARRATOR) == IS_PLAYING_NARRATOR)
 	{
 		music_tab[1].map_cell = &player->item;
-		cell_map->type ^= IS_PLAYING_NARRATOR;
+		player->item.type &= ~IS_PLAYING_NARRATOR;
 	}
-	cell_map->type ^= OBJECT_INTERACTIVE;
-	cell_map->type ^= OBJECT;
+	cell_map->type &= ~MUSIC_OBJECT & ~IS_PLAYING_MUSIC_OBJECT;
+	cell_map->symbol = '0';
+	cell_map->arg = NULL;
+	cell_map->type &= ~OBJECT_INTERACTIVE;
+	cell_map->type &= ~OBJECT;
 	player->has_item = true;
 }
 
@@ -80,26 +78,24 @@ void	take_object_click(t_game *game, t_player *player, t_map **map)
 		return ;
 	player->item.symbol = map[(int)pos.y][(int)pos.x].symbol;
 	player->item.type = map[(int)pos.y][(int)pos.x].type;
-	player->item.type ^= WALL;
+	player->item.type &= ~WALL;
+	player->item.type &= ~MUSIC & ~IS_PLAYING_MUSIC;
+	map[(int)pos.y][(int)pos.x].type &= ~MUSIC_OBJECT & ~IS_PLAYING_MUSIC_OBJECT;
 	player->item.sprite[e_object_interactive_image] = map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_image];
 	player->item.sprite[e_object_interactive_hand_image] = map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_hand_image];
-	player->item.music = map[(int)pos.y][(int)pos.x].music;
-	player->item.narrator = map[(int)pos.y][(int)pos.x].narrator;
 	player->item.arg = find_empty_object(game);
+	((t_object *)player->item.arg)->music = ((t_object *)map[(int)pos.y][(int)pos.x].arg)->music;
 	((t_object *)player->item.arg)->map_pos = pos;
 	player->has_item = true;
-	if ((map[(int)pos.y][(int)pos.x].type & MUSIC) == MUSIC)
-	{
-		play_music(&player->item, game->music_array);
-		map[(int)pos.y][(int)pos.x].type ^= MUSIC;
-	}
+	if ((map[(int)pos.y][(int)pos.x].type & MUSIC_OBJECT) == MUSIC_OBJECT)
+		play_music(&player->item, game->music_array, ((t_object *)player->item.arg)->music, IS_PLAYING_MUSIC_OBJECT);
 	if ((map[(int)pos.y][(int)pos.x].type & NARRATOR) == NARRATOR)
 	{
 		play_narrator(&player->item, game->music_array);
-		player->item.type ^= NARRATOR;
-		map[(int)pos.y][(int)pos.x].type ^= NARRATOR;
+		player->item.type &= ~NARRATOR;
+		map[(int)pos.y][(int)pos.x].type &= ~NARRATOR;
 	}
-	map[(int)pos.y][(int)pos.x].type ^= OBJECT_INTERACTIVE;
+	map[(int)pos.y][(int)pos.x].type &= ~OBJECT_INTERACTIVE;
 	map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_image] = map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_after_image];
 }
 

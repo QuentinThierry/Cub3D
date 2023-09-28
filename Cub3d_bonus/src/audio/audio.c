@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/27 17:49:42 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/28 15:22:08 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,23 +64,25 @@ static t_music_game	*find_empty_place(t_music_game *music_tab)
 	return (NULL);
 }
 
-void	play_music(t_map *map_cell, t_music_game *music_tab)
+void	play_music(t_map *map_cell, t_music_game *music_tab, char *filename
+	, unsigned int type)
 {
 	t_music_game	*music;
 
-	if ((map_cell->type & IS_PLAYING_MUSIC) == IS_PLAYING_MUSIC)
+	if ((map_cell->type & IS_PLAYING_MUSIC) == IS_PLAYING_MUSIC
+		|| (map_cell->type & IS_PLAYING_MUSIC_OBJECT) == IS_PLAYING_MUSIC_OBJECT)
 		return ;
 	music = find_empty_place(music_tab);
 	if (music == NULL)
 		return ;
-	printf("play %s\n", map_cell->music);
-	music->music = LoadMusicStream(map_cell->music);
+	printf("play %s\n", filename);
+	music->music = LoadMusicStream(filename);
 	if (!IsMusicReady(music->music))
 		return ;
 	music->music.looping = false;
 	music->map_cell = map_cell;
 	music->is_playing = true;
-	map_cell->type |= IS_PLAYING_MUSIC;
+	map_cell->type |= type;
 	PlayMusicStream(music->music);
 }
 
@@ -93,7 +95,7 @@ void	play_narrator(t_map *map_cell, t_music_game *music_tab)
 	{
 		StopMusicStream(music->music);
 		UnloadMusicStream(music->music);
-		music->map_cell->type ^= IS_PLAYING_MUSIC;
+		music->map_cell->type &= ~IS_PLAYING_NARRATOR;
 		music->map_cell = NULL;
 		music->is_playing = false;
 	}
@@ -123,7 +125,7 @@ void	set_next_narrator(t_map *map_cell)
 void	play_sound_fail(t_game *game, t_map *map_cell, t_music_game *music_tab)
 {
 	if ((map_cell->type & MUSIC) == MUSIC)
-		play_music(map_cell, music_tab);
+		play_music(map_cell, music_tab, map_cell->music, IS_PLAYING_MUSIC);
 	else if ((map_cell->type & NARRATOR) == NARRATOR)
 	{
 		play_narrator(map_cell, music_tab);
@@ -145,7 +147,10 @@ void	update_sounds(t_music_game *music_array)
 			else
 			{
 				UnloadMusicStream(music_array[i].music);
-				music_array[i].map_cell->type ^= IS_PLAYING_MUSIC;
+				if (i == 1)
+				 	music_array[i].map_cell->type &= ~IS_PLAYING_NARRATOR;
+				else
+					music_array[i].map_cell->type &= ~IS_PLAYING_MUSIC & ~IS_PLAYING_MUSIC_OBJECT;
 				music_array[i].map_cell = NULL;
 				music_array[i].is_playing = false;
 			}

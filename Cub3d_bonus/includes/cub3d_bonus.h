@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/27 18:01:40 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/28 16:48:03 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,13 +108,17 @@
 # define OBJECT_INTERACTIVE 0b100000000000
 # define RECEPTACLE 0b1000000000000
 # define DOOR_LOCK 0b10000000000000
-# define EXIT 0b100000000000000
-# define MUSIC 0b1000000000000000
-# define NARRATOR 0b10000000000000000
-# define IS_PLAYING_MUSIC 0b100000000000000000
-# define IS_PLAYING_NARRATOR 0b1000000000000000000
-# define DOOR_UNLOCK 0b10000000000000000000
-# define NARRATOR_RECEPTACLE 0b100000000000000000000
+# define DOOR_UNLOCK 0b100000000000000
+# define EXIT 0b1000000000000000
+# define MUSIC 0b10000000000000000
+# define MUSIC_OBJECT 0b100000000000000000
+# define NARRATOR 0b1000000000000000000
+# define NARRATOR_RECEPTACLE 0b10000000000000000000
+# define IS_PLAYING_MUSIC 0b100000000000000000000
+# define IS_PLAYING_MUSIC_OBJECT 0b1000000000000000000000
+# define IS_PLAYING_NARRATOR 0b10000000000000000000000
+
+
 
 extern long tot_fps;
 extern long nb_fps;
@@ -145,6 +149,7 @@ enum e_orientation
 	e_receptacle_full,
 	e_exit,
 	e_music,
+	e_music_object,
 	e_music_receptacle,
 	e_music_receptacle_complete,
 	e_narrator,
@@ -193,16 +198,6 @@ typedef struct s_launch_ray
 	float	dist;
 }	t_launch_ray;
 
-typedef struct s_object
-{
-	t_dvector2	map_pos;
-	bool		visited;
-	float		dist;
-	long int	time;	//for animation
-	char		symbol_receptacle;
-	bool		is_completed;	//receptacle
-}	t_object;
-
 typedef struct s_music_name
 {
 	char				*filename;
@@ -211,6 +206,16 @@ typedef struct s_music_name
 	char				symbol;
 }	t_music_name;
 
+typedef struct s_object
+{
+	t_dvector2		map_pos;
+	bool			visited;
+	float			dist;
+	long int		time;	//for animation
+	char			symbol_receptacle;
+	bool			is_completed;	//receptacle
+	char			*music;
+}	t_object;
 
 typedef struct s_image
 {
@@ -518,7 +523,7 @@ t_music_name	*get_narrator(t_music_name *filename, int nb_music, char symbol, en
 bool			init_audio(t_game *game, t_music_name *music_file, int nb_music);
 void			update_sounds(t_music_game *music_array);
 void			close_audio(t_music_game *music_tab);
-void			play_music(t_map *map_cell, t_music_game *music_tab);
+void			play_music(t_map *map_cell, t_music_game *music_tab, char *filename, unsigned int type);
 void			play_narrator(t_map *map_cell, t_music_game *music_tab);
 void			play_sound_fail(t_game *game, t_map *map_cell, t_music_game *music_tab);
 void			set_next_narrator(t_map *map_cell);

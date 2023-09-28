@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 14:32:29 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/22 15:36:35 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/28 14:41:32 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ static bool	_is_existing(t_game *game, char symbol, enum e_orientation orient)
 			if (game->file_music[i].orient == orient)
 				return (true);
 			else if (game->file_music[i].orient == e_music_receptacle && orient == e_music)
+				return (true);
+			else if (game->file_music[i].orient == e_music_receptacle && orient == e_music_object)
 				return (true);
 			else if (game->file_music[i].orient == e_narrator_receptacle && orient == e_narrator)
 				return (true);
@@ -65,7 +67,8 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 	if (filename == NULL)
 		return (printf("Error : malloc failed\n"), false);
 	game->file_music[index].filename = filename;
-	if (orient == e_narrator || orient == e_narrator_receptacle || orient == e_narrator_receptacle_complete)
+	if (orient == e_narrator || orient == e_narrator_receptacle
+		|| orient == e_narrator_receptacle_complete || orient == e_narrator_receptacle_complete)
 	{
 		i += skip_whitespace(str + i);
 		if (str[i] == '\0')

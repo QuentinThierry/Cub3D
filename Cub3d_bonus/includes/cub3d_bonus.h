@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/28 16:48:03 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/28 17:03:22 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -528,5 +528,6 @@ void			play_narrator(t_map *map_cell, t_music_game *music_tab);
 void			play_sound_fail(t_game *game, t_map *map_cell, t_music_game *music_tab);
 void			set_next_narrator(t_map *map_cell);
 void			update_map_cell_music(t_map *map_cell, t_map *old_map_cell, t_music_game *music_array);
+void			clear_sound(t_music_game *music_array);
 
 #endif

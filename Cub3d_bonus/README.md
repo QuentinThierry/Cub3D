@@ -74,12 +74,14 @@ Exit door :
 <!-- - anim the door open with light -->
 <!-- - walk under the door -->
 <!-- - the end screen -->
+- beug door stay oen against the wall
 
 Sound :
 <!-- - play sound when walk on an object with already something in the hand -->
-- ground lose sound if drop object on a case
+<!-- - ground lose sound if drop object on a case -->
 <!-- - take an object while a narrator is played would skip the next narrator -->
 <!-- - same for unlock door ... -->
+- need check sound if receptacle or no to get the next texture
 - music during the exit door ??
 
 

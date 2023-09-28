@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/28 15:22:08 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/28 17:32:36 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,25 @@ void	update_map_cell_music(t_map *map_cell, t_map *old_map_cell, t_music_game *m
 		{
 			music_array[i].map_cell = map_cell;
 			return ;
+		}
+		i++;
+	}
+}
+
+void	clear_sound(t_music_game *music_array)
+{
+		int	i;
+
+	i = 1;
+	while (i < NB_MAX_SOUNDS)
+	{
+		if (music_array[i].is_playing == true)
+		{
+			if (IsMusicStreamPlaying(music_array[i].music))
+				StopMusicStream(music_array[i].music);
+			UnloadMusicStream(music_array[i].music);
+			music_array[i].map_cell = NULL;
+			music_array[i].is_playing = false;
 		}
 		i++;
 	}

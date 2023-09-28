@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/28 16:48:36 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/28 17:26:11 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	take_object(t_game *game, t_player *player, t_map *cell_map, t_music_game *music_tab)
 {
-	printf("type : %d\n", cell_map->type);
 	if (!(player->has_item == false && (cell_map->type & WALL) != WALL))
 		return ;
 	player->item = *cell_map;

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:16:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/28 15:13:35 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:38:14 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ int	menu_loop_hook(t_game *game)
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
 	menu = game->menu;
+	UpdateMusicStream(game->music_array[0].music);
 	if (menu->state != CHOOSING_KEY_MENU)
 		ft_memcpy(game->menu->image->addr,
 				game->menu->background_image->addr, WIN_X * WIN_Y * 4);

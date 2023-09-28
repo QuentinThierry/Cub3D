@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 20:40:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/28 16:42:22 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,12 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			map[i].sprite[e_west] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_west);
 			map[i].sprite[e_floor].index = -1;
 			map[i].sprite[e_ceiling].index = -1;
+			map[i].music = get_music(game->file_music, game->nb_music, line[i], e_music);
+			if (map[i].music != NULL)
+				map[i].type |= MUSIC;
+			map[i].narrator = get_narrator(game->file_music, game->nb_music, line[i], e_narrator);
+			if (map[i].narrator != NULL)
+				map[i].type |= NARRATOR;
 			if (is_door(line[i], game->filename, game->nb_file, &type_door))
 			{
 				map[i].arg = ft_calloc(1, sizeof(t_door));
@@ -128,7 +134,6 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 				}
 				if (type_door.orient == e_door_lock)
 				{
-					printf("coucou %c\n", type_door.symbol_receptacle);
 					map[i].type |= DOOR_LOCK;
 					map[i].type |= RECEPTACLE;
 					((t_door *)map[i].arg)->symbol_unlock_door = type_door.symbol_receptacle;
@@ -163,6 +168,12 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 				map[i].arg = ft_calloc(1, sizeof(t_object));
 				if (map[i].arg == NULL)
 					return (perror("Error"), false);
+				((t_object *)map[i].arg)->music = get_music(game->file_music, game->nb_music, line[i], e_music_object);
+				if (((t_object *)map[i].arg)->music != NULL)
+				{
+					printf("wall object %c\n", line[i]);
+					map[i].type |= MUSIC_OBJECT;
+				}
 			}
 			else if (is_receptacle(line[i], game->filename, game->nb_file, &c))
 			{
@@ -182,9 +193,15 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 		}
 		else
 		{
-			if (error == true)
+			if (error == true && !is_sound(game->file_music, game->nb_music, line[i]))
 				return (printf("Error : invalid caracter in the map\n"), false);
 			map[i].type = NONE;
+			map[i].music = get_music(game->file_music, game->nb_music, line[i], e_music);
+			if (map[i].music != NULL)
+				map[i].type |= MUSIC;
+			map[i].narrator = get_narrator(game->file_music, game->nb_music, line[i], e_narrator);
+			if (map[i].narrator != NULL)
+				map[i].type |= NARRATOR;
 			map[i].sprite[e_north].index = -1;
 			map[i].sprite[e_east].index = -1;
 			map[i].sprite[e_south].index = -1;
@@ -214,6 +231,12 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 				map[i].arg = ft_calloc(1, sizeof(t_object));
 				if (map[i].arg == NULL)
 					return (perror("Error"), false);
+				((t_object *)map[i].arg)->music = get_music(game->file_music, game->nb_music, line[i], e_music_object);
+				if (((t_object *)map[i].arg)->music != NULL)
+				{
+					map[i].type |= MUSIC_OBJECT;
+					printf("object %c\n", line[i]);
+				}
 			}
 		}
 		i++;

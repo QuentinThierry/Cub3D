@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/23 19:40:19 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:29:55 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,53 @@ bool	is_receptacle(char symbol, t_texture *tab, int len, char *c)
 		i++;
 	}
 	return (false);
+}
+
+bool	is_sound(t_music_name *filename, int nb_music, char symbol)
+{
+	int	i = 0;
+
+	while (i < nb_music)
+	{
+		if (filename[i].symbol == symbol)
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
+char	*get_music(t_music_name *filename, int nb_music, char symbol, enum e_orientation orient)
+{
+	int	i = 0;
+
+	while (i < nb_music)
+	{
+		if (filename[i].symbol == symbol)
+		{
+			if (filename[i].orient == orient ||
+					(orient == e_music && filename[i].orient == e_music_receptacle))
+				return (filename[i].filename);
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+t_music_name	*get_narrator(t_music_name *filename, int nb_music, char symbol, enum e_orientation orient)
+{
+	int	i = 0;
+
+	while (i < nb_music)
+	{
+		if (filename[i].symbol == symbol)
+		{
+			if (filename[i].orient == orient ||
+					(orient == e_narrator && filename[i].orient == e_narrator_receptacle))
+				return (&filename[i]);
+		}
+		i++;
+	}
+	return (NULL);
 }
 
 /**

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 16:27:51 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 19:26:08 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/26 19:18:58 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,42 @@ void	free_tab(void **str, int size)
 		i++;
 	}
 	free(str);
+}
+
+void	free_minimap(t_minimap *minimap, void *mlx_ptr)
+{
+	if (minimap != NULL)
+	{
+		if (minimap->image)
+			mlx_destroy_image(mlx_ptr, minimap->image->img);
+		if (minimap->back_img)
+			mlx_destroy_image(mlx_ptr, minimap->back_img->img);
+		if (minimap->buffer_img)
+			mlx_destroy_image(mlx_ptr, minimap->buffer_img->img);
+		if (minimap->player_img)
+			mlx_destroy_image(mlx_ptr, minimap->player_img->img);
+		free(minimap->image);
+		free(minimap->back_img);
+		free(minimap->buffer_img);
+		free(minimap->player_img);
+		free(minimap->bounds);
+		free(minimap);
+	}
+}
+void	free_music_file(t_music_name *music_tab, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		if (music_tab[i].filename != NULL)
+			free(music_tab[i].filename);
+		if (music_tab[i].subtitle != NULL)
+			free(music_tab[i].subtitle);
+		i++;
+	}
+	free(music_tab);
 }
 
 void	free_tab_object(t_object **object, int size)

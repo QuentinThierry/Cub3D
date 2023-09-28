@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 20:23:27 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/28 14:41:15 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,7 +224,7 @@ bool	ft_read_dir(DIR *dir, t_texture *texture)
 	return (true);
 }
 
-bool	is_existing(t_game *game, int index, char symbol, enum e_orientation orient)
+static bool	_is_existing(t_game *game, int index, char symbol, enum e_orientation orient)
 {
 	int		i;
 	bool	is_wall;
@@ -276,13 +276,12 @@ bool	is_existing(t_game *game, int index, char symbol, enum e_orientation orient
 		i++;
 	}
 	return (false);
-	
 }
 
 /**
  * @brief return the index of the next whitespace or the '\0' if none has been find
  */
-static int	_find_next_wsp(char *line , int i)
+int	find_next_wsp(char *line , int i)
 {
 	while (line[i] != '\0' && !(line[i] == ' ' || line[i] == '\t'
 			|| line[i] == '\v' || line[i] == '\n' || line[i] == '\f'
@@ -316,7 +315,7 @@ bool	multiple_texture(t_game *game, int *index, char * str, enum e_orientation o
 				break ;
 			return (printf("Error : Empty texture\n"), false);
 		}
-		len = _find_next_wsp(str + i, 0);
+		len = find_next_wsp(str + i, 0);
 		if (len >= 0 && (str[i + len] == ' ' || str[i + len] == '\t'
 			|| str[i + len] == '\v' || str[i + len] == '\n' || str[i + len] == '\f'
 			|| str[i + len] == '\r'))
@@ -376,11 +375,9 @@ static bool	_find_texture(t_game *game, char *str, int index, enum e_orientation
 	int		i;
 	int		len;
 
-	if (is_existing(game, index, *(str - 1), orient))
+	if (_is_existing(game, index, *(str - 1), orient))
 		return (printf("Error : Multiples definition of a texture\n"), false);
-	if (orient == e_receptacle_empty || orient == e_door_lock)
-		return (multiple_texture(game, &index, str, orient));
-	else if (orient == e_object_interactive)
+	if (orient == e_receptacle_empty || orient == e_door_lock || orient == e_object_interactive)
 		return (multiple_texture(game, &index, str, orient));
 	if (index >= game->nb_file)
 	{
@@ -429,7 +426,7 @@ static bool	_cmp_texture(char *line, t_game *game, int i, bool *is_end)
 {
 	int	next_wsp;
 
-	next_wsp = _find_next_wsp(line, i);
+	next_wsp = find_next_wsp(line, i);
 	if (next_wsp - i == 1)
 	{
 		if (line[i] == 'F')
@@ -470,6 +467,10 @@ static bool	_cmp_texture(char *line, t_game *game, int i, bool *is_end)
 			return (_find_texture(game, line + i + 3, game->nb_file, e_door));
 		else if (ft_strncmp(line + i, "T_", 2) == 0)
 			return (_find_texture(game, line + i + 3, game->nb_file, e_exit));
+		else if (ft_strncmp(line + i, "M_", 2) == 0)
+			return (find_music(game, line + i + 3, e_music, 0));
+		else if (ft_strncmp(line + i, "H_", 2) == 0)
+			return (find_music(game, line + i + 3, e_narrator, 0));
 	}
 	else if (next_wsp - i == 4)
 	{
@@ -479,6 +480,12 @@ static bool	_cmp_texture(char *line, t_game *game, int i, bool *is_end)
 			return (_find_texture(game, line + i + 4, game->nb_file, e_object_wall));
 		else if (ft_strncmp(line + i, "OI_", 3) == 0)
 			return (_find_texture(game, line + i + 4, game->nb_file, e_object_interactive));
+		else if (ft_strncmp(line + i, "MR_", 3) == 0)
+			return (find_music(game, line + i + 4, e_music_receptacle, 0));
+		else if (ft_strncmp(line + i, "MO_", 3) == 0)
+			return (find_music(game, line + i + 4, e_music_object, 0));
+		else if (ft_strncmp(line + i, "HR_", 3) == 0)
+			return (find_music(game, line + i + 4, e_narrator_receptacle, 0));
 	}
 	else if (next_wsp - i == 5)
 	{

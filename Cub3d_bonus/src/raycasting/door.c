@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 18:43:03 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/28 16:59:42 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -372,6 +372,11 @@ void	open_door(t_game *game)
 	if (ray.hit.x != -1)
 	{
 		if ((game->map[(int)ray.hit.y][(int)ray.hit.x].type & DOOR_LOCK) == DOOR_LOCK)
+		{
+			play_sound_fail(game, &game->map[(int)ray.hit.y][(int)ray.hit.x], game->music_array);
+			return ;
+		}
+		if ((game->map[(int)ray.hit.y][(int)ray.hit.x].type & DOOR_UNLOCK) == DOOR_UNLOCK)
 			return ;
 		if ((game->map[(int)ray.hit.y][(int)ray.hit.x].type & EXIT) == EXIT)
 			return (end_of_the_game(game, ray.orient));
@@ -408,11 +413,15 @@ void	open_door(t_game *game)
 static void	_step_door_open(t_door *door, long time, t_map *map_cell, t_map **map)
 {
 	long	tmp;
+	int		speed;
 
+	speed = SPEEP_DOOR_OPENING;
+	if ((map_cell->type & DOOR_UNLOCK) == DOOR_UNLOCK)
+		speed = SPEEP_UNLOCK_DOOR_OPENING;
 	tmp = time - door->time;
 	if (door->is_opening_door == 1)
 	{
-		door->door_percent += tmp / 1000.0 * SPEEP_DOOR_OPENING;
+		door->door_percent += tmp / 1000.0 * speed;
 		door->time = time;
 		if (door->door_percent > 89)
 		{
@@ -420,17 +429,21 @@ static void	_step_door_open(t_door *door, long time, t_map *map_cell, t_map **ma
 			door->door_percent = 90;
 			door->is_opening_door = 0;
 			change_adjacent_wall(map, door->map_pos, true);
+			if ((map_cell->type & DOOR_UNLOCK) == DOOR_UNLOCK)
+				map_cell->type ^= DOOR;
 		}
 	}
 	else
 	{
-		door->door_percent -= tmp / 1000.0 * SPEEP_DOOR_OPENING;
+		door->door_percent -= tmp / 1000.0 * speed;
 		door->time = time;
 		change_adjacent_wall(map, door->map_pos, false);
 		if (door->door_percent <= 0)
 		{
 			door->door_percent = 0;
 			door->is_opening_door = 0;
+			if ((map_cell->type & DOOR_UNLOCK) == DOOR_UNLOCK)
+				map_cell->type ^= DOOR;
 		}
 	}
 }

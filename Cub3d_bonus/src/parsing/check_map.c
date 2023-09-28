@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 21:27:20 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/20 19:57:45 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/28 18:01:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,34 @@ static bool	_check_sides(t_map **map, int x, int y, t_vector2 map_size)
 	if (map[y - 1][x].symbol == ' ' || map[y][x - 1].symbol == ' '
 			|| map[y + 1][x].symbol == ' ' || map[y][x + 1].symbol == ' ')
 		return (false);
+	return (true);
+}
+
+
+bool	_check_sound(t_game *game, t_map *map_cell)
+{
+	char *filename;
+	void *narrator;
+
+	if ((map_cell->type & MUSIC_OBJECT) == MUSIC_OBJECT
+		&& (map_cell->type & OBJECT_INTERACTIVE) != OBJECT_INTERACTIVE)
+		return (false);
+	if (((map_cell->type & RECEPTACLE) == RECEPTACLE || (map_cell->type & EXIT) == EXIT)
+		&& (map_cell->type & MUSIC) == MUSIC)
+	{
+		filename = get_music(game->file_music, game->nb_music, map_cell->symbol
+			, e_music_receptacle_complete);
+		if (filename == NULL)
+			return (false);
+	}
+	if (((map_cell->type & RECEPTACLE) == RECEPTACLE || (map_cell->type & EXIT) == EXIT)
+		&& (map_cell->type & NARRATOR) == NARRATOR)
+	{
+		narrator = get_narrator(game->file_music, game->nb_music, map_cell->symbol
+			, e_narrator_receptacle_complete);
+		if (narrator == NULL)
+			return (false);
+	}
 	return (true);
 }
 
@@ -46,6 +74,8 @@ bool	check_map(t_game *game)
 				if (!_check_sides(map, x, y, game->map_size))
 					return (printf("Error : Map not closed\n"), false);
 			}
+			if (!_check_sound(game, &map[y][x]))
+				return (printf("Error : Invalid sound description\n"), false);
 			x++;
 		}
 		y++;

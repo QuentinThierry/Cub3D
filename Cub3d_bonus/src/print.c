@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/13 16:27:34 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/22 15:30:03 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,20 @@ void	printf_texture(t_game *game)
 		}
 		i++;
 	}
+}
+
+void	printf_music(t_game *game)
+{
+	int i = 0;
+	
+	while (i < game->nb_music)
+	{
+		printf("music %s	char : %c	\norientation : %d	index : %d	subtitle : %s\n"
+			, game->file_music[i].filename, game->file_music[i].symbol
+			, game->file_music[i].orient, i, game->file_music[i].subtitle);
+		i++;
+	}
+	fflush(stdout);
 }
 
 void	print_map(t_game *game)

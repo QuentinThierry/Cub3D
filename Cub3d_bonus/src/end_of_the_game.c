@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:22:02 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 19:46:17 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/28 17:34:12 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ int	update_end(t_game *game)
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
 	clock_gettime(CLOCK_REALTIME, &time);
+	update_sounds(game->music_array);
 	game->time = time_to_long(&time);
 	if (game->end->status == e_go_in_font_of_door)
 	{
@@ -172,6 +173,22 @@ int	update_end(t_game *game)
  */
 void	end_of_the_game(t_game *game, const enum e_orientation orient)
 {
+	clear_sound(game->music_array);
+	if ((game->exit->type & MUSIC) == MUSIC)
+	{
+		game->exit->music = get_music(game->file_music, game->nb_music
+				, game->exit->symbol, e_music_receptacle_complete);
+		play_music(game->exit, game->music_array, game->exit->music, IS_PLAYING_MUSIC);
+		game->exit->type &= ~MUSIC;
+	}
+	if ((game->exit->type & NARRATOR) == NARRATOR
+		|| (game->exit->type & NARRATOR_RECEPTACLE) == NARRATOR_RECEPTACLE)
+	{
+		game->exit->narrator = get_narrator(game->file_music, game->nb_music
+				, game->exit->symbol, e_narrator_receptacle_complete);
+		play_narrator(game->exit, game->music_array);
+		game->exit->type &= ~NARRATOR & ~NARRATOR_RECEPTACLE;
+	}
 	find_dest(game->end, orient, ((t_door *)game->exit->arg)->map_pos, game->player);
 	game->end->orient = orient;
 	game->end->status = e_go_in_font_of_door;

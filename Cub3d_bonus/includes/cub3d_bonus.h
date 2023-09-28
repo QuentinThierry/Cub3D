@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/28 16:29:10 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:30:07 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,12 @@
 # include <X11/keysym.h>
 
 # include "minilibx-linux/mlx.h"
+# include "minilibx-linux/mlx_int.h"
 # include "get_next_line.h"
 # include "raudio/src/raudio.h"
+
+# include <X11/X.h>
+# include <X11/Xlib.h>
 
 # define WIN_X 1280 //1920 - 918 - 1280
 # define WIN_Y 720 //1080 - 468 - 720
@@ -45,6 +49,7 @@
 # define ROTATION_KEYBOARD 125
 # define ROTATION_MOUSE 20
 # define SPEEP_DOOR_OPENING 100
+# define SPEEP_UNLOCK_DOOR_OPENING 50
 # define TO_RADIAN .01745329251994
 # define DARK_COLOR 0x101010
 # define DIST_MAX_DARK 15.
@@ -96,6 +101,9 @@
 # define KEY_TEXT_CHANGE "Press any key"
 # define COLOR_BAR_OPTION 0x707070
 # define DARK_COLOR_OPTION 0x101010
+# define DIST_TO_WALL 0.0999
+
+# define BACKGROUND_MUSIC "./assets/sounds/test1.mp3"
 
 
 // KEYBINDS
@@ -127,7 +135,17 @@
 # define OBJECT_INTERACTIVE 0b100000000000
 # define RECEPTACLE 0b1000000000000
 # define DOOR_LOCK 0b10000000000000
-# define EXIT 0b100000000000000
+# define DOOR_UNLOCK 0b100000000000000
+# define EXIT 0b1000000000000000
+# define MUSIC 0b10000000000000000
+# define MUSIC_OBJECT 0b100000000000000000
+# define NARRATOR 0b1000000000000000000
+# define NARRATOR_RECEPTACLE 0b10000000000000000000
+# define IS_PLAYING_MUSIC 0b100000000000000000000
+# define IS_PLAYING_MUSIC_OBJECT 0b1000000000000000000000
+# define IS_PLAYING_NARRATOR 0b10000000000000000000000
+
+
 
 extern long tot_fps;
 extern long nb_fps;
@@ -159,6 +177,13 @@ enum e_orientation
 	e_receptacle_empty,
 	e_receptacle_full,
 	e_exit,
+	e_music,
+	e_music_object,
+	e_music_receptacle,
+	e_music_receptacle_complete,
+	e_narrator,
+	e_narrator_receptacle,
+	e_narrator_receptacle_complete,
 	e_end_screen,
 	e_object_image = e_north,
 	e_door_image = e_north,
@@ -216,14 +241,23 @@ typedef struct s_launch_ray
 	float	dist;
 }	t_launch_ray;
 
+typedef struct s_music_name
+{
+	char				*filename;
+	char				*subtitle;
+	enum e_orientation	orient;
+	char				symbol;
+}	t_music_name;
+
 typedef struct s_object
 {
-	t_dvector2	map_pos;
-	bool		visited;
-	float		dist;
-	long int	time;	//for animation
-	char		symbol_receptacle;
-	bool		is_completed;	//receptacle
+	t_dvector2		map_pos;
+	bool			visited;
+	float			dist;
+	long int		time;	//for animation
+	char			symbol_receptacle;
+	bool			is_completed;	//receptacle
+	char			*music;
 }	t_object;
 
 typedef struct s_image
@@ -249,11 +283,20 @@ typedef struct s_sprite
 // Use to stock the map
 typedef struct s_map
 {
-	char		symbol;
-	t_type		type;
-	void		*arg;
-	t_sprite	sprite[6];
+	char			symbol;
+	t_type			type;
+	void			*arg;
+	t_sprite		sprite[6];
+	char			*music;
+	t_music_name	*narrator;
 }	t_map;
+
+typedef struct s_music_game
+{
+	t_music		music;
+	t_map		*map_cell;
+	bool		is_playing;
+}	t_music_game;
 
 typedef	struct s_player
 {
@@ -409,11 +452,13 @@ typedef struct s_game
 	void			*mlx_ptr;
 	void			*win;
 	t_image			*tab_images;
+	int				nb_images;
 	t_image			*font;
 	t_dvector2		size_letter;
-	int				nb_images;
 	t_texture		*filename;
 	int				nb_file;
+	t_music_name	*file_music;
+	int				nb_music;
 	t_map			**map;
 	t_vector2		map_size;
 	t_player		*player;
@@ -426,7 +471,7 @@ typedef struct s_game
 	t_object		**object_array;
 	int				nb_doors;
 	t_map			**door_array;
-	t_music			*music_array;
+	t_music_game	*music_array;
 	float			*dist_tab;
 	float			*height_tab;
 	t_loading		*loading_screen;
@@ -449,11 +494,14 @@ void		free_tab(void **str, int size);
 void		free_map(t_map **map, t_vector2 size);
 void		free_tab_object(t_object **str, int size);
 void		free_str(char **str);
+void		free_music_file(t_music_name *music_tab, int size);
+void		free_minimap(t_minimap *minimap, void *mlx_ptr);
 char		*ft_strjoin(char *str, char *str1);
 char		*ft_strjoin_slash(char *str, char *str1, bool add_slash);
 int			ft_atoi(const char *str);
 int			get_len_texture(t_texture *texture, int len);
 void		ft_bzero(void *s, size_t n);
+int			find_next_wsp(char *line , int i);
 
 // -------Parsing-------
 void		exit_door_no_receptacle(t_map *exit, int nb_receptacle, t_image *tab_image);
@@ -471,11 +519,14 @@ bool		is_door(char symbol, t_texture *tab, int len, t_texture *type_door);
 bool		is_object(char symbol, t_texture *tab, int len);
 bool		is_object_interactive(char symbol, t_texture *tab, int len);
 bool		is_receptacle(char symbol, t_texture *tab, int len, char *c);
+bool		is_sound(t_music_name *filename, int nb_music, char symbol);
 bool		fill_object_and_doors(t_game *game);
+bool		find_music(t_game *game, char *str, enum e_orientation orient, int i);
 
 // -------Print--------
 void		printf_texture(t_game *game);
 void		print_map(t_game *game);
+void		printf_music(t_game *game);
 
 // -------Init---------
 bool		init_mlx(t_game *game);
@@ -491,11 +542,11 @@ int			mouse_leave(t_game *game);
 int			mouse_hook(int x,int y, t_game *game);
 int			mouse_stay_in_window_hook(int x, int y, t_game *game);
 int			on_update(t_game *game);
-void		player_move(t_player *player, double delta_time, t_map **map);
+void		player_move(t_game *game, t_player *player, double delta_time, t_map **map);
 int			mouse_click(int button, int x, int y,t_game *game);
 int			ft_close(t_game *game);
 
-t_dvector2	check_colliding(t_player *player, t_dvector2 new_pos, t_map **map);
+t_dvector2	check_colliding(t_game *game, t_dvector2 new_pos, t_map **map);
 
 // -------Raycasting-----
 t_ray		get_wall_hit(t_dvector2 fpos, t_map **map, float angle);
@@ -506,8 +557,8 @@ void		draw_objects(t_game *game);
 
 
 enum e_orientation	get_wall_orientation(t_dvector2 player, t_dvector2 wall);
-t_image			*get_image_wall(t_game	*game, t_ray ray, int *x_door);
-t_image			*get_image_non_wall(t_game *game, t_dvector2 hit, enum e_orientation orient);
+t_image		*get_image_wall(t_game	*game, t_ray ray, int *x_door);
+t_image		*get_image_non_wall(t_game *game, t_dvector2 hit, enum e_orientation orient);
 
 // draw
 void		draw_vert(t_game *game, int x, t_ray ray, double height);
@@ -584,7 +635,7 @@ void		blur_image(t_image *dest, t_image *src,
 
 // ------ Object interactive -----
 void		take_object_click(t_game *game, t_player *player, t_map **map);
-void		take_object(t_player *player, t_map *cell_map);
+void		take_object(t_game *game, t_player *player, t_map *cell_map, t_music_game *music_tab);
 void		drop_object(t_player *player, t_map **map, t_map *exit, t_game *game);
 t_object	*find_empty_object(t_game *game);
 void		draw_hand_item(t_game *game, t_player *player);
@@ -594,6 +645,17 @@ bool		init_end_screen(t_game *game);
 void		end_of_the_game(t_game *game, enum e_orientation orient);
 t_ray		get_wall_hit_end(t_dvector2 fpos, t_map **map, float angle, enum e_status status);
 
-// unsigned int	dark_with_dist(int color, float dark_quantity);
+// -------- Music ----------
+char			*get_music(t_music_name *filename, int nb_music, char symbol, enum e_orientation orient);
+t_music_name	*get_narrator(t_music_name *filename, int nb_music, char symbol, enum e_orientation orient);
+bool			init_audio(t_game *game, t_music_name *music_file, int nb_music);
+void			update_sounds(t_music_game *music_array);
+void			close_audio(t_music_game *music_tab);
+void			play_music(t_map *map_cell, t_music_game *music_tab, char *filename, unsigned int type);
+void			play_narrator(t_map *map_cell, t_music_game *music_tab);
+void			play_sound_fail(t_game *game, t_map *map_cell, t_music_game *music_tab);
+void			set_next_narrator(t_map *map_cell);
+void			update_map_cell_music(t_map *map_cell, t_map *old_map_cell, t_music_game *music_array);
+void			clear_sound(t_music_game *music_array);
 
 #endif

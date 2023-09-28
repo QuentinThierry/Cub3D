@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/28 15:03:08 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:29:16 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ int	on_update(t_game *game)
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
 	clock_gettime(CLOCK_REALTIME, &time);
+	update_sounds(game->music_array);
 	game->time = time_to_long(&time);
 	if ((game->map[(int)game->player->f_real_pos.y][(int)game->player->f_real_pos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
-		take_object(game->player, &game->map[(int)game->player->f_real_pos.y][(int)game->player->f_real_pos.x]);
-	player_move(game->player, game->delta_time, game->map);
+		take_object(game, game->player, &game->map[(int)game->player->f_real_pos.y][(int)game->player->f_real_pos.x], game->music_array);
+	player_move(game, game->player, game->delta_time, game->map);
 	if (game->player->angle + game->player->angle >= 360)
 		game->player->angle = game->player->angle - 360;
 	if (game->player->angle + game->player->angle < 0)
@@ -57,7 +58,7 @@ int main(int argc, char **argv)
 {
 	t_game	game;
 	bool	error;
-
+	
 	game = (t_game){0};
 	if (argc != 2)
 		return (printf("Error : Invalid number of arguments\n"), 1);
@@ -76,10 +77,13 @@ int main(int argc, char **argv)
 		return (perror("Error"), 1);
 	if (!parse_file(argv[1], &game))
 		return (1);
+	printf_music(&game);
 	if (!check_map(&game))
 		return (1);
 	if (!init_mlx(&game))
 		return (perror("Error"), ft_close(&game), 1);
+	if (!init_audio(&game, game.file_music, game.nb_music))
+		return (ft_close(&game), 1);
 	if (!loading_screen(&game))
 		return (perror("Error"), ft_close(&game), 1);
 	if (!init_end_screen(&game))
@@ -101,7 +105,7 @@ int main(int argc, char **argv)
 		return (perror("Error"), ft_close(&game), 1);
 	exit_door_no_receptacle(game.exit, game.total_receptacle, game.tab_images);
 	init_minimap(&game);
-	init_mouse(&game);
+	// init_mouse(&game);
 	mlx_do_key_autorepeatoff(game.mlx_ptr);
 	mlx_hook(game.win, 2, (1L << 0), (void *)key_press_hook, &game);
 	mlx_hook(game.win, 3, (1L << 1), (void *)key_release_hook, &game);
@@ -112,6 +116,7 @@ int main(int argc, char **argv)
 	mlx_hook(game.win, 4, (1L<< 2), mouse_click, &game);
 	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	sleep(1);
+	PlayMusicStream(game.music_array[0].music);
 	mlx_loop(game.mlx_ptr);
 	return (0);
 }

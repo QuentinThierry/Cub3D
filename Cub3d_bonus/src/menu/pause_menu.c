@@ -6,12 +6,13 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/28 16:33:05 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:25:47 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
+// with background
 void	draw_centered_text_at_y(t_game *game, t_image *image, int y, const char *text)
 {
 	int			i;
@@ -20,6 +21,15 @@ void	draw_centered_text_at_y(t_game *game, t_image *image, int y, const char *te
 	if (game->size_letter.y + y > image->size.y)
 		return ;
 	pos.x = WIN_X / 2. - (ft_strlen(text) * game->size_letter.x) / 2;
+	draw_alpha_rectangle(image,
+	(t_vector2){
+		pos.x - game->size_letter.x / 2,
+		y
+	},
+	(t_vector2){
+		(ft_strlen(text) + 1) * game->size_letter.x,
+		game->size_letter.y
+	});
 	if (ft_strlen(text) * game->size_letter.x > image->size.x)
 		pos.x = 0;
 	pos.y = y;

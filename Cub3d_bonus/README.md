@@ -4,10 +4,10 @@ ADD :
 - [X] organise texture
 - [X] objects
 - [X] max view distance
-- [ ] sounds (ambiance music)
+- [x] sounds (ambiance music)
 - [X] exit + enigmes
 - [ ] random events (lightning, planks cracks, little girl)
-- [ ] menu settings
+- [x] menu settings
 
 Obligation :
 - [x] minimap

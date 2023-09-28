@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/27 19:45:38 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/28 16:33:05 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,21 @@ void	draw_centered_text_at_y(t_game *game, t_image *image, int y, const char *te
 	}
 }
 
-void	draw_text_at(t_game *game, t_image *image, t_vector2 pos, const char *text)
+void	draw_text_at_with_backgroud(t_game *game, t_image *image, t_vector2 pos, const char *text)
 {
 	int			i;
 
 	if (game->size_letter.y + pos.y > image->size.y)
 		return ;
+	draw_alpha_rectangle(image,
+	(t_vector2){
+		pos.x - game->size_letter.x / 2,
+		pos.y
+	},
+	(t_vector2){
+		(ft_strlen(text) + 1) * game->size_letter.x,
+		game->size_letter.y
+	});
 	i = 0;
 	while (text[i])
 	{

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/27 20:41:02 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/28 16:37:27 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static const char	*g_description_opt_button[NB_OPTIONS_BUTTONS] =
 	"Pause", "Map Zoom", "Map Unzoom", "Door Interact", "Sprint"};
 
 static const char	*g_description_slider_button[NB_SLIDERS] =
-	{"FOV", "SOUND"};
+	{"FOV", "VOLUME"};
 
 static const t_vector2 g_exit_button_pos =
 {
@@ -45,19 +45,19 @@ static const t_vector2 g_exit_button_size =
 
 static const t_vector2 g_slider_fov_pos =
 {
-	WIN_X / 20,
-	(WIN_Y / 5) * 4
+	(WIN_X / 8),
+	((WIN_Y / 10) * (NB_OPTIONS_BUTTONS / 2 + (NB_OPTIONS_BUTTONS / 2) % 2 + 2))
 };
 
 static const t_vector2 g_slider_sound_pos =
 {
-	WIN_X / 20 + WIN_X / 2,
-	(WIN_Y / 5) * 4
+	(WIN_X / 8) + WIN_X / 2,
+	((WIN_Y / 10) * (NB_OPTIONS_BUTTONS / 2 + (NB_OPTIONS_BUTTONS / 2) % 2 + 2))
 };
 
 static const t_vector2 g_slider_hor_size =
 {
-	WIN_X / 3,
+	WIN_X / 5,
 	WIN_Y / 50
 };
 
@@ -67,6 +67,31 @@ static const t_vector2 g_slider_vert_size =
 	WIN_Y / 20
 };
 
+static const t_vector2 g_vert_bar_pos =
+{
+	WIN_X / 2 - WIN_X / 400,
+	WIN_Y / 20
+};
+
+static const t_vector2 g_vert_bar_size =
+{
+	WIN_X / 200,
+	((WIN_Y / 10) * (NB_OPTIONS_BUTTONS / 2 + (NB_OPTIONS_BUTTONS / 2) % 2 + 1))
+	+ WIN_Y / 20 - (WIN_Y / 20) * 2
+};
+
+static const t_vector2 g_hor_bar_pos =
+{
+	WIN_X / 20,
+	((WIN_Y / 10) * (NB_OPTIONS_BUTTONS / 2 + (NB_OPTIONS_BUTTONS / 2) % 2 + 1))
+	+ WIN_Y / 20
+};
+
+static const t_vector2 g_hor_bar_size =
+{
+	WIN_X - (WIN_X / 20) * 2,
+	(WIN_Y / 100)
+};
 
 bool	init_mlx(t_game *game)
 {
@@ -332,6 +357,8 @@ bool	init_pause_menu(t_game *game)
 		}
 		i++;
 	}
+
+
 	opt_menu->exit_opt_button.hovered_image = button_hovered_image;
 	opt_menu->exit_opt_button.pos = g_exit_button_pos;
 	opt_menu->exit_opt_button.size = g_exit_button_size;
@@ -350,6 +377,7 @@ bool	init_pause_menu(t_game *game)
 	game->menu->option_menu.slider_fov.percent = (float)
 		(DFL_FOV - MIN_FOV) / (MAX_FOV - MIN_FOV);
 	game->menu->option_menu.slider_fov.min_max_value = (t_vector2){MIN_FOV, MAX_FOV};
+	game->menu->option_menu.slider_fov.linked_text = g_description_slider_button[0];
 
 	opt_menu->sound_fov.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_hor.xpm", g_slider_hor_size);
 	if (!opt_menu->sound_fov.hor_image)
@@ -361,10 +389,18 @@ bool	init_pause_menu(t_game *game)
 	opt_menu->sound_fov.pos = g_slider_sound_pos;
 	game->menu->option_menu.sound_fov.percent = DFL_SOUND;
 	game->menu->option_menu.sound_fov.min_max_value = (t_vector2){0, 100};
+	game->menu->option_menu.sound_fov.linked_text = g_description_slider_button[1];
+
+
+	opt_menu->vert_bar_pos = g_vert_bar_pos;
+	opt_menu->vert_bar_size = g_vert_bar_size;
+	opt_menu->hor_bar_pos = g_hor_bar_pos;
+	opt_menu->hor_bar_size = g_hor_bar_size;
+
 
 	pause_menu->play_button.base_image = button_image;
 	pause_menu->play_button.hovered_image = button_hovered_image;
-	pause_menu->play_button.size = (t_vector2){200, 80};
+	pause_menu->play_button.size = pause_menu->play_button.base_image->size;
 	pause_menu->play_button.pos =
 		(t_vector2){WIN_X / 2 - pause_menu->play_button.size.x / 2,
 		WIN_Y / 3 - pause_menu->play_button.size.y / 2};
@@ -372,7 +408,7 @@ bool	init_pause_menu(t_game *game)
 
 	pause_menu->option_button.base_image = button_image;
 	pause_menu->option_button.hovered_image = button_hovered_image;
-	pause_menu->option_button.size = (t_vector2){200, 80};
+	pause_menu->option_button.size = pause_menu->option_button.base_image->size;
 	pause_menu->option_button.pos =
 		(t_vector2){WIN_X / 2 - pause_menu->option_button.size.x / 2,
 		WIN_Y / 2 - pause_menu->option_button.size.y / 2};
@@ -380,7 +416,7 @@ bool	init_pause_menu(t_game *game)
 
 	pause_menu->quit_button.base_image = button_image;
 	pause_menu->quit_button.hovered_image = button_hovered_image;
-	pause_menu->quit_button.size = (t_vector2){200, 80};
+	pause_menu->quit_button.size = pause_menu->quit_button.base_image->size;
 	pause_menu->quit_button.pos =
 		(t_vector2){WIN_X / 2 - pause_menu->quit_button.size.x / 2,
 		WIN_Y / 3 * 2 - pause_menu->quit_button.size.y / 2};

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:16:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/24 20:23:29 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/28 15:13:35 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,14 @@ void	menu_mouse_down_hook(int mouse_button, int x, int y, t_game *game)
 	pause_menu = &game->menu->pause_menu;
 	if (game->menu->state == PAUSE_MENU)
 	{
-		if (x > pause_menu->option_button.pos.x && x < pause_menu->option_button.pos.x + pause_menu->option_button.size.x
-				&& y > pause_menu->option_button.pos.y && y < pause_menu->option_button.pos.y + pause_menu->option_button.size.y)
+		if (x >= pause_menu->option_button.pos.x && x <= pause_menu->option_button.pos.x + pause_menu->option_button.size.x
+				&& y >= pause_menu->option_button.pos.y && y <= pause_menu->option_button.pos.y + pause_menu->option_button.size.y)
 			game->menu->state = OPTION_MENU;
-		else if (x > pause_menu->play_button.pos.x && x < pause_menu->play_button.pos.x + pause_menu->play_button.size.x
-				&& y > pause_menu->play_button.pos.y && y < pause_menu->play_button.pos.y + pause_menu->play_button.size.y)
+		else if (x >= pause_menu->play_button.pos.x && x <= pause_menu->play_button.pos.x + pause_menu->play_button.size.x
+				&& y >= pause_menu->play_button.pos.y && y <= pause_menu->play_button.pos.y + pause_menu->play_button.size.y)
 			resume_menu(game, game->menu);
-		else if (x > pause_menu->quit_button.pos.x && x < pause_menu->quit_button.pos.x + pause_menu->quit_button.size.x
-				&& y > pause_menu->quit_button.pos.y && y < pause_menu->quit_button.pos.y + pause_menu->quit_button.size.y)
+		else if (x >= pause_menu->quit_button.pos.x && x <= pause_menu->quit_button.pos.x + pause_menu->quit_button.size.x
+				&& y >= pause_menu->quit_button.pos.y && y <= pause_menu->quit_button.pos.y + pause_menu->quit_button.size.y)
 		ft_close(game);
 	}
 	else if (game->menu->state == OPTION_MENU)
@@ -68,8 +68,8 @@ void	menu_mouse_down_hook(int mouse_button, int x, int y, t_game *game)
 		while (i < NB_OPTIONS_BUTTONS)
 		{
 			button = &opt_menu->buttons[i];
-			if (x > button->pos.x && x < button->pos.x + button->size.x
-				&& y > button->pos.y && y < button->pos.y + button->size.y)
+			if (x >= button->pos.x && x <= button->pos.x + button->size.x
+				&& y >= button->pos.y && y <= button->pos.y + button->size.y)
 			{
 				game->menu->state = CHOOSING_KEY_MENU;
 				opt_menu->pressed_button = i;
@@ -82,17 +82,19 @@ void	menu_mouse_down_hook(int mouse_button, int x, int y, t_game *game)
 			i++;
 		}
 		exit_button = &opt_menu->exit_opt_button;
-		if (x > exit_button->pos.x && x < exit_button->pos.x
-			+ exit_button->size.x && y > exit_button->pos.y
+		if (x >= exit_button->pos.x && x <= exit_button->pos.x
+			+ exit_button->size.x && y >= exit_button->pos.y
 			&& y < exit_button->pos.y + exit_button->size.y)
-			resume_menu(game, game->menu);
-		if (x > opt_menu->slider_fov.pos.x && x < opt_menu->slider_fov.pos.x
-			+ opt_menu->slider_fov.size.x && y > opt_menu->slider_fov.pos.y
-			&& y < opt_menu->slider_fov.pos.y + opt_menu->slider_fov.size.y)
+				resume_menu(game, game->menu);
+		if (x >= opt_menu->slider_fov.pos.x && x <= opt_menu->slider_fov.pos.x
+			+ opt_menu->slider_fov.size.x + opt_menu->slider_fov.vert_image->size.x / 2
+			&& y >= opt_menu->slider_fov.pos.y
+			&& y <= opt_menu->slider_fov.pos.y + opt_menu->slider_fov.size.y)
 			opt_menu->pressed_slider_ref = &opt_menu->slider_fov;
-		if (x > opt_menu->sound_fov.pos.x && x < opt_menu->sound_fov.pos.x
-			+ opt_menu->sound_fov.size.x && y > opt_menu->sound_fov.pos.y
-			&& y < opt_menu->sound_fov.pos.y + opt_menu->sound_fov.size.y)
+		if (x >= opt_menu->sound_fov.pos.x && x <= opt_menu->sound_fov.pos.x
+			+ opt_menu->sound_fov.size.x + opt_menu->sound_fov.vert_image->size.x / 2
+			&& y >= opt_menu->sound_fov.pos.y
+			&& y <= opt_menu->sound_fov.pos.y + opt_menu->sound_fov.size.y)
 			opt_menu->pressed_slider_ref = &opt_menu->sound_fov;
 	}
 }

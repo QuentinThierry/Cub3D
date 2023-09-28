@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/25 19:45:07 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/28 16:29:10 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,9 @@
 # define NB_OPTIONS_BUTTONS 11
 # define NB_SLIDERS 11
 # define KEY_TEXT_CHANGE "Press any key"
+# define COLOR_BAR_OPTION 0x707070
+# define DARK_COLOR_OPTION 0x101010
+
 
 // KEYBINDS
 # define DFL_KEY_LEFT_MOVE 'a'
@@ -362,6 +365,10 @@ typedef struct s_option_menu
 	t_slider	slider_fov;
 	t_slider	sound_fov;
 	t_slider	*pressed_slider_ref;
+	t_vector2	vert_bar_pos;
+	t_vector2	vert_bar_size;
+	t_vector2	hor_bar_pos;
+	t_vector2	hor_bar_size;
 	t_byte		pressed_button;
 }	t_option_menu;
 
@@ -519,6 +526,7 @@ void		draw_minimap(t_game *game);
 void		generate_minimap_bounds(t_game *game);
 bool		init_minimap(t_game *game);
 void		draw_rotated_image(t_image *img_dest, t_image *img_src, t_vector2 pos, float angle);
+void		draw_rectangle(t_image *image, t_vector2 pos, t_vector2 size, t_pixel32 color);
 
 // ------------ Door ----------
 t_dvector2	door_hit_ver_se(t_dvector2 hit, float step, float door_angle, float player_angle);
@@ -566,7 +574,9 @@ void		draw_pause_menu(t_game *game, t_pause_menu *pause_menu);
 void		resume_menu(t_game *game, t_menu *menu);
 void		draw_centered_text_at_y(t_game *game, t_image *image, int y, const char *text);
 void		check_mouse_is_in_button(t_button *button, int x, int y);
-void		draw_text_at(t_game *game, t_image *image, t_vector2 pos, const char *text);
+void		draw_text_at_with_backgroud(t_game *game, t_image *image, t_vector2 pos, const char *text);
+void		draw_alpha_rectangle(t_image *dest, t_vector2 pos, t_vector2 size);
+
 
 // ------ Blur ------------
 void		blur_image(t_image *dest, t_image *src,

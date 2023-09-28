@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:10:09 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/24 20:18:57 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/28 16:34:07 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,13 @@ const char	*get_key_str(t_keybind key)
 }
 
 __attribute__((always_inline))
-static inline t_pixel32	darken_pixel(t_pixel32 pixel)
+static inline t_pixel32	get_alpha_pixel(t_pixel32 pixel, t_pixel32 color)
 {
 	const float	dark_quantity = 1 - DARK_PERCENT_OPTION;
 
-	return (((unsigned char)(((pixel >> 16) & 0xFF) * dark_quantity + ((DARK_COLOR >> 16) & 0xff) * DARK_PERCENT_OPTION) << 16)
-	| ((unsigned char)(((pixel >> 8) & 0xFF) * dark_quantity + ((DARK_COLOR >> 8) & 0xff) * DARK_PERCENT_OPTION) << 8)
-	| (unsigned char)((pixel & 0xFF) * dark_quantity + (DARK_COLOR & 0xff) * DARK_PERCENT_OPTION));
+	return (((unsigned char)(((pixel >> 16) & 0xFF) * dark_quantity + ((color >> 16) & 0xff) * DARK_PERCENT_OPTION) << 16)
+	| ((unsigned char)(((pixel >> 8) & 0xFF) * dark_quantity + ((color >> 8) & 0xff) * DARK_PERCENT_OPTION) << 8)
+	| (unsigned char)((pixel & 0xFF) * dark_quantity + (color & 0xff) * DARK_PERCENT_OPTION));
 }
 
 void	apply_menu_dark_filter(t_image *menu_image)
@@ -92,18 +92,12 @@ void	apply_menu_dark_filter(t_image *menu_image)
 		x = 0;
 		while (x < img_size_x)
 		{
-			*pix_addr = darken_pixel(*pix_addr);
+			*pix_addr = get_alpha_pixel(*pix_addr, DARK_COLOR_OPTION);
 			pix_addr++;
 			x++;
 		}
 		y++;
 	}
-}
-
-__attribute__((always_inline))
-static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, int color)
-{
-	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
 }
 
 static int	count_digits(int value)
@@ -133,13 +127,36 @@ static char	get_digit_at_itoa(int value, int pos)
 	return ("0123456789"[value % 10]);
 }
 
+void	draw_alpha_rectangle(t_image *dest, t_vector2 pos, t_vector2 size)
+{
+	int			x;
+	int			y;
+	t_pixel32	*addr_pixel;
+
+	addr_pixel = (t_pixel32 *)dest->addr + dest->size.x * pos.y + pos.x;
+	y = 0;
+	while (y < size.y)
+	{
+		x = 0;
+		while (x < size.x)
+		{
+			addr_pixel[x] = get_alpha_pixel(addr_pixel[x], 0xeeeeee);
+			x++;
+		}
+		addr_pixel += dest->size.x;
+		y++;
+	}
+}
+
 static void	draw_slider_linked_text(t_game *game, t_slider *slider, t_image *image)
 {
-	// draw_text_at(game, image,
-	// (t_vector2){
-		
-	// },
-	// slider->linked_text);
+	draw_text_at_with_backgroud(game, image,
+	(t_vector2){
+		slider->pos.x
+		- ft_strlen(slider->linked_text) * (game->size_letter.x + 1),
+		slider->pos.y - slider->hor_image->size.y / 2
+	},
+	slider->linked_text);
 }
 
 static void	draw_slider_value(t_game *game, t_slider *slider, t_image *image)
@@ -155,8 +172,19 @@ static void	draw_slider_value(t_game *game, t_slider *slider, t_image *image)
 	nb_digits = count_digits(value_to_draw);
 	if (value_to_draw < 0)
 		value_to_draw = -value_to_draw;
-	pos.x = slider->pos.x + slider->hor_image->size.x + slider->hor_image->size.x * 0.2;
-	pos.y = slider->pos.y - slider->vert_image->size.y / 2. + slider->vert_image->size.y / 4.;
+	pos.x = slider->pos.x + slider->hor_image->size.x + slider->hor_image->size.x * 0.1;
+	pos.y = slider->pos.y - slider->hor_image->size.y / 2.;
+	draw_alpha_rectangle(image,
+	(t_vector2){
+		pos.x + (game->size_letter.x / 2),
+		pos.y
+	},
+	(t_vector2)
+	{
+		(nb_digits) * (game->size_letter.x)
+		+ game->size_letter.x,
+		game->size_letter.y
+	});
 	i = 1;
 	while (i <= nb_digits)
 	{
@@ -199,6 +227,18 @@ void	draw_slider(t_game *game, t_slider *slider, t_image *image)
 	draw_slider_linked_text(game, slider, image);
 }
 
+void	draw_hor_bar(t_option_menu *opt, t_image *dest)
+{
+	draw_rectangle(
+		dest, opt->hor_bar_pos, opt->hor_bar_size, COLOR_BAR_OPTION);
+}
+
+void	draw_vert_bar(t_option_menu *opt, t_image *dest)
+{
+	draw_rectangle(
+		dest, opt->vert_bar_pos, opt->vert_bar_size, COLOR_BAR_OPTION);
+}
+
 void	draw_option_menu(t_game *game, t_option_menu *opt_menu)
 {
 	int	i;
@@ -224,7 +264,7 @@ void	draw_option_menu(t_game *game, t_option_menu *opt_menu)
 			&opt_menu->buttons[i], x_mouse, y_mouse);
 		draw_button(&opt_menu->buttons[i], game->menu->image);
 		draw_text_in_button(game, game->menu->image, &opt_menu->buttons[i]);
-		draw_text_at(game, game->menu->image,
+		draw_text_at_with_backgroud(game, game->menu->image,
 			(t_vector2){opt_menu->buttons[i].pos.x
 				- opt_menu->buttons[i].size.x * 1.5,
 				opt_menu->buttons[i].pos.y + opt_menu->buttons[i].size.y / 2.
@@ -234,5 +274,7 @@ void	draw_option_menu(t_game *game, t_option_menu *opt_menu)
 	draw_button(&opt_menu->exit_opt_button, game->menu->image);
 	draw_slider(game, &opt_menu->slider_fov, game->menu->image);
 	draw_slider(game, &opt_menu->sound_fov, game->menu->image);
+	draw_hor_bar(opt_menu, game->menu->image);
+	draw_vert_bar(opt_menu, game->menu->image);
 }
 

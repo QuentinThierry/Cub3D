@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object_interactive.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/28 17:26:11 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/28 20:15:45 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ void	take_object_click(t_game *game, t_player *player, t_map **map)
 	((t_object *)player->item.arg)->music = ((t_object *)map[(int)pos.y][(int)pos.x].arg)->music;
 	((t_object *)player->item.arg)->map_pos = pos;
 	player->has_item = true;
-	if ((map[(int)pos.y][(int)pos.x].type & MUSIC_OBJECT) == MUSIC_OBJECT)
+	if ((player->item.type & MUSIC_OBJECT) == MUSIC_OBJECT)
 		play_music(&player->item, game->music_array, ((t_object *)player->item.arg)->music, IS_PLAYING_MUSIC_OBJECT);
-	if ((map[(int)pos.y][(int)pos.x].type & NARRATOR) == NARRATOR)
+	if ((player->item.type & NARRATOR) == NARRATOR)
 	{
 		play_narrator(&player->item, game->music_array);
 		player->item.type &= ~NARRATOR;

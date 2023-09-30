@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loading_screen.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 19:04:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/16 13:27:45 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/30 16:09:08 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,21 @@ void print_text(t_game *game, char *str, t_image *alpha, t_vector2 start_pos)
 	i = 0;
 	while (str[i])
 	{
-		draw_image_with_transparence(game->image->addr + (start_pos.y * game->image->size_line + (start_pos.x
-			+ (int)(game->size_letter.x * i)) * 4) , alpha
-			, (t_vector2){(int)(game->size_letter.x * (str[i] - '!')), 0}
-			, (t_vector2){(int)game->size_letter.x, (int)game->size_letter.y});
+		if (str[i] == 32)
+		{
+			i++;
+			continue ;
+		}
+		else if (str[i] < 32 || str[i] > 126)
+			draw_image_with_transparence(game->image->addr + (start_pos.y * game->image->size_line + (start_pos.x
+				+ (int)(game->size_letter.x * i)) * 4) , alpha
+				, (t_vector2){(int)(game->size_letter.x * ('?' - '!')), 0}
+				, (t_vector2){(int)game->size_letter.x, (int)game->size_letter.y});
+		else
+			draw_image_with_transparence(game->image->addr + (start_pos.y * game->image->size_line + (start_pos.x
+				+ (int)(game->size_letter.x * i)) * 4) , alpha
+				, (t_vector2){(int)(game->size_letter.x * (str[i] - '!')), 0}
+				, (t_vector2){(int)game->size_letter.x, (int)game->size_letter.y});
 		i++;
 	}
 }

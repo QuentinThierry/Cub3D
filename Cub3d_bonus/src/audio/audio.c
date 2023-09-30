@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/28 17:32:36 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/30 15:56:33 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	play_music(t_map *map_cell, t_music_game *music_tab, char *filename
 	PlayMusicStream(music->music);
 }
 
-void	play_narrator(t_map *map_cell, t_music_game *music_tab)
+void	play_narrator(t_game *game, t_map *map_cell, t_music_game *music_tab)
 {
 	t_music_game	*music;
 
@@ -107,7 +107,8 @@ void	play_narrator(t_map *map_cell, t_music_game *music_tab)
 	music->map_cell = map_cell;
 	music->is_playing = true;
 	map_cell->type |= IS_PLAYING_NARRATOR;
-	PlayMusicStream(music->music); //+subtitle
+	PlayMusicStream(music->music);
+	// print_subtitle(game, map_cell);
 }
 
 void	set_next_narrator(t_map *map_cell)
@@ -128,7 +129,7 @@ void	play_sound_fail(t_game *game, t_map *map_cell, t_music_game *music_tab)
 		play_music(map_cell, music_tab, map_cell->music, IS_PLAYING_MUSIC);
 	else if ((map_cell->type & NARRATOR) == NARRATOR)
 	{
-		play_narrator(map_cell, music_tab);
+		play_narrator(game, map_cell, music_tab);
 		set_next_narrator(map_cell);
 	}
 }

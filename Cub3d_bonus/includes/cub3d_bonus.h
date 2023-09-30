@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/28 19:30:07 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/30 15:54:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,6 +245,7 @@ typedef struct s_music_name
 {
 	char				*filename;
 	char				*subtitle;
+	unsigned int		offset;
 	enum e_orientation	orient;
 	char				symbol;
 }	t_music_name;
@@ -652,10 +653,11 @@ bool			init_audio(t_game *game, t_music_name *music_file, int nb_music);
 void			update_sounds(t_music_game *music_array);
 void			close_audio(t_music_game *music_tab);
 void			play_music(t_map *map_cell, t_music_game *music_tab, char *filename, unsigned int type);
-void			play_narrator(t_map *map_cell, t_music_game *music_tab);
+void			play_narrator(t_game *game, t_map *map_cell, t_music_game *music_tab);
 void			play_sound_fail(t_game *game, t_map *map_cell, t_music_game *music_tab);
 void			set_next_narrator(t_map *map_cell);
 void			update_map_cell_music(t_map *map_cell, t_map *old_map_cell, t_music_game *music_array);
 void			clear_sound(t_music_game *music_array);
+void			print_subtitle(t_game *game, t_map *map_cell);
 
 #endif

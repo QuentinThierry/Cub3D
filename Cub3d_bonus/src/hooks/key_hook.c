@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/28 19:28:54 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/30 14:18:12 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void	player_move(t_game *game, t_player *player, double delta_time, t_map **map)
 		if (((int)move_value.x != (int)player->f_real_pos.x || (int)move_value.y != (int)player->f_real_pos.y)
 			&& (map[(int)move_value.y][(int)move_value.x].type & NARRATOR) == NARRATOR)
 		{
-			play_narrator(&map[(int)move_value.y][(int)move_value.x], game->music_array);
+			play_narrator(game, &map[(int)move_value.y][(int)move_value.x], game->music_array);
 			map[(int)move_value.y][(int)move_value.x].type ^= NARRATOR;
 		}
 		game->player->f_real_pos = move_value;

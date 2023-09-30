@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:00:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/28 16:35:08 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/30 14:18:25 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	_unlock_door(t_game *game, t_map *map_cell, t_player *player, t_musi
 	{
 		map_cell->narrator = get_narrator(game->file_music, game->nb_music
 				, map_cell->symbol, e_narrator_receptacle_complete);
-		play_narrator(map_cell, music_tab);
+		play_narrator(game, map_cell, music_tab);
 		map_cell->type &= ~NARRATOR & ~NARRATOR_RECEPTACLE;
 	}
 	player->has_item = false;
@@ -71,7 +71,7 @@ static void	_complete_receptacle(t_game *game, t_map *map_cell, t_player *player
 	{
 		map_cell->narrator = get_narrator(game->file_music, game->nb_music
 				, map_cell->symbol, e_narrator_receptacle_complete);
-		play_narrator(map_cell, game->music_array);
+		play_narrator(game, map_cell, game->music_array);
 		map_cell->type &= ~NARRATOR & ~NARRATOR_RECEPTACLE;
 	}
 	((t_object *)map_cell->arg)->is_completed = true;

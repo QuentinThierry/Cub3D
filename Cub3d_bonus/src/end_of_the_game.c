@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:22:02 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/28 17:34:12 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/30 14:17:59 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ void	end_of_the_game(t_game *game, const enum e_orientation orient)
 	{
 		game->exit->narrator = get_narrator(game->file_music, game->nb_music
 				, game->exit->symbol, e_narrator_receptacle_complete);
-		play_narrator(game->exit, game->music_array);
+		play_narrator(game, game->exit, game->music_array);
 		game->exit->type &= ~NARRATOR & ~NARRATOR_RECEPTACLE;
 	}
 	find_dest(game->end, orient, ((t_door *)game->exit->arg)->map_pos, game->player);

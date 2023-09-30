@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/28 19:29:16 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/30 16:23:33 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int	on_update(t_game *game)
 		draw_hand_item(game, game->player);
 	zoom_hook_handle(game->minimap, game->delta_time);
 	draw_minimap(game);
+	print_subtitle(game, game->map[0]);
+	
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
 
 	clock_gettime(CLOCK_REALTIME, &cur_time);
@@ -104,7 +106,6 @@ int main(int argc, char **argv)
 	if (!init_pause_menu(&game))
 		return (perror("Error"), ft_close(&game), 1);
 	exit_door_no_receptacle(game.exit, game.total_receptacle, game.tab_images);
-	init_minimap(&game);
 	// init_mouse(&game);
 	mlx_do_key_autorepeatoff(game.mlx_ptr);
 	mlx_hook(game.win, 2, (1L << 0), (void *)key_press_hook, &game);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object_interactive.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/28 20:15:45 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/30 14:18:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	take_object(t_game *game, t_player *player, t_map *cell_map, t_music_game *
 	player->item.type &= ~MUSIC & ~IS_PLAYING_MUSIC;
 	if ((cell_map->type & NARRATOR) == NARRATOR)
 	{
-		play_narrator(&player->item, music_tab);
+		play_narrator(game, &player->item, music_tab);
 		player->item.type &= ~NARRATOR;
 		cell_map->type &= ~NARRATOR;
 	}
@@ -90,7 +90,7 @@ void	take_object_click(t_game *game, t_player *player, t_map **map)
 		play_music(&player->item, game->music_array, ((t_object *)player->item.arg)->music, IS_PLAYING_MUSIC_OBJECT);
 	if ((player->item.type & NARRATOR) == NARRATOR)
 	{
-		play_narrator(&player->item, game->music_array);
+		play_narrator(game, &player->item, game->music_array);
 		player->item.type &= ~NARRATOR;
 		map[(int)pos.y][(int)pos.x].type &= ~NARRATOR;
 	}

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/28 16:42:22 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/30 14:13:38 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,10 +170,7 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 					return (perror("Error"), false);
 				((t_object *)map[i].arg)->music = get_music(game->file_music, game->nb_music, line[i], e_music_object);
 				if (((t_object *)map[i].arg)->music != NULL)
-				{
-					printf("wall object %c\n", line[i]);
 					map[i].type |= MUSIC_OBJECT;
-				}
 			}
 			else if (is_receptacle(line[i], game->filename, game->nb_file, &c))
 			{
@@ -233,10 +230,7 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 					return (perror("Error"), false);
 				((t_object *)map[i].arg)->music = get_music(game->file_music, game->nb_music, line[i], e_music_object);
 				if (((t_object *)map[i].arg)->music != NULL)
-				{
 					map[i].type |= MUSIC_OBJECT;
-					printf("object %c\n", line[i]);
-				}
 			}
 		}
 		i++;

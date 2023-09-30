@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/30 14:54:32 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/30 17:00:47 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,6 @@ bool	load_resize_image(t_game *game, t_image *img, char *filename, t_vector2 dst
 	dst = *_resize_img(img, dst_size, &dst);
 	mlx_destroy_image(game->mlx_ptr, img->img);
 	*img = dst;
-
 	if (!update_loading_screen(game, game->loading_screen))
 		return (false);
 	return (true);
@@ -216,6 +215,11 @@ bool	load_image_tab(t_game *game, bool *print_error)
 	int			index;
 
 	*print_error = true;
+	game->subtitle_font = btmlx_xpm_file_to_image(game->mlx_ptr, LOADING_FONT, (t_vector2){WIN_X / 3 * 2, WIN_Y / 16 / 3 * 2});
+	if (game->subtitle_font == NULL || game->subtitle_font->img == NULL)
+		return (false);
+	game->subtitle_size_letter.x = game->subtitle_font->size.x * WIDTH_LETTER / WIDTH_ALPHA;
+	game->subtitle_size_letter.y = game->subtitle_font->size.y;
 	game->nb_images = get_len_texture(game->filename, game->nb_file);
 	game->tab_images = ft_calloc(game->nb_images, sizeof(t_image));
 	if (game->tab_images == NULL)

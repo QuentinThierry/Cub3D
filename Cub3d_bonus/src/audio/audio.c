@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/30 15:56:33 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/30 17:22:12 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,17 +98,20 @@ void	play_narrator(t_game *game, t_map *map_cell, t_music_game *music_tab)
 		music->map_cell->type &= ~IS_PLAYING_NARRATOR;
 		music->map_cell = NULL;
 		music->is_playing = false;
+		music->is_subtitle = false;
+		map_cell->narrator->offset = 0;
 	}
 	printf("play narrator %s\n", map_cell->narrator->filename);
 	music->music = LoadMusicStream(map_cell->narrator->filename);
 	if (!IsMusicReady(music->music))
 		return ;
 	music->music.looping = false;
+	music->is_subtitle = true;
 	music->map_cell = map_cell;
 	music->is_playing = true;
 	map_cell->type |= IS_PLAYING_NARRATOR;
+	map_cell->narrator->time = game->time;
 	PlayMusicStream(music->music);
-	// print_subtitle(game, map_cell);
 }
 
 void	set_next_narrator(t_map *map_cell)
@@ -152,7 +155,7 @@ void	update_sounds(t_music_game *music_array)
 				 	music_array[i].map_cell->type &= ~IS_PLAYING_NARRATOR;
 				else
 					music_array[i].map_cell->type &= ~IS_PLAYING_MUSIC & ~IS_PLAYING_MUSIC_OBJECT;
-				music_array[i].map_cell = NULL;
+				// music_array[i].map_cell = NULL;
 				music_array[i].is_playing = false;
 			}
 		}
@@ -188,7 +191,7 @@ void	clear_sound(t_music_game *music_array)
 			if (IsMusicStreamPlaying(music_array[i].music))
 				StopMusicStream(music_array[i].music);
 			UnloadMusicStream(music_array[i].music);
-			music_array[i].map_cell = NULL;
+			// music_array[i].map_cell = NULL;
 			music_array[i].is_playing = false;
 		}
 		i++;

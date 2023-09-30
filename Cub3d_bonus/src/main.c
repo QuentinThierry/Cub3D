@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/30 16:23:33 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/30 18:23:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	on_update(t_game *game)
 		draw_hand_item(game, game->player);
 	zoom_hook_handle(game->minimap, game->delta_time);
 	draw_minimap(game);
-	print_subtitle(game, game->map[0]);
+	print_subtitle(game, game->music_array[1].map_cell);
 	
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
 
@@ -79,7 +79,7 @@ int main(int argc, char **argv)
 		return (perror("Error"), 1);
 	if (!parse_file(argv[1], &game))
 		return (1);
-	printf_music(&game);
+	// printf_music(&game);
 	if (!check_map(&game))
 		return (1);
 	if (!init_mlx(&game))

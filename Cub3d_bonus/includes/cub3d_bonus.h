@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/30 15:54:31 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/09/30 18:23:47 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,6 +246,7 @@ typedef struct s_music_name
 	char				*filename;
 	char				*subtitle;
 	unsigned int		offset;
+	long int			time;
 	enum e_orientation	orient;
 	char				symbol;
 }	t_music_name;
@@ -297,6 +298,7 @@ typedef struct s_music_game
 	t_music		music;
 	t_map		*map_cell;
 	bool		is_playing;
+	bool		is_subtitle;
 }	t_music_game;
 
 typedef	struct s_player
@@ -456,6 +458,8 @@ typedef struct s_game
 	int				nb_images;
 	t_image			*font;
 	t_dvector2		size_letter;
+	t_image			*subtitle_font;
+	t_dvector2		subtitle_size_letter;
 	t_texture		*filename;
 	int				nb_file;
 	t_music_name	*file_music;

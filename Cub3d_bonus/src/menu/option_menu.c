@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:10:09 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/28 16:34:07 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/30 16:52:10 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,7 +273,7 @@ void	draw_option_menu(t_game *game, t_option_menu *opt_menu)
 	}
 	draw_button(&opt_menu->exit_opt_button, game->menu->image);
 	draw_slider(game, &opt_menu->slider_fov, game->menu->image);
-	draw_slider(game, &opt_menu->sound_fov, game->menu->image);
+	draw_slider(game, &opt_menu->slider_sound, game->menu->image);
 	draw_hor_bar(opt_menu, game->menu->image);
 	draw_vert_bar(opt_menu, game->menu->image);
 }

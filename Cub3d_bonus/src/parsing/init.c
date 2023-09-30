@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/28 19:29:04 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/30 17:44:01 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,9 @@ bool	init_mlx(t_game *game)
 	game->win = mlx_new_window(game->mlx_ptr, WIN_X, WIN_Y, "cub3d");
 	if (game->win == NULL)
 		return (false);
+	init_mouse(game);
 	game->image->img = mlx_new_image(game->mlx_ptr, WIN_X, WIN_Y);
-	if (game->win == NULL)
+	if (game->image->img == NULL)
 		return (false);
 	game->image->addr = mlx_get_data_addr(game->image->img,
 		&game->image->opp, &game->image->size_line, &game->image->endian);
@@ -118,10 +119,17 @@ bool	init_mlx(t_game *game)
 	return (true);
 }
 
+void	move_mouse(t_game *game)
+{
+	mlx_mouse_move(game->mlx_ptr, game->win, WIN_X / 2, WIN_Y / 2);
+	game->player->mouse_pos.x = WIN_X / 2;
+	game->player->mouse_pos.y = WIN_Y / 2;
+}
+
 void	init_mouse(t_game *game)
 {
-	mlx_mouse_hide(game->mlx_ptr, game->win);
 	mlx_mouse_move(game->mlx_ptr, game->win, WIN_X / 2, WIN_Y / 2);
+	// mlx_mouse_hide(game->mlx_ptr, game->win);
 	game->player->mouse_pos.x = WIN_X / 2;
 	game->player->mouse_pos.y = WIN_Y / 2;
 }
@@ -379,17 +387,17 @@ bool	init_pause_menu(t_game *game)
 	game->menu->option_menu.slider_fov.min_max_value = (t_vector2){MIN_FOV, MAX_FOV};
 	game->menu->option_menu.slider_fov.linked_text = g_description_slider_button[0];
 
-	opt_menu->sound_fov.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_hor.xpm", g_slider_hor_size);
-	if (!opt_menu->sound_fov.hor_image)
+	opt_menu->slider_sound.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_hor.xpm", g_slider_hor_size);
+	if (!opt_menu->slider_sound.hor_image)
 		return (false);
-	opt_menu->sound_fov.vert_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_vert.xpm", g_slider_vert_size);
-	if (!opt_menu->sound_fov.vert_image)
+	opt_menu->slider_sound.vert_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_vert.xpm", g_slider_vert_size);
+	if (!opt_menu->slider_sound.vert_image)
 		return (false);
-	opt_menu->sound_fov.size = (t_vector2){g_slider_hor_size.x, g_slider_vert_size.y};
-	opt_menu->sound_fov.pos = g_slider_sound_pos;
-	game->menu->option_menu.sound_fov.percent = DFL_SOUND;
-	game->menu->option_menu.sound_fov.min_max_value = (t_vector2){0, 100};
-	game->menu->option_menu.sound_fov.linked_text = g_description_slider_button[1];
+	opt_menu->slider_sound.size = (t_vector2){g_slider_hor_size.x, g_slider_vert_size.y};
+	opt_menu->slider_sound.pos = g_slider_sound_pos;
+	game->menu->option_menu.slider_sound.percent = DFL_SOUND;
+	game->menu->option_menu.slider_sound.min_max_value = (t_vector2){0, 100};
+	game->menu->option_menu.slider_sound.linked_text = g_description_slider_button[1];
 
 
 	opt_menu->vert_bar_pos = g_vert_bar_pos;

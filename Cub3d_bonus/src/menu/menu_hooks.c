@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:16:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/28 19:38:14 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/30 16:52:10 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,26 @@ static const double	max_fps_frequence = 1. / MAX_MENU_FPS;
 
 void	choose_key_hook(t_keybind key, t_game *game)
 {
-	int	i;
+	int			i;
+	static bool	has_drawn_key_used;
 
 	if (key == XK_Escape)
 		ft_close(game);
 	i = 0;
 	while (i < NB_OPTIONS_BUTTONS)
 	{
-		if (key == game->keybinds[i] && i != game->menu->option_menu.pressed_button)
+		if (key == game->keybinds[i]
+			&& i != game->menu->option_menu.pressed_button)
 		{
-			draw_centered_text_at_y(game, game->menu->image,
-				WIN_Y / 2 + WIN_Y / 12, "Key is already used.");
+			if (!has_drawn_key_used)
+				draw_centered_text_at_y(game, game->menu->image,
+					WIN_Y / 2 + WIN_Y / 12, "Key is already used.");
+			has_drawn_key_used = true;
 			return ;
 		}
 		i++;
 	}
+	has_drawn_key_used = false;
 	game->menu->option_menu.buttons[game->menu->option_menu.pressed_button].text
 		= get_key_str(key);
 	game->menu->state = OPTION_MENU;
@@ -91,11 +96,11 @@ void	menu_mouse_down_hook(int mouse_button, int x, int y, t_game *game)
 			&& y >= opt_menu->slider_fov.pos.y
 			&& y <= opt_menu->slider_fov.pos.y + opt_menu->slider_fov.size.y)
 			opt_menu->pressed_slider_ref = &opt_menu->slider_fov;
-		if (x >= opt_menu->sound_fov.pos.x && x <= opt_menu->sound_fov.pos.x
-			+ opt_menu->sound_fov.size.x + opt_menu->sound_fov.vert_image->size.x / 2
-			&& y >= opt_menu->sound_fov.pos.y
-			&& y <= opt_menu->sound_fov.pos.y + opt_menu->sound_fov.size.y)
-			opt_menu->pressed_slider_ref = &opt_menu->sound_fov;
+		if (x >= opt_menu->slider_sound.pos.x && x <= opt_menu->slider_sound.pos.x
+			+ opt_menu->slider_sound.size.x + opt_menu->slider_sound.vert_image->size.x / 2
+			&& y >= opt_menu->slider_sound.pos.y
+			&& y <= opt_menu->slider_sound.pos.y + opt_menu->slider_sound.size.y)
+			opt_menu->pressed_slider_ref = &opt_menu->slider_sound;
 	}
 }
 
@@ -139,7 +144,7 @@ int	menu_loop_hook(t_game *game)
 		draw_pause_menu(game, &menu->pause_menu);
 	if (menu->state == OPTION_MENU)
 		draw_option_menu(game, &menu->option_menu);
-	SetMasterVolume(game->menu->option_menu.sound_fov.percent);
+	SetMasterVolume(game->menu->option_menu.slider_sound.percent);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, menu->image->img, 0, 0);
 	clock_gettime(CLOCK_REALTIME, &cur_time);
 	delay = (cur_time.tv_sec - last_time.tv_sec

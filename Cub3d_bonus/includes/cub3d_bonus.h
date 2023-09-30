@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/28 19:30:07 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/09/30 17:45:05 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -406,7 +406,7 @@ typedef struct s_option_menu
 	t_button	buttons[NB_OPTIONS_BUTTONS];
 	t_button	exit_opt_button;
 	t_slider	slider_fov;
-	t_slider	sound_fov;
+	t_slider	slider_sound;
 	t_slider	*pressed_slider_ref;
 	t_vector2	vert_bar_pos;
 	t_vector2	vert_bar_size;

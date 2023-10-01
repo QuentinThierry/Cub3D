@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/24 16:36:18 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/01 18:57:14 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, in
 __attribute__((always_inline))
 static inline float	get_dist(t_dvector2 fpos, t_dvector2 wall)
 {
-	return (sqrtf((wall.x - fpos.x) * (wall.x - fpos.x) + (wall.y - fpos.y) * (wall.y - fpos.y)));
+	return (((wall.x - fpos.x) * (wall.x - fpos.x) + (wall.y - fpos.y) * (wall.y - fpos.y)));
 }
 
 __attribute__((always_inline))
@@ -85,9 +85,9 @@ static inline void	draw_pixel_line(t_game *game, register t_dvector2 map_point, 
 				image2 = get_image_non_wall(game, map_point, e_floor);
 			}
 			dist = get_dist(game->player->f_real_pos, map_point);
-			if (dist >= DIST_MIN_DARK)
+			if (dist >= DIST_MIN_DARK * DIST_MIN_DARK)
 			{
-				dark_quantity = (-DIST_MIN_DARK + dist) / (DIST_MAX_DARK - DIST_MIN_DARK);
+				dark_quantity = (-DIST_MIN_DARK + sqrtf(dist)) / (DIST_MAX_DARK - DIST_MIN_DARK);
 				if (dark_quantity >= 1)
 				{
 					color_ceiling = DARK_COLOR;

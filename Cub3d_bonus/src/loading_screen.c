@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 19:04:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/30 16:09:08 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/01 19:47:50 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,17 @@ void print_text(t_game *game, char *str, t_image *alpha, t_vector2 start_pos)
 	int	i;
 
 	i = 0;
+	if (start_pos.x < 0)
+		start_pos.x = 0;
+	if (start_pos.y < 0)
+		start_pos.y = 0;
+	if (start_pos.y + game->subtitle_size_letter.y > game->image->size.y)
+		return ;
 	while (str[i])
 	{
-		if (str[i] == 32)
+		if ((i + 1) * game->size_letter.x + start_pos.x > game->image->size.x)
+			return ;
+		else if (str[i] == 32)
 		{
 			i++;
 			continue ;

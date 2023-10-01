@@ -37,7 +37,7 @@ FIX :
 <!-- - si la duree des animation est de 0ms ?? -->
 <!-- - on est dans le mur quand on ferme une porte de trop pres -->
 <!-- - draw hand when window is too small segfault -->
-- protect text draw outside of the screen
+<!-- - protect text draw outside of the screen -->
 - file structure for bonus and mandatory
 - white space at the end of a texture printf error because file not found
 

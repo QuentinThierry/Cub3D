@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/30 14:18:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/01 19:36:36 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,16 @@ void	take_object_click(t_game *game, t_player *player, t_map **map)
 
 void	draw_hand_item(t_game *game, t_player *player)
 {
-	t_image	*image;
-	int		begin;
+	t_image		*image;
+	t_vector2	size;
+	int			begin;
 	
 	image = &game->tab_images[player->item.sprite[e_object_interactive_hand_image].index];
-	begin = (WIN_Y - image->size.y) * game->image->size_line + (WIN_X - image->size.x) * 4;
-	draw_image_with_transparence(game->image->addr + begin, image, (t_vector2){0}, image->size);
+	size = image->size;
+	if ((WIN_Y - image->size.y) < 0)
+		size.y = WIN_Y;
+	if ((WIN_X - image->size.x) < 0)
+		size.x = WIN_X;
+	begin = (WIN_Y - size.y) * game->image->size_line + (WIN_X - size.x) * 4;
+	draw_image_with_transparence(game->image->addr + begin, image, (t_vector2){0}, size);
 }

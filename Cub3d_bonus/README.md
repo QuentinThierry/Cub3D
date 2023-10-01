@@ -38,6 +38,7 @@ FIX :
 <!-- - on est dans le mur quand on ferme une porte de trop pres -->
 <!-- - draw hand when window is too small segfault -->
 <!-- - protect text draw outside of the screen -->
+- change check map to fit the new type possible
 - file structure for bonus and mandatory
 - white space at the end of a texture printf error because file not found
 
@@ -83,6 +84,13 @@ Exit door :
 <!-- - walk under the door -->
 <!-- - the end screen -->
 - beug door stay open against the wall
+- exit door doesn't open with this map
+           111
+111111111111511111111111111
+1000000i0000000001000000001
+100000010000N0000i000000001
+100000010000000001000000001
+111111111i1111i111111i11111
 
 Sound :
 <!-- - play sound when walk on an object with already something in the hand -->

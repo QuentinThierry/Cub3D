@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_close.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/28 19:28:51 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/01 19:01:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,12 @@ int	ft_close(t_game *game)
 			if (game->font->img != NULL)	
 				mlx_destroy_image(game->mlx_ptr, game->font->img);
 			free(game->font);
+		}
+		if (game->subtitle_font != NULL)
+		{
+			if (game->subtitle_font->img != NULL)	
+				mlx_destroy_image(game->mlx_ptr, game->subtitle_font->img);
+			free(game->subtitle_font);
 		}
 		if (game->win != NULL)
 			mlx_destroy_window(game->mlx_ptr, game->win);

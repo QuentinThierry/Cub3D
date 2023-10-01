@@ -4,10 +4,10 @@ ADD :
 - [X] organise texture
 - [X] objects
 - [X] max view distance
-- [x] sounds (ambiance music)
-- [ ] subtitle narrator
+- [X] sounds (ambiance music)
+- [X] subtitle narrator
 - [X] exit + enigmes
-- [x] menu settings
+- [X] menu settings
 
 Obligation :
 - [x] minimap

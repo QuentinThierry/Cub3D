@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 19:04:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/01 19:47:50 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 13:41:13 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,16 @@ static const t_vector2	g_size_background = (t_vector2){WIN_X, WIN_Y};
 static const t_vector2	g_size_loading_bar = (t_vector2){WIN_X / 3, WIN_Y / 16};
 
 
+__attribute__((always_inline))
+static inline unsigned int	get_pix_alpha(unsigned int dest, unsigned int src)
+{
+	float	color_quantity;
 
+	color_quantity = ((src >> 24) & 0xff) / 255.;
+	return (((unsigned char)(((src >> 16) & 0xFF) * color_quantity + ((dest >> 16) & 0xff) * (1 - color_quantity)) << 16)
+		| ((unsigned char)(((src >> 8) & 0xFF) * color_quantity + ((dest >> 8) & 0xff) * (1 - color_quantity)) << 8)
+		| (unsigned char)((src & 0xFF) * color_quantity + (dest & 0xff) * (1 - color_quantity)));
+}
 /**
  * @brief 
  * ! NO protection if draw outside of the window
@@ -43,8 +52,7 @@ void	draw_image_with_transparence(char *dest_addr, t_image *src
 		x = 0;
 		while (x < size_src.x * 4)
 		{
-			if (*(int*)(src->addr + start_src + x) != GREEN_SCREEN)
-				*(int*)(dest_addr + start_dest + x) = *(int*)(src->addr + start_src + x);
+				*(int*)(dest_addr + start_dest + x) = get_pix_alpha(*(int*)(dest_addr + start_dest + x), *(int*)(src->addr + start_src + x));
 			x += 4;
 		}
 		start_dest += WIN_X * 4;

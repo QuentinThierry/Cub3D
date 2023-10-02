@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/30 16:14:25 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 13:40:59 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,12 +142,11 @@ void	resume_menu(t_game *game, t_menu *menu)
 {
 	if (menu->state == PAUSE_MENU)
 	{
-		init_mouse(game);
 		game->fov = MIN_FOV + (MAX_FOV - MIN_FOV) * game->menu->option_menu.slider_fov.percent;
 		game->constants[0] = (WIN_X / 2.) / tan((game->fov / 2.) * TO_RADIAN);
 		game->constants[1] = tanf((game->fov / 2.0) * TO_RADIAN);
 		game->constants[2] = cos((game->fov / 2.0) * TO_RADIAN);
-		SetMasterVolume(game->menu->option_menu.sound_fov.percent);
+		SetMasterVolume(game->menu->option_menu.slider_sound.percent);
 		mlx_hook(game->win, 2, (1L << 0), (void *)key_press_hook, game);
 		mlx_hook(game->win, 3, (1L << 1), (void *)key_release_hook, game);
 		mlx_hook(game->win, 5, (1L << 3), NULL, NULL);
@@ -155,6 +154,7 @@ void	resume_menu(t_game *game, t_menu *menu)
 		mlx_hook(game->win, 8, (1L << 5), mouse_leave, game);
 		mlx_mouse_hook(game->win, mouse_click, game);
 		mlx_loop_hook(game->mlx_ptr, on_update, game);
+		init_mouse(game);
 	}
 	else if (menu->state == OPTION_MENU)
 		menu->state = PAUSE_MENU;
@@ -194,6 +194,7 @@ void	set_pause_menu_mode(t_game *game)
 	mlx_hook(game->win, 8, (1L << 5), NULL, NULL);
 	mlx_hook(game->win, 6, (1L << 6) , NULL, NULL);
 	mlx_mouse_show(game->mlx_ptr, game->win);
+	
 	mlx_loop_hook(game->mlx_ptr, menu_loop_hook, game);
 	blur_image(game->menu->background_image,
 		game->image, game->menu->h_rgb_blur_buffer,

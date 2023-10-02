@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/30 18:23:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 13:42:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	on_update(t_game *game)
 	last_time = cur_time;
 	return (0);
 }
+void	move_mouse(t_game *game);
 
 int main(int argc, char **argv)
 {
@@ -86,6 +87,15 @@ int main(int argc, char **argv)
 		return (perror("Error"), ft_close(&game), 1);
 	if (!init_audio(&game, game.file_music, game.nb_music))
 		return (ft_close(&game), 1);
+	// mlx_do_key_autorepeatoff(game.mlx_ptr);
+	mlx_hook(game.win, 2, (1L << 0), (void *)key_press_hook, &game);
+	mlx_hook(game.win, 3, (1L << 1), (void *)key_release_hook, &game);
+	mlx_hook(game.win, 5, (1L << 3), NULL, &game);
+	mlx_hook(game.win, 17, (1L << 8), ft_close, &game);
+	mlx_hook(game.win, 6, (1L << 6) , mouse_hook, &game);
+	mlx_hook(game.win, 8, (1L << 5), mouse_leave, &game);
+	mlx_hook(game.win, 4, (1L<< 2), mouse_click, &game);
+	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	if (!loading_screen(&game))
 		return (perror("Error"), ft_close(&game), 1);
 	if (!init_end_screen(&game))
@@ -106,18 +116,8 @@ int main(int argc, char **argv)
 	if (!init_pause_menu(&game))
 		return (perror("Error"), ft_close(&game), 1);
 	exit_door_no_receptacle(game.exit, game.total_receptacle, game.tab_images);
-	// init_mouse(&game);
-	mlx_do_key_autorepeatoff(game.mlx_ptr);
-	mlx_hook(game.win, 2, (1L << 0), (void *)key_press_hook, &game);
-	mlx_hook(game.win, 3, (1L << 1), (void *)key_release_hook, &game);
-	mlx_hook(game.win, 5, (1L << 3), NULL, &game);
-	mlx_hook(game.win, 17, (1L << 8), ft_close, &game);
-	mlx_hook(game.win, 6, (1L << 6) , mouse_hook, &game);
-	mlx_hook(game.win, 8, (1L << 5), mouse_leave, &game);
-	mlx_hook(game.win, 4, (1L<< 2), mouse_click, &game);
-	mlx_loop_hook(game.mlx_ptr, on_update, &game);
-	sleep(1);
 	PlayMusicStream(game.music_array[0].music);
+	move_mouse(&game);
 	mlx_loop(game.mlx_ptr);
 	return (0);
 }

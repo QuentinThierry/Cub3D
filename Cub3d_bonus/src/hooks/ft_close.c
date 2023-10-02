@@ -6,11 +6,39 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/01 19:01:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 13:40:53 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
+
+void	free_image(void *mlx_ptr, t_image *image)
+{
+	if (!image)
+		return ;
+	if (mlx_ptr)
+		mlx_destroy_image(mlx_ptr, image->img);
+	free(image);
+}
+
+void	free_menu(void *mlx_ptr, t_menu *menu)
+{
+	if (!menu)
+		return;
+	free_image(mlx_ptr, menu->background_image);
+	free_image(mlx_ptr, menu->exit_option_image);
+	free_image(mlx_ptr, menu->image);
+	free(menu->h_rgb_blur_buffer);
+	free(menu->v_rgb_blur_buffer);
+	free_image(mlx_ptr, menu->option_menu.buttons[0].base_image);
+	free_image(mlx_ptr, menu->option_menu.buttons[0].hovered_image);
+	free_image(mlx_ptr, menu->option_menu.exit_opt_button.base_image);
+	free_image(mlx_ptr, menu->option_menu.slider_fov.hor_image);
+	free_image(mlx_ptr, menu->option_menu.slider_fov.vert_image);
+	free_image(mlx_ptr, menu->option_menu.slider_sound.hor_image);
+	free_image(mlx_ptr, menu->option_menu.slider_sound.vert_image);
+	free(menu);
+}
 
 int	ft_close(t_game *game)
 {
@@ -21,16 +49,6 @@ int	ft_close(t_game *game)
 		exit(0);
 	if (game->file_music != NULL)
 		free_music_file(game->file_music, game->nb_music);
-	if (game->end != NULL)
-	{
-		if (game->end->end_screen != NULL)
-		{
-			if (game->end->end_screen->img != NULL)
-				mlx_destroy_image(game->mlx_ptr, game->end->end_screen->img);
-			free(game->end->end_screen);
-		}
-		free(game->end);
-	}
 	if (game->object_array != NULL)
 		free_tab_object(game->object_array, game->nb_objects);
 	if (game->player != NULL)
@@ -40,7 +58,9 @@ int	ft_close(t_game *game)
 	if (game->filename != NULL)
 		free_filename(game);
 	free(game->dist_tab);
+	free(game->height_tab);
 	free(game->door_array);
+	free(game->keybinds);
 	if (game->mlx_ptr != NULL)
 	{
 		mlx_do_key_autorepeaton(game->mlx_ptr);
@@ -52,27 +72,16 @@ int	ft_close(t_game *game)
 			i++;
 		}
 		free(game->tab_images);
-		if (game->font != NULL)
-		{
-			if (game->font->img != NULL)	
-				mlx_destroy_image(game->mlx_ptr, game->font->img);
-			free(game->font);
-		}
-		if (game->subtitle_font != NULL)
-		{
-			if (game->subtitle_font->img != NULL)	
-				mlx_destroy_image(game->mlx_ptr, game->subtitle_font->img);
-			free(game->subtitle_font);
-		}
+		free_image(game->mlx_ptr, game->font);
+		free_image(game->mlx_ptr, game->subtitle_font);
+		free_minimap(game->minimap, game->mlx_ptr);
+		free_image(game->mlx_ptr, game->image);
+		if (game->end != NULL)
+			free_image(game->mlx_ptr, game->end->end_screen);
+		free(game->end);
+		free_menu(game->mlx_ptr, game->menu);
 		if (game->win != NULL)
 			mlx_destroy_window(game->mlx_ptr, game->win);
-		free_minimap(game->minimap, game->mlx_ptr);
-		if (game->image != NULL)
-		{
-			if (game->image->img != NULL)
-				mlx_destroy_image(game->mlx_ptr, game->image->img);
-			free(game->image);
-		}
 		mlx_destroy_display(game->mlx_ptr);
 		free(game->mlx_ptr);
 	}

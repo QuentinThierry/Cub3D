@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/30 17:45:05 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/02 18:12:39 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@
 # include <X11/X.h>
 # include <X11/Xlib.h>
 
-# define WIN_X 1280 //1920 - 918 - 1280
-# define WIN_Y 720 //1080 - 468 - 720
+# define WIN_X 1920 //1920 - 918 - 1280
+# define WIN_Y 1000 //1080 - 468 - 720
 # define CHUNK_SIZE 100
 # define DFL_FOV 100 // check min is less than min and diff > 0
 # define MIN_FOV 70
@@ -569,6 +569,8 @@ void		draw_image_on_image_alpha(t_image *dest, t_image *src, t_vector2 offset_de
 // bettermlx.c
 t_image		*btmlx_new_image(void *mlx_ptr, t_vector2 size);
 t_image		*btmlx_xpm_file_to_image(void *mlx, char *path,
+				t_vector2 dst_size);
+t_image		*btmlx_xpm_file_to_image_bilinear_resize(void *mlx, char *path,
 				t_vector2 dst_size);
 
 // Minimap

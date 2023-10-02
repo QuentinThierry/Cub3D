@@ -46,9 +46,7 @@ Minimap :
 <!-- - leaks -->
 
 Menu:
-- when key is already used, several click on already used key would be opaque
-- exit button ugly
-- LEAKS
+<!-- - when key is already used, several click on already used key would be opaque -->
 
 
 Door :

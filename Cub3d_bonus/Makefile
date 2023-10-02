@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
+#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/09/28 19:29:28 by qthierry         ###   ########.fr        #
+#    Updated: 2023/09/30 15:55:01 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -104,7 +104,8 @@ SRC_MENU = \
 
 AUDIO = audio/
 SRC_AUDIO = \
-			audio.c
+			audio.c \
+			subtitle.c
 
 SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			$(addprefix $(UTILS), $(SRC_UTILS)) \

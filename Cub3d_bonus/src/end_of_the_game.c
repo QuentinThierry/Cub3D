@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:22:02 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/28 17:34:12 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 16:02:55 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,12 @@ bool	move_to_dest(t_player *player, const t_end *end, const double delta_time)
 	if ((end->dir_angle < 0 && player->angle < end->dest_angle)
 		|| (end->dir_angle > 0 && player->angle > end->dest_angle))
 		player->angle = end->dest_angle;
-	if (player->f_real_pos.x == end->dest.x && player->f_real_pos.y == end->dest.y
-		&& player->angle == end->dest_angle)
-		return (true);
+	if (player->f_real_pos.x == end->dest.x && player->f_real_pos.y == end->dest.y)
+	{
+		if (player->angle == end->dest_angle || (end->dest_angle == 0 && player->angle == 360) ||
+			(end->dest_angle == 360 && player->angle == 0))
+			return (true);
+	}
 	return (false);
 }
 
@@ -58,8 +61,7 @@ void	open_exit(t_game *game, t_door *door, t_end *end)
 		door->is_opening_door = 1;
 		door->time = game->time;
 	}
-	door->time += (game->time - door->time) / 5. * 4;
-	end_step_door_open(game->time, game->exit, game->map, end);
+	end_step_door_open(game->delta_time, game->exit, game->map, end);
 	if (door->door_percent == 90)
 		end->status = e_walk_through_door;
 }
@@ -156,6 +158,7 @@ int	update_end(t_game *game)
 		if (move_to_dest(game->player, game->end, game->delta_time))
 			game->end->status = e_end;
 	raycasting_end(game);
+	print_subtitle(game, game->music_array[1].map_cell);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
 	clock_gettime(CLOCK_REALTIME, &cur_time);
 	game->delta_time = (cur_time.tv_sec - last_time.tv_sec
@@ -186,7 +189,7 @@ void	end_of_the_game(t_game *game, const enum e_orientation orient)
 	{
 		game->exit->narrator = get_narrator(game->file_music, game->nb_music
 				, game->exit->symbol, e_narrator_receptacle_complete);
-		play_narrator(game->exit, game->music_array);
+		play_narrator(game, game->exit, game->music_array);
 		game->exit->type &= ~NARRATOR & ~NARRATOR_RECEPTACLE;
 	}
 	find_dest(game->end, orient, ((t_door *)game->exit->arg)->map_pos, game->player);
@@ -242,6 +245,8 @@ float	draw_light(t_game *game, t_ray *ray, float angle)
 	return (get_dist(game->player->f_real_pos, ray->hit) * cosf(angle * TO_RADIAN));
 }
 
+#include <float.h>
+
 /**
  * @brief raycsting to open all the door by pulling them + draw light behind them
  * 
@@ -255,9 +260,12 @@ void	raycasting_end(t_game *game)
 	t_dvector2	fpos;
 	float		dist;
 
-	draw_ceiling(game);
 	fpos = game->player->f_real_pos;
 	x = -WIN_X / 2;
+	// for (int i = 0; i < WIN_X; i++) {
+	// 	game->dist_tab[i] = FLT_MAX;
+	// }
+	draw_ceiling(game);
 	while (x < WIN_X / 2)
 	{
 		angle = atanf(x / game->constants[0]) * 180 / M_PI;
@@ -283,6 +291,7 @@ bool	init_end_screen(t_game *game)
 	game->end = ft_calloc(1, sizeof(t_end));
 	if (game->end == NULL)
 		return (false);
+	game->end->status = -1;
 	game->end->end_screen = btmlx_xpm_file_to_image(game->mlx_ptr
 		, END_SCREEN, (t_vector2){100, 100});
 	if (game->end->end_screen == NULL)

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/28 16:59:42 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 16:01:03 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -410,19 +410,16 @@ void	open_door(t_game *game)
 	}
 }
 
-static void	_step_door_open(t_door *door, long time, t_map *map_cell, t_map **map)
+static void	_step_door_open(t_door *door, double time, t_map *map_cell, t_map **map)
 {
-	long	tmp;
 	int		speed;
 
 	speed = SPEEP_DOOR_OPENING;
 	if ((map_cell->type & DOOR_UNLOCK) == DOOR_UNLOCK)
 		speed = SPEEP_UNLOCK_DOOR_OPENING;
-	tmp = time - door->time;
 	if (door->is_opening_door == 1)
 	{
-		door->door_percent += tmp / 1000.0 * speed;
-		door->time = time;
+		door->door_percent += time * speed;
 		if (door->door_percent > 89)
 		{
 			map_cell->type ^= WALL;
@@ -435,8 +432,7 @@ static void	_step_door_open(t_door *door, long time, t_map *map_cell, t_map **ma
 	}
 	else
 	{
-		door->door_percent -= tmp / 1000.0 * speed;
-		door->time = time;
+		door->door_percent -= time * speed;
 		change_adjacent_wall(map, door->map_pos, false);
 		if (door->door_percent <= 0)
 		{
@@ -448,7 +444,7 @@ static void	_step_door_open(t_door *door, long time, t_map *map_cell, t_map **ma
 	}
 }
 
-void	update_doors(t_map **doors, int	nb_doors, long time, t_map **map)
+void	update_doors(t_map **doors, int	nb_doors, double time, t_map **map)
 {
 	int	i;
 

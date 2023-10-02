@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/01 19:39:34 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/02 15:56:16 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,14 @@ int	on_update(t_game *game)
 		game->player->angle = game->player->angle - 360;
 	if (game->player->angle + game->player->angle < 0)
 		game->player->angle = game->player->angle + 360;
-	update_doors(game->door_array, game->nb_doors, game->time, game->map);
+	update_doors(game->door_array, game->nb_doors, game->delta_time, game->map);
 	raycasting(game);
 	if (game->player->has_item == true)
 		draw_hand_item(game, game->player);
 	zoom_hook_handle(game->minimap, game->delta_time);
 	draw_minimap(game);
+	print_subtitle(game, game->music_array[1].map_cell);
+	
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
 
 	clock_gettime(CLOCK_REALTIME, &cur_time);
@@ -78,7 +80,7 @@ int main(int argc, char **argv)
 		return (perror("Error"), 1);
 	if (!parse_file(argv[1], &game))
 		return (1);
-	printf_music(&game);
+	// printf_music(&game);
 	if (!check_map(&game))
 		return (1);
 	if (!init_mlx(&game))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object_interactive.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/28 20:15:45 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/02 14:12:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	take_object(t_game *game, t_player *player, t_map *cell_map, t_music_game *
 	player->item.type &= ~MUSIC & ~IS_PLAYING_MUSIC;
 	if ((cell_map->type & NARRATOR) == NARRATOR)
 	{
-		play_narrator(&player->item, music_tab);
+		play_narrator(game, cell_map, music_tab);
 		player->item.type &= ~NARRATOR;
 		cell_map->type &= ~NARRATOR;
 	}
@@ -30,11 +30,11 @@ void	take_object(t_game *game, t_player *player, t_map *cell_map, t_music_game *
 			, ((t_object *)player->item.arg)->music, IS_PLAYING_MUSIC_OBJECT);
 	if ((cell_map->type & IS_PLAYING_MUSIC_OBJECT) == IS_PLAYING_MUSIC_OBJECT)
 		update_map_cell_music(&player->item, cell_map, music_tab);
-	if ((cell_map->type & IS_PLAYING_NARRATOR) == IS_PLAYING_NARRATOR)
-	{
-		music_tab[1].map_cell = &player->item;
-		player->item.type &= ~IS_PLAYING_NARRATOR;
-	}
+	// if ((cell_map->type & IS_PLAYING_NARRATOR) == IS_PLAYING_NARRATOR)
+	// {
+	// 	music_tab[1].map_cell = &player->item;
+	// 	player->item.type &= ~IS_PLAYING_NARRATOR;
+	// }
 	cell_map->type &= ~MUSIC_OBJECT & ~IS_PLAYING_MUSIC_OBJECT;
 	cell_map->symbol = '0';
 	cell_map->arg = NULL;
@@ -88,9 +88,9 @@ void	take_object_click(t_game *game, t_player *player, t_map **map)
 	player->has_item = true;
 	if ((player->item.type & MUSIC_OBJECT) == MUSIC_OBJECT)
 		play_music(&player->item, game->music_array, ((t_object *)player->item.arg)->music, IS_PLAYING_MUSIC_OBJECT);
-	if ((player->item.type & NARRATOR) == NARRATOR)
+	if ((map[(int)pos.y][(int)pos.x].type & NARRATOR) == NARRATOR)
 	{
-		play_narrator(&player->item, game->music_array);
+		play_narrator(game, &map[(int)pos.y][(int)pos.x], game->music_array);
 		player->item.type &= ~NARRATOR;
 		map[(int)pos.y][(int)pos.x].type &= ~NARRATOR;
 	}
@@ -102,10 +102,16 @@ void	take_object_click(t_game *game, t_player *player, t_map **map)
 
 void	draw_hand_item(t_game *game, t_player *player)
 {
-	t_image	*image;
-	int		begin;
+	t_image		*image;
+	t_vector2	size;
+	int			begin;
 	
 	image = &game->tab_images[player->item.sprite[e_object_interactive_hand_image].index];
-	begin = (WIN_Y - image->size.y) * game->image->size_line + (WIN_X - image->size.x) * 4;
-	draw_image_with_transparence(game->image->addr + begin, image, (t_vector2){0}, image->size);
+	size = image->size;
+	if ((WIN_Y - image->size.y) < 0)
+		size.y = WIN_Y;
+	if ((WIN_X - image->size.x) < 0)
+		size.x = WIN_X;
+	begin = (WIN_Y - size.y) * game->image->size_line + (WIN_X - size.x) * 4;
+	draw_image_with_green_sreen(game->image->addr + begin, image, (t_vector2){0}, size);
 }

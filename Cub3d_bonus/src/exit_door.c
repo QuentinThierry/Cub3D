@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:07:20 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 18:43:57 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 16:02:40 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,15 @@ void	change_adjacent_wall_end(enum e_orientation orient, t_map **map, t_vector2 
 	}
 }
 
-void	end_step_door_open(long time, t_map *map_cell, t_map **map, t_end *end)
+void	end_step_door_open(double time, t_map *map_cell, t_map **map, t_end *end)
 {
-	long	tmp;
 	t_door	*door;
 	
 	door = map_cell->arg;
-	tmp = time - door->time;
 	if (door->is_opening_door == 1)
 	{
-		door->door_percent += tmp / 1000.0 * SPEEP_DOOR_OPENING;
-		door->time = time;
+		door->door_percent += time * (SPEEP_UNLOCK_DOOR_OPENING / 2.);
+		// door->time = time;
 		if (door->door_percent > 89)
 		{
 			map_cell->type ^= WALL;

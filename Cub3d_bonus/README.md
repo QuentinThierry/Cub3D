@@ -4,10 +4,10 @@ ADD :
 - [X] organise texture
 - [X] objects
 - [X] max view distance
-- [x] sounds (ambiance music)
-- [ ] subtitle narrator
+- [X] sounds (ambiance music)
+- [X] subtitle narrator
 - [X] exit + enigmes
-- [x] menu settings
+- [X] menu settings
 
 Obligation :
 - [x] minimap
@@ -36,10 +36,11 @@ FIX :
 <!-- - collision vibration when hit object -->
 <!-- - si la duree des animation est de 0ms ?? -->
 <!-- - on est dans le mur quand on ferme une porte de trop pres -->
-- protect text draw outside of the screen
+<!-- - draw hand when window is too small segfault -->
+<!-- - protect text draw outside of the screen -->
+<!-- - change check map to fit the new type possible -->
 - file structure for bonus and mandatory
 - white space at the end of a texture printf error because file not found
-- draw hand when window is too small segfault
 
 Minimap : 
 <!-- - if screen is too small, do not draw minimap -->
@@ -56,8 +57,9 @@ Door :
 <!-- - opti door open -->
 <!-- - door parsing -->
 <!-- - doors on side of map -->
-- time for door usefull ?? for animation or door open when do I need to update it ???
-- fix door against the wall parsing
+<!-- - time for door usefull ?? for animation or door open when do I need to update it ??? -->
+<!-- - fix door against the wall parsing -->
+<!-- - impossible to have to door next to each other -->
 
 Objet interactif :
 <!-- - take objet on walk -->

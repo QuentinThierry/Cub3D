@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_close.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/30 17:05:28 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/02 13:40:53 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	ft_close(t_game *game)
 		}
 		free(game->tab_images);
 		free_image(game->mlx_ptr, game->font);
+		free_image(game->mlx_ptr, game->subtitle_font);
 		free_minimap(game->minimap, game->mlx_ptr);
 		free_image(game->mlx_ptr, game->image);
 		if (game->end != NULL)

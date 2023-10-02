@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/02 18:12:39 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/02 18:47:13 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@
 # include <X11/X.h>
 # include <X11/Xlib.h>
 
-# define WIN_X 1920 //1920 - 918 - 1280
-# define WIN_Y 1000 //1080 - 468 - 720
+# define WIN_X 1280 //1920 - 918 - 1280
+# define WIN_Y 720 //1080 - 468 - 720
 # define CHUNK_SIZE 100
 # define DFL_FOV 100 // check min is less than min and diff > 0
 # define MIN_FOV 70
@@ -245,6 +245,8 @@ typedef struct s_music_name
 {
 	char				*filename;
 	char				*subtitle;
+	unsigned int		offset;
+	long int			time;
 	enum e_orientation	orient;
 	char				symbol;
 }	t_music_name;
@@ -296,6 +298,7 @@ typedef struct s_music_game
 	t_music		music;
 	t_map		*map_cell;
 	bool		is_playing;
+	bool		is_subtitle;
 }	t_music_game;
 
 typedef	struct s_player
@@ -455,6 +458,8 @@ typedef struct s_game
 	int				nb_images;
 	t_image			*font;
 	t_dvector2		size_letter;
+	t_image			*subtitle_font;
+	t_dvector2		subtitle_size_letter;
 	t_texture		*filename;
 	int				nb_file;
 	t_music_name	*file_music;
@@ -591,8 +596,8 @@ t_dvector2	door_hit_hor_sw(t_dvector2 hit, float step, float door_angle, float p
 t_dvector2	door_hit_ver_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
 t_dvector2	door_hit_hor_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
 float		get_texture_door(t_ray ray);
-void		end_step_door_open(long time, t_map *map_cell, t_map **map, t_end *end);
-void		update_doors(t_map **doors, int	nb_doors, long time, t_map **map);
+void		end_step_door_open(double time, t_map *map_cell, t_map **map, t_end *end);
+void		update_doors(t_map **doors, int	nb_doors, double time, t_map **map);
 void		open_door(t_game *game);
 
 
@@ -609,6 +614,8 @@ bool		loading_screen(t_game *game);
 bool		update_loading_screen(t_game *game, t_loading *loading_screen);
 void		free_loading_screen(t_game *game);
 void		draw_image_with_transparence(char *dest_addr, t_image *src
+				, t_vector2 begin_src, t_vector2 size_src);
+void		draw_image_with_green_sreen(char *dest_addr, t_image *src
 				, t_vector2 begin_src, t_vector2 size_src);
 
 // ------- menu ----------
@@ -654,10 +661,11 @@ bool			init_audio(t_game *game, t_music_name *music_file, int nb_music);
 void			update_sounds(t_music_game *music_array);
 void			close_audio(t_music_game *music_tab);
 void			play_music(t_map *map_cell, t_music_game *music_tab, char *filename, unsigned int type);
-void			play_narrator(t_map *map_cell, t_music_game *music_tab);
+void			play_narrator(t_game *game, t_map *map_cell, t_music_game *music_tab);
 void			play_sound_fail(t_game *game, t_map *map_cell, t_music_game *music_tab);
 void			set_next_narrator(t_map *map_cell);
 void			update_map_cell_music(t_map *map_cell, t_map *old_map_cell, t_music_game *music_array);
 void			clear_sound(t_music_game *music_array);
+void			print_subtitle(t_game *game, t_map *map_cell);
 
 #endif

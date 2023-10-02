@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pause_menu.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/30 16:52:10 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/02 13:40:59 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,16 @@ void	draw_text_at_with_backgroud(t_game *game, t_image *image, t_vector2 pos, co
 			i++;
 			continue ;
 		}
-		draw_image_with_transparence(image->addr + (pos.y * image->size_line + (pos.x
-			+ (int)(game->size_letter.x * i)) * 4), game->font,
-		(t_vector2){(game->size_letter.x * (text[i] - '!')), 0},
-		(t_vector2){game->size_letter.x, game->size_letter.y});
+		else if (text[i] < 32 || text[i] > 126)
+			draw_image_with_transparence(image->addr + (pos.y * image->size_line + (pos.x
+				+ (int)(game->size_letter.x * i)) * 4), game->font,
+				(t_vector2){(game->size_letter.x * ('?' - '!')), 0},
+				(t_vector2){game->size_letter.x, game->size_letter.y});
+		else
+			draw_image_with_transparence(image->addr + (pos.y * image->size_line + (pos.x
+				+ (int)(game->size_letter.x * i)) * 4), game->font,
+				(t_vector2){(game->size_letter.x * (text[i] - '!')), 0},
+				(t_vector2){game->size_letter.x, game->size_letter.y});
 		i++;
 	}
 }

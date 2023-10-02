@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:00:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/28 16:35:08 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 14:09:42 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static void	_set_object_on_cell(t_map *map_cell, t_player *player, t_dvector2 po
 		((t_object *)map_cell->arg)->music = ((t_object *)player->item.arg)->music;
 	if ((player->item.type & IS_PLAYING_MUSIC_OBJECT) == IS_PLAYING_MUSIC_OBJECT)
 		update_map_cell_music(map_cell, &player->item, music_tab);
-	if ((player->item.type & IS_PLAYING_NARRATOR) == IS_PLAYING_NARRATOR)
-		music_tab[1].map_cell = map_cell;
+	// if ((player->item.type & IS_PLAYING_NARRATOR) == IS_PLAYING_NARRATOR)
+	// 	music_tab[1].map_cell = map_cell;
 	map_cell->sprite[e_object_interactive_image] = player->item.sprite[e_object_interactive_image];
 	map_cell->sprite[e_object_interactive_hand_image] = player->item.sprite[e_object_interactive_hand_image];
 	player->has_item = false;
@@ -49,7 +49,7 @@ static void	_unlock_door(t_game *game, t_map *map_cell, t_player *player, t_musi
 	{
 		map_cell->narrator = get_narrator(game->file_music, game->nb_music
 				, map_cell->symbol, e_narrator_receptacle_complete);
-		play_narrator(map_cell, music_tab);
+		play_narrator(game, map_cell, music_tab);
 		map_cell->type &= ~NARRATOR & ~NARRATOR_RECEPTACLE;
 	}
 	player->has_item = false;
@@ -71,7 +71,7 @@ static void	_complete_receptacle(t_game *game, t_map *map_cell, t_player *player
 	{
 		map_cell->narrator = get_narrator(game->file_music, game->nb_music
 				, map_cell->symbol, e_narrator_receptacle_complete);
-		play_narrator(map_cell, game->music_array);
+		play_narrator(game, map_cell, game->music_array);
 		map_cell->type &= ~NARRATOR & ~NARRATOR_RECEPTACLE;
 	}
 	((t_object *)map_cell->arg)->is_completed = true;

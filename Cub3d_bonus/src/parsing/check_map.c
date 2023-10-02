@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 21:27:20 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/28 18:01:31 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 15:40:34 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static bool	_check_sides(t_map **map, int x, int y, t_vector2 map_size)
 {
-
 	if (x == 0 || y == 0 || x == map_size.x - 1 || y == map_size.y - 1)
 		return (false);
 	if (map[y - 1][x].symbol == ' ' || map[y][x - 1].symbol == ' '
@@ -23,6 +22,25 @@ static bool	_check_sides(t_map **map, int x, int y, t_vector2 map_size)
 	return (true);
 }
 
+static bool	_check_door(t_map **map, int x, int y, t_vector2 map_size)
+{
+	bool	door;
+
+	door = false;
+	if (((map[y - 1][x].type & WALL) == WALL && (map[y + 1][x].type & WALL) == WALL))
+	{
+		if (((map[y - 1][x].type & DOOR) == DOOR || (map[y + 1][x].type & DOOR) == DOOR))
+			return (false);
+		door = true;
+	}
+	if (((map[y][x - 1].type & WALL) == WALL && (map[y][x + 1].type & WALL) == WALL))
+	{
+		if (((map[y][x - 1].type & DOOR) == DOOR || (map[y][x + 1].type & DOOR) == DOOR))
+			return (false);
+		door = true;
+	}
+	return (door);
+}
 
 bool	_check_sound(t_game *game, t_map *map_cell)
 {
@@ -68,11 +86,19 @@ bool	check_map(t_game *game)
 		x = 0;
 		while (x < game->map_size.x)
 		{
-			if (((map[y][x].type & WALL) != WALL && map[y][x].symbol != ' ')
-				|| (map[y][x].type & DOOR) == DOOR)
+			if (((map[y][x].type & WALL) != WALL || (map[y][x].type & OBJECT) == OBJECT
+				|| (map[y][x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE
+				|| (map[y][x].type & RECEPTACLE) == RECEPTACLE) && map[y][x].symbol != ' ')
 			{
 				if (!_check_sides(map, x, y, game->map_size))
-					return (printf("Error : Map not closed\n"), false);
+					return (printf("Error : Map not closed %c%c%c\n", map[y][x-1].symbol, map[y][x].symbol, map[y][x+1].symbol), false);
+			}
+			if ((map[y][x].type & DOOR) == DOOR)
+			{
+				if (!_check_sides(map, x, y, game->map_size))
+					return (printf("Error : Map not closed %c%c%c\n", map[y][x-1].symbol, map[y][x].symbol, map[y][x+1].symbol), false);
+				if (!_check_door(map, x, y, game->map_size))
+					return (printf("Error : Door at the wrong place\n"), false);
 			}
 			if (!_check_sound(game, &map[y][x]))
 				return (printf("Error : Invalid sound description\n"), false);

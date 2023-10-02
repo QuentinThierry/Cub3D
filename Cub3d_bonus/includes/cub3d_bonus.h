@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/02 13:39:58 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 13:46:40 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -612,6 +612,8 @@ bool		loading_screen(t_game *game);
 bool		update_loading_screen(t_game *game, t_loading *loading_screen);
 void		free_loading_screen(t_game *game);
 void		draw_image_with_transparence(char *dest_addr, t_image *src
+				, t_vector2 begin_src, t_vector2 size_src);
+void		draw_image_with_green_sreen(char *dest_addr, t_image *src
 				, t_vector2 begin_src, t_vector2 size_src);
 
 // ------- menu ----------

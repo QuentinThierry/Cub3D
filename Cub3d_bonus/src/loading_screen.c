@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 19:04:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/02 13:41:13 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 13:45:00 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,42 @@ void	draw_image_with_transparence(char *dest_addr, t_image *src
 		x = 0;
 		while (x < size_src.x * 4)
 		{
-				*(int*)(dest_addr + start_dest + x) = get_pix_alpha(*(int*)(dest_addr + start_dest + x), *(int*)(src->addr + start_src + x));
+			*(int*)(dest_addr + start_dest + x) = get_pix_alpha(*(int*)(dest_addr + start_dest + x), *(int*)(src->addr + start_src + x));
+			x += 4;
+		}
+		start_dest += WIN_X * 4;
+		start_src += (src->size.x) * 4;
+		y++;
+	}
+}
+
+/**
+ * @brief 
+ * ! NO protection if draw outside of the window
+ * 
+ * @param dest_addr 
+ * @param src 
+ * @param begin_src 
+ * @param size_src 
+ */
+void	draw_image_with_green_sreen(char *dest_addr, t_image *src
+			, t_vector2 begin_src, t_vector2 size_src)
+{
+	int	y;
+	int	x;
+	int	start_dest;
+	int	start_src;
+	
+	y = 0;
+	start_src = begin_src.y * src->size_line + begin_src.x * 4;
+	start_dest = 0;
+	while (y < size_src.y)
+	{
+		x = 0;
+		while (x < size_src.x * 4)
+		{
+			if (*(int*)(src->addr + start_src + x) != GREEN_SCREEN)
+				*(int*)(dest_addr + start_dest + x) = *(int*)(src->addr + start_src + x);
 			x += 4;
 		}
 		start_dest += WIN_X * 4;
@@ -134,10 +169,10 @@ bool	update_loading_screen(t_game *game, t_loading *loading_screen)
 	size_bar.y = loading_screen->center->size.y;
 	game->image->addr = ft_memcpy(game->image->addr
 		, loading_screen->background->addr, WIN_X * WIN_Y * 4);
-	draw_image_with_transparence(game->image->addr 
+	draw_image_with_green_sreen(game->image->addr 
 		+ ((WIN_Y / 2 - loading_screen->bordure->size.y / 2) * game->image->size_line + (WIN_X / 3) * 4)
 		, loading_screen->bordure, (t_vector2){0}, g_size_loading_bar);
-	draw_image_with_transparence(game->image->addr 
+	draw_image_with_green_sreen(game->image->addr 
 		+ ((WIN_Y / 2 - loading_screen->center->size.y / 2) * game->image->size_line + (WIN_X / 3) * 4)
 		, loading_screen->center, (t_vector2){0}, size_bar);
 	text = "Loading...";
@@ -195,7 +230,7 @@ bool	loading_screen(t_game *game)
 		return (false);
 	game->image->addr = ft_memcpy(game->image->addr
 		, loading_screen->background->addr, WIN_X * WIN_Y * 4);
-	draw_image_with_transparence(game->image->addr 
+	draw_image_with_green_sreen(game->image->addr 
 		+ ((WIN_Y / 2 - loading_screen->bordure->size.y / 2) * game->image->size_line + (WIN_X / 3) * 4)
 		, loading_screen->bordure, (t_vector2){0}, g_size_loading_bar);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);

@@ -6,13 +6,13 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 12:38:01 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/01 19:19:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 13:47:59 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 #define SUBTITLE_TIME 5000
-#define MAX_CARACTER 150
+#define MAX_CARACTER 100
 
 static const t_vector2	g_minimap_size =
 {

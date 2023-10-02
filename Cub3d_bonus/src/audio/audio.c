@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/30 17:22:12 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 14:01:29 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void	update_sounds(t_music_game *music_array)
 			{
 				UnloadMusicStream(music_array[i].music);
 				if (i == 1)
-				 	music_array[i].map_cell->type &= ~IS_PLAYING_NARRATOR;
+					music_array[i].map_cell->type &= ~IS_PLAYING_NARRATOR;
 				else
 					music_array[i].map_cell->type &= ~IS_PLAYING_MUSIC & ~IS_PLAYING_MUSIC_OBJECT;
 				// music_array[i].map_cell = NULL;

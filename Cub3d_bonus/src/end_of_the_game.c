@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:22:02 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/01 19:55:06 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 14:32:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,7 @@ int	update_end(t_game *game)
 		if (move_to_dest(game->player, game->end, game->delta_time))
 			game->end->status = e_end;
 	raycasting_end(game);
+	print_subtitle(game, game->music_array[1].map_cell);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
 	clock_gettime(CLOCK_REALTIME, &cur_time);
 	game->delta_time = (cur_time.tv_sec - last_time.tv_sec

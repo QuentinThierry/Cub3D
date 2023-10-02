@@ -6,13 +6,26 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 14:32:29 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/30 14:15:03 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 14:29:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
 #define READ_SIZE 100
+
+static bool	check_format(char *filename)
+{
+	int len;
+	int	fd;
+
+	len = ft_strlen(filename);
+	if (len < 4)
+		return (printf("Error : Wrong name of subtitle\n"), false);
+	if (ft_strncmp(filename + (len - 4), ".txt", 4) != 0)
+		return (printf("Error : Wrong format of subtitle\n"), false);
+	return (true);
+}
 
 static bool	load_subtitle(t_music_name *music)
 {
@@ -22,6 +35,8 @@ static bool	load_subtitle(t_music_name *music)
 	char	*res;
 	char	*tmp;
 
+	if (!check_format(music->subtitle))
+		return (false);
 	fd = open(music->subtitle, O_RDONLY);
 	if (fd == -1)
 		return (perror("Error"), false);

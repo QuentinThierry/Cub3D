@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/02 13:46:40 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 16:01:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -594,8 +594,8 @@ t_dvector2	door_hit_hor_sw(t_dvector2 hit, float step, float door_angle, float p
 t_dvector2	door_hit_ver_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
 t_dvector2	door_hit_hor_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
 float		get_texture_door(t_ray ray);
-void		end_step_door_open(long time, t_map *map_cell, t_map **map, t_end *end);
-void		update_doors(t_map **doors, int	nb_doors, long time, t_map **map);
+void		end_step_door_open(double time, t_map *map_cell, t_map **map, t_end *end);
+void		update_doors(t_map **doors, int	nb_doors, double time, t_map **map);
 void		open_door(t_game *game);
 
 

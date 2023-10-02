@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/02 13:42:07 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 15:56:16 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	on_update(t_game *game)
 		game->player->angle = game->player->angle - 360;
 	if (game->player->angle + game->player->angle < 0)
 		game->player->angle = game->player->angle + 360;
-	update_doors(game->door_array, game->nb_doors, game->time, game->map);
+	update_doors(game->door_array, game->nb_doors, game->delta_time, game->map);
 	raycasting(game);
 	if (game->player->has_item == true)
 		draw_hand_item(game, game->player);

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:22:02 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/02 15:48:06 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 16:02:55 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	open_exit(t_game *game, t_door *door, t_end *end)
 		door->is_opening_door = 1;
 		door->time = game->time;
 	}
-	end_step_door_open(game->time, game->exit, game->map, end);
+	end_step_door_open(game->delta_time, game->exit, game->map, end);
 	if (door->door_percent == 90)
 		end->status = e_walk_through_door;
 }

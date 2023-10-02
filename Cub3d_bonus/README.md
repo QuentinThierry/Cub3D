@@ -38,7 +38,7 @@ FIX :
 <!-- - on est dans le mur quand on ferme une porte de trop pres -->
 <!-- - draw hand when window is too small segfault -->
 <!-- - protect text draw outside of the screen -->
-- change check map to fit the new type possible
+<!-- - change check map to fit the new type possible -->
 - file structure for bonus and mandatory
 - white space at the end of a texture printf error because file not found
 
@@ -47,9 +47,9 @@ Minimap :
 <!-- - leaks -->
 
 Menu:
-- when key is already used, several click on already used key would be opaque
+<!-- - when key is already used, several click on already used key would be opaque -->
+<!-- - LEAKS -->
 - exit button ugly
-- LEAKS
 
 
 Door :
@@ -59,7 +59,7 @@ Door :
 <!-- - opti door open -->
 <!-- - door parsing -->
 <!-- - doors on side of map -->
-- time for door usefull ?? for animation or door open when do I need to update it ???
+<!-- - time for door usefull ?? for animation or door open when do I need to update it ??? -->
 <!-- - fix door against the wall parsing -->
 <!-- - impossible to have to door next to each other -->
 

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:07:20 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 18:43:57 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 15:23:40 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	end_step_door_open(long time, t_map *map_cell, t_map **map, t_end *end)
 	tmp = time - door->time;
 	if (door->is_opening_door == 1)
 	{
-		door->door_percent += tmp / 1000.0 * SPEEP_DOOR_OPENING;
+		door->door_percent += tmp / 1000.0 * (SPEEP_UNLOCK_DOOR_OPENING / 2.);
 		door->time = time;
 		if (door->door_percent > 89)
 		{

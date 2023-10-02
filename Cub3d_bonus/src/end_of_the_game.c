@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:22:02 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/02 14:32:07 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 15:23:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,12 @@ bool	move_to_dest(t_player *player, const t_end *end, const double delta_time)
 	if ((end->dir_angle < 0 && player->angle < end->dest_angle)
 		|| (end->dir_angle > 0 && player->angle > end->dest_angle))
 		player->angle = end->dest_angle;
-	if (player->f_real_pos.x == end->dest.x && player->f_real_pos.y == end->dest.y
-		&& player->angle == end->dest_angle)
-		return (true);
+	if (player->f_real_pos.x == end->dest.x && player->f_real_pos.y == end->dest.y)
+	{
+		if (player->angle == end->dest_angle || (end->dest_angle == 0 && player->angle == 360) ||
+			(end->dest_angle == 360 && player->angle == 0))
+			return (true);
+	}
 	return (false);
 }
 
@@ -58,7 +61,6 @@ void	open_exit(t_game *game, t_door *door, t_end *end)
 		door->is_opening_door = 1;
 		door->time = game->time;
 	}
-	door->time += (game->time - door->time) / 5. * 4;
 	end_step_door_open(game->time, game->exit, game->map, end);
 	if (door->door_percent == 90)
 		end->status = e_walk_through_door;
@@ -148,7 +150,10 @@ int	update_end(t_game *game)
 	if (game->end->status == e_go_in_font_of_door)
 	{
 		if (move_to_dest(game->player, game->end, game->delta_time))
+		{
 			next_dest(game->end, game->player->f_real_pos);
+			printf("next dest \n");
+		}
 	}
 	else if (game->end->status == e_open_door)
 		open_exit(game, game->exit->arg, game->end);
@@ -243,6 +248,8 @@ float	draw_light(t_game *game, t_ray *ray, float angle)
 	return (get_dist(game->player->f_real_pos, ray->hit) * cosf(angle * TO_RADIAN));
 }
 
+#include <float.h>
+
 /**
  * @brief raycsting to open all the door by pulling them + draw light behind them
  * 
@@ -256,9 +263,12 @@ void	raycasting_end(t_game *game)
 	t_dvector2	fpos;
 	float		dist;
 
-	draw_ceiling(game);
 	fpos = game->player->f_real_pos;
 	x = -WIN_X / 2;
+	// for (int i = 0; i < WIN_X; i++) {
+	// 	game->dist_tab[i] = FLT_MAX;
+	// }
+	draw_ceiling(game);
 	while (x < WIN_X / 2)
 	{
 		angle = atanf(x / game->constants[0]) * 180 / M_PI;
@@ -284,6 +294,7 @@ bool	init_end_screen(t_game *game)
 	game->end = ft_calloc(1, sizeof(t_end));
 	if (game->end == NULL)
 		return (false);
+	game->end->status = -1;
 	game->end->end_screen = btmlx_xpm_file_to_image(game->mlx_ptr
 		, END_SCREEN, (t_vector2){100, 100});
 	if (game->end->end_screen == NULL)

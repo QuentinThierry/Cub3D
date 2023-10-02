@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 21:27:20 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/02 14:42:57 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 15:40:34 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,22 @@ static bool	_check_sides(t_map **map, int x, int y, t_vector2 map_size)
 
 static bool	_check_door(t_map **map, int x, int y, t_vector2 map_size)
 {
-	if (((map[y - 1][x].type & WALL) == WALL && (map[y + 1][x].type & WALL) == WALL)
-		|| ((map[y][x - 1].type & WALL) == WALL && (map[y][x + 1].type & WALL) == WALL))
-		return (true);
-	return (false);
+	bool	door;
+
+	door = false;
+	if (((map[y - 1][x].type & WALL) == WALL && (map[y + 1][x].type & WALL) == WALL))
+	{
+		if (((map[y - 1][x].type & DOOR) == DOOR || (map[y + 1][x].type & DOOR) == DOOR))
+			return (false);
+		door = true;
+	}
+	if (((map[y][x - 1].type & WALL) == WALL && (map[y][x + 1].type & WALL) == WALL))
+	{
+		if (((map[y][x - 1].type & DOOR) == DOOR || (map[y][x + 1].type & DOOR) == DOOR))
+			return (false);
+		door = true;
+	}
+	return (door);
 }
 
 bool	_check_sound(t_game *game, t_map *map_cell)

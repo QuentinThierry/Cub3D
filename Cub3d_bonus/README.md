@@ -60,8 +60,8 @@ Door :
 <!-- - door parsing -->
 <!-- - doors on side of map -->
 - time for door usefull ?? for animation or door open when do I need to update it ???
-- fix door against the wall parsing
-- impossible to have to door next to each other
+<!-- - fix door against the wall parsing -->
+<!-- - impossible to have to door next to each other -->
 
 Objet interactif :
 <!-- - take objet on walk -->

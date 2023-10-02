@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:22:02 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/02 15:23:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 15:48:06 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,10 +150,7 @@ int	update_end(t_game *game)
 	if (game->end->status == e_go_in_font_of_door)
 	{
 		if (move_to_dest(game->player, game->end, game->delta_time))
-		{
 			next_dest(game->end, game->player->f_real_pos);
-			printf("next dest \n");
-		}
 	}
 	else if (game->end->status == e_open_door)
 		open_exit(game, game->exit->arg, game->end);

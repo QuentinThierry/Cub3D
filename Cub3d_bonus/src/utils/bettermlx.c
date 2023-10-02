@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 18:51:49 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/02 17:33:21 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/02 18:32:49 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,11 +100,6 @@ t_image	*resize_bilinear_img_malloc(void *mlx, t_image *src,
 	float		y_ratio;
 	float		x_src;
 	float		y_src;
-	unsigned char			a;
-	unsigned char			r;
-	unsigned char			g;
-	unsigned char			b;
-	unsigned char			tmp;
 
 	dst = btmlx_new_image(mlx, dst_size);
 	if (!dst)
@@ -123,49 +118,39 @@ t_image	*resize_bilinear_img_malloc(void *mlx, t_image *src,
 		{
 			x_src = x * x_ratio;
 			src_pix = src_addr + (int)x_src + (int)y_src * src->size.x;
-			a = ((src_pix[0] >> 24) & 0xff)
+			dst_addr[x + dst->size.x * y] =
+			((u_char)((((src_pix[0] >> 24) & 0xff)
 					* (1 - (x_src - (int)x_src))
 				+ ((src_pix[1] >> 24) & 0xff)
-					* (x_src - (int)x_src);
-			tmp = ((src_pix[src->size.x] >> 24) & 0xff)
+					* (x_src - (int)x_src)) * (1 - (y_src - (int)y_src))
+			+ (((src_pix[src->size.x] >> 24) & 0xff)
 					* (1 - (x_src - (int)x_src))
 				+ ((src_pix[src->size.x + 1] >> 24) & 0xff)
-					* (x_src - (int)x_src);
-
-			a = tmp * (y_src - (int)y_src) + a * (1 - (y_src - (int)y_src));
-
-			r = ((src_pix[0] >> 16) & 0xff)
+					* (x_src - (int)x_src)) * (y_src - (int)y_src)) << 24)
+			| ((u_char)(((src_pix[0] >> 16 & 0xff)
 					* (1 - (x_src - (int)x_src))
-				+ ((src_pix[1] >> 16) & 0xff)
-					* (x_src - (int)x_src);
-			tmp = ((src_pix[src->size.x] >> 16) & 0xff)
+				+ (src_pix[1] >> 16 & 0xff)
+					* (x_src - (int)x_src)) * (1 - (y_src - (int)y_src))
+			+ ((src_pix[src->size.x] >> 16 & 0xff)
 					* (1 - (x_src - (int)x_src))
-				+ ((src_pix[src->size.x + 1] >> 16) & 0xff)
-					* (x_src - (int)x_src);
-			r = tmp * (y_src - (int)y_src) + r * (1 - (y_src - (int)y_src));
-
-			g = ((src_pix[0] >> 8) & 0xff)
+				+ (src_pix[src->size.x + 1] >> 16 & 0xff)
+					* (x_src - (int)x_src)) * (y_src - (int)y_src)) << 16)
+			| ((u_char)(((src_pix[0] >> 8 & 0xff)
 					* (1 - (x_src - (int)x_src))
-				+ ((src_pix[1] >> 8) & 0xff)
-					* (x_src - (int)x_src);
-			tmp = ((src_pix[src->size.x] >> 8) & 0xff)
+				+ (src_pix[1] >> 8 & 0xff)
+					* (x_src - (int)x_src)) * (1 - (y_src - (int)y_src))
+			+ ((src_pix[src->size.x] >> 8 & 0xff)
 					* (1 - (x_src - (int)x_src))
-				+ ((src_pix[src->size.x + 1] >> 8) & 0xff)
-					* (x_src - (int)x_src);
-			g = tmp * (y_src - (int)y_src) + g * (1 - (y_src - (int)y_src));
-
-			b = ((src_pix[0]) & 0xff)
+				+ (src_pix[src->size.x + 1] >> 8 & 0xff)
+					* (x_src - (int)x_src)) * (y_src - (int)y_src)) << 8)
+			| (u_char)(((src_pix[0] & 0xff)
 					* (1 - (x_src - (int)x_src))
-				+ ((src_pix[1]) & 0xff)
-					* (x_src - (int)x_src);
-			tmp = ((src_pix[src->size.x]) & 0xff)
+				+ (src_pix[1] & 0xff)
+					* (x_src - (int)x_src)) * (1 - (y_src - (int)y_src))
+			+ ((src_pix[src->size.x] & 0xff)
 					* (1 - (x_src - (int)x_src))
-				+ ((src_pix[src->size.x + 1]) & 0xff)
-					* (x_src - (int)x_src);
-			b = tmp * (y_src - (int)y_src) + b * (1 - (y_src - (int)y_src));
-			
-			dst_addr[x + dst->size.x * y] =
-				(a << 24) | (r << 16) | (g << 8) | b;
+				+ (src_pix[src->size.x + 1] & 0xff)
+					* (x_src - (int)x_src)) * (y_src - (int)y_src));
 			x++;
 		}
 		y++;

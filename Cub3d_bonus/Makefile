@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/03 18:04:43 by qthierry         ###   ########.fr        #
+#    Updated: 2023/10/03 18:26:04 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -115,6 +115,12 @@ SRC_AUDIO = \
 			audio.c \
 			subtitle.c
 
+ENDGAME = end_game/
+SRC_ENDGAME = \
+			end_game.c \
+			end_door.c \
+			end_game_raycaster.c
+
 SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			$(addprefix $(UTILS), $(SRC_UTILS)) \
 			$(addprefix $(PARSING), $(SRC_PARSING)) \
@@ -124,10 +130,9 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			$(addprefix $(HOOKS), $(SRC_HOOKS)) \
 			$(addprefix $(MENU), $(SRC_MENU)) \
 			$(addprefix $(AUDIO), $(SRC_AUDIO)) \
+			$(addprefix $(ENDGAME), $(SRC_ENDGAME)) \
 			print.c \
 			loading_screen.c \
-			end_of_the_game.c \
-			exit_door.c \
 			main.c
 
 SRC_DIR = ./src/
@@ -170,6 +175,7 @@ $(OBJ_DIR): Makefile
 	@mkdir -p $(OBJ_DIR)$(PARSING)
 	@mkdir -p $(OBJ_DIR)$(MENU)
 	@mkdir -p $(OBJ_DIR)$(AUDIO)
+	@mkdir -p $(OBJ_DIR)$(ENDGAME)
 
 $(MINILIBX):
 	@echo "${GREEN}~-~-~-~-~ COMPILING MINILIBX ~-~-~-~-~${RESET_COLOR}"

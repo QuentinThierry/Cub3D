@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_door.c                                        :+:      :+:    :+:   */
+/*   end_door.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:07:20 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/02 16:02:40 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/03 18:26:22 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d_bonus.h"
+#include "../../includes/cub3d_bonus.h"
 
 void	change_adjacent_wall_end(enum e_orientation orient, t_map **map, t_vector2 map_pos)
 {

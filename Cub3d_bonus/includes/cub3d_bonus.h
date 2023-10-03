@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/03 16:24:55 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/03 16:55:16 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -535,6 +535,7 @@ void		print_map(t_game *game);
 void		printf_music(t_game *game);
 
 // -------Init---------
+bool		init_game(t_game *game, char *filename);
 bool		init_mlx(t_game *game);
 bool		load_image_tab(t_game *game, bool *print_error);
 void		init_mouse(t_game *game);

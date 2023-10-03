@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/03 16:29:34 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/03 17:49:52 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,16 @@
 
 bool	init_audio(t_game *game, t_music_name *music_file, int nb_music)
 {
-	int	i;
-	
 	InitAudioDevice();
 	if (!IsAudioDeviceReady() || NB_MAX_SOUNDS <= 0)
 		return (print_error("Audio init failed\n", 1), false);
 	game->music_array = ft_calloc(NB_MAX_SOUNDS, sizeof(t_music_game));
-	if (!game->music_array)
+	if (game->music_array == NULL)
 		return (false);
-	i = 0;
 	game->music_array[0].music = LoadMusicStream(BACKGROUND_MUSIC);
 	if (!IsMusicReady(game->music_array[0].music))
 		return (print_error("Background music init failed\n", 1), false);
-	game->music_array->is_playing = true;
+	game->music_array[0].is_playing = true;
 	return (true);
 }
 

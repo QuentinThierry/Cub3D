@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/03 16:25:50 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/03 17:49:47 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,29 +67,8 @@ int main(int argc, char **argv)
 		return (print_error("Invalid number of arguments\n", 1), 1);
 	if (WIN_X < 100 || WIN_Y < 100)
 		return (print_error("Invalid window size\n", 1), 1);
-	game.fov = DFL_FOV;
-	game.nb_file = 6;
-	game.filename = ft_calloc(game.nb_file, sizeof(t_texture));
-	if (game.filename == NULL)
-		return (print_error(NULL, 0), 1);
-	game.dist_tab = ft_calloc(WIN_X, sizeof(float));
-	if (game.dist_tab == NULL)
-		return (print_error(NULL, 0), 1);
-	game.height_tab = ft_calloc(WIN_X, sizeof(float));
-	if (game.height_tab == NULL)
-		return (print_error(NULL, 0), 1);
-	if (!parse_file(argv[1], &game))
+	if (!init_game(&game, argv[1]))
 		return (1);
-	if (!check_map(&game))
-		return (1);
-	if (!init_mlx(&game))
-		return (print_error(NULL, 0), ft_close(&game), 1);
-	if (!init_audio(&game, game.file_music, game.nb_music))
-		return (ft_close(&game), 1);
-	if (!loading_screen(&game))
-		return (print_error(NULL, 0), ft_close(&game), 1);
-	if (!init_end_screen(&game))
-		return (print_error(NULL, 0), ft_close(&game), 1);
 	if (!load_image_tab(&game, &error))
 	{
 		if (error == true)
@@ -98,13 +77,6 @@ int main(int argc, char **argv)
 	}
 	free_filename(&game);
 	free_loading_screen(&game);
-	game.constants[0] = (WIN_X / 2.) / tan((DFL_FOV / 2.) * TO_RADIAN);
-	game.constants[1] = tanf((DFL_FOV / 2.0) * TO_RADIAN);
-	game.constants[2] = cos((DFL_FOV / 2.0) * TO_RADIAN);
-	if (!init_minimap(&game))
-		return (print_error(NULL, 0), ft_close(&game), 1);
-	if (!init_pause_menu(&game))
-		return (print_error(NULL, 0), ft_close(&game), 1);
 	exit_door_no_receptacle(game.exit, game.total_receptacle, game.tab_images);
 	PlayMusicStream(game.music_array[0].music);
 	move_mouse(&game);

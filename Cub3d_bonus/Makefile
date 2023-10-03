@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/09/30 15:55:01 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/03 15:52:49 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,11 +19,6 @@ INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR) -I$(RAUDIO_HEADERS)
 
 REDIRECT_ERROR = >/dev/null 2>&1
 
-MINILIBX_URL = https://github.com/42Paris/minilibx-linux.git
-MINILIBX_DIR = $(HEADERS_DIR)minilibx-linux/
-MINILIBX_HEADERS = $(MINILIBX_DIR)
-MINILIBX = $(MINILIBX_DIR)libmlx.a
-
 RESET_COLOR	:= \033[0m
 RED			:= \033[0;31m
 GREEN		:= \033[0;32m
@@ -31,6 +26,13 @@ GREEN		:= \033[0;32m
 HEADERS_LIST = cub3d_bonus.h get_next_line.h
 HEADERS_DIR = ./includes/
 HEADERS = $(addprefix $(HEADERS_DIR), $(HEADERS_LIST))
+
+# ------------------MLX-------------------
+MINILIBX_URL = https://github.com/42Paris/minilibx-linux.git
+MINILIBX_DIR = $(HEADERS_DIR)minilibx-linux/
+MINILIBX_HEADERS = $(MINILIBX_DIR)
+MINILIBX = $(MINILIBX_DIR)libmlx.a
+# ----------------------------------------
 
 # ------------------RAUDIO-------------------
 RAUDIO_URL = https://github.com/raysan5/raudio.git
@@ -122,8 +124,6 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			exit_door.c \
 			main.c
 
-#			$(addprefix $(SOUND), $(SRC_SOUND)) \
-
 SRC_DIR = ./src/
 SRC = $(addprefix $(SRC_DIR), $(SRC_LIST))
 
@@ -138,11 +138,8 @@ bonus:	all
 run: $(NAME)
 	./$(NAME) maps/map_test.cub
 
-# vrun: $(NAME)
-# 	valgrind --leak-check=full --track-fds=yes --trace-children=yes --show-leak-kinds=all --track-origins=yes ./$(NAME)
-
 vrun: $(NAME)
-	valgrind --leak-check=full ./$(NAME) maps/map_test.cub
+	valgrind --leak-check=full --suppressions=valgrind.supp ./$(NAME) maps/map_test.cub
 
 prun: CFLAGS += -pg
 prun: $(NAME)
@@ -155,7 +152,7 @@ $(NAME):	$(MINILIBX) $(RAUDIO) $(OBJ_DIR) $(OBJ)
 $(OBJ_DIR)%.o:	$(SRC_DIR)%.c $(HEADERS) Makefile
 	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
 	
-$(OBJ_DIR):
+$(OBJ_DIR): Makefile
 	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(OBJ_DIR)$(GNL)
 	@mkdir -p $(OBJ_DIR)$(SOUND)
@@ -208,4 +205,4 @@ fclean:	clean clean_minilibx clean_audio
 
 re: fclean all
 
-.PHONY : all clean fclean re run vrun prun
+.PHONY : all bonus clean fclean re run vrun prun clean_minilibx clean_audio

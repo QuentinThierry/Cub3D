@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 19:59:12 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/03 16:37:15 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ t_map	**init_map(t_vector2 len)
 	i = 0;
 	res = ft_calloc(len.y, sizeof(t_map *));
 	if (res == NULL)
-		return (perror("Error"), NULL);
+		return (print_error(NULL, 0), NULL);
 	while (i < len.y)
 	{
 		res[i] = ft_calloc(len.x, sizeof(t_map));
 		if (res[i] == NULL)
-			return (perror("Error"), free_tab((void *)res, len.y), NULL);
+			return (print_error(NULL, 0), free_tab((void *)res, len.y), NULL);
 		i++;
 	}
 	return (res);
@@ -56,15 +56,15 @@ bool	parse_map(int fd, char *filename, t_game *game, int nb_line, char *line)
 	i = 0;
 	game->map_size = get_dimension_maps(fd, line, &error);
 	if (game->map_size.x == 0 || game->map_size.y == 0)
-		return (printf("Error : Empty map\n"), false);
+		return (print_error("Empty map\n", 1), false);
 	if (error == true)
-		return (printf("Error : Unknown element in map\n"), false);
+		return (print_error("Unknown element in map\n", 1), false);
 	maps = init_map(game->map_size);
 	if (maps == NULL)
 		return (false);
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
-		return (perror("Error"), false);
+		return (print_error(NULL, 0), false);
 	line = get_next_line(fd);
 	while (line != NULL && i < nb_line)
 	{
@@ -106,7 +106,7 @@ bool	find_player(t_game *game)
 	is_player = false;
 	player = ft_calloc(1, sizeof(t_player));
 	if (player == NULL)
-		return (perror("Error"), false);
+		return (print_error(NULL, 0), false);
 	while(index.y < game->map_size.y)
 	{
 		index.x = 0;
@@ -118,7 +118,7 @@ bool	find_player(t_game *game)
 				|| game->map[index.y][index.x].symbol == 'E')
 			{
 				if (is_player)
-					return (printf("Error : Too much players\n"), false);
+					return (print_error("Too much players\n", 1), false);
 				is_player = true;
 				player->f_real_pos.x = index.x + 1 / 2.0;
 				player->f_real_pos.y = index.y + 1 / 2.0;
@@ -140,7 +140,7 @@ bool	find_player(t_game *game)
 	player->has_item = false;
 	game->player = player;
 	if (is_player == false)
-		printf("Error : No player found on the map\n");
+		print_error("No player found on the map\n", 1);
 	return (is_player);
 }
 
@@ -158,12 +158,12 @@ bool	check_filename(char *filename)
 
 	len = ft_strlen(filename);
 	if (len < 4)
-		return (printf("Error : Wrong name of file\n"), false);
+		return (print_error("Wrong name of file\n", 1), false);
 	if (ft_strncmp(filename + (len - 4 ), ".cub", 4) != 0)
-		return (printf("Error : Wrong name of file\n"), false);
+		return (print_error("Wrong name of file\n", 1), false);
 	fd = open(filename, O_DIRECTORY);
 	if (fd != -1)
-		return (close(fd), printf("Error : Need a file not a directory\n"), false);
+		return (close(fd), print_error("Need a file not a directory\n", 1), false);
 	return (true);
 }
 
@@ -186,7 +186,7 @@ bool	parse_file(char *filename, t_game *game)
 		return (false);
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
-		return (perror("Error"), false);
+		return (print_error(NULL, 0), false);
 	if (!parse_texture(fd, game, &i, &line))
 		return (close(fd), false);
 	while (line != NULL && line[0] == '\n')
@@ -196,7 +196,7 @@ bool	parse_file(char *filename, t_game *game)
 		line = get_next_line(fd);
 	}
 	if (line == NULL)
-		return (close(fd), printf("Error : Empty map\n"), false);
+		return (close(fd), print_error("Empty map\n", 1), false);
 	if (!parse_map(fd, filename, game, i, line))
 		return (close(fd), false);
 	close(fd);

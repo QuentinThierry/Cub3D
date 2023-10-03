@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/03 17:57:12 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/03 18:04:36 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -509,6 +509,7 @@ int			get_len_texture(t_texture *texture, int len);
 void		ft_bzero(void *s, size_t n);
 int			find_next_wsp(char *line , int i);
 void		draw_rectangle(t_image *image, t_vector2 pos, t_vector2 size, t_pixel32 color);
+void		print_error(char *error, int print);
 
 // -------Parsing-------
 void		exit_door_no_receptacle(t_map *exit, int nb_receptacle, t_image *tab_image);
@@ -536,6 +537,7 @@ void		print_map(t_game *game);
 void		printf_music(t_game *game);
 
 // -------Init---------
+bool		init_game(t_game *game, char *filename);
 bool		init_mlx(t_game *game);
 bool		load_image_tab(t_game *game, bool *print_error);
 void		init_mouse(t_game *game);

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 21:27:20 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/02 15:40:34 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/03 16:31:45 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,17 +91,17 @@ bool	check_map(t_game *game)
 				|| (map[y][x].type & RECEPTACLE) == RECEPTACLE) && map[y][x].symbol != ' ')
 			{
 				if (!_check_sides(map, x, y, game->map_size))
-					return (printf("Error : Map not closed %c%c%c\n", map[y][x-1].symbol, map[y][x].symbol, map[y][x+1].symbol), false);
+					return (print_error("Map not closed %c%c%c\n", 1), false);
 			}
 			if ((map[y][x].type & DOOR) == DOOR)
 			{
 				if (!_check_sides(map, x, y, game->map_size))
-					return (printf("Error : Map not closed %c%c%c\n", map[y][x-1].symbol, map[y][x].symbol, map[y][x+1].symbol), false);
+					return (print_error("Map not closed %c%c%c\n", 1), false);
 				if (!_check_door(map, x, y, game->map_size))
-					return (printf("Error : Door at the wrong place\n"), false);
+					return (print_error("Door at the wrong place\n", 1), false);
 			}
 			if (!_check_sound(game, &map[y][x]))
-				return (printf("Error : Invalid sound description\n"), false);
+				return (print_error("Invalid sound description\n", 1), false);
 			x++;
 		}
 		y++;

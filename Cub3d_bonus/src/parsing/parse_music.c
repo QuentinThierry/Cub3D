@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 14:32:29 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/02 14:29:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/03 16:37:15 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ static bool	check_format(char *filename)
 
 	len = ft_strlen(filename);
 	if (len < 4)
-		return (printf("Error : Wrong name of subtitle\n"), false);
+		return (print_error("Wrong name of subtitle\n", 1), false);
 	if (ft_strncmp(filename + (len - 4), ".txt", 4) != 0)
-		return (printf("Error : Wrong format of subtitle\n"), false);
+		return (print_error("Wrong format of subtitle\n", 1), false);
 	return (true);
 }
 
@@ -39,7 +39,7 @@ static bool	load_subtitle(t_music_name *music)
 		return (false);
 	fd = open(music->subtitle, O_RDONLY);
 	if (fd == -1)
-		return (perror("Error"), false);
+		return (print_error(NULL, 0), false);
 	ret = read(fd, buffer, READ_SIZE);
 	buffer[READ_SIZE] = 0;
 	res = NULL;
@@ -58,7 +58,7 @@ static bool	load_subtitle(t_music_name *music)
 	music->subtitle = res;
 	close(fd);
 	if (ret == -1)
-		return (perror("Error"), false);
+		return (print_error(NULL, 0), false);
 	return (true);
 }
 
@@ -93,20 +93,20 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 	
 	index = game->nb_music;
 	if (_is_existing(game, *(str - 1), orient))
-		return (printf("Error : Multiples definition of a sound\n"), false);
+		return (print_error("Multiples definition of a sound\n", 1), false);
 	if (index >= game->nb_music)
 	{
 		game->file_music = ft_realloc(game->file_music
 			, sizeof(t_music_name) * game->nb_music, sizeof(t_music_name) * (index + 1));
 		if (game->file_music == NULL)
-			return (perror("Error"), false);
+			return (print_error(NULL, 0), false);
 		game->nb_music = index + 1;
 	}
 	game->file_music[index].orient = orient;
 	game->file_music[index].symbol = *(str - 1);
 	i += skip_whitespace(str + i);
 	if (str[i] == '\0')
-		return (printf("Error : Empty texture\n"), false);
+		return (print_error("Empty texture\n", 1), false);
 	len = find_next_wsp(str + i, 0);
 	if (len >= 0 && (str[i + len] == ' ' || str[i + len] == '\t'
 		|| str[i + len] == '\v' || str[i + len] == '\n' || str[i + len] == '\f'
@@ -115,14 +115,14 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 	filename = ft_strdup(str + i);
 	i += len + 1;
 	if (filename == NULL)
-		return (printf("Error : malloc failed\n"), false);
+		return (print_error("malloc failed\n", 1), false);
 	game->file_music[index].filename = filename;
 	if (orient == e_narrator || orient == e_narrator_receptacle
 		|| orient == e_narrator_receptacle_complete || orient == e_narrator_receptacle_complete)
 	{
 		i += skip_whitespace(str + i);
 		if (str[i] == '\0')
-			return (printf("Error : Empty texture\n"), false);
+			return (print_error("Empty texture\n", 1), false);
 		len = find_next_wsp(str + i, 0);
 		if (len >= 0 && (str[i + len] == ' ' || str[i + len] == '\t'
 			|| str[i + len] == '\v' || str[i + len] == '\n' || str[i + len] == '\f'
@@ -131,7 +131,7 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 		filename = ft_strdup(str + i);
 		i += len + 1;
 		if (filename == NULL)
-			return (printf("Error : malloc failed\n"), false);
+			return (print_error("malloc failed\n", 1), false);
 		game->file_music[index].subtitle = filename;
 		if (!load_subtitle(&game->file_music[index]))
 			return (false);

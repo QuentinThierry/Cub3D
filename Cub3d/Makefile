@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
+#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/07/16 22:07:49 by qthierry         ###   ########.fr        #
+#    Updated: 2023/10/03 16:03:58 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = cub3d
+NAME = cub3D
 
 CC = gcc
 CFLAGS = -g -Wall -Wextra# -03#-Werror
@@ -19,10 +19,12 @@ INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR)
 
 REDIRECT_ERROR = >/dev/null 2>&1
 
+# ------------------MLX-------------------
 MINILIBX_URL = https://github.com/42Paris/minilibx-linux.git
 MINILIBX_DIR = $(HEADERS_DIR)minilibx-linux/
 MINILIBX_HEADERS = $(MINILIBX_DIR)
 MINILIBX = $(MINILIBX_DIR)libmlx.a
+# ----------------------------------------
 
 RESET_COLOR	:= \033[0m
 RED			:= \033[0;31m
@@ -33,7 +35,7 @@ HEADERS_DIR = ./includes/
 HEADERS = $(addprefix $(HEADERS_DIR), $(HEADERS_LIST))
 
 GNL = get_next_line/
-SRC_GNL = get_next_line.c\
+SRC_GNL = get_next_line.c \
 			get_next_line_utils.c
 
 SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
@@ -66,9 +68,6 @@ bonus:	all
 run: $(NAME)
 	./$(NAME) maps/map.cub
 
-# vrun: $(NAME)
-# 	valgrind --leak-check=full --track-fds=yes --trace-children=yes --show-leak-kinds=all --track-origins=yes ./$(NAME)
-
 vrun: $(NAME)
 	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) maps/map.cub
 
@@ -83,7 +82,7 @@ $(NAME):	$(MINILIBX) $(OBJ_DIR) $(OBJ)
 $(OBJ_DIR)%.o:	$(SRC_DIR)%.c $(HEADERS) Makefile
 	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
 	
-$(OBJ_DIR):
+$(OBJ_DIR): Makefile
 	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(OBJ_DIR)$(GNL)
 
@@ -110,4 +109,4 @@ fclean:	clean clean_minilibx
 
 re: fclean all
 
-.PHONY : all clean fclean re
+.PHONY : all clean fclean re clean_minilibx bonus run vrun prun

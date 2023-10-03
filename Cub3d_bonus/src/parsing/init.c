@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/02 18:46:34 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/03 17:51:23 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,61 @@ static const t_vector2 g_hor_bar_size =
 	(WIN_Y / 100)
 };
 
+static bool	_init_value_malloc(t_game *game)
+{
+	game->fov = DFL_FOV;
+	game->constants[0] = (WIN_X / 2.) / tanf((DFL_FOV / 2.) * TO_RADIAN);
+	game->constants[1] = tanf((DFL_FOV / 2.0) * TO_RADIAN);
+	game->constants[2] = cosf((DFL_FOV / 2.0) * TO_RADIAN);
+	game->nb_file = 6;
+	game->filename = ft_calloc(game->nb_file, sizeof(t_texture));
+	if (game->filename == NULL)
+		return (print_error(NULL, 0), false);
+	game->dist_tab = ft_calloc(WIN_X, sizeof(float));
+	if (game->dist_tab == NULL)
+		return (print_error(NULL, 0), false);
+	game->height_tab = ft_calloc(WIN_X, sizeof(float));
+	if (game->height_tab == NULL)
+		return (print_error(NULL, 0), false);
+	return (true);
+}
+
+bool	init_game(t_game *game, char *filename)
+{
+	if (!_init_value_malloc(game))
+		return (false);
+	if (!parse_file(filename, game))
+		return (false);
+	if (!check_map(game))
+		return (false);
+	if (!init_mlx(game))
+		return (print_error(NULL, 0), ft_close(game), false);
+	if (!init_audio(game, game->file_music, game->nb_music))
+		return (ft_close(game), false);
+	if (!loading_screen(game))
+		return (print_error(NULL, 0), ft_close(game), false);
+	if (!init_end_screen(game))
+		return (print_error(NULL, 0), ft_close(game), false);
+	if (!init_minimap(game))
+		return (print_error(NULL, 0), ft_close(game), false);
+	if (!init_pause_menu(game))
+		return (print_error(NULL, 0), ft_close(game), false);
+	return (true);
+}
+
+static void	_init_hook(t_game *game)
+{
+	mlx_do_key_autorepeatoff(game->mlx_ptr);
+	mlx_hook(game->win, 2, (1L << 0), (void *)key_press_hook, game);
+	mlx_hook(game->win, 3, (1L << 1), (void *)key_release_hook, game);
+	mlx_hook(game->win, 5, (1L << 3), NULL, game);
+	mlx_hook(game->win, 17, (1L << 8), ft_close, game);
+	mlx_hook(game->win, 6, (1L << 6) , mouse_hook, game);
+	mlx_hook(game->win, 8, (1L << 5), mouse_leave, game);
+	mlx_hook(game->win, 4, (1L<< 2), mouse_click, game);
+	mlx_loop_hook(game->mlx_ptr, on_update, game);
+}
+
 bool	init_mlx(t_game *game)
 {
 	game->image = ft_calloc(1, sizeof(t_image));
@@ -116,6 +171,7 @@ bool	init_mlx(t_game *game)
 	game->image->opp /= 8;
 	if (game->win == NULL)
 		return (false);
+	_init_hook(game);
 	return (true);
 }
 

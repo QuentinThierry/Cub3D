@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/02 14:01:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/03 17:49:52 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,16 @@
 
 bool	init_audio(t_game *game, t_music_name *music_file, int nb_music)
 {
-	int	i;
-	
 	InitAudioDevice();
 	if (!IsAudioDeviceReady() || NB_MAX_SOUNDS <= 0)
-		return (printf("Error : Audio init failed\n"), false);
+		return (print_error("Audio init failed\n", 1), false);
 	game->music_array = ft_calloc(NB_MAX_SOUNDS, sizeof(t_music_game));
-	if (!game->music_array)
+	if (game->music_array == NULL)
 		return (false);
-	i = 0;
 	game->music_array[0].music = LoadMusicStream(BACKGROUND_MUSIC);
 	if (!IsMusicReady(game->music_array[0].music))
-		return (printf("Error : Background music init failed\n"), false);
-	game->music_array->is_playing = true;
+		return (print_error("Background music init failed\n", 1), false);
+	game->music_array[0].is_playing = true;
 	return (true);
 }
 
@@ -58,7 +55,7 @@ static t_music_game	*find_empty_place(t_music_game *music_tab)
 	while (i < NB_MAX_SOUNDS)
 	{
 		if (!music_tab[i].is_playing)
-			return (printf("%d\n", i), &music_tab[i]);
+			return (&music_tab[i]);
 		i++;
 	}
 	return (NULL);
@@ -75,7 +72,6 @@ void	play_music(t_map *map_cell, t_music_game *music_tab, char *filename
 	music = find_empty_place(music_tab);
 	if (music == NULL)
 		return ;
-	printf("play %s\n", filename);
 	music->music = LoadMusicStream(filename);
 	if (!IsMusicReady(music->music))
 		return ;
@@ -101,7 +97,6 @@ void	play_narrator(t_game *game, t_map *map_cell, t_music_game *music_tab)
 		music->is_subtitle = false;
 		map_cell->narrator->offset = 0;
 	}
-	printf("play narrator %s\n", map_cell->narrator->filename);
 	music->music = LoadMusicStream(map_cell->narrator->filename);
 	if (!IsMusicReady(music->music))
 		return ;
@@ -155,7 +150,6 @@ void	update_sounds(t_music_game *music_array)
 					music_array[i].map_cell->type &= ~IS_PLAYING_NARRATOR;
 				else
 					music_array[i].map_cell->type &= ~IS_PLAYING_MUSIC & ~IS_PLAYING_MUSIC_OBJECT;
-				// music_array[i].map_cell = NULL;
 				music_array[i].is_playing = false;
 			}
 		}
@@ -191,7 +185,6 @@ void	clear_sound(t_music_game *music_array)
 			if (IsMusicStreamPlaying(music_array[i].music))
 				StopMusicStream(music_array[i].music);
 			UnloadMusicStream(music_array[i].music);
-			// music_array[i].map_cell = NULL;
 			music_array[i].is_playing = false;
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:16:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/30 16:52:10 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/03 18:37:43 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,16 +106,12 @@ void	menu_mouse_down_hook(int mouse_button, int x, int y, t_game *game)
 
 void	menu_mouse_up_hook(int mouse_button, int x, int y, t_game *game)
 {
-	void			*ref;
-
 	(void)x;
 	(void)y;
 	if (mouse_button != 1)
 		return ;
 	if (game->menu->state == OPTION_MENU)
-	{
 		game->menu->option_menu.pressed_slider_ref = NULL;
-	}
 }
 
 void	menu_key_hook(t_keybind key, t_game *game)

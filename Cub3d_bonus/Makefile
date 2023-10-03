@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/03 18:26:04 by qthierry         ###   ########.fr        #
+#    Updated: 2023/10/03 18:35:47 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,11 +48,13 @@ RAUDIO_DEFINE = -D RAUDIO_STANDALONE -D SUPPORT_MODULE_RAUDIO -D SUPPORT_FILEFOR
 #----------------------------------------------
 
 GNL = get_next_line/
-SRC_GNL = get_next_line.c \
+SRC_GNL = \
+			get_next_line.c \
 			get_next_line_utils.c
 
 UTILS = utils/
-SRC_UTILS = ft_strjoin.c \
+SRC_UTILS = \
+			ft_strjoin.c \
 			ft_strncmp.c \
 			ft_atoi.c \
 			utils.c \
@@ -66,7 +68,8 @@ SRC_UTILS = ft_strjoin.c \
 			bettermlx.c
 
 PARSING = parsing/
-SRC_PARSING = check_map.c \
+SRC_PARSING = \
+			check_map.c \
 			ft_fill_wall.c \
 			fill_texture.c \
 			init.c \
@@ -75,7 +78,8 @@ SRC_PARSING = check_map.c \
 			parse_music.c
 
 RAYCASTING = raycasting/
-SRC_RAYCASTING = raycasting.c \
+SRC_RAYCASTING = \
+			raycasting.c \
 			collisions.c \
 			wall_hit.c \
 			wall_hit_end.c \
@@ -93,9 +97,9 @@ SRC_MINIMAP = \
 			minimap_rotate.c \
 			minimap_init.c
 
-
 DRAW = draw/
-SRC_DRAW = 	draw.c \
+SRC_DRAW = \
+			draw.c \
 			image_operations.c \
 			get_image.c
 
@@ -115,6 +119,10 @@ SRC_AUDIO = \
 			audio.c \
 			subtitle.c
 
+LOADINGSCREEN = loading_screen/
+SRC_LOADINGSCREEN = \
+			loading_screen.c
+
 ENDGAME = end_game/
 SRC_ENDGAME = \
 			end_game.c \
@@ -131,8 +139,8 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			$(addprefix $(MENU), $(SRC_MENU)) \
 			$(addprefix $(AUDIO), $(SRC_AUDIO)) \
 			$(addprefix $(ENDGAME), $(SRC_ENDGAME)) \
+			$(addprefix $(LOADINGSCREEN), $(SRC_LOADINGSCREEN)) \
 			print.c \
-			loading_screen.c \
 			main.c
 
 SRC_DIR = ./src/
@@ -176,6 +184,7 @@ $(OBJ_DIR): Makefile
 	@mkdir -p $(OBJ_DIR)$(MENU)
 	@mkdir -p $(OBJ_DIR)$(AUDIO)
 	@mkdir -p $(OBJ_DIR)$(ENDGAME)
+	@mkdir -p $(OBJ_DIR)$(LOADINGSCREEN)
 
 $(MINILIBX):
 	@echo "${GREEN}~-~-~-~-~ COMPILING MINILIBX ~-~-~-~-~${RESET_COLOR}"

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/02 18:47:13 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/03 16:24:55 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -507,6 +507,7 @@ int			ft_atoi(const char *str);
 int			get_len_texture(t_texture *texture, int len);
 void		ft_bzero(void *s, size_t n);
 int			find_next_wsp(char *line , int i);
+void		print_error(char *error, int print);
 
 // -------Parsing-------
 void		exit_door_no_receptacle(t_map *exit, int nb_receptacle, t_image *tab_image);

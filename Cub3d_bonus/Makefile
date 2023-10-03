@@ -6,11 +6,11 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/03 15:52:49 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/03 16:38:09 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = cub3d_bonus
+NAME = cub3D_bonus
 
 CC = gcc
 CFLAGS = -g -Wall -Wextra#-O3#-fsanitize=address#-Werror
@@ -62,6 +62,7 @@ SRC_UTILS = ft_strjoin.c \
 			ft_memcpy.c \
 			ft_bzero.c \
 			free.c \
+			print_error.c \
 			bettermlx.c
 
 PARSING = parsing/

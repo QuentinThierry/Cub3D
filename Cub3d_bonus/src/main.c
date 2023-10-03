@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/02 15:56:16 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/03 16:25:50 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,46 +64,36 @@ int main(int argc, char **argv)
 	
 	game = (t_game){0};
 	if (argc != 2)
-		return (printf("Error : Invalid number of arguments\n"), 1);
+		return (print_error("Invalid number of arguments\n", 1), 1);
 	if (WIN_X < 100 || WIN_Y < 100)
-		return (printf("Error : Invalid window size\n"), 1);
+		return (print_error("Invalid window size\n", 1), 1);
 	game.fov = DFL_FOV;
 	game.nb_file = 6;
 	game.filename = ft_calloc(game.nb_file, sizeof(t_texture));
 	if (game.filename == NULL)
-		return (perror("Error"), 1);
+		return (print_error(NULL, 0), 1);
 	game.dist_tab = ft_calloc(WIN_X, sizeof(float));
 	if (game.dist_tab == NULL)
-		return (perror("Error"), 1);
+		return (print_error(NULL, 0), 1);
 	game.height_tab = ft_calloc(WIN_X, sizeof(float));
 	if (game.height_tab == NULL)
-		return (perror("Error"), 1);
+		return (print_error(NULL, 0), 1);
 	if (!parse_file(argv[1], &game))
 		return (1);
-	// printf_music(&game);
 	if (!check_map(&game))
 		return (1);
 	if (!init_mlx(&game))
-		return (perror("Error"), ft_close(&game), 1);
+		return (print_error(NULL, 0), ft_close(&game), 1);
 	if (!init_audio(&game, game.file_music, game.nb_music))
 		return (ft_close(&game), 1);
-	// mlx_do_key_autorepeatoff(game.mlx_ptr);
-	mlx_hook(game.win, 2, (1L << 0), (void *)key_press_hook, &game);
-	mlx_hook(game.win, 3, (1L << 1), (void *)key_release_hook, &game);
-	mlx_hook(game.win, 5, (1L << 3), NULL, &game);
-	mlx_hook(game.win, 17, (1L << 8), ft_close, &game);
-	mlx_hook(game.win, 6, (1L << 6) , mouse_hook, &game);
-	mlx_hook(game.win, 8, (1L << 5), mouse_leave, &game);
-	mlx_hook(game.win, 4, (1L<< 2), mouse_click, &game);
-	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	if (!loading_screen(&game))
-		return (perror("Error"), ft_close(&game), 1);
+		return (print_error(NULL, 0), ft_close(&game), 1);
 	if (!init_end_screen(&game))
-		return (perror("Error"), ft_close(&game), 1);
+		return (print_error(NULL, 0), ft_close(&game), 1);
 	if (!load_image_tab(&game, &error))
 	{
 		if (error == true)
-			perror("Error");
+			print_error(NULL, 0);
 		return (ft_close(&game), 1);
 	}
 	free_filename(&game);
@@ -112,9 +102,9 @@ int main(int argc, char **argv)
 	game.constants[1] = tanf((DFL_FOV / 2.0) * TO_RADIAN);
 	game.constants[2] = cos((DFL_FOV / 2.0) * TO_RADIAN);
 	if (!init_minimap(&game))
-		return (perror("Error"), ft_close(&game), 1);
+		return (print_error(NULL, 0), ft_close(&game), 1);
 	if (!init_pause_menu(&game))
-		return (perror("Error"), ft_close(&game), 1);
+		return (print_error(NULL, 0), ft_close(&game), 1);
 	exit_door_no_receptacle(game.exit, game.total_receptacle, game.tab_images);
 	PlayMusicStream(game.music_array[0].music);
 	move_mouse(&game);

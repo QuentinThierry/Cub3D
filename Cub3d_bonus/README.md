@@ -39,7 +39,7 @@ FIX :
 <!-- - draw hand when window is too small segfault -->
 <!-- - protect text draw outside of the screen -->
 <!-- - change check map to fit the new type possible -->
-- file structure for bonus and mandatory
+<!-- - file structure for bonus and mandatory -->
 - white space at the end of a texture printf error because file not found
 
 Minimap : 

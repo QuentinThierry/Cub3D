@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/02 18:46:34 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/03 16:13:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,19 @@ static const t_vector2 g_hor_bar_size =
 	(WIN_Y / 100)
 };
 
+static void	init_hook(t_game *game)
+{
+	mlx_do_key_autorepeatoff(game->mlx_ptr);
+	mlx_hook(game->win, 2, (1L << 0), (void *)key_press_hook, &game);
+	mlx_hook(game->win, 3, (1L << 1), (void *)key_release_hook, &game);
+	mlx_hook(game->win, 5, (1L << 3), NULL, &game);
+	mlx_hook(game->win, 17, (1L << 8), ft_close, &game);
+	mlx_hook(game->win, 6, (1L << 6) , mouse_hook, &game);
+	mlx_hook(game->win, 8, (1L << 5), mouse_leave, &game);
+	mlx_hook(game->win, 4, (1L<< 2), mouse_click, &game);
+	mlx_loop_hook(game->mlx_ptr, on_update, &game);
+}
+
 bool	init_mlx(t_game *game)
 {
 	game->image = ft_calloc(1, sizeof(t_image));
@@ -116,6 +129,7 @@ bool	init_mlx(t_game *game)
 	game->image->opp /= 8;
 	if (game->win == NULL)
 		return (false);
+	init_hook(game);
 	return (true);
 }
 

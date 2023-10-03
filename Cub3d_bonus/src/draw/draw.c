@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/14 20:41:34 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/03 16:29:53 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	{
 		image = get_image_wall(game, ray, &x_door);
 		if (image->addr == NULL)
-			return (printf("Error : Invalid image\n"),(void)ft_close(game));
+			return (print_error("Invalid image\n", 1),(void)ft_close(game));
 		delta_y_img = image->size.y / height;
 		if (y < 0)
 		{

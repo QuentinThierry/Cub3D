@@ -6,11 +6,11 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/03 15:55:24 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/03 16:03:58 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = cub3d
+NAME = cub3D
 
 CC = gcc
 CFLAGS = -g -Wall -Wextra# -03#-Werror

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/28 14:41:15 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/03 16:37:15 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ bool	ft_read_config(t_animation *animation, int index)
 	error = false;
 	fd = open(animation->filename[index], O_RDONLY);
 	if (fd == -1)
-		return (perror("Error"), false);
+		return (print_error(NULL, 0), false);
 	buffer = get_next_line(fd);
 	if (buffer != NULL)
 		animation->time_sprite = ft_atoi(buffer);
@@ -52,7 +52,7 @@ bool	ft_read_config(t_animation *animation, int index)
 	}
 	close(fd);
 	if (error == true)
-		printf("Error : Wrong format of config file\n");
+		print_error("Wrong format of config file\n", 1);
 	return (!error);
 }
 
@@ -129,7 +129,7 @@ bool	ft_read_anim(DIR *dir, t_texture *texture, char *dirname)
 		, sizeof(t_animation) * (texture->nb_animation)
 		,sizeof(t_animation) * (texture->nb_animation + 1));
 	if (texture->animation == NULL)
-			return (perror("Error"), closedir(dir), false);
+			return (print_error(NULL, 0), closedir(dir), false);
 	if (ft_strlen(dirname) > 0 && dirname[ft_strlen(dirname) - 1] == '/')
 		add_slash = false;
 	else
@@ -144,13 +144,13 @@ bool	ft_read_anim(DIR *dir, t_texture *texture, char *dirname)
 		}
 		filename = ft_strjoin_slash(dirname, buffer->d_name, add_slash);
 		if (filename == NULL)
-			return (perror("Error"), closedir(dir), false);
+			return (print_error(NULL, 0), closedir(dir), false);
 		texture->animation[texture->nb_animation].filename = ft_realloc(
 			texture->animation[texture->nb_animation].filename
 			, sizeof(char *) * (texture->animation[texture->nb_animation].nb_sprite)
 			, sizeof(char *) * (texture->animation[texture->nb_animation].nb_sprite + 1));
 		if (texture->animation[texture->nb_animation].filename == NULL)
-			return (perror("Error"), closedir(dir), false);
+			return (print_error(NULL, 0), closedir(dir), false);
 		texture->total++;
 		texture->animation[texture->nb_animation].filename[texture->animation[texture->nb_animation].nb_sprite] = filename;
 		texture->animation[texture->nb_animation].nb_sprite++;
@@ -162,7 +162,7 @@ bool	ft_read_anim(DIR *dir, t_texture *texture, char *dirname)
 	closedir(dir);
 	has_config = sort_animation(&(texture->animation[texture->nb_animation]));
 	if (has_config == false)
-		printf("Error : Missing the file config.cfg for the animations\n");
+		print_error("Missing the file config.cfg for the animations\n", 1);
 	texture->nb_animation++;
 	return (has_config);
 }
@@ -199,7 +199,7 @@ bool	ft_read_dir(DIR *dir, t_texture *texture)
 		}
 		filename = ft_strjoin_slash(texture->filename, buffer->d_name, add_slash);
 		if (filename == NULL)
-			return (perror("Error"), closedir(dir), false);
+			return (print_error(NULL, 0), closedir(dir), false);
 		tmp = opendir(filename);
 		if (tmp != NULL)
 		{
@@ -212,7 +212,7 @@ bool	ft_read_dir(DIR *dir, t_texture *texture)
 			texture->filename_d = ft_realloc(texture->filename_d
 				, sizeof(char *) * (texture->nb_file) , sizeof(char *) * (texture->nb_file + 1));
 			if (texture->filename == NULL)
-				return (perror("Error"), closedir(dir), false);
+				return (print_error(NULL, 0), closedir(dir), false);
 			texture->filename_d[texture->nb_file] = filename;
 			texture->nb_file++;
 		}
@@ -313,7 +313,7 @@ bool	multiple_texture(t_game *game, int *index, char * str, enum e_orientation o
 		{
 			if (nb_file == 4 && cpt == 2)
 				break ;
-			return (printf("Error : Empty texture\n"), false);
+			return (print_error("Empty texture\n", 1), false);
 		}
 		len = find_next_wsp(str + i, 0);
 		if (len >= 0 && (str[i + len] == ' ' || str[i + len] == '\t'
@@ -323,13 +323,13 @@ bool	multiple_texture(t_game *game, int *index, char * str, enum e_orientation o
 		filename = ft_strdup(str + i);
 		i += len + 1;
 		if (filename == NULL)
-			return (printf("Error : malloc failed\n"), false);
+			return (print_error("malloc failed\n", 1), false);
 		if (*index >= game->nb_file)
 		{
 			game->filename = ft_realloc(game->filename
 				, sizeof(t_texture) * game->nb_file, sizeof(t_texture) * (*index + 1));
 			if (game->filename == NULL)
-				return (perror("Error"), false);
+				return (print_error(NULL, 0), false);
 			game->nb_file = *index + 1;
 		}
 		if (orient == e_receptacle_empty)
@@ -376,7 +376,7 @@ static bool	_find_texture(t_game *game, char *str, int index, enum e_orientation
 	int		len;
 
 	if (_is_existing(game, index, *(str - 1), orient))
-		return (printf("Error : Multiples definition of a texture\n"), false);
+		return (print_error("Multiples definition of a texture\n", 1), false);
 	if (orient == e_receptacle_empty || orient == e_door_lock || orient == e_object_interactive)
 		return (multiple_texture(game, &index, str, orient));
 	if (index >= game->nb_file)
@@ -384,7 +384,7 @@ static bool	_find_texture(t_game *game, char *str, int index, enum e_orientation
 		game->filename = ft_realloc(game->filename
 			, sizeof(t_texture) * game->nb_file, sizeof(t_texture) * (index + 1));
 		if (game->filename == NULL)
-			return (perror("Error"), false);
+			return (print_error(NULL, 0), false);
 		game->nb_file = index + 1;
 	}
 	game->filename[index].orient = orient;
@@ -397,13 +397,13 @@ static bool	_find_texture(t_game *game, char *str, int index, enum e_orientation
 		game->filename[index].symbol = *(str - 1);
 	i = skip_whitespace(str);
 	if (str[i] == '\0')
-		return (printf("Error : Empty texture\n"), false);
+		return (print_error("Empty texture\n", 1), false);
 	len = ft_strlen(str + i);
 	if (len >= 1 && str[i + len - 1] == '\n')
 		str[i + len - 1] = '\0';
 	filename = ft_strdup(str + i);
 	if (filename == NULL)
-		return (printf("Error : malloc failed\n"), false);
+		return (print_error("malloc failed\n", 1), false);
 	game->filename[index].filename = filename;
 	dir = opendir(filename);
 	if (dir != NULL)
@@ -494,7 +494,7 @@ static bool	_cmp_texture(char *line, t_game *game, int i, bool *is_end)
 		if (ft_strncmp(line + i, "D_", 2) == 0)
 			return (_find_texture(game, line + i + 5, game->nb_file, e_door_lock));
 	}
-	return (printf("Error : invalid identifier\n"), false);
+	return (print_error("invalid identifier\n", 1), false);
 }
 
 bool	check_texture(t_texture	*filename)
@@ -541,7 +541,7 @@ bool	parse_texture(int fd, t_game *game, int *nb_line, char **rest)
 		}
 		i = skip_whitespace(line);
 		if (ft_strlen(line + i) < 1)
-			return (printf("Error : Line to short\n"), free(line), false);
+			return (print_error("Line to short\n", 1), free(line), false);
 		if (!_cmp_texture(line, game, i, &is_end))
 			return (free(line), false);
 		free(line);
@@ -551,6 +551,6 @@ bool	parse_texture(int fd, t_game *game, int *nb_line, char **rest)
 	}
 	*rest = line;
 	if (!check_texture(game->filename))
-		return (printf("Error : need the mandatory texture\n"),false);
+		return (print_error("need the mandatory texture\n", 1),false);
 	return (true);
 }

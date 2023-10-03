@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
+#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/09/30 15:55:01 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/03 17:57:48 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,7 +84,12 @@ SRC_RAYCASTING = raycasting.c \
 			ray_object.c
 
 MINIMAP = minimap/
-SRC_MINIMAP = minimap.c
+SRC_MINIMAP = \
+			minimap.c \
+			minimap_rect.c \
+			minimap_rotate.c \
+			minimap_init.c
+
 
 DRAW = draw/
 SRC_DRAW = 	draw.c \

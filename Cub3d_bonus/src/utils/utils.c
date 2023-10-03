@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/28 19:29:55 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/03 17:56:41 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,4 +304,30 @@ t_object	*find_empty_object(t_game *game)
 		i++;
 	}
 	return (NULL);
+}
+
+__attribute__((always_inline))
+static inline void	my_mlx_pixel_put_sec(t_image *image, int x, int y, t_pixel32 color)
+{
+	if (y < 0 || x < 0 || x >= image->size.x || y >= image->size.y)
+		return ;
+	*(int*)(image->addr + (y * image->size_line + x * 4)) = color;
+}
+
+void	draw_rectangle(t_image *image, t_vector2 pos, t_vector2 size, t_pixel32 color)
+{
+	int	x;
+	int	y;
+	
+	y = pos.y;
+	while (y < size.y + pos.y)
+	{
+		x = pos.x;
+		while (x < size.x + pos.x)
+		{
+			my_mlx_pixel_put_sec(image, x, y, color);
+			x++;
+		}
+		y++;
+	}
 }

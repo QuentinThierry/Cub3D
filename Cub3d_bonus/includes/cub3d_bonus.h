@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/02 18:47:13 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/03 17:57:12 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@
 # define MIN_ZOOM -10
 // Represents the minimap padding equals to a percentage of the total window
 # define MINIMAP_PAD 0.05
-
+# define MINIMAP_WALL_COLOR 0x505050
+# define MINIMAP_BACKGROUND_COLOR 0x808080
 // Represents the minimap size equals to a percentage of the total window
 # define MINIMAP_SIZE 0.25
 
@@ -507,6 +508,7 @@ int			ft_atoi(const char *str);
 int			get_len_texture(t_texture *texture, int len);
 void		ft_bzero(void *s, size_t n);
 int			find_next_wsp(char *line , int i);
+void		draw_rectangle(t_image *image, t_vector2 pos, t_vector2 size, t_pixel32 color);
 
 // -------Parsing-------
 void		exit_door_no_receptacle(t_map *exit, int nb_receptacle, t_image *tab_image);
@@ -584,7 +586,8 @@ void		draw_minimap(t_game *game);
 void		generate_minimap_bounds(t_game *game);
 bool		init_minimap(t_game *game);
 void		draw_rotated_image(t_image *img_dest, t_image *img_src, t_vector2 pos, float angle);
-void		draw_rectangle(t_image *image, t_vector2 pos, t_vector2 size, t_pixel32 color);
+void		draw_rectangular_minimap(t_game *game);
+void		draw_minimap_buf_on_main_image(t_minimap *mmap, t_image *image);
 
 // ------------ Door ----------
 t_dvector2	door_hit_ver_se(t_dvector2 hit, float step, float door_angle, float player_angle);

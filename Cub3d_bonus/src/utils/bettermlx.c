@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 18:51:49 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/01 21:27:56 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/02 18:32:49 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,15 +93,13 @@ t_image	*resize_bilinear_img_malloc(void *mlx, t_image *src,
 	t_image		*dst;
 	t_pixel32	*dst_addr;
 	t_pixel32	*src_addr;
+	t_pixel32	*src_pix;
 	int			x;
 	int			y;
 	float		x_ratio;
 	float		y_ratio;
 	float		x_src;
 	float		y_src;
-	int			r;
-	int			g;
-	int			b;
 
 	dst = btmlx_new_image(mlx, dst_size);
 	if (!dst)
@@ -109,35 +107,50 @@ t_image	*resize_bilinear_img_malloc(void *mlx, t_image *src,
 	dst_addr = (t_pixel32 *)dst->addr;
 	src_addr = (t_pixel32 *)src->addr;
 
-	x_ratio = (float)src->size.x / dst->size.x;
-	y_ratio = (float)src->size.y / dst->size.y;
+	x_ratio = (float)(src->size.x - 1) / (dst->size.x - 1);
+	y_ratio = (float)(src->size.y - 1) / (dst->size.y - 1);
 	y = 0;
-	while (y < dst_size.y)
+	while (y < dst_size.y - 1)
 	{
 		y_src = y * y_ratio;
 		x = 0;
 		while (x < dst_size.x)
 		{
 			x_src = x * x_ratio;
-			// printf("%f\n", x_src);
-			
-			r = ((src_addr[(int)x_src + ((int)y_src) * src->size.x] >> 16) & 0xff)
-					* (1 - (x_src - (int)x_src))
-				+ ((src_addr[(int)x_src + 1 + ((int)y_src) * src->size.x] >> 16) & 0xff)
-					* (x_src - (int)x_src);
-
-			g = ((src_addr[(int)x_src + ((int)y_src) * src->size.x] >> 8) & 0xff)
-					* (1 - (x_src - (int)x_src))
-				+ ((src_addr[(int)x_src + 1 + ((int)y_src) * src->size.x] >> 8) & 0xff)
-					* (x_src - (int)x_src);
-
-			b = ((src_addr[(int)x_src + ((int)y_src) * src->size.x]) & 0xff)
-					* (1 - (x_src - (int)x_src))
-				+ ((src_addr[(int)x_src + 1 + ((int)y_src) * src->size.x]) & 0xff)
-					* (x_src - (int)x_src);
-
+			src_pix = src_addr + (int)x_src + (int)y_src * src->size.x;
 			dst_addr[x + dst->size.x * y] =
-				(r << 16) | (g << 8) | b;
+			((u_char)((((src_pix[0] >> 24) & 0xff)
+					* (1 - (x_src - (int)x_src))
+				+ ((src_pix[1] >> 24) & 0xff)
+					* (x_src - (int)x_src)) * (1 - (y_src - (int)y_src))
+			+ (((src_pix[src->size.x] >> 24) & 0xff)
+					* (1 - (x_src - (int)x_src))
+				+ ((src_pix[src->size.x + 1] >> 24) & 0xff)
+					* (x_src - (int)x_src)) * (y_src - (int)y_src)) << 24)
+			| ((u_char)(((src_pix[0] >> 16 & 0xff)
+					* (1 - (x_src - (int)x_src))
+				+ (src_pix[1] >> 16 & 0xff)
+					* (x_src - (int)x_src)) * (1 - (y_src - (int)y_src))
+			+ ((src_pix[src->size.x] >> 16 & 0xff)
+					* (1 - (x_src - (int)x_src))
+				+ (src_pix[src->size.x + 1] >> 16 & 0xff)
+					* (x_src - (int)x_src)) * (y_src - (int)y_src)) << 16)
+			| ((u_char)(((src_pix[0] >> 8 & 0xff)
+					* (1 - (x_src - (int)x_src))
+				+ (src_pix[1] >> 8 & 0xff)
+					* (x_src - (int)x_src)) * (1 - (y_src - (int)y_src))
+			+ ((src_pix[src->size.x] >> 8 & 0xff)
+					* (1 - (x_src - (int)x_src))
+				+ (src_pix[src->size.x + 1] >> 8 & 0xff)
+					* (x_src - (int)x_src)) * (y_src - (int)y_src)) << 8)
+			| (u_char)(((src_pix[0] & 0xff)
+					* (1 - (x_src - (int)x_src))
+				+ (src_pix[1] & 0xff)
+					* (x_src - (int)x_src)) * (1 - (y_src - (int)y_src))
+			+ ((src_pix[src->size.x] & 0xff)
+					* (1 - (x_src - (int)x_src))
+				+ (src_pix[src->size.x + 1] & 0xff)
+					* (x_src - (int)x_src)) * (y_src - (int)y_src));
 			x++;
 		}
 		y++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/02 13:41:07 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 18:46:34 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,7 @@ bool	load_image_tab(t_game *game, bool *print_error)
 	int			index;
 
 	*print_error = true;
-	game->subtitle_font = btmlx_xpm_file_to_image(game->mlx_ptr, LOADING_FONT
+	game->subtitle_font = btmlx_xpm_file_to_image_bilinear_resize(game->mlx_ptr, LOADING_FONT
 			, (t_vector2){WIN_X / 3 * 2, WIN_Y / 16 / 3 * 2});
 	if (game->subtitle_font == NULL)
 		return (false);

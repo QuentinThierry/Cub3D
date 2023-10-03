@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loading_screen.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 19:04:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/02 13:45:00 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 18:35:22 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ static const t_vector2	g_size_loading_bar = (t_vector2){WIN_X / 3, WIN_Y / 16};
 
 
 __attribute__((always_inline))
-static inline unsigned int	get_pix_alpha(unsigned int dest, unsigned int src)
+static inline t_pixel32	get_pix_alpha(t_pixel32 dest, t_pixel32 src)
 {
-	float	color_quantity;
+	float	alpha;
 
-	color_quantity = ((src >> 24) & 0xff) / 255.;
-	return (((unsigned char)(((src >> 16) & 0xFF) * color_quantity + ((dest >> 16) & 0xff) * (1 - color_quantity)) << 16)
-		| ((unsigned char)(((src >> 8) & 0xFF) * color_quantity + ((dest >> 8) & 0xff) * (1 - color_quantity)) << 8)
-		| (unsigned char)((src & 0xFF) * color_quantity + (dest & 0xff) * (1 - color_quantity)));
+	alpha = ((src >> 24) & 0xff) / 255.;
+	return (((unsigned char)(((src >> 16) & 0xFF) * alpha + ((dest >> 16) & 0xff) * (1 - alpha)) << 16)
+		| ((unsigned char)(((src >> 8) & 0xFF) * alpha + ((dest >> 8) & 0xff) * (1 - alpha)) << 8)
+		| (unsigned char)((src & 0xFF) * alpha + (dest & 0xff) * (1 - alpha)));
 }
 /**
  * @brief 
@@ -189,13 +189,13 @@ bool	update_loading_screen(t_game *game, t_loading *loading_screen)
 
 static bool	_load_image(t_game *game, t_loading *loading_screen)
 {
-	game->font = btmlx_xpm_file_to_image(game->mlx_ptr
+	game->font = btmlx_xpm_file_to_image_bilinear_resize(game->mlx_ptr
 		, LOADING_FONT, g_size_font);
 	if (game->font == NULL)
 		return (false);
 	game->size_letter.x = game->font->size.x * WIDTH_LETTER / WIDTH_ALPHA;
 	game->size_letter.y = game->font->size.y;
-	loading_screen->background = btmlx_xpm_file_to_image(game->mlx_ptr
+	loading_screen->background = btmlx_xpm_file_to_image_bilinear_resize(game->mlx_ptr
 		, LOADING_SCREEN, g_size_background);
 	if (loading_screen->background == NULL)
 		return (false);

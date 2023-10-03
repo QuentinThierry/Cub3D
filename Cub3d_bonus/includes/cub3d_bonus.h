@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/02 16:01:07 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/02 18:47:13 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -574,6 +574,8 @@ void		draw_image_on_image_alpha(t_image *dest, t_image *src, t_vector2 offset_de
 // bettermlx.c
 t_image		*btmlx_new_image(void *mlx_ptr, t_vector2 size);
 t_image		*btmlx_xpm_file_to_image(void *mlx, char *path,
+				t_vector2 dst_size);
+t_image		*btmlx_xpm_file_to_image_bilinear_resize(void *mlx, char *path,
 				t_vector2 dst_size);
 
 // Minimap

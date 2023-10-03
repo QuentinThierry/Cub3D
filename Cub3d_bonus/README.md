@@ -48,8 +48,6 @@ Minimap :
 
 Menu:
 <!-- - when key is already used, several click on already used key would be opaque -->
-<!-- - LEAKS -->
-- exit button ugly
 
 
 Door :

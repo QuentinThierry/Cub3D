@@ -92,4 +92,5 @@ Sound :
 <!-- - need check sound if receptacle or no to get the next texture -->
 <!-- - music during the exit door ?? -->
 
-
+Global :
+replace all my_mlx_pixel_put by its simplier version

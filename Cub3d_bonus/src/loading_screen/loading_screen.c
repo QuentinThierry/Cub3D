@@ -6,11 +6,11 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 19:04:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/02 18:35:22 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/03 18:31:51 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d_bonus.h"
+#include "../../includes/cub3d_bonus.h"
 
 static const t_vector2	g_size_font = (t_vector2){WIN_X, WIN_Y / 16};
 static const t_vector2	g_size_background = (t_vector2){WIN_X, WIN_Y};

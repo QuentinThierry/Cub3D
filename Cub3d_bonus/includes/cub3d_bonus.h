@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/03 18:09:21 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/04 14:19:20 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@
 
 # include <X11/X.h>
 # include <X11/Xlib.h>
+
+# define FREE(x) free(x), x = NULL
+# define FREE_IMG(x, y) free_image(x, y), y = NULL
 
 # define WIN_X 1280 //1920 - 918 - 1280
 # define WIN_Y 720 //1080 - 468 - 720
@@ -672,5 +675,8 @@ void			set_next_narrator(t_map *map_cell);
 void			update_map_cell_music(t_map *map_cell, t_map *old_map_cell, t_music_game *music_array);
 void			clear_sound(t_music_game *music_array);
 void			print_subtitle(t_game *game, t_map *map_cell);
+
+void			free_image(void *mlx_ptr, t_image *image);
+
 
 #endif

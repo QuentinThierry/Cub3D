@@ -1,42 +1,15 @@
-NO ./assets/abimee.xpm
-SO ./assets/wall_red_wood.xpm
-WE ./assets/red_wall_paint_happy_women.xpm
-EA ./assets/wallpaper_torn_sale.xpm
-F ./assets/floor_wood_plank.xpm
-C ./assets/cobble.xpm
-
-D_i ./assets/door.xpm
-
-D_c_k ./assets/door.xpm ./assets/door_open.xpm
-HR_k ./assets/sounds/fail.wav ./assets/test_fail.txt ./assets/sounds/CantinaBand3.wav ./assets/test.txt
-OI_c ./assets/key.xpm ./assets/hand.xpm
-H_c ./assets/sounds/countdown.wav ./assets/test.txt
-M_c ./assets/sounds/no.wav
-D_z_v ./assets/door.xpm ./assets/door_open.xpm
-OI_z ./assets/key.xpm ./assets/hand.xpm
-
-OI_x ./assets/nounours.xpm ./assets/hand.xpm
-H_x ./assets/sounds/countdown.wav ./assets/test.txt
-R_x_g ./assets/lit.xpm ./assets/lit_nounours.xpm
-HR_g ./assets/sounds/game-over.wav ./assets/test_fail.txt ./assets/sounds/test.wav ./assets/test.txt
-OI_q ./assets/nounours.xpm ./assets/hand.xpm
-R_q_w ./assets/lit.xpm ./assets/lit_nounours.xpm
-
-OI_s ./assets/nounours.xpm ./assets/hand.xpm ./assets/table_nounours.xpm ./assets/table.xpm
-H_s ./assets/sounds/countdown.wav ./assets/test.txt
-R_s_l ./assets/smiley.xpm ./assets/cobble.xpm
-HR_l ./assets/sounds/game-over1.wav ./assets/test_fail.txt ./assets/sounds/stereo.wav ./assets/test.txt
-OI_a ./assets/nounours.xpm ./assets/hand.xpm ./assets/table_nounours.xpm ./assets/table.xpm
-R_a_d ./assets/smiley.xpm ./assets/cobble.xpm
-
-T_5 ./assets/exit
-HR_5 ./assets/sounds/game-ove.wav ./assets/test_fail.txt ./assets/sounds/countdown.wav ./assets/test.txt
+NO ./assets/smiley.xpm
+SO ./assets/smiley.xpm
+WE ./assets/smiley.xpm
+EA ./assets/smiley.xpm
+F ./assets/smiley.xpm
+C ./assets/smiley.xpm
 
 MAP
             1
 111111111111111111111111111
-1000000i0000000001000000001
-100000050000W00001000000001
+100000010000000001000000001
+100000000000W00001000000001
 100000010000000001000000001
 111111111111111111111111111
             1

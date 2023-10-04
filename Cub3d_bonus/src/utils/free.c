@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 16:27:51 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/26 19:18:58 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/04 14:15:43 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,20 +61,12 @@ void	free_tab(void **str, int size)
 
 void	free_minimap(t_minimap *minimap, void *mlx_ptr)
 {
-	if (minimap != NULL)
+	if (minimap)
 	{
-		if (minimap->image)
-			mlx_destroy_image(mlx_ptr, minimap->image->img);
-		if (minimap->back_img)
-			mlx_destroy_image(mlx_ptr, minimap->back_img->img);
-		if (minimap->buffer_img)
-			mlx_destroy_image(mlx_ptr, minimap->buffer_img->img);
-		if (minimap->player_img)
-			mlx_destroy_image(mlx_ptr, minimap->player_img->img);
-		free(minimap->image);
-		free(minimap->back_img);
-		free(minimap->buffer_img);
-		free(minimap->player_img);
+		free_image(mlx_ptr, minimap->image);
+		free_image(mlx_ptr, minimap->back_img);
+		free_image(mlx_ptr, minimap->buffer_img);
+		free_image(mlx_ptr, minimap->player_img);
 		free(minimap->bounds);
 		free(minimap);
 	}

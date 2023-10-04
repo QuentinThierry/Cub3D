@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   audio.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/03 17:49:52 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/04 13:44:28 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,10 @@ void	close_audio(t_music_game *music_tab)
 	i = 0;
 	while (i < NB_MAX_SOUNDS)
 	{
-		if (music_tab[i].is_playing == true && IsMusicStreamPlaying(music_tab[i].music))
+		if (music_tab[i].is_playing == true)
 		{
-			StopMusicStream(music_tab[i].music);
+			if (IsMusicStreamPlaying(music_tab[i].music))
+				StopMusicStream(music_tab[i].music);
 			UnloadMusicStream(music_tab[i].music);
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:34:06 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/03 17:58:07 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/04 14:23:10 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,11 @@ static void	fill_rectangle(char *addr, t_vector2 size, unsigned int color)
 
 bool	generate_background_image(t_game *game)
 {
-	t_image *bck_image;
-
-	bck_image = btmlx_new_image(game->mlx_ptr, g_minimap_size);
-	if (!bck_image)
+	game->minimap->back_img = btmlx_new_image(game->mlx_ptr, g_minimap_size);
+	if (!game->minimap->back_img)
 		return (false);
-	game->minimap->back_img = bck_image;
-	fill_rectangle(bck_image->addr, bck_image->size, 0x808080);
+	fill_rectangle(game->minimap->back_img->addr,
+		game->minimap->back_img->size, MINIMAP_BACKGROUND_COLOR);
 	return (true);
 }
 
@@ -96,14 +94,15 @@ bool	init_minimap(t_game *game)
 	if (!minimap->image)
 		return (false);
 	minimap->buffer_img = btmlx_new_image(game->mlx_ptr, g_minimap_size);
-	if (!minimap->image)
+	if (!minimap->buffer_img)
 		return (false);
-	generate_background_image(game);
+	if (!generate_background_image(game))
+		return (false);
 	minimap->player_img = btmlx_xpm_file_to_image(game->mlx_ptr,
 		"assets/minimap_player.xpm", (t_vector2){
 		g_minimap_size.x / MINIMAP_PLAYER_SIZE,
 		g_minimap_size.y / MINIMAP_PLAYER_SIZE});
-	if (!minimap->player_img->img)
+	if (!minimap->player_img)
 		return (false);
 	minimap->zoom = ZOOM_OFFSET;
 	return (true);

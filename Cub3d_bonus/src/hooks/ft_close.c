@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_close.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/02 13:40:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/04 14:37:04 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ int	ft_close(t_game *game)
 	int	i;
 
 	close_audio(game->music_array);
-	if (game == NULL)
-		exit(0);
 	if (game->file_music != NULL)
 		free_music_file(game->file_music, game->nb_music);
 	if (game->object_array != NULL)
@@ -61,7 +59,18 @@ int	ft_close(t_game *game)
 	free(game->height_tab);
 	free(game->door_array);
 	free(game->keybinds);
-	if (game->mlx_ptr != NULL)
+	if (game->filename)
+		free_filename(game);
+	free_minimap(game->minimap, game->mlx_ptr);
+	free_menu(game->mlx_ptr, game->menu);
+	free_loading_screen(game);
+	free_image(game->mlx_ptr, game->font);
+	free_image(game->mlx_ptr, game->subtitle_font);
+	free_image(game->mlx_ptr, game->image);
+	if (game->end != NULL)
+		free_image(game->mlx_ptr, game->end->end_screen);
+	free(game->end);
+	if (game->mlx_ptr)
 	{
 		mlx_do_key_autorepeaton(game->mlx_ptr);
 		i = 0;
@@ -72,14 +81,6 @@ int	ft_close(t_game *game)
 			i++;
 		}
 		free(game->tab_images);
-		free_image(game->mlx_ptr, game->font);
-		free_image(game->mlx_ptr, game->subtitle_font);
-		free_minimap(game->minimap, game->mlx_ptr);
-		free_image(game->mlx_ptr, game->image);
-		if (game->end != NULL)
-			free_image(game->mlx_ptr, game->end->end_screen);
-		free(game->end);
-		free_menu(game->mlx_ptr, game->menu);
 		if (game->win != NULL)
 			mlx_destroy_window(game->mlx_ptr, game->win);
 		mlx_destroy_display(game->mlx_ptr);

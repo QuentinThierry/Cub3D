@@ -6,92 +6,92 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 14:53:39 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/04 17:43:09 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/04 17:44:26 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-// static const t_vector2	g_button_size =
-// {
-// 	WIN_X / 8,
-// 	WIN_Y / 10
-// };
+static const t_vector2	g_button_size =
+{
+	WIN_X / 8,
+	WIN_Y / 10
+};
 
-// static const int g_button_pos_left_offset_x =
-// 	WIN_X / 30 + (WIN_X / 8) * 2;
+static const int g_button_pos_left_offset_x =
+	WIN_X / 30 + (WIN_X / 8) * 2;
 
-// static const int	g_inter_button_y =
-// 	(WIN_Y - (WIN_Y / 10) * NB_OPTIONS_BUTTONS / 2) / (NB_OPTIONS_BUTTONS * 2);
+static const int	g_inter_button_y =
+	(WIN_Y - (WIN_Y / 10) * NB_OPTIONS_BUTTONS / 2) / (NB_OPTIONS_BUTTONS * 2);
 
-// static const char	*g_description_opt_button[NB_OPTIONS_BUTTONS] =
-// 	{"Forward", "Left", "Backward", "Right", "Look Left", "Look Right",
-// 	"Pause", "Map Zoom", "Map Unzoom", "Door Interact", "Sprint"};
+static const char	*g_description_opt_button[NB_OPTIONS_BUTTONS] =
+	{"Forward", "Left", "Backward", "Right", "Look Left", "Look Right",
+	"Pause", "Map Zoom", "Map Unzoom", "Door Interact", "Sprint"};
 
-// static const char	*g_description_slider_button[NB_SLIDERS] =
-// 	{"FOV", "VOLUME"};
+static const char	*g_description_slider_button[NB_SLIDERS] =
+	{"FOV", "VOLUME"};
 
-// static const t_vector2 g_exit_button_pos =
-// {
-// 	WIN_X / 100,
-// 	WIN_Y / 100
-// };
+static const t_vector2 g_exit_button_pos =
+{
+	WIN_X / 100,
+	WIN_Y / 100
+};
 
-// static const t_vector2 g_exit_button_size =
-// {
-// 	WIN_X / 20,
-// 	WIN_Y / 20
-// };
+static const t_vector2 g_exit_button_size =
+{
+	WIN_X / 20,
+	WIN_Y / 20
+};
 
-// static const t_vector2 g_slider_fov_pos =
-// {
-// 	(WIN_X / 8),
-// 	((WIN_Y / 10) * (NB_OPTIONS_BUTTONS / 2 + (NB_OPTIONS_BUTTONS / 2) % 2 + 2))
-// };
+static const t_vector2 g_slider_fov_pos =
+{
+	(WIN_X / 8),
+	((WIN_Y / 10) * (NB_OPTIONS_BUTTONS / 2 + (NB_OPTIONS_BUTTONS / 2) % 2 + 2))
+};
 
-// static const t_vector2 g_slider_sound_pos =
-// {
-// 	(WIN_X / 8) + WIN_X / 2,
-// 	((WIN_Y / 10) * (NB_OPTIONS_BUTTONS / 2 + (NB_OPTIONS_BUTTONS / 2) % 2 + 2))
-// };
+static const t_vector2 g_slider_sound_pos =
+{
+	(WIN_X / 8) + WIN_X / 2,
+	((WIN_Y / 10) * (NB_OPTIONS_BUTTONS / 2 + (NB_OPTIONS_BUTTONS / 2) % 2 + 2))
+};
 
-// static const t_vector2 g_slider_hor_size =
-// {
-// 	WIN_X / 5,
-// 	WIN_Y / 50
-// };
+static const t_vector2 g_slider_hor_size =
+{
+	WIN_X / 5,
+	WIN_Y / 50
+};
 
-// static const t_vector2 g_slider_vert_size =
-// {
-// 	WIN_X / 75,
-// 	WIN_Y / 20
-// };
+static const t_vector2 g_slider_vert_size =
+{
+	WIN_X / 75,
+	WIN_Y / 20
+};
 
-// static const t_vector2 g_vert_bar_pos =
-// {
-// 	WIN_X / 2 - WIN_X / 400,
-// 	WIN_Y / 20
-// };
+static const t_vector2 g_vert_bar_pos =
+{
+	WIN_X / 2 - WIN_X / 400,
+	WIN_Y / 20
+};
 
-// static const t_vector2 g_vert_bar_size =
-// {
-// 	WIN_X / 200,
-// 	((WIN_Y / 10) * (NB_OPTIONS_BUTTONS / 2 + (NB_OPTIONS_BUTTONS / 2) % 2 + 1))
-// 	+ WIN_Y / 20 - (WIN_Y / 20) * 2
-// };
+static const t_vector2 g_vert_bar_size =
+{
+	WIN_X / 200,
+	((WIN_Y / 10) * (NB_OPTIONS_BUTTONS / 2 + (NB_OPTIONS_BUTTONS / 2) % 2 + 1))
+	+ WIN_Y / 20 - (WIN_Y / 20) * 2
+};
 
-// static const t_vector2 g_hor_bar_pos =
-// {
-// 	WIN_X / 20,
-// 	((WIN_Y / 10) * (NB_OPTIONS_BUTTONS / 2 + (NB_OPTIONS_BUTTONS / 2) % 2 + 1))
-// 	+ WIN_Y / 20
-// };
+static const t_vector2 g_hor_bar_pos =
+{
+	WIN_X / 20,
+	((WIN_Y / 10) * (NB_OPTIONS_BUTTONS / 2 + (NB_OPTIONS_BUTTONS / 2) % 2 + 1))
+	+ WIN_Y / 20
+};
 
-// static const t_vector2 g_hor_bar_size =
-// {
-// 	WIN_X - (WIN_X / 20) * 2,
-// 	(WIN_Y / 100)
-// };
+static const t_vector2 g_hor_bar_size =
+{
+	WIN_X - (WIN_X / 20) * 2,
+	(WIN_Y / 100)
+};
 
 bool	init_keybinds(t_game *game)
 {

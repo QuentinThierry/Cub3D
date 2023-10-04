@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_close.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 14:44:03 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/04 15:03:08 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	ft_close(t_game *game)
 	{
 		mlx_do_key_autorepeaton(game->mlx_ptr);
 		i = 0;
-		while (i < game->nb_images)
+		while (game->tab_images != NULL && i < game->nb_images)
 		{
 			if (game->tab_images[i].img != NULL)
 				mlx_destroy_image(game->mlx_ptr, game->tab_images[i].img);

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
+#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/04 14:55:06 by qthierry         ###   ########.fr        #
+#    Updated: 2023/10/04 15:06:56 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,6 +73,7 @@ SRC_PARSING = \
 			ft_fill_wall.c \
 			fill_texture.c \
 			init.c \
+			load_image.c \
 			parsing.c \
 			parse_texture.c \
 			parse_music.c
@@ -159,7 +160,7 @@ run: $(NAME)
 	./$(NAME) maps/map.cub
 
 vrun: $(NAME)
-	valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.supp ./$(NAME) maps/map_test.cub
+	valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.supp ./$(NAME) maps/map.cub
 
 prun: CFLAGS += -pg
 prun: $(NAME)

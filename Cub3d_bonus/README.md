@@ -74,6 +74,7 @@ Objet interactif :
 <!-- - fix can't take object on our case -->
 <!-- - no random texture for the exit at the beginning and no animation -->
 <!-- - if 0 receptacle door is lock PROBLEM -->
+- directory for the hand -> don't draw the hand
 
 Exit door :
 <!-- - desactive the mouv of the player -->

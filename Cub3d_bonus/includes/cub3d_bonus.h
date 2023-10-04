@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/03 16:55:16 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/03 19:14:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -501,6 +501,7 @@ void		free_tab_object(t_object **str, int size);
 void		free_str(char **str);
 void		free_music_file(t_music_name *music_tab, int size);
 void		free_minimap(t_minimap *minimap, void *mlx_ptr);
+void		free_map_object(t_map **map, t_vector2 size);
 char		*ft_strjoin(char *str, char *str1);
 char		*ft_strjoin_slash(char *str, char *str1, bool add_slash);
 int			ft_atoi(const char *str);

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/03 17:51:23 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/03 17:56:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,11 +115,11 @@ static bool	_init_value_malloc(t_game *game)
 bool	init_game(t_game *game, char *filename)
 {
 	if (!_init_value_malloc(game))
-		return (false);
+		return (ft_close(game), false);
 	if (!parse_file(filename, game))
-		return (false);
+		return (ft_close(game), false);
 	if (!check_map(game))
-		return (false);
+		return (ft_close(game), false);
 	if (!init_mlx(game))
 		return (print_error(NULL, 0), ft_close(game), false);
 	if (!init_audio(game, game->file_music, game->nb_music))

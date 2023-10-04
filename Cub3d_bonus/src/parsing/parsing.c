@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/03 16:37:15 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/04 13:59:59 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ bool	parse_map(int fd, char *filename, t_game *game, int nb_line, char *line)
 		return (false);
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
-		return (print_error(NULL, 0), false);
+		return (print_error(NULL, 0), free_map((void *)maps, game->map_size), false);
 	line = get_next_line(fd);
 	while (line != NULL && i < nb_line)
 	{
@@ -75,7 +75,7 @@ bool	parse_map(int fd, char *filename, t_game *game, int nb_line, char *line)
 	while (line != NULL && y < game->map_size.y)
 	{
 		if (!ft_fill_wall(game, line, maps[y], game->map_size))
-			return (free(line), false);
+			return (free(line), free_map((void *)maps, game->map_size), false);
 		line = get_next_line(fd);
 		y++;
 	}
@@ -118,7 +118,7 @@ bool	find_player(t_game *game)
 				|| game->map[index.y][index.x].symbol == 'E')
 			{
 				if (is_player)
-					return (print_error("Too much players\n", 1), false);
+					return (print_error("Too much players\n", 1), free(player), false);
 				is_player = true;
 				player->f_real_pos.x = index.x + 1 / 2.0;
 				player->f_real_pos.y = index.y + 1 / 2.0;
@@ -177,8 +177,8 @@ bool	check_filename(char *filename)
  */
 bool	parse_file(char *filename, t_game *game)
 {
-	int fd;
-	int i;
+	int		fd;
+	int		i;
 	char	*line;
 	
 	srand(time(0));

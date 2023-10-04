@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/03 16:37:15 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/03 18:53:59 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,12 +124,14 @@ bool	ft_read_anim(DIR *dir, t_texture *texture, char *dirname)
 	char			*filename;
 	bool			add_slash;
 	bool			has_config;
+	void			*tmp;
 
-	texture->animation = ft_realloc(texture->animation
+	tmp = ft_realloc(texture->animation
 		, sizeof(t_animation) * (texture->nb_animation)
 		,sizeof(t_animation) * (texture->nb_animation + 1));
-	if (texture->animation == NULL)
-			return (print_error(NULL, 0), closedir(dir), false);
+	if (tmp == NULL)
+			return (print_error(NULL, 0), closedir(dir), free(dirname), false);
+	texture->animation = tmp;
 	if (ft_strlen(dirname) > 0 && dirname[ft_strlen(dirname) - 1] == '/')
 		add_slash = false;
 	else
@@ -144,13 +146,13 @@ bool	ft_read_anim(DIR *dir, t_texture *texture, char *dirname)
 		}
 		filename = ft_strjoin_slash(dirname, buffer->d_name, add_slash);
 		if (filename == NULL)
-			return (print_error(NULL, 0), closedir(dir), false);
-		texture->animation[texture->nb_animation].filename = ft_realloc(
-			texture->animation[texture->nb_animation].filename
+			return (print_error(NULL, 0), closedir(dir), free(dirname), false);
+		tmp = ft_realloc(texture->animation[texture->nb_animation].filename
 			, sizeof(char *) * (texture->animation[texture->nb_animation].nb_sprite)
 			, sizeof(char *) * (texture->animation[texture->nb_animation].nb_sprite + 1));
-		if (texture->animation[texture->nb_animation].filename == NULL)
-			return (print_error(NULL, 0), closedir(dir), false);
+		if (tmp == NULL)
+			return (print_error(NULL, 0), closedir(dir), free(filename), free(dirname), false);
+		texture->animation[texture->nb_animation].filename = tmp;
 		texture->total++;
 		texture->animation[texture->nb_animation].filename[texture->animation[texture->nb_animation].nb_sprite] = filename;
 		texture->animation[texture->nb_animation].nb_sprite++;
@@ -180,9 +182,10 @@ bool	ft_read_anim(DIR *dir, t_texture *texture, char *dirname)
 bool	ft_read_dir(DIR *dir, t_texture *texture)
 {
 	struct dirent	*buffer;
-	DIR				*tmp;
+	DIR				*dir1;
 	char			*filename;
 	bool			add_slash;
+	void			*tmp;
 
 	texture->nb_file = 0;
 	if (ft_strlen(texture->filename) > 0 && texture->filename[ft_strlen(texture->filename) - 1] == '/')
@@ -200,19 +203,20 @@ bool	ft_read_dir(DIR *dir, t_texture *texture)
 		filename = ft_strjoin_slash(texture->filename, buffer->d_name, add_slash);
 		if (filename == NULL)
 			return (print_error(NULL, 0), closedir(dir), false);
-		tmp = opendir(filename);
-		if (tmp != NULL)
+		dir1 = opendir(filename);
+		if (dir1 != NULL)
 		{
-			if (!ft_read_anim(tmp, texture, filename))
-				return (closedir(dir), false);
+			if (!ft_read_anim(dir1, texture, filename))
+				return (free(texture->filename), texture->filename = NULL, closedir(dir), false);
 		}
 		else
 		{
 			texture->total++;
-			texture->filename_d = ft_realloc(texture->filename_d
+			tmp = ft_realloc(texture->filename_d
 				, sizeof(char *) * (texture->nb_file) , sizeof(char *) * (texture->nb_file + 1));
-			if (texture->filename == NULL)
-				return (print_error(NULL, 0), closedir(dir), false);
+			if (tmp == NULL)
+				return (free(texture->filename), texture->filename = NULL, print_error(NULL, 0), closedir(dir), free(filename), false);
+			texture->filename_d = tmp;
 			texture->filename_d[texture->nb_file] = filename;
 			texture->nb_file++;
 		}
@@ -299,6 +303,7 @@ bool	multiple_texture(t_game *game, int *index, char * str, enum e_orientation o
 	int		len;
 	DIR		*dir;
 	char	*filename;
+	void	*tmp;
 
 	i = 0;
 	cpt = 0;
@@ -321,15 +326,16 @@ bool	multiple_texture(t_game *game, int *index, char * str, enum e_orientation o
 			|| str[i + len] == '\r'))
 			str[i + len] = '\0';
 		filename = ft_strdup(str + i);
-		i += len + 1;
 		if (filename == NULL)
 			return (print_error("malloc failed\n", 1), false);
+		i += len + 1;
 		if (*index >= game->nb_file)
 		{
-			game->filename = ft_realloc(game->filename
+			tmp = ft_realloc(game->filename
 				, sizeof(t_texture) * game->nb_file, sizeof(t_texture) * (*index + 1));
-			if (game->filename == NULL)
-				return (print_error(NULL, 0), false);
+			if (tmp == NULL)
+				return (print_error(NULL, 0), free(filename), false);
+			game->filename = tmp;
 			game->nb_file = *index + 1;
 		}
 		if (orient == e_receptacle_empty)
@@ -370,10 +376,11 @@ bool	multiple_texture(t_game *game, int *index, char * str, enum e_orientation o
  */
 static bool	_find_texture(t_game *game, char *str, int index, enum e_orientation orient)
 {
-	DIR		*dir;
-	char	*filename;
-	int		i;
-	int		len;
+	DIR			*dir;
+	char		*filename;
+	int			i;
+	int			len;
+	t_texture	*tmp;
 
 	if (_is_existing(game, index, *(str - 1), orient))
 		return (print_error("Multiples definition of a texture\n", 1), false);
@@ -381,10 +388,11 @@ static bool	_find_texture(t_game *game, char *str, int index, enum e_orientation
 		return (multiple_texture(game, &index, str, orient));
 	if (index >= game->nb_file)
 	{
-		game->filename = ft_realloc(game->filename
+		tmp = ft_realloc(game->filename
 			, sizeof(t_texture) * game->nb_file, sizeof(t_texture) * (index + 1));
-		if (game->filename == NULL)
+		if (tmp == NULL)
 			return (print_error(NULL, 0), false);
+		game->filename = tmp;
 		game->nb_file = index + 1;
 	}
 	game->filename[index].orient = orient;

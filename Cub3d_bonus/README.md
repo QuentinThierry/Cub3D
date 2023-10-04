@@ -41,6 +41,7 @@ FIX :
 <!-- - change check map to fit the new type possible -->
 <!-- - file structure for bonus and mandatory -->
 - white space at the end of a texture printf error because file not found
+- Makefile with file headers
 
 Minimap : 
 <!-- - if screen is too small, do not draw minimap -->
@@ -48,7 +49,6 @@ Minimap :
 
 Menu:
 <!-- - when key is already used, several click on already used key would be opaque -->
-
 
 Door :
 <!-- - show when a door is open -->

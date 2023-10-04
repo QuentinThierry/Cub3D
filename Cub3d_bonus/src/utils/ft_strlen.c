@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_error.c                                      :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/03 16:19:43 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 15:42:14 by jvigny           ###   ########.fr       */
+/*   Created: 2023/10/04 15:42:56 by jvigny            #+#    #+#             */
+/*   Updated: 2023/10/04 15:58:28 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-void	print_error(char *error, int print)
+int	ft_strlen(const char *str)
 {
-	if (print == 1)
-		printf("Error\n%s", error);
-	else
-	{
-		printf("Error\n");
-		perror("");
-	}
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }

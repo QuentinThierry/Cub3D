@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:46:25 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/30 13:17:19 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/04 15:41:46 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*ft_strjoin(char *str, char *str1)
 	size_t	i;
 
 	i = 0;
- 	len = strlen(str1);
+	len = strlen(str1);
 	if (str != NULL)
 		len += strlen(str);
 	res_f = ft_calloc(sizeof(char), len + 1);

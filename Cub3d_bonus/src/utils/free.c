@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 16:27:51 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 14:40:55 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/04 15:40:59 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	free_filename(t_game *game)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (i < game->nb_file)
@@ -27,12 +27,13 @@ void	free_filename(t_game *game)
 		else
 		{
 			if (game->filename[i].filename_d != NULL)
-				free_tab((void **)game->filename[i].filename_d, game->filename[i].nb_file);
+				free_tab((void **)game->filename[i].filename_d,
+					game->filename[i].nb_file);
 			j = 0;
 			while (j < game->filename[i].nb_animation)
 			{
-				free_tab((void **)game->filename[i].animation[j].filename
-					, game->filename[i].animation[j].nb_sprite);
+				free_tab((void **)game->filename[i].animation[j].filename,
+					game->filename[i].animation[j].nb_sprite);
 				game->filename[i].animation[j].filename = NULL;
 				j++;
 			}
@@ -69,6 +70,7 @@ void	free_minimap(t_minimap *minimap, void *mlx_ptr)
 		free(minimap);
 	}
 }
+
 void	free_music_file(t_music_name *music_tab, int size)
 {
 	int	i;
@@ -83,59 +85,6 @@ void	free_music_file(t_music_name *music_tab, int size)
 		i++;
 	}
 	free(music_tab);
-}
-
-void	free_tab_object(t_object **object, int size)
-{
-	int	i;
-
-	i = 0;
-	while (i < size)
-	{
-		free(object[i]);
-		i++;
-	}
-	free(object);
-}
-
-void	free_map(t_map **map, t_vector2 size)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < size.y)
-	{
-		j = 0;
-		while (j < size.x)
-		{
-			if ((map[i][j].type & OBJECT) != OBJECT && map[i][j].arg != NULL)
-				free(map[i][j].arg);
-			j++;
-		}
-		free(map[i]);
-		i++;
-	}
-	free(map);
-}
-
-void	free_map_object(t_map **map, t_vector2 size)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < size.y)
-	{
-		j = 0;
-		while (j < size.x)
-		{
-			if ((map[i][j].type & OBJECT) == OBJECT && map[i][j].arg != NULL)
-				free(map[i][j].arg);
-			j++;
-		}
-		i++;
-	}
 }
 
 void	free_str(char **str)

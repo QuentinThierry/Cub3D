@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/04 15:06:56 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/04 16:01:02 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,11 +61,15 @@ SRC_UTILS = \
 			ft_calloc.c \
 			ft_realloc.c \
 			ft_strdup.c \
+			ft_strlen.c \
 			ft_memcpy.c \
 			ft_bzero.c \
 			free.c \
+			free_map.c \
 			print_error.c \
-			bettermlx.c
+			bettermlx_bilinear_resize.c \
+			bettermlx.c \
+			check_type.c
 
 PARSING = parsing/
 SRC_PARSING = \
@@ -119,6 +123,7 @@ SRC_MENU = \
 AUDIO = audio/
 SRC_AUDIO = \
 			audio.c \
+			audio_utils.c \
 			subtitle.c
 
 LOADINGSCREEN = loading_screen/

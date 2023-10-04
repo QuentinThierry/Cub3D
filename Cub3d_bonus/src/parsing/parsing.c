@@ -6,11 +6,65 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 13:59:59 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/04 15:54:04 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
+
+void	remove_end_whitespace(char *str)
+{
+	int	i;
+
+	i = ft_strlen(str) - 1;
+	if (i <= 0)
+		return ;
+	while (i >= 0 && (str[i] == ' ' || str[i] == '\t' || str[i] == '\v'
+			|| str[i] == '\n' || str[i] == '\f' || str[i] == '\r'))
+		i--;
+	if (i + 1 < ft_strlen(str))
+		str[i + 1] = '\0';
+	return ;
+}
+
+/**
+ * @brief Get the dimension of the map in the file
+ * 
+ * @param fd fd to read the map and until the end of the file
+ * @param line last line read in the file with gnl
+ * @param error set on true if error occurs during the function NOT USE FOR
+ * 		THE MOMENT
+ * @return t_vector2 width and lenght of the map
+ */
+t_vector2	get_dimension_maps(int fd, char *line, bool *error)
+{
+	t_vector2	len;
+
+	*error = false;
+	len.y = 0;
+	len.x = 0;
+	while (line != NULL)
+	{
+		if (line[0] == '\n')
+			break ;
+		remove_end_whitespace(line);
+		if (len.x < (int)ft_strlen(line))
+			len.x = ft_strlen(line);
+		len.y++;
+		free(line);
+		line = get_next_line(fd);
+	}
+	while (line != NULL)
+	{
+		if (line[0] != '\n')
+			*error = true;
+		free(line);
+		line = get_next_line(fd);
+	}
+	free(line);
+	close(fd);
+	return (len);
+}
 
 /**
  * @brief calloc the 2D map with the lenght of tha map

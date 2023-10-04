@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 00:30:38 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/03 17:52:45 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/04 17:13:43 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void	mmap_draw_player(t_game *game)
 	draw_image_on_image_alpha(game->image, game->minimap->player_img,
 		(t_vector2){
 		g_minimap_pos.x + g_minimap_size.x / 2
-			- game->minimap->player_img->size.x / 2 - 1,
+		- game->minimap->player_img->size.x / 2 - 1,
 		g_minimap_pos.y + g_minimap_size.y / 2
-			- game->minimap->player_img->size.x / 2 - 1});
+		- game->minimap->player_img->size.x / 2 - 1});
 }
 
 void	zoom_hook_handle(t_minimap *minimap, double delta_time)
@@ -49,7 +49,7 @@ void	zoom_hook_handle(t_minimap *minimap, double delta_time)
 
 void	draw_minimap(t_game *game)
 {
-	t_minimap *minimap;
+	t_minimap	*minimap;
 
 	minimap = game->minimap;
 	if (!minimap)

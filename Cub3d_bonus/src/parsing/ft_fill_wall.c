@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/03 16:37:15 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/03 19:23:18 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ bool fill_object_and_doors(t_game *game)
 	{
 		game->object_array = ft_calloc(game->nb_objects, sizeof(t_object *));
 		if (!game->object_array)
-			return (false);
+			return (free_map_object(game->map, game->map_size), false);
 	}
 	if (game->nb_doors != 0)
 	{
 		game->door_array = ft_calloc(game->nb_doors, sizeof(t_map *));
 		if (!game->door_array)
-			return (false);
+			return (free_map_object(game->map, game->map_size), false);
 	}
 	cpt_objects = 0;
 	cpt_doors = 0;

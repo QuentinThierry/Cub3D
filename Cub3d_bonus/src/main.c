@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 13:56:05 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/04 14:43:32 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int main(int argc, char **argv)
 		return (ft_close(&game), 1);
 	}
 	free_filename(&game);
+	free_loading_screen(&game);
 	exit_door_no_receptacle(game.exit, game.total_receptacle, game.tab_images);
 	PlayMusicStream(game.music_array[0].music);
 	move_mouse(&game);

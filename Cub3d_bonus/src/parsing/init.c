@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 14:30:38 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/04 14:42:56 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,11 +115,11 @@ static bool	_init_value_malloc(t_game *game)
 bool	init_game(t_game *game, char *filename)
 {
 	if (!_init_value_malloc(game))
-		return (false);
+		return (ft_close(game), false);
 	if (!parse_file(filename, game))
-		return (false);
+		return (ft_close(game), false);
 	if (!check_map(game))
-		return (false);
+		return (ft_close(game), false);
 	if (!init_mlx(game))
 		return (print_error(NULL, 0), ft_close(game), false);
 	if (!init_audio(game, game->file_music, game->nb_music))
@@ -140,37 +140,35 @@ static void	_init_hook(t_game *game)
 	mlx_do_key_autorepeatoff(game->mlx_ptr);
 	mlx_hook(game->win, 2, (1L << 0), (void *)key_press_hook, game);
 	mlx_hook(game->win, 3, (1L << 1), (void *)key_release_hook, game);
+	mlx_hook(game->win, 4, (1L<< 2), mouse_click, game);
 	mlx_hook(game->win, 5, (1L << 3), NULL, game);
-	mlx_hook(game->win, 17, (1L << 8), ft_close, game);
 	mlx_hook(game->win, 6, (1L << 6) , mouse_hook, game);
 	mlx_hook(game->win, 8, (1L << 5), mouse_leave, game);
-	mlx_hook(game->win, 4, (1L<< 2), mouse_click, game);
+	mlx_hook(game->win, 17, (1L << 8), ft_close, game);
 	mlx_loop_hook(game->mlx_ptr, on_update, game);
 }
 
 bool	init_mlx(t_game *game)
 {
-	game->image = ft_calloc(1, sizeof(t_image));
-	if (game->image == NULL)
-		return (false);
 	game->mlx_ptr = mlx_init();
 	if (game->mlx_ptr == NULL)
 		return (false);
-	game->win = mlx_new_window(game->mlx_ptr, WIN_X, WIN_Y, "cub3d");
+	game->win = mlx_new_window(game->mlx_ptr, WIN_X, WIN_Y, "cub3D");
 	if (game->win == NULL)
 		return (false);
 	init_mouse(game);
+	game->image = ft_calloc(1, sizeof(t_image));
+	if (game->image == NULL)
+		return (false);
 	game->image->img = mlx_new_image(game->mlx_ptr, WIN_X, WIN_Y);
 	if (game->image->img == NULL)
 		return (false);
 	game->image->addr = mlx_get_data_addr(game->image->img,
 		&game->image->opp, &game->image->size_line, &game->image->endian);
 	if (game->image->opp != 32)
-		return (false); // If mlx returns a number of plane different that 4, stop the program
+		return (false);
 	game->image->size = (t_vector2){WIN_X, WIN_Y};
 	game->image->opp /= 8;
-	if (game->win == NULL)
-		return (false);
 	_init_hook(game);
 	return (true);
 }

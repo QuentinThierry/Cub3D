@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 16:27:51 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 14:15:43 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/04 14:40:55 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,11 @@ void	free_filename(t_game *game)
 		if (game->filename[i].filename != NULL)
 		{
 			free(game->filename[i].filename);
-			// game->filename[i].filename = NULL;
 		}
 		else
 		{
-			free_tab((void **)game->filename[i].filename_d, game->filename[i].nb_file);
-			// game->filename[i].filename_d = NULL;
+			if (game->filename[i].filename_d != NULL)
+				free_tab((void **)game->filename[i].filename_d, game->filename[i].nb_file);
 			j = 0;
 			while (j < game->filename[i].nb_animation)
 			{
@@ -38,7 +37,6 @@ void	free_filename(t_game *game)
 				j++;
 			}
 			free(game->filename[i].animation);
-			// game->filename[i].animation = NULL;
 		}
 		i++;
 	}
@@ -94,7 +92,6 @@ void	free_tab_object(t_object **object, int size)
 	i = 0;
 	while (i < size)
 	{
-		// if (object[i]->map_pos.x == -1 && object[i]->map_pos.y == -1)
 		free(object[i]);
 		i++;
 	}
@@ -120,6 +117,25 @@ void	free_map(t_map **map, t_vector2 size)
 		i++;
 	}
 	free(map);
+}
+
+void	free_map_object(t_map **map, t_vector2 size)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < size.y)
+	{
+		j = 0;
+		while (j < size.x)
+		{
+			if ((map[i][j].type & OBJECT) == OBJECT && map[i][j].arg != NULL)
+				free(map[i][j].arg);
+			j++;
+		}
+		i++;
+	}
 }
 
 void	free_str(char **str)

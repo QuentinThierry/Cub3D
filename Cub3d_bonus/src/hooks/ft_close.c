@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 14:37:04 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/04 14:44:03 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	free_image(void *mlx_ptr, t_image *image)
 {
-	if (!image)
+	if (image == NULL)
 		return ;
-	if (mlx_ptr)
+	if (image->img != NULL && mlx_ptr != NULL)
 		mlx_destroy_image(mlx_ptr, image->img);
 	free(image);
 }

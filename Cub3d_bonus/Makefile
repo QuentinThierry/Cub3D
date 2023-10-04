@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/04 13:45:13 by qthierry         ###   ########.fr        #
+#    Updated: 2023/10/04 14:39:03 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -155,7 +155,7 @@ all:	$(NAME)
 bonus:	all
 
 run: $(NAME)
-	./$(NAME) maps/map_test.cub
+	./$(NAME) maps/map.cub
 
 vrun: $(NAME)
 	valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.supp ./$(NAME) maps/map_test.cub

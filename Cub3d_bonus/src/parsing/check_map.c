@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 21:27:20 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/03 16:31:45 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/04 14:04:50 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,12 @@ bool	check_map(t_game *game)
 				|| (map[y][x].type & RECEPTACLE) == RECEPTACLE) && map[y][x].symbol != ' ')
 			{
 				if (!_check_sides(map, x, y, game->map_size))
-					return (print_error("Map not closed %c%c%c\n", 1), false);
+					return (print_error("Map not closed\n", 1), false);
 			}
 			if ((map[y][x].type & DOOR) == DOOR)
 			{
 				if (!_check_sides(map, x, y, game->map_size))
-					return (print_error("Map not closed %c%c%c\n", 1), false);
+					return (print_error("Map not closed\n", 1), false);
 				if (!_check_door(map, x, y, game->map_size))
 					return (print_error("Door at the wrong place\n", 1), false);
 			}

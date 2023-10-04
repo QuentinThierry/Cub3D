@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/04 13:44:28 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/04 14:39:26 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@ void	close_audio(t_music_game *music_tab)
 
 	if (!IsAudioDeviceReady())
 		return (free(music_tab));
+	if (music_tab == NULL)
+	{
+		free(music_tab);
+		CloseAudioDevice();
+		return ;
+	}
 	i = 0;
 	while (i < NB_MAX_SOUNDS)
 	{

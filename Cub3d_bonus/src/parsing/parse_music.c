@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 14:32:29 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/03 16:37:15 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/04 17:23:35 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,17 @@ static bool	load_subtitle(t_music_name *music)
 	fd = open(music->subtitle, O_RDONLY);
 	if (fd == -1)
 		return (print_error(NULL, 0), false);
-	ret = read(fd, buffer, READ_SIZE);
-	buffer[READ_SIZE] = 0;
 	res = NULL;
+	buffer[READ_SIZE] = 0;
+	ret = read(fd, buffer, READ_SIZE);
 	while (ret > 0)
 	{
 		if (ret != READ_SIZE)
 			buffer[ret] = 0;
 		tmp = ft_strjoin(res, buffer);
 		free(res);
+		if (tmp == NULL)
+			return (print_error("Malloc failed\n", 1), close(fd), false);
 		res = tmp;
 		if (ret != READ_SIZE)
 			break;
@@ -88,6 +90,7 @@ static bool	_is_existing(t_game *game, char symbol, enum e_orientation orient)
 bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 {
 	char	*filename;
+	void	*tmp;
 	int		len;
 	int		index;
 	
@@ -96,10 +99,11 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 		return (print_error("Multiples definition of a sound\n", 1), false);
 	if (index >= game->nb_music)
 	{
-		game->file_music = ft_realloc(game->file_music
+		tmp = ft_realloc(game->file_music
 			, sizeof(t_music_name) * game->nb_music, sizeof(t_music_name) * (index + 1));
-		if (game->file_music == NULL)
+		if (tmp == NULL)
 			return (print_error(NULL, 0), false);
+		game->file_music = tmp;
 		game->nb_music = index + 1;
 	}
 	game->file_music[index].orient = orient;
@@ -113,9 +117,9 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 		|| str[i + len] == '\r'))
 		str[i + len] = '\0';
 	filename = ft_strdup(str + i);
-	i += len + 1;
 	if (filename == NULL)
 		return (print_error("malloc failed\n", 1), false);
+	i += len + 1;
 	game->file_music[index].filename = filename;
 	if (orient == e_narrator || orient == e_narrator_receptacle
 		|| orient == e_narrator_receptacle_complete || orient == e_narrator_receptacle_complete)
@@ -129,9 +133,9 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 			|| str[i + len] == '\r'))
 			str[i + len] = '\0';
 		filename = ft_strdup(str + i);
-		i += len + 1;
 		if (filename == NULL)
 			return (print_error("malloc failed\n", 1), false);
+		i += len + 1;
 		game->file_music[index].subtitle = filename;
 		if (!load_subtitle(&game->file_music[index]))
 			return (false);

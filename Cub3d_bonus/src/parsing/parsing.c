@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 15:54:04 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/04 18:46:37 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ t_vector2	get_dimension_maps(int fd, char *line, bool *error)
 t_map	**init_map(t_vector2 len)
 {
 	int		i;
-	t_map **res;
-	
+	t_map	**res;
+
 	i = 0;
 	res = ft_calloc(len.y, sizeof(t_map *));
 	if (res == NULL)
@@ -105,7 +105,7 @@ bool	parse_map(int fd, char *filename, t_game *game, int nb_line, char *line)
 	int		i;
 	t_map	**maps;
 	bool	error;
-	
+
 	y = 0;
 	i = 0;
 	game->map_size = get_dimension_maps(fd, line, &error);
@@ -161,10 +161,10 @@ bool	find_player(t_game *game)
 	player = ft_calloc(1, sizeof(t_player));
 	if (player == NULL)
 		return (print_error(NULL, 0), false);
-	while(index.y < game->map_size.y)
+	while (index.y < game->map_size.y)
 	{
 		index.x = 0;
-		while(index.x < game->map_size.x)
+		while (index.x < game->map_size.x)
 		{
 			if (game->map[index.y][index.x].symbol == 'N'
 				|| game->map[index.y][index.x].symbol == 'S'
@@ -207,13 +207,13 @@ bool	find_player(t_game *game)
  */
 bool	check_filename(char *filename)
 {
-	int len;
+	int	len;
 	int	fd;
 
 	len = ft_strlen(filename);
 	if (len < 4)
 		return (print_error("Wrong name of file\n", 1), false);
-	if (ft_strncmp(filename + (len - 4 ), ".cub", 4) != 0)
+	if (ft_strncmp(filename + (len - 4), ".cub", 4) != 0)
 		return (print_error("Wrong name of file\n", 1), false);
 	fd = open(filename, O_DIRECTORY);
 	if (fd != -1)
@@ -234,7 +234,7 @@ bool	parse_file(char *filename, t_game *game)
 	int		fd;
 	int		i;
 	char	*line;
-	
+
 	srand(time(0));
 	if (!check_filename(filename))
 		return (false);

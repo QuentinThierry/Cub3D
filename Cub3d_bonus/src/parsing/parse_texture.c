@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 17:12:36 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/04 18:42:15 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool	ft_read_config(t_animation *animation, int index)
 	int		fd;
 	char	*buffer;
 	bool	error;
-	
+
 	error = false;
 	fd = open(animation->filename[index], O_RDONLY);
 	if (fd == -1)
@@ -58,7 +58,7 @@ bool	ft_read_config(t_animation *animation, int index)
 
 void	swap(char **str, int a, int b)
 {
-	char *tmp;
+	char	*tmp;
 
 	tmp = str[a];
 	str[a] = str[b];
@@ -84,7 +84,7 @@ bool	sort_animation(t_animation *anim)
 	while (i < anim->nb_sprite)
 	{
 		if (ft_strlen(anim->filename[i]) >= 10 && ft_strcmp(anim->filename[i]
-			+ (ft_strlen(anim->filename[i]) - 10) , "config.cfg") == 0)
+				+ (ft_strlen(anim->filename[i]) - 10), "config.cfg") == 0)
 		{
 			swap(anim->filename, i, 0);
 			has_config = true;
@@ -126,11 +126,11 @@ bool	ft_read_anim(DIR *dir, t_texture *texture, char *dirname)
 	bool			has_config;
 	void			*tmp;
 
-	tmp = ft_realloc(texture->animation
-		, sizeof(t_animation) * (texture->nb_animation)
-		,sizeof(t_animation) * (texture->nb_animation + 1));
+	tmp = ft_realloc(texture->animation,
+			sizeof(t_animation) * (texture->nb_animation),
+			sizeof(t_animation) * (texture->nb_animation + 1));
 	if (tmp == NULL)
-			return (print_error(NULL, 0), closedir(dir), free(dirname), false);
+		return (print_error(NULL, 0), closedir(dir), free(dirname), false);
 	texture->animation = tmp;
 	if (ft_strlen(dirname) > 0 && dirname[ft_strlen(dirname) - 1] == '/')
 		add_slash = false;
@@ -147,9 +147,9 @@ bool	ft_read_anim(DIR *dir, t_texture *texture, char *dirname)
 		filename = ft_strjoin_slash(dirname, buffer->d_name, add_slash);
 		if (filename == NULL)
 			return (print_error(NULL, 0), closedir(dir), free(dirname), false);
-		tmp = ft_realloc(texture->animation[texture->nb_animation].filename
-			, sizeof(char *) * (texture->animation[texture->nb_animation].nb_sprite)
-			, sizeof(char *) * (texture->animation[texture->nb_animation].nb_sprite + 1));
+		tmp = ft_realloc(texture->animation[texture->nb_animation].filename,
+				sizeof(char *) * (texture->animation[texture->nb_animation].nb_sprite),
+				sizeof(char *) * (texture->animation[texture->nb_animation].nb_sprite + 1));
 		if (tmp == NULL)
 			return (print_error(NULL, 0), closedir(dir), free(filename), free(dirname), false);
 		texture->animation[texture->nb_animation].filename = tmp;
@@ -212,8 +212,8 @@ bool	ft_read_dir(DIR *dir, t_texture *texture)
 		else
 		{
 			texture->total++;
-			tmp = ft_realloc(texture->filename_d
-				, sizeof(char *) * (texture->nb_file) , sizeof(char *) * (texture->nb_file + 1));
+			tmp = ft_realloc(texture->filename_d,
+					sizeof(char *) * (texture->nb_file), sizeof(char *) * (texture->nb_file + 1));
 			if (tmp == NULL)
 				return (free(texture->filename), texture->filename = NULL, print_error(NULL, 0), closedir(dir), free(filename), false);
 			texture->filename_d = tmp;
@@ -244,7 +244,7 @@ static bool	_is_existing(t_game *game, int index, char symbol, enum e_orientatio
 		|| orient == e_west || orient == e_wall)
 		is_wall = true;
 	else
-	 	is_wall = false;
+		is_wall = false;
 	while (i < game->nb_file)
 	{
 		if (orient == e_exit && game->filename[i].orient == e_exit)
@@ -255,26 +255,25 @@ static bool	_is_existing(t_game *game, int index, char symbol, enum e_orientatio
 				return (true);
 			else if (is_wall == true)
 			{
-				if (game->filename[i].orient == e_floor || game->filename[i].orient == e_ceiling 
+				if (game->filename[i].orient == e_floor || game->filename[i].orient == e_ceiling
 					|| game->filename[i].orient == e_door || game->filename[i].orient == e_object_wall
-					|| game->filename[i].orient == e_object_entity || game->filename[i].orient == e_door_lock 
+					|| game->filename[i].orient == e_object_entity || game->filename[i].orient == e_door_lock
 					|| game->filename[i].orient == e_object_interactive || game->filename[i].orient == e_receptacle_empty
 					|| game->filename[i].orient == e_exit)
 					return (true);
-					
 			}
 			else if ((orient == e_object_entity || orient == e_object_wall
-				|| orient == e_object_interactive || orient == e_door || orient == e_door_lock
-				|| orient == e_exit || orient == e_receptacle_empty)
+					|| orient == e_object_interactive || orient == e_door || orient == e_door_lock
+					|| orient == e_exit || orient == e_receptacle_empty)
 				&& (game->filename[i].orient == e_object_entity || game->filename[i].orient == e_object_wall
-				|| game->filename[i].orient == e_object_interactive || game->filename[i].orient == e_door 
-				|| game->filename[i].orient == e_exit || game->filename[i].orient == e_receptacle_empty
-				|| game->filename[i].orient == e_door_lock))
+					|| game->filename[i].orient == e_object_interactive || game->filename[i].orient == e_door
+					|| game->filename[i].orient == e_exit || game->filename[i].orient == e_receptacle_empty
+					|| game->filename[i].orient == e_door_lock))
 				return (true);
-			else if ((is_wall == false) 
-				&& (game->filename[i].orient == e_north || game->filename[i].orient == e_east 
-				|| game->filename[i].orient == e_south || game->filename[i].orient == e_west 
-				|| game->filename[i].orient == e_wall))
+			else if ((is_wall == false)
+				&& (game->filename[i].orient == e_north || game->filename[i].orient == e_east
+					|| game->filename[i].orient == e_south || game->filename[i].orient == e_west
+					|| game->filename[i].orient == e_wall))
 				return (true);
 		}
 		i++;
@@ -283,9 +282,10 @@ static bool	_is_existing(t_game *game, int index, char symbol, enum e_orientatio
 }
 
 /**
- * @brief return the index of the next whitespace or the '\0' if none has been find
+ * @brief return the index of the next whitespace or the '\0' if none has
+ * 	been find
  */
-int	find_next_wsp(char *line , int i)
+int	find_next_wsp(char *line, int i)
 {
 	while (line[i] != '\0' && !(line[i] == ' ' || line[i] == '\t'
 			|| line[i] == '\v' || line[i] == '\n' || line[i] == '\f'
@@ -294,9 +294,9 @@ int	find_next_wsp(char *line , int i)
 	return (i);
 }
 
-bool	multiple_texture(t_game *game, int *index, char * str, enum e_orientation orient)
+bool	multiple_texture(t_game *game, int *index, char *str,
+		enum e_orientation orient)
 {
-	
 	int		cpt;
 	int		nb_file;
 	int		i;
@@ -322,8 +322,8 @@ bool	multiple_texture(t_game *game, int *index, char * str, enum e_orientation o
 		}
 		len = find_next_wsp(str + i, 0);
 		if (len >= 0 && (str[i + len] == ' ' || str[i + len] == '\t'
-			|| str[i + len] == '\v' || str[i + len] == '\n' || str[i + len] == '\f'
-			|| str[i + len] == '\r'))
+				|| str[i + len] == '\v' || str[i + len] == '\n' || str[i + len] == '\f'
+				|| str[i + len] == '\r'))
 			str[i + len] = '\0';
 		filename = ft_strdup(str + i);
 		if (filename == NULL)
@@ -331,8 +331,8 @@ bool	multiple_texture(t_game *game, int *index, char * str, enum e_orientation o
 		i += len + 1;
 		if (*index >= game->nb_file)
 		{
-			tmp = ft_realloc(game->filename
-				, sizeof(t_texture) * game->nb_file, sizeof(t_texture) * (*index + 1));
+			tmp = ft_realloc(game->filename,
+					sizeof(t_texture) * game->nb_file, sizeof(t_texture) * (*index + 1));
 			if (tmp == NULL)
 				return (print_error(NULL, 0), free(filename), false);
 			game->filename = tmp;
@@ -388,8 +388,8 @@ static bool	_find_texture(t_game *game, char *str, int index, enum e_orientation
 		return (multiple_texture(game, &index, str, orient));
 	if (index >= game->nb_file)
 	{
-		tmp = ft_realloc(game->filename
-			, sizeof(t_texture) * game->nb_file, sizeof(t_texture) * (index + 1));
+		tmp = ft_realloc(game->filename,
+				sizeof(t_texture) * game->nb_file, sizeof(t_texture) * (index + 1));
 		if (tmp == NULL)
 			return (print_error(NULL, 0), false);
 		game->filename = tmp;
@@ -442,7 +442,7 @@ static bool	_cmp_texture(char *line, t_game *game, int i, bool *is_end)
 		else if (line[i] == 'C')
 			return (_find_texture(game, line + i + 1, e_ceiling, e_ceiling));
 		else
-		 	return (_find_texture(game, line + i + 1, game->nb_file, e_wall));
+			return (_find_texture(game, line + i + 1, game->nb_file, e_wall));
 	}
 	else if (next_wsp - i == 2)
 	{
@@ -559,6 +559,6 @@ bool	parse_texture(int fd, t_game *game, int *nb_line, char **rest)
 	}
 	*rest = line;
 	if (!check_texture(game->filename))
-		return (print_error("need the mandatory texture\n", 1),false);
+		return (print_error("need the mandatory texture\n", 1), false);
 	return (true);
 }

@@ -6,20 +6,21 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 14:56:51 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 15:29:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/04 18:31:54 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-bool	load_image(t_game *game, t_image *img, char *filename, t_animation *anim)
+bool	load_image(t_game *game, t_image *img, char *filename,
+		t_animation *anim)
 {
 	img->img = mlx_xpm_file_to_image(game->mlx_ptr, filename,
 			&(img->size.x), &(img->size.y));
 	if (img->img == NULL)
 		return (false);
 	img->addr = mlx_get_data_addr(img->img,
-		&img->opp, &img->size_line, &img->endian);
+			&img->opp, &img->size_line, &img->endian);
 	if (img->opp != 32)
 		return (false);
 	img->opp /= 8;
@@ -58,7 +59,8 @@ static t_image	*_resize_img(t_image *src,
 	return (dst);
 }
 
-bool	load_resize_image(t_game *game, t_image *img, char *filename, t_vector2 dst_size)
+bool	load_resize_image(t_game *game, t_image *img, char *filename,
+		t_vector2 dst_size)
 {
 	t_image	dst;
 
@@ -67,7 +69,7 @@ bool	load_resize_image(t_game *game, t_image *img, char *filename, t_vector2 dst
 	if (img->img == NULL)
 		return (false);
 	img->addr = mlx_get_data_addr(img->img,
-		&img->opp, &img->size_line, &img->endian);
+			&img->opp, &img->size_line, &img->endian);
 	if (img->opp != 32)
 		return (false);
 	img->opp /= 8;
@@ -77,7 +79,8 @@ bool	load_resize_image(t_game *game, t_image *img, char *filename, t_vector2 dst
 	dst.img = mlx_new_image(game->mlx_ptr, dst_size.x, dst_size.y);
 	if (!dst.img)
 		return (false);
-	dst.addr = mlx_get_data_addr(dst.img, &dst.opp, &dst.size_line, &dst.endian);
+	dst.addr = mlx_get_data_addr(dst.img, &dst.opp, &dst.size_line,
+			&dst.endian);
 	if (dst.opp != 32)
 		return (mlx_destroy_image(game->mlx_ptr, dst.img), false);
 	dst.opp /= 8;
@@ -99,8 +102,8 @@ bool	load_image_tab(t_game *game, bool *print_error)
 	int			index;
 
 	*print_error = true;
-	game->subtitle_font = btmlx_xpm_file_to_image_bilinear_resize(game->mlx_ptr, LOADING_FONT
-			, (t_vector2){WIN_X / 3 * 2, WIN_Y / 16 / 3 * 2});
+	game->subtitle_font = btmlx_xpm_file_to_image_bilinear_resize(game->mlx_ptr,
+			LOADING_FONT, (t_vector2){WIN_X / 3 * 2, WIN_Y / 16 / 3 * 2});
 	if (game->subtitle_font == NULL)
 		return (false);
 	game->subtitle_size_letter.x = game->subtitle_font->size.x * WIDTH_LETTER / WIDTH_ALPHA;

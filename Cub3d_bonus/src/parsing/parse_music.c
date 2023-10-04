@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 14:32:29 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 17:23:35 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/04 18:34:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 static bool	check_format(char *filename)
 {
-	int len;
+	int	len;
 	int	fd;
 
 	len = ft_strlen(filename);
@@ -53,7 +53,7 @@ static bool	load_subtitle(t_music_name *music)
 			return (print_error("Malloc failed\n", 1), close(fd), false);
 		res = tmp;
 		if (ret != READ_SIZE)
-			break;
+			break ;
 		ret = read(fd, buffer, READ_SIZE);
 	}
 	free(music->subtitle);
@@ -75,11 +75,14 @@ static bool	_is_existing(t_game *game, char symbol, enum e_orientation orient)
 		{
 			if (game->file_music[i].orient == orient)
 				return (true);
-			else if (game->file_music[i].orient == e_music_receptacle && orient == e_music)
+			else if (game->file_music[i].orient == e_music_receptacle
+				&& orient == e_music)
 				return (true);
-			else if (game->file_music[i].orient == e_music_receptacle && orient == e_music_object)
+			else if (game->file_music[i].orient == e_music_receptacle
+				&& orient == e_music_object)
 				return (true);
-			else if (game->file_music[i].orient == e_narrator_receptacle && orient == e_narrator)
+			else if (game->file_music[i].orient == e_narrator_receptacle
+				&& orient == e_narrator)
 				return (true);
 		}
 		i++;
@@ -93,14 +96,15 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 	void	*tmp;
 	int		len;
 	int		index;
-	
+
 	index = game->nb_music;
 	if (_is_existing(game, *(str - 1), orient))
 		return (print_error("Multiples definition of a sound\n", 1), false);
 	if (index >= game->nb_music)
 	{
-		tmp = ft_realloc(game->file_music
-			, sizeof(t_music_name) * game->nb_music, sizeof(t_music_name) * (index + 1));
+		tmp = ft_realloc(game->file_music,
+				sizeof(t_music_name) * game->nb_music,
+				sizeof(t_music_name) * (index + 1));
 		if (tmp == NULL)
 			return (print_error(NULL, 0), false);
 		game->file_music = tmp;
@@ -113,8 +117,8 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 		return (print_error("Empty texture\n", 1), false);
 	len = find_next_wsp(str + i, 0);
 	if (len >= 0 && (str[i + len] == ' ' || str[i + len] == '\t'
-		|| str[i + len] == '\v' || str[i + len] == '\n' || str[i + len] == '\f'
-		|| str[i + len] == '\r'))
+			|| str[i + len] == '\v' || str[i + len] == '\n'
+			|| str[i + len] == '\f' || str[i + len] == '\r'))
 		str[i + len] = '\0';
 	filename = ft_strdup(str + i);
 	if (filename == NULL)
@@ -122,15 +126,16 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 	i += len + 1;
 	game->file_music[index].filename = filename;
 	if (orient == e_narrator || orient == e_narrator_receptacle
-		|| orient == e_narrator_receptacle_complete || orient == e_narrator_receptacle_complete)
+		|| orient == e_narrator_receptacle_complete
+		|| orient == e_narrator_receptacle_complete)
 	{
 		i += skip_whitespace(str + i);
 		if (str[i] == '\0')
 			return (print_error("Empty texture\n", 1), false);
 		len = find_next_wsp(str + i, 0);
 		if (len >= 0 && (str[i + len] == ' ' || str[i + len] == '\t'
-			|| str[i + len] == '\v' || str[i + len] == '\n' || str[i + len] == '\f'
-			|| str[i + len] == '\r'))
+				|| str[i + len] == '\v' || str[i + len] == '\n'
+				|| str[i + len] == '\f' || str[i + len] == '\r'))
 			str[i + len] = '\0';
 		filename = ft_strdup(str + i);
 		if (filename == NULL)
@@ -144,4 +149,3 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 		return (find_music(game, str, orient + 1, i));
 	return (true);
 }
-

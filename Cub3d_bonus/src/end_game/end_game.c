@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 18:10:31 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/03 18:21:16 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/04 14:48:22 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ bool	init_end_screen(t_game *game)
 		return (false);
 	game->end->status = -1;
 	game->end->end_screen = btmlx_xpm_file_to_image(game->mlx_ptr
-		, END_SCREEN, (t_vector2){100, 100});
+		, END_SCREEN, (t_vector2){1, 1});
 	if (game->end->end_screen == NULL)
 		return (false);
 	return (true);

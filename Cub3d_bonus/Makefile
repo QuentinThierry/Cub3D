@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/04 14:39:03 by qthierry         ###   ########.fr        #
+#    Updated: 2023/10/04 14:55:06 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -112,6 +112,7 @@ SRC_MENU = \
 			blur.c \
 			menu_hooks.c \
 			option_menu.c \
+			init_menu.c \
 			pause_menu.c
 
 AUDIO = audio/

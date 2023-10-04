@@ -6,13 +6,14 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 16:34:46 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/15 20:08:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/04 17:32:15 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-static t_sprite	random_texture(t_texture *texture_tab, int index, bool is_random)
+static t_sprite	random_texture(t_texture *texture_tab, int index,
+				bool is_random)
 {
 	int	nb;
 	int	size;
@@ -43,12 +44,11 @@ static t_sprite	random_texture(t_texture *texture_tab, int index, bool is_random
 		return ((t_sprite){size, random, 0});
 	}
 	return ((t_sprite){size, 0, 0});
-	
 }
 
 /**
- * @brief return the index of the texture in the filename_tab depending on the symbol
- * 		and the orientation
+ * @brief return the index of the texture in the filename_tab depending
+ * 		on the symbol and the orientation
  * 
  * @param tab 
  * @param len 
@@ -56,12 +56,13 @@ static t_sprite	random_texture(t_texture *texture_tab, int index, bool is_random
  * @param orient 
  * @return int 
  */
-t_sprite	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient)
+t_sprite	fill_texture(t_texture *tab, int len, char symbol,
+			enum e_orientation orient)
 {
 	int	symbol_ref;
 	int	orient_ref;
 	int	i;
-	
+
 	i = 0;
 	symbol_ref = -1;
 	orient_ref = -1;
@@ -77,8 +78,8 @@ t_sprite	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation o
 					|| orient == e_west) && tab[i].orient == e_wall)
 				symbol_ref = i;
 		}
-		if (tab[i].orient == orient && (orient == e_north || orient == e_east || orient == e_south
-				|| orient == e_west) && tab[i].symbol == '1')
+		if (tab[i].orient == orient && (orient == e_north || orient == e_east
+				|| orient == e_south || orient == e_west) && tab[i].symbol == '1')
 			orient_ref = i;
 		else if (tab[i].orient == orient && (orient == e_floor || orient == e_ceiling)
 			&& tab[i].symbol == '0')

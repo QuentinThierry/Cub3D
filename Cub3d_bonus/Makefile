@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/04 16:01:02 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/04 18:11:38 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,6 +75,8 @@ PARSING = parsing/
 SRC_PARSING = \
 			check_map.c \
 			ft_fill_wall.c \
+			get_texture_wall.c \
+			get_texture_none_wall.c \
 			fill_texture.c \
 			init.c \
 			load_image.c \

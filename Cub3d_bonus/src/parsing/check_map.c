@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 21:27:20 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/04 14:04:50 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/04 17:28:48 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ static bool	_check_door(t_map **map, int x, int y, t_vector2 map_size)
 
 bool	_check_sound(t_game *game, t_map *map_cell)
 {
-	char *filename;
-	void *narrator;
+	char	*filename;
+	void	*narrator;
 
 	if ((map_cell->type & MUSIC_OBJECT) == MUSIC_OBJECT
 		&& (map_cell->type & OBJECT_INTERACTIVE) != OBJECT_INTERACTIVE)
@@ -53,16 +53,16 @@ bool	_check_sound(t_game *game, t_map *map_cell)
 	if (((map_cell->type & RECEPTACLE) == RECEPTACLE || (map_cell->type & EXIT) == EXIT)
 		&& (map_cell->type & MUSIC) == MUSIC)
 	{
-		filename = get_music(game->file_music, game->nb_music, map_cell->symbol
-			, e_music_receptacle_complete);
+		filename = get_music(game->file_music, game->nb_music, map_cell->symbol,
+				e_music_receptacle_complete);
 		if (filename == NULL)
 			return (false);
 	}
 	if (((map_cell->type & RECEPTACLE) == RECEPTACLE || (map_cell->type & EXIT) == EXIT)
 		&& (map_cell->type & NARRATOR) == NARRATOR)
 	{
-		narrator = get_narrator(game->file_music, game->nb_music, map_cell->symbol
-			, e_narrator_receptacle_complete);
+		narrator = get_narrator(game->file_music, game->nb_music, map_cell->symbol,
+				e_narrator_receptacle_complete);
 		if (narrator == NULL)
 			return (false);
 	}
@@ -109,7 +109,8 @@ bool	check_map(t_game *game)
 	return (true);
 }
 
-void	exit_door_no_receptacle(t_map *exit, int nb_receptacle, t_image *tab_image)
+void	exit_door_no_receptacle(t_map *exit, int nb_receptacle,
+			t_image *tab_image)
 {
 	if (nb_receptacle == 0 && exit != NULL)
 	{

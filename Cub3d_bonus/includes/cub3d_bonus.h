@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/04 14:39:20 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/04 18:10:47 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -522,6 +522,8 @@ t_sprite	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation o
 t_vector2	get_dimension_maps(int fd, char *line, bool *error);
 bool		is_wall(char symbol, t_texture *tab, int len, bool *error);
 int			skip_whitespace(char *str);
+bool		get_wall(t_game *game, t_map *map, char symbol);
+bool		get_none_wall(t_game *game, t_map *map, bool error, char symbol);
 bool		ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size);
 bool		find_player(t_game *game);
 bool		check_map(t_game *game);

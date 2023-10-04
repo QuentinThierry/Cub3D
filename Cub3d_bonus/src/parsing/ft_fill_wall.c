@@ -6,13 +6,13 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/03 19:23:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/04 18:23:10 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-bool fill_object_and_doors(t_game *game)
+bool	fill_object_and_doors(t_game *game)
 {
 	int	x;
 	int	y;
@@ -42,8 +42,7 @@ bool fill_object_and_doors(t_game *game)
 			if ((game->map[y][x].type & OBJECT) == OBJECT)
 			{
 				game->object_array[cpt_objects] = game->map[y][x].arg;
-				game->object_array[cpt_objects]->map_pos =
-					(t_dvector2){x + 0.5f, y + 0.5f};
+				game->object_array[cpt_objects]->map_pos = (t_dvector2){x + 0.5f, y + 0.5f};
 				cpt_objects++;
 			}
 			else if ((game->map[y][x].type & DOOR) == DOOR)
@@ -82,11 +81,9 @@ bool fill_object_and_doors(t_game *game)
  */
 bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 {
-	int	i;
-	int	len;
-	t_texture	type_door;
-	bool	error;
-	char	c;
+	int			i;
+	int			len;
+	bool		error;
 
 	i = 0;
 	len = ft_strlen(line);
@@ -104,134 +101,13 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			line[i] = '0';
 		if (is_wall(line[i], game->filename, game->nb_file, &error))
 		{
-			map[i].type = WALL;
-			map[i].sprite[e_north] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_north);
-			map[i].sprite[e_east] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_east);
-			map[i].sprite[e_south] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_south);
-			map[i].sprite[e_west] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_west);
-			map[i].sprite[e_floor].index = -1;
-			map[i].sprite[e_ceiling].index = -1;
-			map[i].music = get_music(game->file_music, game->nb_music, line[i], e_music);
-			if (map[i].music != NULL)
-				map[i].type |= MUSIC;
-			map[i].narrator = get_narrator(game->file_music, game->nb_music, line[i], e_narrator);
-			if (map[i].narrator != NULL)
-				map[i].type |= NARRATOR;
-			if (is_door(line[i], game->filename, game->nb_file, &type_door))
-			{
-				map[i].arg = ft_calloc(1, sizeof(t_door));
-				if (map[i].arg == NULL)
-					return (print_error(NULL, 0), false);
-				game->nb_doors++;
-				map[i].type |= DOOR;
-				if (type_door.orient == e_exit)
-				{
-					map[i].type |= DOOR_LOCK;
-					map[i].type |= EXIT;
-					if (game->exit != NULL)
-						return (print_error("Multiple exit on the map\n", 1), false);
-					game->exit = map + i;
-				}
-				if (type_door.orient == e_door_lock)
-				{
-					map[i].type |= DOOR_LOCK;
-					map[i].type |= RECEPTACLE;
-					((t_door *)map[i].arg)->symbol_unlock_door = type_door.symbol_receptacle;
-					map[i].sprite[e_door_image + 1] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_door_unlock);
-				}
-				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_floor);
-				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_ceiling);
-				map[i].sprite[e_door_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, type_door.orient);
-			}
-			else if (is_object(line[i], game->filename, game->nb_file))
-			{
-				game->nb_objects++;
-				map[i].type |= OBJECT;
-				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_floor);
-				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_ceiling);
-				map[i].sprite[e_object_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_object_wall);
-				map[i].arg = ft_calloc(1, sizeof(t_object));
-				if (map[i].arg == NULL)
-					return (print_error(NULL, 0), false);
-			}
-			else if (is_object_interactive(line[i], game->filename, game->nb_file))
-			{
-				game->nb_objects += 2;
-				map[i].type |= OBJECT;
-				map[i].type |= OBJECT_INTERACTIVE;
-				map[i].sprite[e_object_interactive_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_object_interactive);
-				map[i].sprite[e_object_interactive_hand_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_object_interactive_hand);
-				map[i].sprite[e_object_interactive_before_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_object_interactive_before);
-				map[i].sprite[e_object_interactive_after_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_object_interactive_after);
-				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_floor);
-				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_ceiling);
-				map[i].arg = ft_calloc(1, sizeof(t_object));
-				if (map[i].arg == NULL)
-					return (print_error(NULL, 0), false);
-				((t_object *)map[i].arg)->music = get_music(game->file_music, game->nb_music, line[i], e_music_object);
-				if (((t_object *)map[i].arg)->music != NULL)
-					map[i].type |= MUSIC_OBJECT;
-			}
-			else if (is_receptacle(line[i], game->filename, game->nb_file, &c))
-			{
-				game->nb_objects++;
-				game->total_receptacle++;
-				map[i].type |= OBJECT;
-				map[i].type |= RECEPTACLE;
-				map[i].sprite[e_receptacle_empty_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_receptacle_empty);
-				map[i].sprite[e_receptacle_full_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_receptacle_full);
-				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_floor);
-				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_ceiling);
-				map[i].arg = ft_calloc(1, sizeof(t_object));
-				if (map[i].arg == NULL)
-					return (print_error(NULL, 0), false);
-				((t_object *)map[i].arg)->symbol_receptacle = c;
-			}
+			if (!get_wall(game, &map[i], map[i].symbol))
+				return (false);
 		}
 		else
 		{
-			if (error == true && !is_sound(game->file_music, game->nb_music, line[i]))
-				return (print_error("Invalid caracter in the map\n", 1), false);
-			map[i].type = NONE;
-			map[i].music = get_music(game->file_music, game->nb_music, line[i], e_music);
-			if (map[i].music != NULL)
-				map[i].type |= MUSIC;
-			map[i].narrator = get_narrator(game->file_music, game->nb_music, line[i], e_narrator);
-			if (map[i].narrator != NULL)
-				map[i].type |= NARRATOR;
-			map[i].sprite[e_north].index = -1;
-			map[i].sprite[e_east].index = -1;
-			map[i].sprite[e_south].index = -1;
-			map[i].sprite[e_west].index = -1;
-			map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_floor);
-			map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_ceiling);
-			if (is_object(line[i], game->filename, game->nb_file))
-			{
-				game->nb_objects++;
-				map[i].type |= OBJECT;
-				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_floor);
-				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_ceiling);
-				map[i].sprite[e_object_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_object_entity);
-				map[i].arg = ft_calloc(1, sizeof(t_object));
-				if (map[i].arg == NULL)
-					return (print_error(NULL, 0), false);
-			}
-			else if (is_object_interactive(line[i], game->filename, game->nb_file))
-			{
-				game->nb_objects++;
-				map[i].type |= OBJECT;
-				map[i].type |= OBJECT_INTERACTIVE;
-				map[i].sprite[e_floor] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_floor);
-				map[i].sprite[e_ceiling] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_ceiling);
-				map[i].sprite[e_object_interactive_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_object_interactive);
-				map[i].sprite[e_object_interactive_hand_image] = fill_texture(game->filename, game->nb_file, map[i].symbol, e_object_interactive_hand);
-				map[i].arg = ft_calloc(1, sizeof(t_object));
-				if (map[i].arg == NULL)
-					return (print_error(NULL, 0), false);
-				((t_object *)map[i].arg)->music = get_music(game->file_music, game->nb_music, line[i], e_music_object);
-				if (((t_object *)map[i].arg)->music != NULL)
-					map[i].type |= MUSIC_OBJECT;
-			}
+			if (!get_none_wall(game, &map[i], error, map[i].symbol))
+				return (false);
 		}
 		i++;
 	}

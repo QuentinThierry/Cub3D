@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 23:05:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 18:23:10 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 19:41:45 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,12 @@ bool	ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size)
 			line[i] = '0';
 		if (is_wall(line[i], game->filename, game->nb_file, &error))
 		{
-			if (!get_wall(game, &map[i], map[i].symbol))
+			if (!get_wall(game, &map[i], line[i]))
 				return (false);
 		}
 		else
 		{
-			if (!get_none_wall(game, &map[i], error, map[i].symbol))
+			if (!get_none_wall(game, &map[i], error, line[i]))
 				return (false);
 		}
 		i++;

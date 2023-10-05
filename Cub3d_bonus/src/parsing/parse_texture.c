@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 19:23:12 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 19:30:41 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ bool	ft_read_anim(DIR *dir, t_texture *texture, char *dirname)
 	if (has_config == false)
 		print_error("Missing the file config.cfg for the animations\n", 1);
 	texture->nb_animation++;
-	if (texture->animation[texture->nb_animation - 1].nb_sprite >= 1)
+	if (texture->animation[texture->nb_animation - 1].nb_sprite <= 1)
 		return (print_error("Empty directory for animation\n", 1), false);
 	return (has_config);
 }

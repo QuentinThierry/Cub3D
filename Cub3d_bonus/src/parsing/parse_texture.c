@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 19:30:41 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 19:52:52 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,8 @@ bool	ft_read_dir(DIR *dir, t_texture *texture)
 	free(texture->filename);
 	texture->filename = NULL;
 	closedir(dir);
+	if (texture->nb_file + texture->animation <= 0)
+		return (print_error("Empty directory\n", 1), false);
 	return (true);
 }
 
@@ -565,7 +567,7 @@ bool	parse_texture(int fd, t_game *game, int *nb_line, char **rest)
 	}
 	*rest = line;
 	if (!check_texture(game->filename))
-		return (print_error("need the mandatory texture\n", 1), false);
+		return (print_error("need the mandatory texture\n", 1), free(line), false);
 	printf_texture(game);
 	return (true);
 }

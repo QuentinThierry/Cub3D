@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/24 16:36:41 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/05 15:58:23 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 __attribute__((always_inline))
 static inline float	get_dist(t_dvector2 fpos, t_dvector2 wall)
 {
-	return (sqrtf((wall.x - fpos.x) * (wall.x - fpos.x) + (wall.y - fpos.y) * (wall.y - fpos.y)));
+	return (sqrtf((wall.x - fpos.x) * (wall.x - fpos.x) + (wall.y - fpos.y)
+			* (wall.y - fpos.y)));
 }
 
 t_vector2	get_sign(float angle)
@@ -40,8 +41,8 @@ void	raycasting(t_game *game)
 	float		angle;
 	t_ray		ray;
 	t_dvector2	fpos;
-	float		dist; 
-	
+	float		dist;
+
 	fpos = game->player->f_real_pos;
 	x = -WIN_X / 2;
 	while (x < WIN_X / 2)

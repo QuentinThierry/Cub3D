@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:39:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/22 14:30:33 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/05 15:56:01 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 __attribute__((always_inline))
 static inline unsigned int	get_color_at(char *addr, int size_line, t_vector2 pos)
 {
-	return (*(int*)(addr + (pos.y * size_line + pos.x * 4)));
+	return (*(int *)(addr + (pos.y * size_line + pos.x * 4)));
 }
 
 __attribute__((always_inline))
 static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, int color)
 {
-	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
+	*(int *)(addr + (pos.y * size_line + pos.x * 4)) = color;
 }
 
 __attribute__((always_inline))
@@ -65,7 +65,6 @@ void	draw_object_projection(t_game *game, t_object *object, float object_dist, i
 		width = height;
 	x_pos = x_pos - width / 2;
 	y_pos = WIN_Y / 2. - height / 2.;
-
 	x_ratio = image->size.x / width;
 	y_ratio = image->size.y / height;
 	if (object->dist >= DIST_MIN_DARK)
@@ -98,7 +97,6 @@ void	draw_object_projection(t_game *game, t_object *object, float object_dist, i
 			if (y_pos + y >= WIN_Y)
 				break ;
 			y_img = y * y_ratio;
-
 			color = get_color_at(image->addr, image->size_line, (t_vector2){x_img, y_img});
 			if (color != GREEN_SCREEN)
 				my_mlx_pixel_put(game->image->addr, game->image->size_line, (t_vector2){x + x_pos, y_pos + y}, dark_with_dist(color, dark_quantity));
@@ -107,7 +105,6 @@ void	draw_object_projection(t_game *game, t_object *object, float object_dist, i
 		x++;
 	}
 }
-
 
 void	find_object_projection(t_game *game, t_object *object, t_player *player)
 {
@@ -148,7 +145,6 @@ void	find_object_projection(t_game *game, t_object *object, t_player *player)
 		angle = -(game->fov / 2. - angle);
 	else
 		angle = angle - game->fov / 2.;
-
 	x_screen = WIN_X / 2. + tanf(angle * TO_RADIAN) * game->constants[0];
 	draw_object_projection(game, object, object->dist * cosf(angle * TO_RADIAN), x_screen);
 }
@@ -157,7 +153,7 @@ static void	fill_object_dist(t_game *game)
 {
 	int			i;
 	t_dvector2	relative_pos;
-	
+
 	i = 0;
 	while (i < game->nb_objects)
 	{

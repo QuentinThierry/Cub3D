@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/03 16:29:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 15:28:17 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 __attribute__((always_inline))
 static inline unsigned int	get_color_at(char *addr, int size_line, t_vector2 pos)
 {
-	return (*(int*)(addr + (pos.y * size_line + pos.x * 4)));
+	return (*(int *)(addr + (pos.y * size_line + pos.x * 4)));
 }
 
 __attribute__((always_inline))
 static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, int color)
 {
-	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
+	*(int *)(addr + (pos.y * size_line + pos.x * 4)) = color;
 }
 
 __attribute__((always_inline))
@@ -49,7 +49,7 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	int					size_line;
 	char				*addr;
 	float				dark_quantity;
-	
+
 	if (game->dist_tab[x] >= DIST_MIN_DARK)
 		dark_quantity = (-DIST_MIN_DARK + game->dist_tab[x]) / (DIST_MAX_DARK - DIST_MIN_DARK);
 	else

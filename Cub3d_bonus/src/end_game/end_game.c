@@ -6,15 +6,15 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 18:10:31 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/05 14:30:11 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 15:34:47 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
 void	raycasting_end(t_game *game);
-void	find_dest(t_end *end, const enum e_orientation orient
-		, const t_vector2 pos_exit, const t_player * player);
+void	find_dest(t_end *end, const enum e_orientation orient,
+			const t_vector2 pos_exit, const t_player *player);
 void	next_dest(t_end *end, const t_dvector2 player_pos);
 
 bool	init_end_screen(t_game *game)
@@ -23,8 +23,8 @@ bool	init_end_screen(t_game *game)
 	if (game->end == NULL)
 		return (false);
 	game->end->status = -1;
-	game->end->end_screen = btmlx_xpm_file_to_image(game->mlx_ptr
-		, END_SCREEN, (t_vector2){1, 1});
+	game->end->end_screen = btmlx_xpm_file_to_image(game->mlx_ptr,
+			END_SCREEN, (t_vector2){1, 1});
 	if (game->end->end_screen == NULL)
 		return (false);
 	return (true);
@@ -76,8 +76,9 @@ static bool	move_to_dest(t_player *player, const t_end *end, const double delta_
 		player->angle = end->dest_angle;
 	if (player->f_real_pos.x == end->dest.x && player->f_real_pos.y == end->dest.y)
 	{
-		if (player->angle == end->dest_angle || (end->dest_angle == 0 && player->angle == 360) ||
-			(end->dest_angle == 360 && player->angle == 0))
+		if (player->angle == end->dest_angle
+			|| (end->dest_angle == 0 && player->angle == 360)
+			|| (end->dest_angle == 360 && player->angle == 0))
 			return (true);
 	}
 	return (false);
@@ -120,7 +121,6 @@ int	update_loop(t_game *game)
 	return (0);
 }
 
-
 /**
  * @brief launch the end's animation => go in front of the door, then open it,
  *		and go through it
@@ -133,16 +133,16 @@ void	end_of_the_game(t_game *game, const enum e_orientation orient)
 	clear_sound(game->music_array);
 	if ((game->exit->type & MUSIC) == MUSIC)
 	{
-		game->exit->music = get_music(game->file_music, game->nb_music
-				, game->exit->symbol, e_music_receptacle_complete);
+		game->exit->music = get_music(game->file_music, game->nb_music,
+				game->exit->symbol, e_music_receptacle_complete);
 		play_music(game->exit, game->music_array, game->exit->music, IS_PLAYING_MUSIC);
 		game->exit->type &= ~MUSIC;
 	}
 	if ((game->exit->type & NARRATOR) == NARRATOR
 		|| (game->exit->type & NARRATOR_RECEPTACLE) == NARRATOR_RECEPTACLE)
 	{
-		game->exit->narrator = get_narrator(game->file_music, game->nb_music
-				, game->exit->symbol, e_narrator_receptacle_complete);
+		game->exit->narrator = get_narrator(game->file_music, game->nb_music,
+				game->exit->symbol, e_narrator_receptacle_complete);
 		play_narrator(game, game->exit, game->music_array);
 		game->exit->type &= ~NARRATOR & ~NARRATOR_RECEPTACLE;
 	}

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 12:38:01 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/02 13:47:59 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 15:26:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,9 @@ static const t_vector2	g_minimap_pos =
 	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_PAD
 };
 
-
 int	find_max_caracter(const char *text, bool *is_word_cut)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	*is_word_cut = false;
@@ -47,7 +46,8 @@ int	find_max_caracter(const char *text, bool *is_word_cut)
 	return (i);
 }
 
-unsigned int	draw_subtitle_with_backgroud(t_game *game, t_image *image, t_vector2 pos, const char *text)
+unsigned int	draw_subtitle_with_backgroud(t_game *game, t_image *image,
+		t_vector2 pos, const char *text)
 {
 	int		i;
 	int		len;
@@ -74,19 +74,19 @@ unsigned int	draw_subtitle_with_backgroud(t_game *game, t_image *image, t_vector
 		}
 		else if (text[i] < 32 || text[i] > 126)
 			draw_image_with_transparence(image->addr + (pos.y * image->size_line + (pos.x
-				+ (int)(game->subtitle_size_letter.x * i)) * 4), game->subtitle_font,
-			(t_vector2){(game->subtitle_size_letter.x * ('?' - '!')), 0},
-			(t_vector2){game->subtitle_size_letter.x, game->subtitle_size_letter.y});
+						+ (int)(game->subtitle_size_letter.x * i)) * 4), game->subtitle_font,
+				(t_vector2){(game->subtitle_size_letter.x * ('?' - '!')), 0},
+				(t_vector2){game->subtitle_size_letter.x, game->subtitle_size_letter.y});
 		else
 			draw_image_with_transparence(image->addr + (pos.y * image->size_line + (pos.x
-				+ (int)(game->subtitle_size_letter.x * i)) * 4), game->subtitle_font,
-			(t_vector2){(game->subtitle_size_letter.x * (text[i] - '!')), 0},
-			(t_vector2){game->subtitle_size_letter.x, game->subtitle_size_letter.y});
+						+ (int)(game->subtitle_size_letter.x * i)) * 4), game->subtitle_font,
+				(t_vector2){(game->subtitle_size_letter.x * (text[i] - '!')), 0},
+				(t_vector2){game->subtitle_size_letter.x, game->subtitle_size_letter.y});
 		i++;
 	}
 	if (is_word_cut)
 		draw_image_with_transparence(image->addr + (pos.y * image->size_line + (pos.x
-				+ (int)(game->subtitle_size_letter.x * i)) * 4), game->subtitle_font,
+					+ (int)(game->subtitle_size_letter.x * i)) * 4), game->subtitle_font,
 			(t_vector2){(game->subtitle_size_letter.x * ('-' - '!')), 0},
 			(t_vector2){game->subtitle_size_letter.x, game->subtitle_size_letter.y});
 	return (len);

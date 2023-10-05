@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 15:03:08 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 15:35:25 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	free_image(void *mlx_ptr, t_image *image)
 void	free_menu(void *mlx_ptr, t_menu *menu)
 {
 	if (!menu)
-		return;
+		return ;
 	free_image(mlx_ptr, menu->background_image);
 	free_image(mlx_ptr, menu->exit_option_image);
 	free_image(mlx_ptr, menu->image);

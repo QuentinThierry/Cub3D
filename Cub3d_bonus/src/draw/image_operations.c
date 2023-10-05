@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 22:06:01 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/08 15:40:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 15:31:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 static inline void	draw_image_alpha(t_vector2 dim,
 	unsigned int *dest_addr, unsigned int *src_addr, t_vector2 size_line)
 {
-	int	x;
-	int	y;
+	int				x;
+	int				y;
 	unsigned int	color;
 
 	y = 0;

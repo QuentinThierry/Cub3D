@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/02 14:12:31 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 15:56:48 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,10 @@ void	take_object(t_game *game, t_player *player, t_map *cell_map, t_music_game *
 		cell_map->type &= ~NARRATOR;
 	}
 	if ((cell_map->type & MUSIC_OBJECT) == MUSIC_OBJECT)
-		play_music(&player->item, music_tab
-			, ((t_object *)player->item.arg)->music, IS_PLAYING_MUSIC_OBJECT);
+		play_music(&player->item, music_tab,
+			((t_object *)player->item.arg)->music, IS_PLAYING_MUSIC_OBJECT);
 	if ((cell_map->type & IS_PLAYING_MUSIC_OBJECT) == IS_PLAYING_MUSIC_OBJECT)
 		update_map_cell_music(&player->item, cell_map, music_tab);
-	// if ((cell_map->type & IS_PLAYING_NARRATOR) == IS_PLAYING_NARRATOR)
-	// {
-	// 	music_tab[1].map_cell = &player->item;
-	// 	player->item.type &= ~IS_PLAYING_NARRATOR;
-	// }
 	cell_map->type &= ~MUSIC_OBJECT & ~IS_PLAYING_MUSIC_OBJECT;
 	cell_map->symbol = '0';
 	cell_map->arg = NULL;
@@ -46,7 +41,7 @@ void	take_object(t_game *game, t_player *player, t_map *cell_map, t_music_game *
 t_dvector2	find_pos(t_player *player)
 {
 	t_dvector2	pos;
-	
+
 	pos.x = sin(player->angle * TO_RADIAN) * M_SQRT2;
 	pos.y = -cos(player->angle * TO_RADIAN) * M_SQRT2;
 	if (pos.x > 1)
@@ -64,8 +59,8 @@ t_dvector2	find_pos(t_player *player)
 
 void	take_object_click(t_game *game, t_player *player, t_map **map)
 {
-	t_dvector2 pos;
-	
+	t_dvector2	pos;
+
 	pos = find_pos(player);
 	if ((map[(int)pos.y][(int)pos.x].type & RECEPTACLE) == RECEPTACLE
 		&& ((map[(int)pos.y][(int)pos.x].type & DOOR_LOCK) == DOOR_LOCK
@@ -105,7 +100,7 @@ void	draw_hand_item(t_game *game, t_player *player)
 	t_image		*image;
 	t_vector2	size;
 	int			begin;
-	
+
 	image = &game->tab_images[player->item.sprite[e_object_interactive_hand_image].index];
 	size = image->size;
 	if ((WIN_Y - image->size.y) < 0)

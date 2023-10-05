@@ -6,15 +6,15 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:07:20 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 14:47:42 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 15:33:01 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-void	change_adjacent_wall_end(enum e_orientation orient, t_map **map, t_vector2 map_pos)
+void	change_adjacent_wall_end(enum e_orientation orient, t_map **map,
+		t_vector2 map_pos)
 {
-	printf("set up door next\n");
 	if (orient == e_south || orient == e_west)
 	{
 		if (is_only_wall(map[map_pos.y][map_pos.x + 1].type))
@@ -39,15 +39,15 @@ void	change_adjacent_wall_end(enum e_orientation orient, t_map **map, t_vector2 
 	}
 }
 
-void	end_step_door_open(double time, t_map *map_cell, t_map **map, t_end *end)
+void	end_step_door_open(double time, t_map *map_cell, t_map **map,
+		t_end *end)
 {
 	t_door	*door;
-	
+
 	door = map_cell->arg;
 	if (door->is_opening_door == 1)
 	{
 		door->door_percent += time * (SPEEP_UNLOCK_DOOR_OPENING / 2.);
-		// door->time = time;
 		if (door->door_percent > 89)
 		{
 			map_cell->type ^= WALL;
@@ -58,7 +58,8 @@ void	end_step_door_open(double time, t_map *map_cell, t_map **map, t_end *end)
 	}
 }
 
-t_dvector2	end_door_hit_hor_se(t_dvector2 hit, float step, float door_angle, float player_angle)
+t_dvector2	end_door_hit_hor_se(t_dvector2 hit, float step, float door_angle,
+		float player_angle)
 {
 	float	l;
 	float	x;
@@ -127,7 +128,8 @@ t_dvector2	end_door_hit_ver_sw(t_dvector2 hit, float step, float door_angle,
 	return ((t_dvector2){(int)hit.x - 0.5 + x, (int)hit.y + 1 - y});
 }
 
-t_dvector2	end_door_hit_hor_sw(t_dvector2 hit, float step, float door_angle, float player_angle)
+t_dvector2	end_door_hit_hor_sw(t_dvector2 hit, float step, float door_angle,
+		float player_angle)
 {
 	float	l;
 	float	x;

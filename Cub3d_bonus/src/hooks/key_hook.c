@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/30 14:18:12 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 15:36:35 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,9 @@ void	key_press_hook(t_keybind key, t_game *game)
 	}
 }
 
-
 int	exit_hook(int key, t_game *game)
 {
-	if (key == 65307) // esc
+	if (key == 65307)
 		ft_close(game);
 	return (0);
 }
@@ -86,7 +85,7 @@ void	key_release_hook(t_keybind key, t_game *game)
 
 void	player_move(t_game *game, t_player *player, double delta_time, t_map **map)
 {
-	t_dvector2 move_value;
+	t_dvector2	move_value;
 
 	if (player->view != 0)
 		player->angle += ROTATION_KEYBOARD * delta_time * player->view;
@@ -114,8 +113,8 @@ void	player_move(t_game *game, t_player *player, double delta_time, t_map **map)
 		move_value = check_colliding(game, move_value, map);
 		if (((int)move_value.x != (int)player->f_real_pos.x || (int)move_value.y != (int)player->f_real_pos.y)
 			&& (map[(int)move_value.y][(int)move_value.x].type & MUSIC) == MUSIC)
-			play_music(&map[(int)move_value.y][(int)move_value.x]
-				, game->music_array, map[(int)move_value.y][(int)move_value.x].music, IS_PLAYING_MUSIC);
+			play_music(&map[(int)move_value.y][(int)move_value.x],
+				game->music_array, map[(int)move_value.y][(int)move_value.x].music, IS_PLAYING_MUSIC);
 		if (((int)move_value.x != (int)player->f_real_pos.x || (int)move_value.y != (int)player->f_real_pos.y)
 			&& (map[(int)move_value.y][(int)move_value.x].type & NARRATOR) == NARRATOR)
 		{
@@ -157,7 +156,7 @@ int	mouse_leave(t_game *game)
 	return (0);
 }
 
-int	mouse_click(int button, int x, int y,t_game *game)
+int	mouse_click(int button, int x, int y, t_game *game)
 {
 	(void)x;
 	(void)y;

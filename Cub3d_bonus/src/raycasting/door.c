@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 15:05:03 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 15:50:19 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,7 +249,6 @@ t_dvector2	door_hit_ver_nw(t_dvector2 hit, float step, float door_angle,
 		return ((t_dvector2){-1, -1});
 	return ((t_dvector2){hit.x - 0.5 - sinf(door_angle * TO_RADIAN) * a,
 		(int)hit.y + (cosf(door_angle * TO_RADIAN) * a)});
-	
 }
 
 t_dvector2	door_hit_hor_nw(t_dvector2 hit, float step, float door_angle, float player_angle)
@@ -305,11 +304,11 @@ float	get_texture_door(t_ray ray)
 			delta.x = ((int)ray.hit.x + 1) - ray.hit.x;
 			left_door = true;
 		}
-		delta.y = fabs(ray.hit.y - ((int)ray.hit.y + 0.5)); 
+		delta.y = fabs(ray.hit.y - ((int)ray.hit.y + 0.5));
 	}
 	else
 	{
-		delta.x = fabs(ray.hit.x - ((int)ray.hit.x + 0.5)); 
+		delta.x = fabs(ray.hit.x - ((int)ray.hit.x + 0.5));
 		if (ray.hit.y - (int)ray.hit.y < 0.5)
 			delta.y = ray.hit.y - (int)ray.hit.y;
 		else
@@ -329,8 +328,8 @@ void	change_adjacent_wall(t_map **map, t_vector2 map_pos, bool is_add_flag)
 	bool	east_west;
 
 	printf("change wall\n");
-	east_west = map[map_pos.y][map_pos.x + 1].type == WALL
-		&& map[map_pos.y][map_pos.x - 1].type == WALL;
+	east_west = (map[map_pos.y][map_pos.x + 1].type == WALL
+			&& map[map_pos.y][map_pos.x - 1].type == WALL);
 	if (is_add_flag)
 	{
 		if (east_west)
@@ -463,10 +462,10 @@ static void	_step_door_open(t_door *door, double time, t_map *map_cell, t_map **
 	}
 }
 
-void	update_doors(t_map **doors, int	nb_doors, double time, t_map **map)
+void	update_doors(t_map **doors, int nb_doors, double time, t_map **map)
 {
 	int	i;
-
+q
 	i = 0;
 	while (i < nb_doors)
 	{

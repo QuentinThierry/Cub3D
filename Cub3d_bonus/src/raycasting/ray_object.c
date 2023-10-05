@@ -6,12 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/19 18:21:21 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/16 13:50:10 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 15:57:46 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/cub3d_bonus.h"
-
+#include "../../includes/cub3d_bonus.h"
 
 // xy (1, 1)
 static t_ray	_get_object_se(t_dvector2 begin,
@@ -24,7 +23,7 @@ static t_ray	_get_object_se(t_dvector2 begin,
 	float		t_angle;
 
 	max_pos = (t_dvector2){begin.x + cos((angle - 90) * TO_RADIAN) * object.dist,
-			begin.y + sin((angle - 90) * TO_RADIAN) * object.dist};
+		begin.y + sin((angle - 90) * TO_RADIAN) * object.dist};
 	t_angle = fabs(tan(angle * TO_RADIAN));
 	map_pos = (t_vector2){(int)begin.x + 1, (int)begin.y + 1};
 	comp.x = begin.x + fabs(begin.y - map_pos.y) * t_angle;
@@ -44,7 +43,7 @@ static t_ray	_get_object_se(t_dvector2 begin,
 			comp.y += step.y;
 			map_pos.x += 1;
 		}
-		else 
+		else
 		{
 			if (map_pos.y > max_pos.y)
 				return ((t_ray){{-1, -1}, e_north});
@@ -70,7 +69,7 @@ static t_ray	_get_object_ne(t_dvector2 begin,
 	float		t_angle;
 
 	max_pos = (t_dvector2){begin.x + cos((90 - angle) * TO_RADIAN) * object.dist,
-			begin.y - sin((90 - angle) * TO_RADIAN) * object.dist};
+		begin.y - sin((90 - angle) * TO_RADIAN) * object.dist};
 	t_angle = fabs(tan(angle * TO_RADIAN));
 	map_pos = (t_vector2){(int)begin.x + 1, (int)begin.y};
 	comp.x = begin.x + fabs(begin.y - map_pos.y) * t_angle;
@@ -116,7 +115,7 @@ static t_ray	_get_object_sw(t_dvector2 begin,
 	float		t_angle;
 
 	max_pos = (t_dvector2){begin.x - sin((angle - 180) * TO_RADIAN) * object.dist,
-			begin.y + cos((angle - 180) * TO_RADIAN) * object.dist};
+		begin.y + cos((angle - 180) * TO_RADIAN) * object.dist};
 	t_angle = fabs(tan(angle * TO_RADIAN));
 	map_pos = (t_vector2){(int)begin.x, (int)begin.y + 1};
 	comp.x = begin.x + fabs(begin.y - map_pos.y) * t_angle * -1;
@@ -162,7 +161,7 @@ static t_ray	_get_object_nw(t_dvector2 begin,
 	float		t_angle;
 
 	max_pos = (t_dvector2){begin.x - sin((360 - angle) * TO_RADIAN) * object.dist,
-			begin.y - cos((360 - angle) * TO_RADIAN) * object.dist};
+		begin.y - cos((360 - angle) * TO_RADIAN) * object.dist};
 	t_angle = fabs(tan(angle * TO_RADIAN));
 	map_pos = (t_vector2){(int)begin.x, (int)begin.y};
 	comp.x = begin.x + fabs(begin.y - map_pos.y) * t_angle * -1;

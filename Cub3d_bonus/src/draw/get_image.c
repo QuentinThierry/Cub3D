@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:13:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 15:31:43 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 17:42:41 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * @param sprite 
  * @param img 
  */
-static void	update_anim(long int time, t_sprite *sprite, t_image *img)
+void	update_anim(long int time, t_sprite *sprite, t_image *img)
 {
 	long	delta;
 	int		n_time;

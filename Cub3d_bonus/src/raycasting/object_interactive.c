@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 15:56:48 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 17:49:42 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,15 +93,30 @@ void	take_object_click(t_game *game, t_player *player, t_map **map)
 	map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_image] = map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_after_image];
 }
 
-#define SIZE_OBJECT_HAND 3
+void	update_anim(long int time, t_sprite *sprite, t_image *img);
 
 void	draw_hand_item(t_game *game, t_player *player)
 {
 	t_image		*image;
+	t_sprite	*sprite;
 	t_vector2	size;
 	int			begin;
 
-	image = &game->tab_images[player->item.sprite[e_object_interactive_hand_image].index];
+	sprite = &player->item.sprite[e_object_interactive_hand_image];
+	image = &game->tab_images[sprite->index];
+	if (sprite->frame != -1)
+	{
+		if (sprite->time == 0)
+			sprite->time = game->time;
+		if (sprite->frame < image->nb_total_frame
+			&& game->time - sprite->time >= image->time_frame)
+			update_anim(game->time, sprite, image);
+		else if (sprite->frame == image->nb_total_frame
+			&& game->time - sprite->time >= image->time_animation)
+			update_anim(game->time, sprite, image);
+		if (sprite->frame != image->nb_total_frame)
+			image = &(game->tab_images[sprite->index + sprite->frame]);
+	}
 	size = image->size;
 	if ((WIN_Y - image->size.y) < 0)
 		size.y = WIN_Y;

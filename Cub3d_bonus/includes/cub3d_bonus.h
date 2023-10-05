@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/05 14:44:31 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 17:42:33 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@
 # define DIST_TO_WALL 0.0999
 
 # define BACKGROUND_MUSIC "./assets/sounds/test1.mp3"
-
 
 // KEYBINDS
 # define DFL_KEY_LEFT_MOVE 'a'
@@ -351,8 +350,8 @@ typedef struct s_texture
 {
 	char				*filename;				//file
 	char				**filename_d;			//dir
-	t_animation			*animation;				//dir
 	int					nb_file;				//dir
+	t_animation			*animation;				//dir
 	int					nb_animation;			//dir
 	int					total;					//all
 	enum e_orientation	orient;					//all

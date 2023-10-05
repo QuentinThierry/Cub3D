@@ -42,6 +42,7 @@ FIX :
 <!-- - file structure for bonus and mandatory -->
 - white space at the end of a texture printf error because file not found
 - Makefile with file headers
+- does animation continue when object on the hand ???
 
 Minimap : 
 <!-- - if screen is too small, do not draw minimap -->

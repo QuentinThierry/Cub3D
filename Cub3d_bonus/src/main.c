@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 14:43:32 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/05 17:24:43 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int main(int argc, char **argv)
 			print_error(NULL, 0);
 		return (ft_close(&game), 1);
 	}
+	printf_texture(&game);
 	free_filename(&game);
 	free_loading_screen(&game);
 	exit_door_no_receptacle(game.exit, game.total_receptacle, game.tab_images);

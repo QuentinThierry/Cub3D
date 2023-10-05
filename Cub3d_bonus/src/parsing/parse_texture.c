@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 18:42:15 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 17:33:47 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,22 +313,6 @@ bool	multiple_texture(t_game *game, int *index, char *str,
 		nb_file = 4;
 	while (cpt < nb_file)
 	{
-		i += skip_whitespace(str + i);
-		if (str[i] == '\0')
-		{
-			if (nb_file == 4 && cpt == 2)
-				break ;
-			return (print_error("Empty texture\n", 1), false);
-		}
-		len = find_next_wsp(str + i, 0);
-		if (len >= 0 && (str[i + len] == ' ' || str[i + len] == '\t'
-				|| str[i + len] == '\v' || str[i + len] == '\n' || str[i + len] == '\f'
-				|| str[i + len] == '\r'))
-			str[i + len] = '\0';
-		filename = ft_strdup(str + i);
-		if (filename == NULL)
-			return (print_error("malloc failed\n", 1), false);
-		i += len + 1;
 		if (*index >= game->nb_file)
 		{
 			tmp = ft_realloc(game->filename,
@@ -350,13 +334,33 @@ bool	multiple_texture(t_game *game, int *index, char *str,
 		}
 		else
 			game->filename[*index].orient = e_object_interactive + cpt;
-		game->filename[*index].nb_file = 1;
 		game->filename[*index].symbol = *(str - 1);
+		i += skip_whitespace(str + i);
+		if (str[i] == '\0')
+		{
+			if (nb_file == 4 && cpt == 2)
+				break ;
+			return (print_error("Empty texture\n", 1), false);
+		}
+		len = find_next_wsp(str + i, 0);
+		if (len >= 0 && (str[i + len] == ' ' || str[i + len] == '\t'
+				|| str[i + len] == '\v' || str[i + len] == '\n' || str[i + len] == '\f'
+				|| str[i + len] == '\r'))
+			str[i + len] = '\0';
+		filename = ft_strdup(str + i);
+		if (filename == NULL)
+			return (print_error("malloc failed\n", 1), false);
+		i += len + 1;
 		game->filename[*index].filename = filename;
+		// game->filename[*index].nb_file = 1; //??
 		dir = opendir(filename);
 		if (dir != NULL)
-			return (ft_read_dir(dir, &game->filename[*index]));
-		game->filename[*index].total++;
+		{
+			if (!ft_read_dir(dir, &game->filename[*index]))
+				return (false);
+		}
+		else
+			game->filename[*index].total++;
 		(*index)++;
 		cpt++;
 	}

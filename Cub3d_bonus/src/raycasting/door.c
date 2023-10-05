@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 15:50:19 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 17:23:00 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -327,7 +327,6 @@ void	change_adjacent_wall(t_map **map, t_vector2 map_pos, bool is_add_flag)
 {
 	bool	east_west;
 
-	printf("change wall\n");
 	east_west = (map[map_pos.y][map_pos.x + 1].type == WALL
 			&& map[map_pos.y][map_pos.x - 1].type == WALL);
 	if (is_add_flag)
@@ -465,7 +464,7 @@ static void	_step_door_open(t_door *door, double time, t_map *map_cell, t_map **
 void	update_doors(t_map **doors, int nb_doors, double time, t_map **map)
 {
 	int	i;
-q
+
 	i = 0;
 	while (i < nb_doors)
 	{

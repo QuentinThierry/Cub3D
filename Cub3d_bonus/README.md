@@ -61,6 +61,7 @@ Door :
 <!-- - time for door usefull ?? for animation or door open when do I need to update it ??? -->
 <!-- - fix door against the wall parsing -->
 <!-- - impossible to have to door next to each other -->
+- when open door with 3 walls next to it the open door don't go on the right wall
 
 Objet interactif :
 <!-- - take objet on walk -->

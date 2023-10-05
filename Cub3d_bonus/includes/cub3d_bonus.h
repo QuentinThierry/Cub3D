@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/05 16:19:50 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/05 20:57:21 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,7 +322,7 @@ typedef struct s_door
 {
 	float		door_percent;
 	int			is_opening_door;
-	long int	time;
+	// long int	time;
 	t_vector2	map_pos;
 	char		symbol_unlock_door;
 	int			nb_receptacle_completed;
@@ -433,6 +433,7 @@ typedef struct s_menu
 	int				*v_rgb_blur_buffer;
 	t_pause_menu	pause_menu;
 	t_option_menu	option_menu;
+	long			time_start_menu;
 }	t_menu;
 
 enum e_status
@@ -490,6 +491,7 @@ typedef struct s_game
 	t_map			*exit;
 	int				total_receptacle;
 	t_end			*end;
+	struct timespec	*last_time;
 }	t_game;
 
 // ------ Utils------
@@ -636,7 +638,8 @@ int			menu_loop_hook(t_game *game);
 const char	*get_key_str(t_keybind key);
 void		menu_mouse_down_hook(int button, int x, int y, t_game *game);
 void		menu_mouse_up_hook(int mouse_button, int x, int y, t_game *game);
-void		menu_key_hook(t_keybind key, t_game *game);
+void		menu_key_press(t_keybind key, t_game *game);
+void		menu_key_release(t_keybind key, t_game *game);
 void		set_pause_menu_mode(t_game *game);
 bool		init_pause_menu(t_game *game);
 void		draw_text_in_button(t_game *game, t_image *image, t_button *button);

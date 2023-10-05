@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:16:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/04 17:34:48 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/05 20:56:01 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	choose_key_hook(t_keybind key, t_game *game)
 		= get_key_str(key);
 	game->menu->state = OPTION_MENU;
 	game->keybinds[game->menu->option_menu.pressed_button] = key;
-	mlx_hook(game->win, 2, (1L << 0), (void *)menu_key_hook, game);
+	mlx_hook(game->win, 2, (1L << 0), (void *)menu_key_press, game);
 }
 
 void	menu_mouse_down_hook(int mouse_button, int x, int y, t_game *game)
@@ -114,12 +114,52 @@ void	menu_mouse_up_hook(int mouse_button, int x, int y, t_game *game)
 		game->menu->option_menu.pressed_slider_ref = NULL;
 }
 
-void	menu_key_hook(t_keybind key, t_game *game)
+void	menu_key_press(t_keybind key, t_game *game)
 {
 	if (key == game->keybinds[e_key_pause])
 		resume_menu(game, game->menu);
-	if (key == XK_Escape)
+	else if (key == game->keybinds[e_key_left_look])
+		game->player->view -= 1;
+	else if (key == game->keybinds[e_key_right_look])
+		game->player->view += 1;
+	else if (key == game->keybinds[e_key_right_move])
+		game->player->dir.x += 1;
+	else if (key == game->keybinds[e_key_left_move])
+		game->player->dir.x -= 1;
+	else if (key == game->keybinds[e_key_forward_move])
+		game->player->dir.y -= 1;
+	else if (key == game->keybinds[e_key_backward_move])
+		game->player->dir.y += 1;
+	else if (key == game->keybinds[e_key_sprint])
+		game->player->speed += SPRINT_BOOST;
+	else if (key == game->keybinds[e_key_minimap_dezoom])
+		game->minimap->zoom_dir -= 1;
+	else if (key == game->keybinds[e_key_minimap_zoom])
+		game->minimap->zoom_dir += 1;
+	else if (key == XK_Escape)
 		ft_close(game);
+}
+
+void	menu_key_release(t_keybind key, t_game *game)
+{
+	if (key == game->keybinds[e_key_left_look])
+		game->player->view += 1;
+	else if (key == game->keybinds[e_key_right_look])
+		game->player->view -= 1;
+	else if (key == game->keybinds[e_key_right_move])
+		game->player->dir.x -= 1;
+	else if (key == game->keybinds[e_key_left_move])
+		game->player->dir.x += 1;
+	else if (key == game->keybinds[e_key_forward_move])
+		game->player->dir.y += 1;
+	else if (key == game->keybinds[e_key_backward_move])
+		game->player->dir.y -= 1;
+	else if (key == game->keybinds[e_key_sprint])
+		game->player->speed -= SPRINT_BOOST;
+	else if (key == game->keybinds[e_key_minimap_dezoom])
+		game->minimap->zoom_dir += 1;
+	else if (key == game->keybinds[e_key_minimap_zoom])
+		game->minimap->zoom_dir -= 1;
 }
 
 int	menu_loop_hook(t_game *game)

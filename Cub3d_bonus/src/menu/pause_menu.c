@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/04 17:26:52 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/05 20:57:10 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,37 @@ void	draw_button(t_button *button, t_image *image)
 	}
 }
 
+void	adjust_animation_time(t_game *game)
+{
+	int				i;
+	int				j;
+	int				k;
+	long			time_diff;
+	struct timespec	time_now;
+
+	clock_gettime(CLOCK_REALTIME, &time_now);
+	time_diff = time_to_long(&time_now) - game->menu->time_start_menu;
+	i = 0;
+	while (i < game->map_size.y)
+	{
+		j = 0;
+		while (j < game->map_size.x)
+		{
+			k = 0;
+			while (k < 6)
+			{
+				if (game->map[i][j].type != 0 && game->map[i][j].sprite[k].index != -1 && 
+					game->map[i][j].sprite[k].frame != -1)
+					game->map[i][j].sprite[k].time += time_diff;
+				k++;
+			}
+			j++;
+		}
+		i++;
+	}
+	*game->last_time = time_now;
+}
+
 void	resume_menu(t_game *game, t_menu *menu)
 {
 	if (menu->state == PAUSE_MENU)
@@ -146,6 +177,7 @@ void	resume_menu(t_game *game, t_menu *menu)
 		mlx_hook(game->win, 8, (1L << 5), mouse_leave, game);
 		mlx_mouse_hook(game->win, mouse_click, game);
 		mlx_loop_hook(game->mlx_ptr, on_update, game);
+		adjust_animation_time(game);
 		init_mouse(game);
 	}
 	else if (menu->state == OPTION_MENU)
@@ -179,8 +211,13 @@ void	draw_pause_menu(t_game *game, t_pause_menu *pause_menu)
 
 void	set_pause_menu_mode(t_game *game)
 {
-	mlx_hook(game->win, 2, (1L << 0), (void *)menu_key_hook, game);
-	mlx_hook(game->win, 3, (1L << 1), NULL, NULL);
+	struct timespec	time_start;
+
+	clock_gettime(CLOCK_REALTIME, &time_start);
+	game->menu->time_start_menu = time_to_long(&time_start);
+	
+	mlx_hook(game->win, 2, (1L << 0), (void *)menu_key_press, game);
+	mlx_hook(game->win, 3, (1L << 1), (void *)menu_key_release, game);
 	mlx_hook(game->win, 4, (1L << 2), (void *)menu_mouse_down_hook, game);
 	mlx_hook(game->win, 5, (1L << 3), (void *)menu_mouse_up_hook, game);
 	mlx_hook(game->win, 8, (1L << 5), NULL, NULL);

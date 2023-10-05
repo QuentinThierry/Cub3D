@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   end_game.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 18:10:31 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/05 15:34:47 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 20:41:05 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	open_exit(t_game *game, t_door *door, t_end *end)
 	if (door->is_opening_door == 0)
 	{
 		door->is_opening_door = 1;
-		door->time = game->time;
+		// door->time = game->time;
 	}
 	end_step_door_open(game->delta_time, game->exit, game->map, end);
 	if (door->door_percent == 90)

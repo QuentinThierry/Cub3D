@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   pause_menu.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/02 13:40:59 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/04 17:26:52 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
 // with background
-void	draw_centered_text_at_y(t_game *game, t_image *image, int y, const char *text)
+void	draw_centered_text_at_y(t_game *game,
+	t_image *image, int y, const char *text)
 {
 	int			i;
 	t_vector2	pos;
@@ -22,14 +23,9 @@ void	draw_centered_text_at_y(t_game *game, t_image *image, int y, const char *te
 		return ;
 	pos.x = WIN_X / 2. - (ft_strlen(text) * game->size_letter.x) / 2;
 	draw_alpha_rectangle(image,
-	(t_vector2){
-		pos.x - game->size_letter.x / 2,
-		y
-	},
-	(t_vector2){
-		(ft_strlen(text) + 1) * game->size_letter.x,
-		game->size_letter.y
-	});
+		(t_vector2){pos.x - game->size_letter.x / 2, y},
+		(t_vector2){(ft_strlen(text) + 1) * game->size_letter.x,
+		game->size_letter.y});
 	if (ft_strlen(text) * game->size_letter.x > image->size.x)
 		pos.x = 0;
 	pos.y = y;
@@ -43,29 +39,25 @@ void	draw_centered_text_at_y(t_game *game, t_image *image, int y, const char *te
 			i++;
 			continue ;
 		}
-		draw_image_with_transparence(image->addr + (pos.y * image->size_line + (pos.x
-			+ (int)(game->size_letter.x * i)) * 4), game->font,
-		(t_vector2){(game->size_letter.x * (text[i] - '!')), 0},
-		(t_vector2){game->size_letter.x, game->size_letter.y});
+		draw_image_with_transparence(image->addr + (pos.y * image->size_line
+				+ (pos.x + (int)(game->size_letter.x * i)) * 4), game->font,
+			(t_vector2){(game->size_letter.x * (text[i] - '!')), 0},
+			(t_vector2){game->size_letter.x, game->size_letter.y});
 		i++;
 	}
 }
 
-void	draw_text_at_with_backgroud(t_game *game, t_image *image, t_vector2 pos, const char *text)
+void	draw_text_at_with_backgroud(t_game *game,
+	t_image *image, t_vector2 pos, const char *text)
 {
-	int			i;
+	int	i;
 
 	if (game->size_letter.y + pos.y > image->size.y)
 		return ;
 	draw_alpha_rectangle(image,
-	(t_vector2){
-		pos.x - game->size_letter.x / 2,
-		pos.y
-	},
-	(t_vector2){
-		(ft_strlen(text) + 1) * game->size_letter.x,
-		game->size_letter.y
-	});
+		(t_vector2){pos.x - game->size_letter.x / 2, pos.y},
+		(t_vector2){(ft_strlen(text) + 1) * game->size_letter.x,
+		game->size_letter.y});
 	i = 0;
 	while (text[i])
 	{
@@ -77,13 +69,13 @@ void	draw_text_at_with_backgroud(t_game *game, t_image *image, t_vector2 pos, co
 			continue ;
 		}
 		else if (text[i] < 32 || text[i] > 126)
-			draw_image_with_transparence(image->addr + (pos.y * image->size_line + (pos.x
-				+ (int)(game->size_letter.x * i)) * 4), game->font,
+			draw_image_with_transparence(image->addr + (pos.y * image->size_line
+					+ (pos.x + (int)(game->size_letter.x * i)) * 4), game->font,
 				(t_vector2){(game->size_letter.x * ('?' - '!')), 0},
 				(t_vector2){game->size_letter.x, game->size_letter.y});
 		else
-			draw_image_with_transparence(image->addr + (pos.y * image->size_line + (pos.x
-				+ (int)(game->size_letter.x * i)) * 4), game->font,
+			draw_image_with_transparence(image->addr + (pos.y * image->size_line
+					+ (pos.x + (int)(game->size_letter.x * i)) * 4), game->font,
 				(t_vector2){(game->size_letter.x * (text[i] - '!')), 0},
 				(t_vector2){game->size_letter.x, game->size_letter.y});
 		i++;
@@ -96,11 +88,11 @@ void	draw_text_in_button(t_game *game, t_image *image, t_button *button)
 	t_vector2	start_pos;
 
 	i = 0;
-	start_pos.y = button->pos.y + button->size.y / 2. - game->size_letter.y / 2.;
+	start_pos.y = button->pos.y + button->size.y / 2. - game->size_letter.y / 2;
 	if (start_pos.y + game->size_letter.y > button->pos.y + button->size.y)
 		return ;
-	start_pos.x = button->pos.x + button->size.x / 2. -
-					(ft_strlen(button->text) * game->size_letter.x) / 2;
+	start_pos.x = button->pos.x + button->size.x / 2.
+		- (ft_strlen(button->text) * game->size_letter.x) / 2;
 	if (start_pos.x < button->pos.x)
 		start_pos.x = button->pos.x;
 	while (button->text[i])
@@ -112,8 +104,8 @@ void	draw_text_in_button(t_game *game, t_image *image, t_button *button)
 		}
 		if ((i + 1) * game->size_letter.x + start_pos.x > button->pos.x + button->size.x)
 			return ;
-		draw_image_with_transparence(image->addr + (start_pos.y * image->size_line + (start_pos.x
-			+ (int)(game->size_letter.x * i)) * 4), game->font,
+		draw_image_with_transparence(image->addr + (start_pos.y * image->size_line
+				+ (start_pos.x + (int)(game->size_letter.x * i)) * 4), game->font,
 			(t_vector2){(game->size_letter.x * (button->text[i] - '!')), 0},
 			(t_vector2){game->size_letter.x, game->size_letter.y});
 		i++;
@@ -163,9 +155,9 @@ void	resume_menu(t_game *game, t_menu *menu)
 void	check_mouse_is_in_button(t_button *button, int x, int y)
 {
 	button->is_hovered = (x > button->pos.x
-		&& x < button->pos.x + button->size.x
-		&& y > button->pos.y
-		&& y < button->pos.y + button->size.y);
+			&& x < button->pos.x + button->size.x
+			&& y > button->pos.y
+			&& y < button->pos.y + button->size.y);
 }
 
 void	draw_pause_menu(t_game *game, t_pause_menu *pause_menu)
@@ -192,9 +184,8 @@ void	set_pause_menu_mode(t_game *game)
 	mlx_hook(game->win, 4, (1L << 2), (void *)menu_mouse_down_hook, game);
 	mlx_hook(game->win, 5, (1L << 3), (void *)menu_mouse_up_hook, game);
 	mlx_hook(game->win, 8, (1L << 5), NULL, NULL);
-	mlx_hook(game->win, 6, (1L << 6) , NULL, NULL);
+	mlx_hook(game->win, 6, (1L << 6), NULL, NULL);
 	mlx_mouse_show(game->mlx_ptr, game->win);
-	
 	mlx_loop_hook(game->mlx_ptr, menu_loop_hook, game);
 	blur_image(game->menu->background_image,
 		game->image, game->menu->h_rgb_blur_buffer,

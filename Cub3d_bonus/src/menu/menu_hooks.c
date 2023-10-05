@@ -6,13 +6,13 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:16:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/03 18:37:43 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/04 17:34:48 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-static const double	max_fps_frequence = 1. / MAX_MENU_FPS;
+static const double	g_max_fps_frequence = 1. / MAX_MENU_FPS;
 
 void	choose_key_hook(t_keybind key, t_game *game)
 {
@@ -58,14 +58,14 @@ void	menu_mouse_down_hook(int mouse_button, int x, int y, t_game *game)
 	if (game->menu->state == PAUSE_MENU)
 	{
 		if (x >= pause_menu->option_button.pos.x && x <= pause_menu->option_button.pos.x + pause_menu->option_button.size.x
-				&& y >= pause_menu->option_button.pos.y && y <= pause_menu->option_button.pos.y + pause_menu->option_button.size.y)
+			&& y >= pause_menu->option_button.pos.y && y <= pause_menu->option_button.pos.y + pause_menu->option_button.size.y)
 			game->menu->state = OPTION_MENU;
 		else if (x >= pause_menu->play_button.pos.x && x <= pause_menu->play_button.pos.x + pause_menu->play_button.size.x
-				&& y >= pause_menu->play_button.pos.y && y <= pause_menu->play_button.pos.y + pause_menu->play_button.size.y)
+			&& y >= pause_menu->play_button.pos.y && y <= pause_menu->play_button.pos.y + pause_menu->play_button.size.y)
 			resume_menu(game, game->menu);
 		else if (x >= pause_menu->quit_button.pos.x && x <= pause_menu->quit_button.pos.x + pause_menu->quit_button.size.x
-				&& y >= pause_menu->quit_button.pos.y && y <= pause_menu->quit_button.pos.y + pause_menu->quit_button.size.y)
-		ft_close(game);
+			&& y >= pause_menu->quit_button.pos.y && y <= pause_menu->quit_button.pos.y + pause_menu->quit_button.size.y)
+			ft_close(game);
 	}
 	else if (game->menu->state == OPTION_MENU)
 	{
@@ -90,7 +90,7 @@ void	menu_mouse_down_hook(int mouse_button, int x, int y, t_game *game)
 		if (x >= exit_button->pos.x && x <= exit_button->pos.x
 			+ exit_button->size.x && y >= exit_button->pos.y
 			&& y < exit_button->pos.y + exit_button->size.y)
-				resume_menu(game, game->menu);
+			resume_menu(game, game->menu);
 		if (x >= opt_menu->slider_fov.pos.x && x <= opt_menu->slider_fov.pos.x
 			+ opt_menu->slider_fov.size.x + opt_menu->slider_fov.vert_image->size.x / 2
 			&& y >= opt_menu->slider_fov.pos.y
@@ -135,7 +135,7 @@ int	menu_loop_hook(t_game *game)
 	UpdateMusicStream(game->music_array[0].music);
 	if (menu->state != CHOOSING_KEY_MENU)
 		ft_memcpy(game->menu->image->addr,
-				game->menu->background_image->addr, WIN_X * WIN_Y * 4);
+			game->menu->background_image->addr, WIN_X * WIN_Y * 4);
 	if (menu->state == PAUSE_MENU)
 		draw_pause_menu(game, &menu->pause_menu);
 	if (menu->state == OPTION_MENU)
@@ -145,11 +145,11 @@ int	menu_loop_hook(t_game *game)
 	clock_gettime(CLOCK_REALTIME, &cur_time);
 	delay = (cur_time.tv_sec - last_time.tv_sec
 			+ (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
-	while (delay <= max_fps_frequence - 0.000001)
+	while (delay <= g_max_fps_frequence - 0.000001)
 	{
 		clock_gettime(CLOCK_REALTIME, &cur_time);
 		delay = (cur_time.tv_sec - last_time.tv_sec
-			+ (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
+				+ (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
 	}
 	last_time = cur_time;
 	return (0);

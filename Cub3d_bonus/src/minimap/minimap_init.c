@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:34:06 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/04 14:23:10 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/04 16:00:52 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ static const t_vector2	g_minimap_size =
 
 void	generate_minimap_bounds(t_game *game)
 {
-	int		x;
-	int		y;
-	int		p;
+	int			x;
+	int			y;
+	int			p;
 	t_minimap	*minimap;
 
 	minimap = game->minimap;
@@ -77,7 +77,6 @@ bool	generate_background_image(t_game *game)
 	return (true);
 }
 
-
 bool	init_minimap(t_game *game)
 {
 	t_minimap	*minimap;
@@ -99,9 +98,9 @@ bool	init_minimap(t_game *game)
 	if (!generate_background_image(game))
 		return (false);
 	minimap->player_img = btmlx_xpm_file_to_image(game->mlx_ptr,
-		"assets/minimap_player.xpm", (t_vector2){
-		g_minimap_size.x / MINIMAP_PLAYER_SIZE,
-		g_minimap_size.y / MINIMAP_PLAYER_SIZE});
+			"assets/minimap_player.xpm", (t_vector2){
+			g_minimap_size.x / MINIMAP_PLAYER_SIZE,
+			g_minimap_size.y / MINIMAP_PLAYER_SIZE});
 	if (!minimap->player_img)
 		return (false);
 	minimap->zoom = ZOOM_OFFSET;

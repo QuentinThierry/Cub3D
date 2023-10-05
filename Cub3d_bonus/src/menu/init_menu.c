@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 14:53:39 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/04 14:54:39 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/04 17:44:26 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ static const t_vector2 g_hor_bar_size =
 	(WIN_Y / 100)
 };
 
-
 bool	init_keybinds(t_game *game)
 {
 	game->keybinds = ft_calloc(NB_OPTIONS_BUTTONS, sizeof(int));
@@ -113,42 +112,41 @@ bool	init_keybinds(t_game *game)
 	return (true);
 }
 
-bool	init_pause_menu(t_game *game)
+bool	allocate_menu(t_game *game,
+			t_image **button_image, t_image **button_hovered_image)
 {
-	int				i;
-	t_image			*button_image;
-	t_image			*button_hovered_image;
-	t_option_menu	*opt_menu;
-	t_pause_menu	*pause_menu;
-
 	if (!init_keybinds(game))
 		return (false);
 	game->menu = ft_calloc(1, sizeof(t_menu));
 	if (!game->menu)
 		return (false);
 	game->menu->h_rgb_blur_buffer = ft_calloc(WIN_X * WIN_Y * 3, sizeof(int));
-	if (!game->menu->h_rgb_blur_buffer)
-		return (false);
 	game->menu->v_rgb_blur_buffer = ft_calloc(WIN_X * WIN_Y * 3, sizeof(int));
-	if (!game->menu->v_rgb_blur_buffer)
+	if (!game->menu->h_rgb_blur_buffer || !game->menu->v_rgb_blur_buffer)
 		return (false);
+	*button_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button.xpm", g_button_size);
+	*button_hovered_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button_hovered.xpm", g_button_size);
 	game->menu->image = btmlx_new_image(game->mlx_ptr, (t_vector2){WIN_X, WIN_Y});
-	if (!game->menu->image)
-		return (false);
 	game->menu->background_image = btmlx_new_image(game->mlx_ptr, (t_vector2){WIN_X, WIN_Y});
-	if (!game->menu->background_image)
-		return (false);
-	button_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button.xpm", g_button_size);
-	if (!button_image)
-		return (false);
-	button_hovered_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button_hovered.xpm", g_button_size);
-	if (!button_hovered_image)
-		return (false);
-	opt_menu = &game->menu->option_menu;
-	pause_menu = &game->menu->pause_menu;
-	opt_menu->exit_opt_button.base_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button_exit_option.xpm", g_exit_button_size);
-	if (!opt_menu->exit_opt_button.base_image)
-		return (false);
+	game->menu->option_menu.exit_opt_button.base_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button_exit_option.xpm", g_exit_button_size);
+	game->menu->option_menu.slider_fov.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_hor.xpm", g_slider_hor_size);
+	game->menu->option_menu.slider_fov.vert_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_vert.xpm", g_slider_vert_size);
+	game->menu->option_menu.slider_sound.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_hor.xpm", g_slider_hor_size);
+	game->menu->option_menu.slider_sound.vert_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_vert.xpm", g_slider_vert_size);
+	return (*button_image && *button_hovered_image && game->menu->image
+		&& game->menu->background_image
+		&& game->menu->option_menu.exit_opt_button.base_image
+		&& game->menu->option_menu.slider_fov.hor_image
+		&& game->menu->option_menu.slider_fov.vert_image
+		&& game->menu->option_menu.slider_sound.hor_image
+		&& game->menu->option_menu.slider_sound.vert_image);
+}
+
+static void	fill_key_button(t_game *game, t_option_menu *opt_menu,
+		t_image *button_image, t_image *button_hovered_image)
+{
+	int	i;
+
 	i = 0;
 	while (i < NB_OPTIONS_BUTTONS)
 	{
@@ -159,81 +157,84 @@ bool	init_pause_menu(t_game *game)
 		opt_menu->buttons[i].linked_text = g_description_opt_button[i];
 		if (i < NB_OPTIONS_BUTTONS / 2 + (NB_OPTIONS_BUTTONS & 1))
 		{
-			opt_menu->buttons[i].pos =
-				(t_vector2){g_button_pos_left_offset_x, i * g_button_size.y + g_inter_button_y * (i + 1)};
+			opt_menu->buttons[i].pos
+				= (t_vector2){g_button_pos_left_offset_x,
+				i * g_button_size.y + g_inter_button_y * (i + 1)};
 		}
 		else
 		{
-			opt_menu->buttons[i].pos =
-				(t_vector2){WIN_X / 2 + g_button_pos_left_offset_x, (i - NB_OPTIONS_BUTTONS / 2 - (NB_OPTIONS_BUTTONS & 1))
+			opt_menu->buttons[i].pos
+				= (t_vector2){WIN_X / 2 + g_button_pos_left_offset_x,
+				(i - NB_OPTIONS_BUTTONS / 2 - (NB_OPTIONS_BUTTONS & 1))
 				* g_button_size.y + g_inter_button_y
 				* (i - NB_OPTIONS_BUTTONS / 2 + ((NB_OPTIONS_BUTTONS & 1) == 0))};
 		}
 		i++;
 	}
+}
 
-
+static void	fill_option_button(t_game *game, t_option_menu *opt_menu,
+		t_image *button_image, t_image *button_hovered_image)
+{
+	fill_key_button(game, opt_menu, button_image, button_hovered_image);
 	opt_menu->exit_opt_button.hovered_image = button_hovered_image;
 	opt_menu->exit_opt_button.pos = g_exit_button_pos;
 	opt_menu->exit_opt_button.size = g_exit_button_size;
 	opt_menu->exit_opt_button.text = "";
-
-
-
-	opt_menu->slider_fov.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_hor.xpm", g_slider_hor_size);
-	if (!opt_menu->slider_fov.hor_image)
-		return (false);
-	opt_menu->slider_fov.vert_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_vert.xpm", g_slider_vert_size);
-	if (!opt_menu->slider_fov.vert_image)
-		return (false);
 	opt_menu->slider_fov.size = (t_vector2){g_slider_hor_size.x, g_slider_vert_size.y};
 	opt_menu->slider_fov.pos = g_slider_fov_pos;
 	game->menu->option_menu.slider_fov.percent = (float)
 		(DFL_FOV - MIN_FOV) / (MAX_FOV - MIN_FOV);
 	game->menu->option_menu.slider_fov.min_max_value = (t_vector2){MIN_FOV, MAX_FOV};
 	game->menu->option_menu.slider_fov.linked_text = g_description_slider_button[0];
-
-	opt_menu->slider_sound.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_hor.xpm", g_slider_hor_size);
-	if (!opt_menu->slider_sound.hor_image)
-		return (false);
-	opt_menu->slider_sound.vert_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_vert.xpm", g_slider_vert_size);
-	if (!opt_menu->slider_sound.vert_image)
-		return (false);
 	opt_menu->slider_sound.size = (t_vector2){g_slider_hor_size.x, g_slider_vert_size.y};
 	opt_menu->slider_sound.pos = g_slider_sound_pos;
 	game->menu->option_menu.slider_sound.percent = DFL_SOUND;
 	game->menu->option_menu.slider_sound.min_max_value = (t_vector2){0, 100};
 	game->menu->option_menu.slider_sound.linked_text = g_description_slider_button[1];
-
-
 	opt_menu->vert_bar_pos = g_vert_bar_pos;
 	opt_menu->vert_bar_size = g_vert_bar_size;
 	opt_menu->hor_bar_pos = g_hor_bar_pos;
 	opt_menu->hor_bar_size = g_hor_bar_size;
+}
 
-
+static void	fill_pause_menu_button(t_pause_menu *pause_menu,
+		t_image *button_image, t_image *button_hovered_image)
+{
 	pause_menu->play_button.base_image = button_image;
 	pause_menu->play_button.hovered_image = button_hovered_image;
 	pause_menu->play_button.size = pause_menu->play_button.base_image->size;
-	pause_menu->play_button.pos =
-		(t_vector2){WIN_X / 2 - pause_menu->play_button.size.x / 2,
+	pause_menu->play_button.pos
+		= (t_vector2){WIN_X / 2 - pause_menu->play_button.size.x / 2,
 		WIN_Y / 3 - pause_menu->play_button.size.y / 2};
 	pause_menu->play_button.text = "RESUME";
-
 	pause_menu->option_button.base_image = button_image;
 	pause_menu->option_button.hovered_image = button_hovered_image;
 	pause_menu->option_button.size = pause_menu->option_button.base_image->size;
-	pause_menu->option_button.pos =
-		(t_vector2){WIN_X / 2 - pause_menu->option_button.size.x / 2,
+	pause_menu->option_button.pos
+		= (t_vector2){WIN_X / 2 - pause_menu->option_button.size.x / 2,
 		WIN_Y / 2 - pause_menu->option_button.size.y / 2};
 	pause_menu->option_button.text = "OPTIONS";
-
 	pause_menu->quit_button.base_image = button_image;
 	pause_menu->quit_button.hovered_image = button_hovered_image;
 	pause_menu->quit_button.size = pause_menu->quit_button.base_image->size;
-	pause_menu->quit_button.pos =
-		(t_vector2){WIN_X / 2 - pause_menu->quit_button.size.x / 2,
+	pause_menu->quit_button.pos
+		= (t_vector2){WIN_X / 2 - pause_menu->quit_button.size.x / 2,
 		WIN_Y / 3 * 2 - pause_menu->quit_button.size.y / 2};
 	pause_menu->quit_button.text = "QUIT GAME";
+}
+
+bool	init_pause_menu(t_game *game)
+{
+	t_image			*button_image;
+	t_image			*button_hovered_image;
+
+	if (!allocate_menu(game, &button_image, &button_hovered_image))
+	{
+		return (free_image(game->mlx_ptr, button_image),
+			free_image(game->mlx_ptr, button_hovered_image), false);
+	}
+	fill_option_button(game, &game->menu->option_menu, button_image, button_hovered_image);
+	fill_pause_menu_button(&game->menu->pause_menu, button_image, button_hovered_image);
 	return (true);
 }

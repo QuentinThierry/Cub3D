@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/05 14:21:58 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 16:18:43 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@
 # define MINIMAP_PAD 0.05
 # define MINIMAP_WALL_COLOR 0x505050
 # define MINIMAP_BACKGROUND_COLOR 0x808080
+# define MINIMAP_DOOR_COLOR 0x656565
 // Represents the minimap size equals to a percentage of the total window
 # define MINIMAP_SIZE 0.25
 

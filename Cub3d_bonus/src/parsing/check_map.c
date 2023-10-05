@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 21:27:20 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/04 17:28:48 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 14:56:14 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ static bool	_check_door(t_map **map, int x, int y, t_vector2 map_size)
 	bool	door;
 
 	door = false;
-	if (((map[y - 1][x].type & WALL) == WALL && (map[y + 1][x].type & WALL) == WALL))
+	if ((is_only_wall(map[y - 1][x].type) && is_only_wall(map[y + 1][x].type)))
 	{
 		if (((map[y - 1][x].type & DOOR) == DOOR || (map[y + 1][x].type & DOOR) == DOOR))
 			return (false);
 		door = true;
 	}
-	if (((map[y][x - 1].type & WALL) == WALL && (map[y][x + 1].type & WALL) == WALL))
+	if ((is_only_wall(map[y][x - 1].type) && is_only_wall(map[y][x + 1].type)))
 	{
 		if (((map[y][x - 1].type & DOOR) == DOOR || (map[y][x + 1].type & DOOR) == DOOR))
 			return (false);
@@ -86,9 +86,7 @@ bool	check_map(t_game *game)
 		x = 0;
 		while (x < game->map_size.x)
 		{
-			if (((map[y][x].type & WALL) != WALL || (map[y][x].type & OBJECT) == OBJECT
-				|| (map[y][x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE
-				|| (map[y][x].type & RECEPTACLE) == RECEPTACLE) && map[y][x].symbol != ' ')
+			if (!is_only_wall(map[y][x].type) && map[y][x].symbol != ' ')
 			{
 				if (!_check_sides(map, x, y, game->map_size))
 					return (print_error("Map not closed\n", 1), false);

@@ -6,13 +6,13 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 16:34:46 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 18:41:33 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 19:01:18 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-static int	get_nb_sprite_animation(int nb_animation, t_texture *texture_tab)
+static int	get_nb_sprite_animation(int nb_animation, t_texture *texture)
 {
 	int	i;
 	int	res;
@@ -21,7 +21,7 @@ static int	get_nb_sprite_animation(int nb_animation, t_texture *texture_tab)
 	res = 0;
 	while (i < nb_animation)
 	{
-		res += texture_tab->animation[i].nb_sprite - 1;
+		res += texture->animation[i].nb_sprite - 1;
 		i++;
 	}
 	return (res);
@@ -55,7 +55,7 @@ static t_sprite	random_texture(t_texture *texture_tab, int index,
 		if (random < texture_tab[index].nb_file)
 			return ((t_sprite){size + random, -1, 0});
 		size += texture_tab[index].nb_file + get_nb_sprite_animation(random - texture_tab[index].nb_file, &texture_tab[index]);
-		random = rand() % (texture_tab[index].animation->nb_sprite - 1);
+		random = rand() % (texture_tab[index].animation[random - texture_tab[index].nb_file].nb_sprite - 1);
 		return ((t_sprite){size, random, 0});
 	}
 	return ((t_sprite){size, 0, 0});

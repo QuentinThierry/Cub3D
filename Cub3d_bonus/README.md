@@ -92,6 +92,8 @@ Sound :
 <!-- - same for unlock door ... -->
 <!-- - need check sound if receptacle or no to get the next texture -->
 <!-- - music during the exit door ?? -->
+- No sound on simple doors
+- Sound on a letter that doesnt exist in parsing
 
 Global :
-replace all my_mlx_pixel_put by its simplier version
+- replace all my_mlx_pixel_put by its simplier version

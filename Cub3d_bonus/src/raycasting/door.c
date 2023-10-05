@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 14:46:10 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 15:05:03 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -391,6 +391,14 @@ void	open_door(t_game *game)
 			return ;
 		if ((game->map[(int)ray.hit.y][(int)ray.hit.x].type & EXIT) == EXIT)
 			return (end_of_the_game(game, ray.orient));
+		if ((game->map[(int)ray.hit.y][(int)ray.hit.x].type & MUSIC) == MUSIC)
+			play_music(&game->map[(int)ray.hit.y][(int)ray.hit.x],
+				game->music_array, game->map[(int)ray.hit.y][(int)ray.hit.x].music, IS_PLAYING_MUSIC);
+		if ((game->map[(int)ray.hit.y][(int)ray.hit.x].type & NARRATOR) == NARRATOR)
+		{
+			play_narrator(game, &game->map[(int)ray.hit.y][(int)ray.hit.x], game->music_array);
+			game->map[(int)ray.hit.y][(int)ray.hit.x].type &= ~NARRATOR;
+		}
 		door = game->map[(int)ray.hit.y][(int)ray.hit.x].arg;
 		if (door->is_opening_door == 1)
 		{

@@ -83,7 +83,7 @@ Exit door :
 <!-- - anim the door open with light -->
 <!-- - walk under the door -->
 <!-- - the end screen -->
-- beug door stay open against the wall
+<!-- - beug door stay open against the wall -->
 
 Sound :
 <!-- - play sound when walk on an object with already something in the hand -->

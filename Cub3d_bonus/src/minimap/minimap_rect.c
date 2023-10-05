@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:56:06 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/04 17:07:36 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/05 15:54:08 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,12 @@ void	draw_rectangular_minimap(t_game *game)
 			if (x < 0)
 				x = 0;
 			if ((map[y][x].type & WALL) == WALL)
-				color = MINIMAP_WALL_COLOR;
+			{
+				if ((map[y][x].type & DOOR) == DOOR)
+					color = MINIMAP_DOOR_COLOR;
+				else
+					color = MINIMAP_WALL_COLOR;
+			}
 			else
 				color = MINIMAP_BACKGROUND_COLOR;
 			draw_rectangle(minimap->image,

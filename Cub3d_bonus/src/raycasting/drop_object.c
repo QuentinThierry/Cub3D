@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:00:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/02 14:09:42 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 15:52:16 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ static void	_set_object_on_cell(t_map *map_cell, t_player *player, t_dvector2 po
 		((t_object *)map_cell->arg)->music = ((t_object *)player->item.arg)->music;
 	if ((player->item.type & IS_PLAYING_MUSIC_OBJECT) == IS_PLAYING_MUSIC_OBJECT)
 		update_map_cell_music(map_cell, &player->item, music_tab);
-	// if ((player->item.type & IS_PLAYING_NARRATOR) == IS_PLAYING_NARRATOR)
-	// 	music_tab[1].map_cell = map_cell;
 	map_cell->sprite[e_object_interactive_image] = player->item.sprite[e_object_interactive_image];
 	map_cell->sprite[e_object_interactive_hand_image] = player->item.sprite[e_object_interactive_hand_image];
 	player->has_item = false;
@@ -36,8 +34,8 @@ static void	_unlock_door(t_game *game, t_map *map_cell, t_player *player, t_musi
 	map_cell->type &= ~DOOR_LOCK;
 	map_cell->type |= DOOR_UNLOCK;
 	map_cell->sprite[e_door_image] = map_cell->sprite[e_door_image + 1];
-	((t_door*)map_cell->arg)->is_opening_door = 1;
-	((t_door*)map_cell->arg)->time = game->time;
+	((t_door *)map_cell->arg)->is_opening_door = 1;
+	((t_door *)map_cell->arg)->time = game->time;
 	if ((map_cell->type & MUSIC) == MUSIC)
 	{
 		map_cell->music = get_music(game->file_music, game->nb_music, map_cell->symbol, e_music_receptacle_complete);
@@ -47,8 +45,8 @@ static void	_unlock_door(t_game *game, t_map *map_cell, t_player *player, t_musi
 	if (((map_cell->type & NARRATOR) == NARRATOR)
 		|| (map_cell->type & NARRATOR_RECEPTACLE) == NARRATOR_RECEPTACLE)
 	{
-		map_cell->narrator = get_narrator(game->file_music, game->nb_music
-				, map_cell->symbol, e_narrator_receptacle_complete);
+		map_cell->narrator = get_narrator(game->file_music, game->nb_music,
+				map_cell->symbol, e_narrator_receptacle_complete);
 		play_narrator(game, map_cell, music_tab);
 		map_cell->type &= ~NARRATOR & ~NARRATOR_RECEPTACLE;
 	}
@@ -59,7 +57,7 @@ static void	_complete_receptacle(t_game *game, t_map *map_cell, t_player *player
 {
 	t_door		*exit_door;
 	float		frame;
-	
+
 	if ((map_cell->type & MUSIC) == MUSIC)
 	{
 		map_cell->music = get_music(game->file_music, game->nb_music, map_cell->symbol, e_music_receptacle_complete);
@@ -69,8 +67,8 @@ static void	_complete_receptacle(t_game *game, t_map *map_cell, t_player *player
 	if ((map_cell->type & NARRATOR) == NARRATOR
 		|| (map_cell->type & NARRATOR_RECEPTACLE) == NARRATOR_RECEPTACLE)
 	{
-		map_cell->narrator = get_narrator(game->file_music, game->nb_music
-				, map_cell->symbol, e_narrator_receptacle_complete);
+		map_cell->narrator = get_narrator(game->file_music, game->nb_music,
+				map_cell->symbol, e_narrator_receptacle_complete);
 		play_narrator(game, map_cell, game->music_array);
 		map_cell->type &= ~NARRATOR & ~NARRATOR_RECEPTACLE;
 	}
@@ -81,8 +79,8 @@ static void	_complete_receptacle(t_game *game, t_map *map_cell, t_player *player
 		return ;
 	exit_door = exit->arg;
 	exit_door->nb_receptacle_completed++;
-	frame = (float)exit_door->nb_receptacle_completed *
-			(game->tab_images[exit->sprite[e_door_image].index].nb_total_frame - 1) / game->total_receptacle ;
+	frame = (float)exit_door->nb_receptacle_completed
+		* (game->tab_images[exit->sprite[e_door_image].index].nb_total_frame - 1) / game->total_receptacle ;
 	frame = roundf(frame);
 	if (frame != exit->sprite[e_door_image].frame)
 		exit->sprite[e_door_image].frame = frame;
@@ -93,7 +91,7 @@ static void	_complete_receptacle(t_game *game, t_map *map_cell, t_player *player
 void	drop_object(t_player *player, t_map **map, t_map *exit, t_game *game)
 {
 	t_dvector2	pos;
-	
+
 	pos = find_pos(player);
 	pos.x = (int)pos.x + 0.5;
 	pos.y = (int)pos.y + 0.5;

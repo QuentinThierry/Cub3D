@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/09/19 19:29:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 16:15:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ static t_ray	_get_wall_hit_se(t_dvector2 fpos,
 			{
 				if ((map[(int)(comp.y)][map_pos.x].type & DOOR) == DOOR)
 				{
-					door = door_hit_ver_se((t_dvector2){map_pos.x, comp.y}, step.y
-						, (float)((t_door *)map[(int)(comp.y)][map_pos.x].arg)->door_percent, player_angle);
+					door = door_hit_ver_se((t_dvector2){map_pos.x, comp.y}, step.y,
+							(float)((t_door *)map[(int)(comp.y)][map_pos.x].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_west});
 				}
@@ -49,7 +49,7 @@ static t_ray	_get_wall_hit_se(t_dvector2 fpos,
 			comp.y += step.y;
 			map_pos.x += 1;
 		}
-		else 
+		else
 		{
 			if ((map[map_pos.y][(int)(comp.x)].type & OBJECT) == OBJECT)
 				((t_object *)map[map_pos.y][(int)(comp.x)].arg)->visited = true;
@@ -57,8 +57,8 @@ static t_ray	_get_wall_hit_se(t_dvector2 fpos,
 			{
 				if ((map[map_pos.y][(int)(comp.x)].type & DOOR) == DOOR)
 				{
-					door = door_hit_hor_se((t_dvector2){comp.x, map_pos.y}, step.x
-						, (float)((t_door *)map[map_pos.y][(int)comp.x].arg)->door_percent, player_angle);
+					door = door_hit_hor_se((t_dvector2){comp.x, map_pos.y}, step.x,
+							(float)((t_door *)map[map_pos.y][(int)comp.x].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_north});
 				}
@@ -97,8 +97,8 @@ static t_ray	_get_wall_hit_ne(t_dvector2 fpos,
 			{
 				if ((map[(int)(comp.y)][map_pos.x].type & DOOR) == DOOR)
 				{
-					door = door_hit_ver_ne((t_dvector2){map_pos.x, comp.y}, step.y
-						, (float)((t_door *)map[(int)(comp.y)][map_pos.x].arg)->door_percent, player_angle);
+					door = door_hit_ver_ne((t_dvector2){map_pos.x, comp.y}, step.y,
+							(float)((t_door *)map[(int)(comp.y)][map_pos.x].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_west});
 				}
@@ -116,15 +116,14 @@ static t_ray	_get_wall_hit_ne(t_dvector2 fpos,
 			{
 				if ((map[map_pos.y - 1][(int)(comp.x)].type & DOOR) == DOOR)
 				{
-					door = door_hit_hor_ne((t_dvector2){comp.x, map_pos.y}, step.x
-						, (float)((t_door *)map[map_pos.y - 1][(int)comp.x].arg)->door_percent, player_angle);
+					door = door_hit_hor_ne((t_dvector2){comp.x, map_pos.y}, step.x,
+							(float)((t_door *)map[map_pos.y - 1][(int)comp.x].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_south});
 				}
 				else
 					return ((t_ray){{comp.x, map_pos.y}, e_south});
 			}
-
 			comp.x += step.x;
 			map_pos.y += -1;
 		}
@@ -157,8 +156,8 @@ static t_ray	_get_wall_hit_sw(t_dvector2 fpos,
 			{
 				if ((map[(int)(comp.y)][map_pos.x - 1].type & DOOR) == DOOR)
 				{
-					door = door_hit_ver_sw((t_dvector2){map_pos.x, comp.y}, step.y
-						, (float)((t_door *)map[(int)(comp.y)][map_pos.x - 1].arg)->door_percent, player_angle);
+					door = door_hit_ver_sw((t_dvector2){map_pos.x, comp.y}, step.y,
+							(float)((t_door *)map[(int)(comp.y)][map_pos.x - 1].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_east});
 				}
@@ -176,8 +175,8 @@ static t_ray	_get_wall_hit_sw(t_dvector2 fpos,
 			{
 				if ((map[map_pos.y][(int)(comp.x)].type & DOOR) == DOOR)
 				{
-					door = door_hit_hor_sw((t_dvector2){comp.x, map_pos.y}, step.x
-						, (float)((t_door *)map[map_pos.y][(int)comp.x].arg)->door_percent, player_angle);
+					door = door_hit_hor_sw((t_dvector2){comp.x, map_pos.y}, step.x,
+							(float)((t_door *)map[map_pos.y][(int)comp.x].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_north});
 				}
@@ -208,7 +207,6 @@ static t_ray	_get_wall_hit_nw(t_dvector2 fpos,
 	step = (t_fvector2){angle * -1, 1 / angle * -1};
 	while (true)
 	{
-		
 		if (map_pos.y <= comp.y)
 		{
 			if ((map[(int)(comp.y)][map_pos.x - 1].type & OBJECT) == OBJECT)
@@ -217,8 +215,8 @@ static t_ray	_get_wall_hit_nw(t_dvector2 fpos,
 			{
 				if ((map[(int)(comp.y)][map_pos.x - 1].type & DOOR) == DOOR)
 				{
-					door = door_hit_ver_nw((t_dvector2){map_pos.x, comp.y}, step.y
-						, (float)((t_door *)map[(int)(comp.y)][map_pos.x - 1].arg)->door_percent, player_angle);
+					door = door_hit_ver_nw((t_dvector2){map_pos.x, comp.y}, step.y,
+							(float)((t_door *)map[(int)(comp.y)][map_pos.x - 1].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_east});
 				}
@@ -236,8 +234,8 @@ static t_ray	_get_wall_hit_nw(t_dvector2 fpos,
 			{
 				if ((map[map_pos.y - 1][(int)(comp.x)].type & DOOR) == DOOR)
 				{
-					door = door_hit_hor_nw((t_dvector2){comp.x, map_pos.y}, step.x
-						, (float)((t_door *)map[map_pos.y - 1][(int)comp.x].arg)->door_percent, player_angle);
+					door = door_hit_hor_nw((t_dvector2){comp.x, map_pos.y}, step.x,
+							(float)((t_door *)map[map_pos.y - 1][(int)comp.x].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_south});
 				}

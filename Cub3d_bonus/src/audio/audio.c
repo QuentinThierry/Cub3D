@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/05 15:41:25 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:20:03 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ void	update_sounds(t_music_game *music_array)
 void	update_map_cell_music(t_map *map_cell, t_map *old_map_cell, t_music_game *music_array)
 {
 	int	i;
-	
+
 	i = 0;
 	while (i < NB_MAX_SOUNDS)
 	{
@@ -182,7 +182,7 @@ void	update_map_cell_music(t_map *map_cell, t_map *old_map_cell, t_music_game *m
 
 void	clear_sound(t_music_game *music_array)
 {
-		int	i;
+	int	i;
 
 	i = 1;
 	while (i < NB_MAX_SOUNDS)

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/03 16:29:02 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/05 16:20:38 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,7 +249,6 @@ t_dvector2	door_hit_ver_nw(t_dvector2 hit, float step, float door_angle,
 		return ((t_dvector2){-1, -1});
 	return ((t_dvector2){hit.x - 0.5 - sinf(door_angle * TO_RADIAN) * a,
 		(int)hit.y + (cosf(door_angle * TO_RADIAN) * a)});
-	
 }
 
 t_dvector2	door_hit_hor_nw(t_dvector2 hit, float step, float door_angle, float player_angle)
@@ -305,11 +304,11 @@ float	get_texture_door(t_ray ray)
 			delta.x = ((int)ray.hit.x + 1) - ray.hit.x;
 			left_door = true;
 		}
-		delta.y = fabs(ray.hit.y - ((int)ray.hit.y + 0.5)); 
+		delta.y = fabs(ray.hit.y - ((int)ray.hit.y + 0.5));
 	}
 	else
 	{
-		delta.x = fabs(ray.hit.x - ((int)ray.hit.x + 0.5)); 
+		delta.x = fabs(ray.hit.x - ((int)ray.hit.x + 0.5));
 		if (ray.hit.y - (int)ray.hit.y < 0.5)
 			delta.y = ray.hit.y - (int)ray.hit.y;
 		else
@@ -327,24 +326,24 @@ float	get_texture_door(t_ray ray)
 void	change_adjacent_wall(t_map **map, t_vector2 map_pos, bool is_add_flag)
 {
 	bool	east_west;
-	bool	north_south;
 
-	east_west = map[map_pos.y][map_pos.x + 1].type == WALL
-		&& map[map_pos.y][map_pos.x - 1].type == WALL;
+	printf("change wall\n");
+	east_west = (map[map_pos.y][map_pos.x + 1].type == WALL
+			&& map[map_pos.y][map_pos.x - 1].type == WALL);
 	if (is_add_flag)
 	{
 		if (east_west)
 		{
-			if (map[map_pos.y][map_pos.x + 1].type == WALL)
+			if (is_only_wall(map[map_pos.y][map_pos.x + 1].type))
 				map[map_pos.y][map_pos.x + 1].type |= DOOR_WEST;
-			if (map[map_pos.y][map_pos.x - 1].type == WALL)
+			if (is_only_wall(map[map_pos.y][map_pos.x - 1].type))
 				map[map_pos.y][map_pos.x - 1].type |= DOOR_EAST;
 		}
 		else
 		{
-			if (map[map_pos.y + 1][map_pos.x].type == WALL)
+			if (is_only_wall(map[map_pos.y + 1][map_pos.x].type))
 				map[map_pos.y + 1][map_pos.x].type |= DOOR_NORTH;
-			if (map[map_pos.y - 1][map_pos.x].type == WALL)
+			if (is_only_wall(map[map_pos.y - 1][map_pos.x].type))
 				map[map_pos.y - 1][map_pos.x].type |= DOOR_SOUTH;
 		}
 	}
@@ -391,6 +390,14 @@ void	open_door(t_game *game)
 			return ;
 		if ((game->map[(int)ray.hit.y][(int)ray.hit.x].type & EXIT) == EXIT)
 			return (end_of_the_game(game, ray.orient));
+		if ((game->map[(int)ray.hit.y][(int)ray.hit.x].type & MUSIC) == MUSIC)
+			play_music(&game->map[(int)ray.hit.y][(int)ray.hit.x],
+				game->music_array, game->map[(int)ray.hit.y][(int)ray.hit.x].music, IS_PLAYING_MUSIC);
+		if ((game->map[(int)ray.hit.y][(int)ray.hit.x].type & NARRATOR) == NARRATOR)
+		{
+			play_narrator(game, &game->map[(int)ray.hit.y][(int)ray.hit.x], game->music_array);
+			game->map[(int)ray.hit.y][(int)ray.hit.x].type &= ~NARRATOR;
+		}
 		door = game->map[(int)ray.hit.y][(int)ray.hit.x].arg;
 		if (door->is_opening_door == 1)
 		{
@@ -455,7 +462,7 @@ static void	_step_door_open(t_door *door, double time, t_map *map_cell, t_map **
 	}
 }
 
-void	update_doors(t_map **doors, int	nb_doors, double time, t_map **map)
+void	update_doors(t_map **doors, int nb_doors, double time, t_map **map)
 {
 	int	i;
 

@@ -6,12 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 16:13:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/09/20 15:55:55 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 15:31:43 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
-
 
 /**
  * @brief frame nb_total_frame ->pause sur frame begin
@@ -52,10 +51,11 @@ static void	update_anim(long int time, t_sprite *sprite, t_image *img)
 	}
 }
 
-static t_sprite	*_get_image_south(t_map **map, t_ray ray, float *dist, int *type)
+static t_sprite	*_get_image_south(t_map **map, t_ray ray, float *dist,
+			int *type)
 {
 	t_vector2	wall;
-	
+
 	wall.x = (int)ray.hit.x;
 	wall.y = (int)ray.hit.y;
 	if (ray.orient == e_south)
@@ -72,7 +72,6 @@ static t_sprite	*_get_image_south(t_map **map, t_ray ray, float *dist, int *type
 	}
 	else if ((map[wall.y - 1][wall.x].type & DOOR_SOUTH_END) == DOOR_SOUTH_END)
 	{
-		
 		if (ray.hit.x >= (int)ray.hit.x + 0.5)
 		{
 			*type = map[wall.y][wall.x].type;
@@ -91,7 +90,7 @@ static t_sprite	*_get_image_south(t_map **map, t_ray ray, float *dist, int *type
 static t_sprite	*_get_image_north(t_map **map, t_ray ray, float *dist, int *type)
 {
 	t_vector2	wall;
-	
+
 	wall.x = (int)ray.hit.x;
 	wall.y = (int)ray.hit.y;
 	*type = map[wall.y][wall.x].type;
@@ -124,7 +123,7 @@ static t_sprite	*_get_image_north(t_map **map, t_ray ray, float *dist, int *type
 static t_sprite	*_get_image_west(t_map **map, t_ray ray, float *dist, int *type)
 {
 	t_vector2	wall;
-	
+
 	wall.x = (int)ray.hit.x;
 	wall.y = (int)ray.hit.y;
 	*type = map[wall.y][wall.x].type;
@@ -157,7 +156,7 @@ static t_sprite	*_get_image_west(t_map **map, t_ray ray, float *dist, int *type)
 static t_sprite	*_get_image_east(t_map **map, t_ray ray, float *dist, int *type)
 {
 	t_vector2	wall;
-	
+
 	wall.x = (int)ray.hit.x;
 	wall.y = (int)ray.hit.y;
 	if (ray.orient == e_east)
@@ -195,10 +194,9 @@ t_image	*get_image_wall(t_game *game, t_ray ray, int *x_door)
 	t_image		*image;
 	float		dist;
 	int			type;
-	
+
 	*x_door = -1;
 	dist = -1;
-
 	if (ray.orient == e_south)
 		sprite = _get_image_south(game->map, ray, &dist, &type);
 	else if (ray.orient == e_north)
@@ -213,7 +211,7 @@ t_image	*get_image_wall(t_game *game, t_ray ray, int *x_door)
 	{
 		if (dist != -1)
 			*x_door = game->tab_images[sprite->index].size.x * dist;
-		return(&(game->tab_images[sprite->index + sprite->frame]));
+		return (&(game->tab_images[sprite->index + sprite->frame]));
 	}
 	if (sprite->frame == -1)
 	{
@@ -221,7 +219,7 @@ t_image	*get_image_wall(t_game *game, t_ray ray, int *x_door)
 			*x_door = game->tab_images[sprite->index].size.x * dist;
 		return (&(game->tab_images[sprite->index]));
 	}
-	else		//animation
+	else
 	{
 		image = &game->tab_images[sprite->index];
 		if (sprite->time == 0)
@@ -232,10 +230,10 @@ t_image	*get_image_wall(t_game *game, t_ray ray, int *x_door)
 			return (&(game->tab_images[sprite->index + sprite->frame]));
 		}
 		if (sprite->frame < image->nb_total_frame
-				&& game->time - sprite->time >= image->time_frame)
+			&& game->time - sprite->time >= image->time_frame)
 			update_anim(game->time, sprite, image);
 		else if (sprite->frame == image->nb_total_frame
-				&& game->time - sprite->time >= image->time_animation)
+			&& game->time - sprite->time >= image->time_animation)
 			update_anim(game->time, sprite, image);
 		if (sprite->frame == image->nb_total_frame)
 		{
@@ -257,7 +255,7 @@ t_image	*get_image_non_wall(t_game *game, t_dvector2 hit, enum e_orientation ori
 	sprite = &(game->map[(int)hit.y][(int)hit.x].sprite[orient]);
 	if (sprite->frame == -1)
 		return (&(game->tab_images[sprite->index]));
-	else		//animation
+	else
 	{
 		image = &game->tab_images[sprite->index];
 		if (sprite->time == 0)
@@ -266,10 +264,10 @@ t_image	*get_image_non_wall(t_game *game, t_dvector2 hit, enum e_orientation ori
 			return (&(game->tab_images[sprite->index + sprite->frame]));
 		}
 		if (sprite->frame < image->nb_total_frame
-				&& game->time - sprite->time >= image->time_frame)
+			&& game->time - sprite->time >= image->time_frame)
 			update_anim(game->time, sprite, image);
 		else if (sprite->frame == image->nb_total_frame
-				&& game->time - sprite->time >= image->time_animation)
+			&& game->time - sprite->time >= image->time_animation)
 			update_anim(game->time, sprite, image);
 		if (sprite->frame == image->nb_total_frame)
 			return (image);

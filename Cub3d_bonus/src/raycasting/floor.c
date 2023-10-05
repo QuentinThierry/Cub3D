@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/02 15:08:24 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 15:54:00 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 __attribute__((always_inline))
 static inline unsigned int	get_color_at(char *addr, int size_line, t_vector2 pos)
 {
-	return (*(int*)(addr + (pos.y * size_line + pos.x * 4)));
+	return (*(int *)(addr + (pos.y * size_line + pos.x * 4)));
 }
 
 __attribute__((always_inline))
 static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, int color)
 {
-	*(int*)(addr + (pos.y * size_line + pos.x * 4)) = color;
+	*(int *)(addr + (pos.y * size_line + pos.x * 4)) = color;
 }
 
 __attribute__((always_inline))
@@ -53,7 +53,7 @@ static inline bool	is_in_map(t_dvector2 pos, t_map **map, t_vector2 size_map)
 __attribute__((always_inline))
 static inline void	draw_pixel_line(t_game *game, register t_dvector2 map_point, register t_fvector2 step_dir, int y_screen)
 {
-	register int				i;
+	register int	i;
 	const t_image	*game_image = game->image;
 	t_vector2		last_map_pos;
 	t_image			*image;
@@ -73,7 +73,7 @@ static inline void	draw_pixel_line(t_game *game, register t_dvector2 map_point, 
 			map_point.x += step_dir.x;
 			map_point.y += step_dir.y;
 			i++;
-			continue;
+			continue ;
 		}
 		if (game->map[(int)map_point.y][(int)map_point.x].sprite[e_ceiling].index != -1)
 		{
@@ -96,29 +96,29 @@ static inline void	draw_pixel_line(t_game *game, register t_dvector2 map_point, 
 				else
 				{
 					color_ceiling = dark_with_dist(get_color_at(image->addr, image->size_line,
-						(t_vector2){(map_point.x - last_map_pos.x) * image->size.x,
-						(map_point.y - last_map_pos.y) * image->size.y}), dark_quantity);
+								(t_vector2){(map_point.x - last_map_pos.x) * image->size.x,
+								(map_point.y - last_map_pos.y) * image->size.y}), dark_quantity);
 					color_floor = dark_with_dist(get_color_at(image2->addr, image2->size_line,
-						(t_vector2){(map_point.x - last_map_pos.x) * image2->size.x,
-						(map_point.y - last_map_pos.y) * image2->size.y}), dark_quantity);
+								(t_vector2){(map_point.x - last_map_pos.x) * image2->size.x,
+								(map_point.y - last_map_pos.y) * image2->size.y}), dark_quantity);
 				}
 			}
 			else
 			{
 				dark_quantity = 0;
 				color_ceiling = get_color_at(image->addr, image->size_line,
-					(t_vector2){(map_point.x - last_map_pos.x) * image->size.x,
-					(map_point.y - last_map_pos.y) * image->size.y});
+						(t_vector2){(map_point.x - last_map_pos.x) * image->size.x,
+						(map_point.y - last_map_pos.y) * image->size.y});
 				color_floor = get_color_at(image2->addr, image2->size_line,
-					(t_vector2){(map_point.x - last_map_pos.x) * image2->size.x,
-					(map_point.y - last_map_pos.y) * image2->size.y});
+						(t_vector2){(map_point.x - last_map_pos.x) * image2->size.x,
+						(map_point.y - last_map_pos.y) * image2->size.y});
 			}
 			my_mlx_pixel_put(game_image->addr, game_image->size_line,
 				(t_vector2){i, WIN_Y / 2 - y_screen}, color_ceiling);
 			my_mlx_pixel_put(game_image->addr, game_image->size_line,
 				(t_vector2){i, WIN_Y / 2 + y_screen - 1}, color_floor);
 		}
-		map_point.x += step_dir.x; 
+		map_point.x += step_dir.x;
 		map_point.y += step_dir.y;
 		i++;
 	}
@@ -153,7 +153,6 @@ void	draw_ceiling(t_game *game)
 	float		x_dist;
 
 	y_screen = WIN_Y / 2.;
-
 	cos_sin2.x = cosf((game->player->angle - 90 - game->fov / 2.) * TO_RADIAN);
 	cos_sin2.y = sinf((game->player->angle - 90 - game->fov / 2.) * TO_RADIAN);
 	cos_sin1.x = cosf((game->player->angle - 90) * TO_RADIAN);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   end_door.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:07:20 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/03 18:26:22 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/05 14:47:42 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,27 @@
 
 void	change_adjacent_wall_end(enum e_orientation orient, t_map **map, t_vector2 map_pos)
 {
+	printf("set up door next\n");
 	if (orient == e_south || orient == e_west)
 	{
-		if (map[map_pos.y][map_pos.x + 1].type == WALL)
+		if (is_only_wall(map[map_pos.y][map_pos.x + 1].type))
 			map[map_pos.y][map_pos.x + 1].type |= DOOR_WEST;
-		if (map[map_pos.y][map_pos.x - 1].type == WALL)
+		if (is_only_wall(map[map_pos.y][map_pos.x - 1].type))
 			map[map_pos.y][map_pos.x - 1].type |= DOOR_EAST;
-		if (map[map_pos.y + 1][map_pos.x].type == WALL)
+		if (is_only_wall(map[map_pos.y + 1][map_pos.x].type))
 			map[map_pos.y + 1][map_pos.x].type |= DOOR_NORTH;
-		if (map[map_pos.y - 1][map_pos.x].type == WALL)
+		if (is_only_wall(map[map_pos.y - 1][map_pos.x].type))
 			map[map_pos.y - 1][map_pos.x].type |= DOOR_SOUTH;
 	}
 	else
 	{
-		if (map[map_pos.y][map_pos.x + 1].type == WALL)
+		if (is_only_wall(map[map_pos.y][map_pos.x + 1].type))
 			map[map_pos.y][map_pos.x + 1].type |= DOOR_WEST_END;
-		if (map[map_pos.y][map_pos.x - 1].type == WALL)
+		if (is_only_wall(map[map_pos.y][map_pos.x - 1].type))
 			map[map_pos.y][map_pos.x - 1].type |= DOOR_EAST_END;
-		if (map[map_pos.y + 1][map_pos.x].type == WALL)
+		if (is_only_wall(map[map_pos.y + 1][map_pos.x].type))
 			map[map_pos.y + 1][map_pos.x].type |= DOOR_NORTH_END;
-		if (map[map_pos.y - 1][map_pos.x].type == WALL)
+		if (is_only_wall(map[map_pos.y - 1][map_pos.x].type))
 			map[map_pos.y - 1][map_pos.x].type |= DOOR_SOUTH_END;
 	}
 }

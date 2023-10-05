@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/05 14:21:58 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 14:44:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -514,6 +514,7 @@ void		ft_bzero(void *s, size_t n);
 int			find_next_wsp(char *line , int i);
 void		draw_rectangle(t_image *image, t_vector2 pos, t_vector2 size, t_pixel32 color);
 void		print_error(char *error, int print);
+bool		is_only_wall(unsigned int type);
 
 // -------Parsing-------
 void		exit_door_no_receptacle(t_map *exit, int nb_receptacle, t_image *tab_image);

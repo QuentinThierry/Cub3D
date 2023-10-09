@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_close.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 18:43:14 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 19:56:08 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	destroy_all_images(t_game *game)
 		i = 0;
 		while (i < 6)
 		{
-			if (game->mlx_ptr && game->tab_images[i] 
+			if (game->mlx_ptr && game->tab_images[i]
 				&& game->tab_images[i]->img)
 				mlx_destroy_image(game->mlx_ptr, game->tab_images[i]->img);
 			free(game->tab_images[i]);
@@ -35,6 +35,19 @@ void	destroy_all_images(t_game *game)
 		}
 		free(game->tab_images);
 	}
+}
+
+void	free_tab(char **str, int sizey)
+{
+	int	i;
+
+	i = 0;
+	while (i < sizey)
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
 }
 
 int	ft_close(t_game *game)

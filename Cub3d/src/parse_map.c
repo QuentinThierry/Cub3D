@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 19:35:38 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 19:36:34 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 19:57:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ bool	parse_map(char *filename, t_game *game, int nb_line)
 	i = -1;
 	while (line != NULL && ++i < game->map_size.y)
 	{
-		remove_new_line(line);
+		remove_end_whitespace(line);
 		ft_memcpy(game->map[i], line, ft_strlen(line));
 		ft_memset(game->map[i] + (ft_strlen(line)), ' ',
 			game->map_size.x - ft_strlen(line));

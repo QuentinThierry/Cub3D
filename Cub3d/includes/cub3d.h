@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 19:44:28 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 20:38:28 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ enum e_images
 	e_floor
 };
 
-
 typedef struct s_vector2
 {
 	int	x;
@@ -72,14 +71,15 @@ typedef struct s_fvector2
 
 typedef struct s_map_arg
 {
-	char 		**map;
+	char		**map;
 	t_vector2	map_size;
-} t_map_arg;
+}	t_map_arg;
 
-typedef	struct s_player{
+typedef struct s_player
+{
 	t_vector2	pos;
-	t_fvector2 	f_pos;
-	t_fvector2 	f_real_pos;
+	t_fvector2	f_pos;
+	t_fvector2	f_real_pos;
 	double		angle;
 	t_vector2	dir;
 	int			view;
@@ -95,6 +95,14 @@ typedef struct s_image
 	t_vector2	size;
 }	t_image;
 
+typedef struct s_draw
+{
+	t_fvector2	img;
+	double		delta_y_img;
+	int			y_begin;
+	int			y_end;
+}	t_draw;
+
 typedef struct s_game
 {
 	t_image			*image;
@@ -107,7 +115,7 @@ typedef struct s_game
 	t_vector2		map_size;
 	t_player		*player;
 	char			**filename;
-	const double	*consts;
+	double			consts;
 }	t_game;
 
 // ------ Utils------
@@ -129,6 +137,7 @@ void				player_move(t_player *player);
 int					on_update(t_game *game);
 
 // ------ Init ------
+void				remove_end_whitespace(char *str);
 bool				parse_map(char *filename, t_game *game, int nb_line);
 bool				create_map(t_game *game, int fd, char *line);
 bool				find_color(char *str, t_game *game, char texture);
@@ -147,18 +156,18 @@ void				bettermlx_get_data_addr(t_image *image, t_vector2 size);
 // ------ Raycasting ----
 void				raycasting(t_game *game);
 enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall);
-void				draw_vert(t_game *game, int x, t_fvector2 wall, double dist);
-t_image				*get_image(t_game	*game, enum e_orientation orient);
+void				draw_vert(t_game *game, int x, t_fvector2 wall,
+						double dist);
 t_fvector2			get_wall_hit(t_fvector2 fpos, char **map, float angle,
 						t_vector2 map_size);
 t_fvector2			get_wall_hit_se(t_fvector2 fpos,
-								char **map, float angle, t_vector2 map_size);
+						char **map, float angle, t_vector2 map_size);
 t_fvector2			get_wall_hit_ne(t_fvector2 fpos,
-								char **map, float angle, t_vector2 map_size);
+						char **map, float angle, t_vector2 map_size);
 t_fvector2			get_wall_hit_sw(t_fvector2 fpos,
-								char **map, float angle, t_vector2 map_size);
+						char **map, float angle, t_vector2 map_size);
 t_fvector2			get_wall_hit_nw(t_fvector2 fpos,
-								char **map, float angle);
+						char **map, float angle);
 
 // ------- Print -------
 void				print_error(char *error, int print);

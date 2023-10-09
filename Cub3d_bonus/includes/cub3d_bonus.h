@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/09 14:11:21 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 14:54:13 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@
 # define PATH_MMAP_PLAYER "../assets/minimap_player.xpm"
 # define MINIMAP_PLAYER_SIZE 12
 # define MMAP_CHUNK 20
-# define ZOOM_SPEED 10
+# define ZOOM_SPEED 50
 # define ZOOM_OFFSET 20
 # define MAX_ZOOM 20
 # define MIN_ZOOM -10

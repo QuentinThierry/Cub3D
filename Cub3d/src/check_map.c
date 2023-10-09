@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 21:27:20 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/09 18:10:54 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 18:26:32 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ bool	check_map(t_game *game)
 		x = 0;
 		while (x < game->map_size.x)
 		{
+			if (map[y][x] != '0' && map[y][x] != '1' && map[y][x] != 'N'
+				&& map[y][x] != 'W' && map[y][x] != 'S' && map[y][x] != 'E'
+				&& map[y][x] != ' ')
+				return (print_error("Unknown caracter on the map\n", 1), false);
 			if (map[y][x] == '0')
 			{
 				if (!_check_sides(map, x, y, game->map_size))

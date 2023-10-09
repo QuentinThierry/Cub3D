@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 15:12:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 17:20:16 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int	on_update(t_game *game)
 	raycasting(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
 	clock_gettime(CLOCK_REALTIME, &cur_time);
-	game->delta_time = (cur_time.tv_sec - last_time.tv_sec + (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
+	game->delta_time = (cur_time.tv_sec - last_time.tv_sec + (cur_time.tv_nsec
+				- last_time.tv_nsec) / 1000000000.F);
 	fps = (long)(1.0 / game->delta_time);
 	tot_fps += fps;
 	nb_fps++;
@@ -41,7 +42,7 @@ int	on_update(t_game *game)
 	return (0);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_game	game;
 
@@ -54,14 +55,14 @@ int main(int argc, char **argv)
 	if (game.filename == NULL)
 		return (print_error(NULL, 0), 1);
 	if (!parse_file(argv[1], &game))
-		return (1);
+		return (ft_close(&game), 1);
 	if (!check_map(&game))
-		return (1);
-	init_all(&game);
-	game.constants = (double[5]){(WIN_X) / (tan((FOV / 2.0) * TO_RADIAN))};
-
-	mlx_hook(game.win, 02, (1L<<0), key_press_hook, &game);
-	mlx_hook(game.win, 03, (1L<<1), key_release_hook, game.player);
+		return (ft_close(&game), 1);
+	if (!init_all(&game))
+		return (ft_close(&game), 1);
+	game.constants = (double[5]){WIN_X / tan((FOV / 2.0) * TO_RADIAN)};
+	mlx_hook(game.win, 02, (1L << 0), key_press_hook, &game);
+	mlx_hook(game.win, 03, (1L << 1), key_release_hook, game.player);
 	mlx_hook(game.win, 17, (1L << 5), ft_close, &game);
 	mlx_loop_hook(game.mlx_ptr, on_update, &game);
 	mlx_loop(game.mlx_ptr);

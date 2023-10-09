@@ -6,24 +6,25 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 15:02:11 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 17:32:33 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-bool	init_mlx(t_game *game)
+static bool	_init_mlx(t_game *game)
 {
 	game->mlx_ptr = mlx_init();
 	if (!game->mlx_ptr)
 		return (false);
-	game->win = mlx_new_window(game->mlx_ptr, WIN_X, WIN_Y, "cub3d");
+	game->win = mlx_new_window(game->mlx_ptr, WIN_X, WIN_Y, "cub3D");
 	if (!game->win)
 		return (false);
 	return (true);
 }
 
-static void	fill_rectangle(char *addr, int size_x, int size_y, unsigned int color)
+static void	fill_rectangle(char *addr, int size_x, int size_y,
+		unsigned int color)
 {
 	int	x;
 	int	y;
@@ -50,8 +51,10 @@ static bool	load_floor_ceiling_img(t_image **tab_image, t_game *game)
 	tab_image[e_ceiling]->img = mlx_new_image(game->mlx_ptr, WIN_X, WIN_Y / 2);
 	if (!tab_image[e_ceiling]->img)
 		return (false);
-	bettermlx_get_data_addr(tab_image[e_ceiling], (t_vector2){WIN_X, WIN_Y / 2});
-	fill_rectangle(tab_image[e_ceiling]->addr, WIN_X, WIN_Y / 2, game->ceiling_color);
+	bettermlx_get_data_addr(tab_image[e_ceiling],
+		(t_vector2){WIN_X, WIN_Y / 2});
+	fill_rectangle(tab_image[e_ceiling]->addr, WIN_X, WIN_Y / 2,
+		game->ceiling_color);
 	tab_image[e_floor] = ft_calloc(1, sizeof(t_image));
 	if (!tab_image[e_floor])
 		return (false);
@@ -59,19 +62,20 @@ static bool	load_floor_ceiling_img(t_image **tab_image, t_game *game)
 	if (!tab_image[e_floor]->img)
 		return (false);
 	bettermlx_get_data_addr(tab_image[e_floor], (t_vector2){WIN_X, WIN_Y / 2});
-	fill_rectangle(tab_image[e_floor]->addr, WIN_X, WIN_Y / 2, game->floor_color);
+	fill_rectangle(tab_image[e_floor]->addr, WIN_X, WIN_Y / 2,
+		game->floor_color);
 	return (true);
 }
 
-bool	load_image(t_game *game)
+static bool	_load_image(t_game *game)
 {
-	int			i;
+	int	i;
 
 	game->image = ft_calloc(1, sizeof(t_image));
-	if (!game->image)
+	if (game->image == NULL)
 		return (false);
 	game->image->img = mlx_new_image(game->mlx_ptr, WIN_X, WIN_Y);
-	if (!game->image->img)
+	if (game->image->img == NULL)
 		return (false);
 	bettermlx_get_data_addr(game->image, (t_vector2){WIN_X, WIN_Y});
 	game->tab_images = ft_calloc(6, sizeof(t_image *));
@@ -83,8 +87,9 @@ bool	load_image(t_game *game)
 		game->tab_images[i] = ft_calloc(1, sizeof(t_image));
 		if (!game->tab_images[i])
 			return (false);
-		game->tab_images[i]->img = mlx_xpm_file_to_image(game->mlx_ptr, game->filename[i],
-			&(game->tab_images[i]->size.x), &(game->tab_images[i]->size.y));
+		game->tab_images[i]->img = mlx_xpm_file_to_image(game->mlx_ptr,
+				game->filename[i], &(game->tab_images[i]->size.x),
+				&(game->tab_images[i]->size.y));
 		if (!game->tab_images[i]->img)
 			return (false);
 		bettermlx_get_data_addr(game->tab_images[i], game->tab_images[i]->size);
@@ -95,12 +100,11 @@ bool	load_image(t_game *game)
 	return (true);
 }
 
-
 bool	init_all(t_game *game)
 {
-	if (!init_mlx(game))
-		return (ft_close(game), print_error(NULL, 0), 1);
-	if (!load_image(game))
-		return (ft_close(game), print_error(NULL, 0), 1);
+	if (!_init_mlx(game))
+		return (print_error(NULL, 0), false);
+	if (!_load_image(game))
+		return (print_error(NULL, 0), false);
 	return (true);
 }

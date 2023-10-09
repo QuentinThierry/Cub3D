@@ -6,11 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:07:06 by jvigny            #+#    #+#             */
-/*   Updated: 2022/11/24 10:59:23 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 18:07:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../../includes/get_next_line.h"
 
 char	*get_next_line(int fd)
 {

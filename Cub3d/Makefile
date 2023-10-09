@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/09 15:23:08 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/09 18:04:09 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,9 +44,9 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			raycasting.c \
 			draw.c \
 			parsing.c \
+			parse_texture.c \
 			ft_calloc.c \
 			init.c \
-			move.c \
 			ft_memcpy.c \
 			ft_close.c \
 			wall_hit.c \

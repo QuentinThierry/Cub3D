@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/07 01:02:19 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 17:16:38 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int	key_press_hook(int key, t_game *game)
 {
-	if (key == 65307 ) // esc
+	if (key == ESC)
 		ft_close(game);
-	if (key == 65361) // left rrow
+	if (key == LEFT_ARROW)
 		game->player->view -= 1;
-	if (key == 65363) // right arrow
+	if (key == RIGHT_ARROW)
 		game->player->view += 1;
 	if (key == 'd')
 		game->player->dir.x += 1;
@@ -28,16 +28,16 @@ int	key_press_hook(int key, t_game *game)
 		game->player->dir.y -= 1;
 	if (key == 's')
 		game->player->dir.y += 1;
-	if (key == 65505) // shift
+	if (key == SHIFT)
 		game->player->speed += SPRINT_BOOST;
 	return (0);
 }
 
 int	key_release_hook(int key, t_player *player)
 {
-	if (key == 65361) // left rrow
+	if (key == LEFT_ARROW)
 		player->view += 1;
-	if (key == 65363) // right arrow
+	if (key == RIGHT_ARROW)
 		player->view -= 1;
 	if (key == 'd')
 		player->dir.x -= 1;
@@ -47,14 +47,14 @@ int	key_release_hook(int key, t_player *player)
 		player->dir.y += 1;
 	if (key == 's')
 		player->dir.y -= 1;
-	if (key == 65505) // shift
+	if (key == SHIFT)
 		player->speed -= SPRINT_BOOST;
 	return (0);
 }
 
 void	player_move(t_player *player, double delta_time)
 {
-	t_fvector2 move_value;
+	t_fvector2	move_value;
 
 	if (player->view != 0)
 		player->angle += ROTATION * delta_time * player->view;
@@ -62,13 +62,17 @@ void	player_move(t_player *player, double delta_time)
 	move_value.y = 0;
 	if (player->dir.y != 0)
 	{
-		move_value.x -= sinf(player->angle * TO_RADIAN) * player->speed * player->dir.y;
-		move_value.y += cosf(player->angle * TO_RADIAN) * player->speed * player->dir.y;
+		move_value.x -= sinf(player->angle * TO_RADIAN) * player->speed
+			* player->dir.y;
+		move_value.y += cosf(player->angle * TO_RADIAN) * player->speed
+			* player->dir.y;
 	}
 	if (player->dir.x != 0)
 	{
-		move_value.x += cosf(player->angle * TO_RADIAN) * player->speed * player->dir.x;
-		move_value.y += sinf(player->angle * TO_RADIAN) * player->speed * player->dir.x;
+		move_value.x += cosf(player->angle * TO_RADIAN) * player->speed
+			* player->dir.x;
+		move_value.y += sinf(player->angle * TO_RADIAN) * player->speed
+			* player->dir.x;
 	}
 	if (player->dir.x != 0 || player->dir.y != 0)
 	{

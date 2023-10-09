@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 21:27:20 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/07 23:43:43 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 14:57:13 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,7 @@ bool	check_map(t_game *game)
 	char	**map;
 	int		x;
 	int		y;
-	int		player;
 
-	player = 0;
 	map = game->map;
 	y = 0;
 	while (y < game->map_size.y)
@@ -42,12 +40,11 @@ bool	check_map(t_game *game)
 			if (map[y][x] == '0')
 			{
 				if (!_check_sides(map, x, y, game->map_size))
-					return (printf("Error : Map not closed\n"), false);
+					return (print_error("Error : Map not closed\n", 1), false);
 			}
 			x++;
 		}
 		y++;
 	}
-	
 	return (true);
 }

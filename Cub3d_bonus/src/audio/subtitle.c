@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 12:38:01 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 15:26:31 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 13:53:21 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	print_subtitle(t_game *game, t_map *map_cell)
 	{
 		narrator->time = game->time;
 		narrator->offset += find_next_line(narrator->subtitle + narrator->offset);
-		if (narrator->offset >= ft_strlen(narrator->subtitle))
+		if (narrator->offset >= (unsigned int)ft_strlen(narrator->subtitle))
 		{
 			game->music_array[1].is_subtitle = false;
 			narrator->offset = 0;

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 14:32:29 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 18:34:49 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 13:47:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 static bool	check_format(char *filename)
 {
 	int	len;
-	int	fd;
 
 	len = ft_strlen(filename);
 	if (len < 4)

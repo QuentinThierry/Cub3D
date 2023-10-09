@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/09 14:54:13 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 16:27:35 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -436,6 +436,7 @@ typedef struct s_menu
 
 enum e_status
 {
+	e_game = -1,
 	e_go_in_font_of_door = 0,
 	e_open_door,
 	e_walk_through_door,
@@ -672,7 +673,7 @@ t_ray		get_wall_hit_end(t_dvector2 fpos, t_map **map, float angle, enum e_status
 // -------- Music ----------
 char			*get_music(t_music_name *filename, int nb_music, char symbol, enum e_orientation orient);
 t_music_name	*get_narrator(t_music_name *filename, int nb_music, char symbol, enum e_orientation orient);
-bool			init_audio(t_game *game, t_music_name *music_file, int nb_music);
+bool			init_audio(t_game *game);
 void			update_sounds(t_music_game *music_array);
 void			close_audio(t_music_game *music_tab);
 void			play_music(t_map *map_cell, t_music_game *music_tab, char *filename, unsigned int type);

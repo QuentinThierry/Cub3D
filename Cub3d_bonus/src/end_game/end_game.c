@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 18:10:31 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/09 13:42:42 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 13:50:09 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ bool	init_end_screen(t_game *game)
 	game->end = ft_calloc(1, sizeof(t_end));
 	if (game->end == NULL)
 		return (false);
-	game->end->status = -1;
+	game->end->status = e_game;
 	game->end->end_screen = btmlx_xpm_file_to_image(game->mlx_ptr,
 			END_SCREEN, (t_vector2){1, 1});
 	if (game->end->end_screen == NULL)

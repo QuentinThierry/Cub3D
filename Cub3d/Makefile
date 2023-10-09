@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/03 16:03:58 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/09 15:23:08 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,6 +52,10 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			wall_hit.c \
 			check_map.c \
 			bettermlx.c \
+			print_error.c \
+			ft_strncmp.c \
+			ft_strdup.c \
+			ft_memset.c \
 			main.c
 
 SRC_DIR = ./src/

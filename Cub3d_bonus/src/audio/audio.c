@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   audio.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/09 13:51:27 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 16:27:31 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	close_audio(t_music_game *music_tab)
 			if (IsMusicStreamPlaying(music_tab[i].music))
 				StopMusicStream(music_tab[i].music);
 			UnloadMusicStream(music_tab[i].music);
+			if (music_tab[i].music.ctxType == 1)
+				free(music_tab[i].music.ctxData);
 		}
 		i++;
 	}
@@ -95,6 +97,8 @@ void	play_narrator(t_game *game, t_map *map_cell, t_music_game *music_tab)
 	{
 		StopMusicStream(music_tab[1].music);
 		UnloadMusicStream(music_tab[1].music);
+		if (music_tab[1].music.ctxType == 1)
+			free(music_tab[1].music.ctxData);
 		music_tab[1].map_cell->type &= ~IS_PLAYING_NARRATOR;
 		music_tab[1].map_cell = NULL;
 		music_tab[1].is_playing = false;
@@ -150,6 +154,8 @@ void	update_sounds(t_music_game *music_array)
 			else
 			{
 				UnloadMusicStream(music_array[i].music);
+				if (music_array[i].music.ctxType == 1)
+					free(music_array[i].music.ctxData);
 				music_array[i].is_playing = false;
 				if (i == 1)
 					music_array[i].map_cell->type &= ~IS_PLAYING_NARRATOR;
@@ -189,6 +195,8 @@ void	clear_sound(t_music_game *music_array)
 			if (IsMusicStreamPlaying(music_array[i].music))
 				StopMusicStream(music_array[i].music);
 			UnloadMusicStream(music_array[i].music);
+			if (music_array[i].music.ctxType == 1)
+				free(music_array[i].music.ctxData);
 			music_array[i].is_playing = false;
 		}
 		i++;

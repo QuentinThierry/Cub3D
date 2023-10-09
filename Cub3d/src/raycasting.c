@@ -6,13 +6,16 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 17:26:04 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 19:49:15 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-double	get_dist(t_game *game, double x, double y, double angle)
+static const int	g_half_screen = WIN_X * WIN_Y / 2 * 4;
+
+__attribute__((always_inline))
+static inline double	dist(t_game *game, double x, double y, double angle)
 {
 	t_fvector2	delta;
 	double		res;
@@ -26,19 +29,13 @@ double	get_dist(t_game *game, double x, double y, double angle)
 	return (res);
 }
 
-t_vector2	get_sign(double angle)
+__attribute__((always_inline))
+static inline void	draw_floor_ceiling(t_game *game)
 {
-	t_vector2	sign;
-
-	if (angle >= 0 && angle <= 180)
-		sign.x = 1;
-	else
-		sign.x = -1;
-	if (angle >= 90 && angle <= 270)
-		sign.y = 1;
-	else
-		sign.y = -1;
-	return (sign);
+	ft_memcpy(game->image->addr,
+		game->tab_images[e_ceiling]->addr, g_half_screen);
+	ft_memcpy(game->image->addr + g_half_screen,
+		game->tab_images[e_floor]->addr, g_half_screen);
 }
 
 void	raycasting(t_game *game)
@@ -48,27 +45,23 @@ void	raycasting(t_game *game)
 	double		angle;
 	t_fvector2	wall;
 	t_fvector2	fpos;
-	double		dist; 
 
-	ft_memcpy(game->image->addr, game->tab_images[e_ceiling]->addr, WIN_X * WIN_Y / 2 * 4);
-	ft_memcpy(game->image->addr + WIN_X * WIN_Y / 2 * 4, game->tab_images[e_floor]->addr, WIN_X * WIN_Y / 2 * 4);
+	draw_floor_ceiling(game);
 	fpos = game->player->f_real_pos;
 	x = -WIN_X / 2;
 	while (x < WIN_X / 2)
 	{
-		angle = atanf(x / game->constants[0]) * 180 / M_PI;
+		angle = atanf(x / game->consts[0]) * 180 / M_PI;
 		if (game->player->angle + angle >= 360)
 			angle = angle - 360;
 		if (game->player->angle + angle < 0)
 			angle = angle + 360;
-		wall = get_wall_hit(fpos, game->map, game->player->angle + angle, game->map_size);
+		wall = get_wall_hit(fpos, game->map,
+				game->player->angle + angle, game->map_size);
 		if (wall.x == -1 && wall.y == -1)
 			height = 0;
 		else
-		{
-			dist = get_dist(game, wall.x, wall.y, angle);
-			height = 1 / dist * game->constants[0];
-		}
+			height = 1 / dist(game, wall.x, wall.y, angle) * game->consts[0];
 		draw_vert(game, x + WIN_X / 2, wall, height);
 		x++;
 	}

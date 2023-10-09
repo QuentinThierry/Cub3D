@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/09 13:51:41 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 18:03:35 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,19 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/stat.h>
-# include <string.h>
-# include <strings.h>
+# include <string.h> // remove
 # include <unistd.h>
 # include <stdbool.h>
 # include <math.h>
 # include <time.h>
 # include <stdint.h>
 # include <dirent.h>
-# include <pthread.h>
-# include <signal.h>
-# include <float.h>
+# include <stdlib.h>
+# include <stdio.h>
 # include <X11/keysym.h>
 
 # include "minilibx-linux/mlx.h"
-# include "minilibx-linux/mlx_int.h"
-# include "get_next_line.h"
 # include "raudio/src/raudio.h"
-
-# include <X11/X.h>
-# include <X11/Xlib.h>
-
-# define FREE(x) free(x), x = NULL
-# define FREE_IMG(x, y) free_image(x, y), y = NULL
 
 # define WIN_X 1280 //1920 - 918 - 1280
 # define WIN_Y 720 //1080 - 468 - 720
@@ -64,7 +54,7 @@
 # define PATH_MMAP_PLAYER "../assets/minimap_player.xpm"
 # define MINIMAP_PLAYER_SIZE 12
 # define MMAP_CHUNK 20
-# define ZOOM_SPEED 10
+# define ZOOM_SPEED 50
 # define ZOOM_OFFSET 20
 # define MAX_ZOOM 20
 # define MIN_ZOOM -10
@@ -72,7 +62,8 @@
 # define MINIMAP_PAD 0.05
 # define MINIMAP_WALL_COLOR 0x505050
 # define MINIMAP_BACKGROUND_COLOR 0x808080
-# define MINIMAP_DOOR_COLOR 0x656565
+# define MINIMAP_DOOROPEN_COLOR 0x707070
+# define MINIMAP_DOORCLOSE_COLOR 0x656565
 // Represents the minimap size equals to a percentage of the total window
 # define MINIMAP_SIZE 0.25
 

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 19:40:33 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 19:45:52 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static void	init_player(char **map, t_player *player, bool *is_player,
 	else if (map[pos.y][pos.x] == 'W')
 		player->angle = 270;
 	map[pos.y][pos.x] = '0';
-	player->speed = SPEED;
 }
 
 static bool	is_player(char symbol)

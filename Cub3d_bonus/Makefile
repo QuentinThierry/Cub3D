@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
+#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/05 20:12:53 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/09 17:57:42 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3D_bonus
 
 CC = gcc
-CFLAGS = -g -Wall -Wextra#-O3#-fsanitize=address#-Werror
+CFLAGS = -g -Wall -Wextra -MMD#-O3#-fsanitize=address#-Werror
 LIBS = -L$(MINILIBX_DIR) -lmlx -lX11 -lXext -lm  -L$(RAUDIO_SRC) -lraudio
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR) -I$(RAUDIO_HEADERS)
 
@@ -42,7 +42,7 @@ RAUDIO_HEADERS = $(RAUDIO_SRC)
 RAUDIO = $(RAUDIO_SRC)/libraudio.a
 # defines for the raudio compilation :
 # - RAUDIO_STANDALONE/SUPPORT_MODULE_RAUDIO: compile raudio without all raylib; 
-# - SUPPORT_FILEFORMAT_WAV: support wav format for raudio
+# - SUPPORT_FILEFORMAT_WAV/MP3: support wav format for raudio
 # - 'TRACELOG(level, ...)': override log print function to remove unwanted logs
 RAUDIO_DEFINE = -D RAUDIO_STANDALONE -D SUPPORT_MODULE_RAUDIO -D SUPPORT_FILEFORMAT_MP3 -D SUPPORT_FILEFORMAT_WAV -D 'TRACELOG(level, ...)'
 #----------------------------------------------
@@ -153,11 +153,12 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			main.c
 
 SRC_DIR = ./src/
-SRC = $(addprefix $(SRC_DIR), $(SRC_LIST))
+SRC = $(addprefix $(SRC_DIR),$(SRC_LIST))
 
 OBJ_DIR = ./obj/
-OBJ_LIST = $(patsubst %.c, %.o, $(SRC_LIST))
+OBJ_LIST = $(patsubst %.c,%.o, $(SRC_LIST))
 OBJ = $(addprefix $(OBJ_DIR), $(OBJ_LIST))
+DEP_LIST = $(patsubst %.o,%.d, $(OBJ))
 
 all:	$(NAME)
 
@@ -174,16 +175,17 @@ prun: $(NAME)
 	./$(NAME) maps/couloir.cub
 	gprof $(NAME) gmon.out > analysis.txt
 
+-include $(DEP_LIST)
+
 $(NAME):	$(MINILIBX) $(RAUDIO) $(OBJ_DIR) $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBS) $(INCLUDES) -o $(NAME)
 
-$(OBJ_DIR)%.o:	$(SRC_DIR)%.c $(HEADERS) Makefile
+$(OBJ_DIR)%.o:	$(SRC_DIR)%.c Makefile
 	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
-	
+
 $(OBJ_DIR): Makefile
 	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(OBJ_DIR)$(GNL)
-	@mkdir -p $(OBJ_DIR)$(SOUND)
 	@mkdir -p $(OBJ_DIR)$(RAYCASTING)
 	@mkdir -p $(OBJ_DIR)$(DRAW)
 	@mkdir -p $(OBJ_DIR)$(HOOKS)
@@ -230,7 +232,7 @@ clean_audio:
 clean:
 	rm -rf $(OBJ_DIR)
 
-fclean:	clean clean_minilibx clean_audio
+fclean:	clean #clean_minilibx clean_audio
 	rm -rf $(NAME)
 
 re: fclean all

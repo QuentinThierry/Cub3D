@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 19:36:59 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 19:44:28 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <unistd.h>
 # include <stdbool.h>
 # include <math.h>
-# include <time.h>
 # include <stdint.h>
 # include <stdlib.h>
 # include <stdio.h>
@@ -31,18 +30,14 @@
 # define CHUNK_SIZE 50
 # define FOV 80
 # define MOUV 1
-# define SPEED 100
+# define SPEED 1
 # define SPRINT_BOOST 100
-# define ROTATION 75
-# define MAX_VOLUME 1.0
+# define ROTATION 1
 # define TO_RADIAN .0174532
 # define ESC 65307
 # define LEFT_ARROW 65361
 # define RIGHT_ARROW 65363
 # define SHIFT 65505
-
-extern long tot_fps;
-extern long nb_fps;
 
 enum e_orientation
 {
@@ -62,6 +57,7 @@ enum e_images
 	e_floor
 };
 
+
 typedef struct s_vector2
 {
 	int	x;
@@ -74,6 +70,12 @@ typedef struct s_fvector2
 	double	y;
 }	t_fvector2;
 
+typedef struct s_map_arg
+{
+	char 		**map;
+	t_vector2	map_size;
+} t_map_arg;
+
 typedef	struct s_player{
 	t_vector2	pos;
 	t_fvector2 	f_pos;
@@ -81,7 +83,6 @@ typedef	struct s_player{
 	double		angle;
 	t_vector2	dir;
 	int			view;
-	int			speed;
 }	t_player;
 
 typedef struct s_image
@@ -105,9 +106,8 @@ typedef struct s_game
 	char			**map;
 	t_vector2		map_size;
 	t_player		*player;
-	double			delta_time;
 	char			**filename;
-	const double	*constants;
+	const double	*consts;
 }	t_game;
 
 // ------ Utils------
@@ -125,7 +125,7 @@ void				free_tab(char **str, int sizey);
 //------- Hook ------
 int					key_press_hook(int key, t_game *game);
 int					key_release_hook(int key, t_player *player);
-void				player_move(t_player *player, double delta_time);
+void				player_move(t_player *player);
 int					on_update(t_game *game);
 
 // ------ Init ------
@@ -146,11 +146,19 @@ void				bettermlx_get_data_addr(t_image *image, t_vector2 size);
 
 // ------ Raycasting ----
 void				raycasting(t_game *game);
-t_vector2			get_sign(double angle);
-t_fvector2			get_wall_hit(t_fvector2 fpos, char **map, float angle, t_vector2 map_size);
 enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall);
 void				draw_vert(t_game *game, int x, t_fvector2 wall, double dist);
 t_image				*get_image(t_game	*game, enum e_orientation orient);
+t_fvector2			get_wall_hit(t_fvector2 fpos, char **map, float angle,
+						t_vector2 map_size);
+t_fvector2			get_wall_hit_se(t_fvector2 fpos,
+								char **map, float angle, t_vector2 map_size);
+t_fvector2			get_wall_hit_ne(t_fvector2 fpos,
+								char **map, float angle, t_vector2 map_size);
+t_fvector2			get_wall_hit_sw(t_fvector2 fpos,
+								char **map, float angle, t_vector2 map_size);
+t_fvector2			get_wall_hit_nw(t_fvector2 fpos,
+								char **map, float angle);
 
 // ------- Print -------
 void				print_error(char *error, int print);

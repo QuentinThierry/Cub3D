@@ -42,7 +42,7 @@ FIX :
 <!-- - file structure for bonus and mandatory -->
 - white space at the end of a texture printf error because file not found
 - Makefile with file headers
-- does animation continue when object on the hand ???
+<!-- - does animation continue when object on the hand ??? -->
 
 Minimap : 
 <!-- - if screen is too small, do not draw minimap -->
@@ -76,7 +76,7 @@ Objet interactif :
 <!-- - fix can't take object on our case -->
 <!-- - no random texture for the exit at the beginning and no animation -->
 <!-- - if 0 receptacle door is lock PROBLEM -->
-- directory for the hand -> don't draw the hand
+<!-- - directory for the hand -> don't draw the hand -->
 
 Exit door :
 <!-- - desactive the mouv of the player -->
@@ -94,7 +94,7 @@ Sound :
 <!-- - same for unlock door ... -->
 <!-- - need check sound if receptacle or no to get the next texture -->
 <!-- - music during the exit door ?? -->
-- No sound on simple doors
+<!-- - No sound on simple doors -->
 - Sound on a letter that doesnt exist in parsing
 
 Global :

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 18:27:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 13:51:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ bool	init_game(t_game *game, char *filename)
 		return (ft_close(game), false);
 	if (!init_mlx(game))
 		return (print_error(NULL, 0), ft_close(game), false);
-	if (!init_audio(game, game->file_music, game->nb_music))
+	if (!init_audio(game))
 		return (ft_close(game), false);
 	if (!loading_screen(game))
 		return (print_error(NULL, 0), ft_close(game), false);

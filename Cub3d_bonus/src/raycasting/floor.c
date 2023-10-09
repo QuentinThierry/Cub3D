@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/05 15:54:00 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 13:50:30 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static inline void	draw_pixel_line(t_game *game, register t_dvector2 map_point, 
 	last_map_pos.y = -(int)map_point.y;
 	while (i < WIN_X)
 	{
-		if ((game->height_tab[i] > y_screen && game->end->status == -1) || !is_in_map(map_point, game->map, game->map_size))
+		if ((game->height_tab[i] > y_screen && game->end->status == e_game) || !is_in_map(map_point, game->map, game->map_size))
 		{
 			map_point.x += step_dir.x;
 			map_point.y += step_dir.y;

@@ -6,13 +6,13 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/09 13:42:34 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 13:51:27 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-bool	init_audio(t_game *game, t_music_name *music_file, int nb_music)
+bool	init_audio(t_game *game)
 {
 	InitAudioDevice();
 	if (!IsAudioDeviceReady() || NB_MAX_SOUNDS <= 1)

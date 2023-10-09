@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 13:40:32 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 13:47:42 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ bool	ft_read_dir(DIR *dir, t_texture *texture)
 	free(texture->filename);
 	texture->filename = NULL;
 	closedir(dir);
-	if (texture->nb_file + texture->animation <= 0)
+	if (texture->nb_file + texture->nb_animation <= 0)
 		return (print_error("Empty directory\n", 1), false);
 	return (true);
 }

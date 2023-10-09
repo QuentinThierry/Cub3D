@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   door.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 13:42:51 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 14:06:08 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -327,8 +327,8 @@ void	change_adjacent_wall(t_map **map, t_vector2 map_pos, bool is_add_flag)
 {
 	bool	east_west;
 
-	east_west = (map[map_pos.y][map_pos.x + 1].type == WALL
-			&& map[map_pos.y][map_pos.x - 1].type == WALL);
+	east_west = is_only_wall(map[map_pos.y][map_pos.x + 1].type)
+			&& is_only_wall(map[map_pos.y][map_pos.x - 1].type);
 	if (is_add_flag)
 	{
 		if (east_west)

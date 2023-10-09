@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/05 17:42:33 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 20:26:42 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@
 # define DARK_COLOR_OPTION 0x101010
 # define DIST_TO_WALL 0.0999
 
-# define BACKGROUND_MUSIC "./assets/sounds/test1.mp3"
+# define BACKGROUND_MUSIC "./assets/sounds/test.wav"
 
 // KEYBINDS
 # define DFL_KEY_LEFT_MOVE 'a'
@@ -344,8 +344,6 @@ typedef struct s_animation
 	int		time_animation;
 }	t_animation;
 
-char		*ft_strdup(const char *s);
-
 typedef struct s_texture
 {
 	char				*filename;				//file
@@ -514,6 +512,7 @@ int			find_next_wsp(char *line , int i);
 void		draw_rectangle(t_image *image, t_vector2 pos, t_vector2 size, t_pixel32 color);
 void		print_error(char *error, int print);
 bool		is_only_wall(unsigned int type);
+char		*ft_strdup(const char *s);
 
 // -------Parsing-------
 void		exit_door_no_receptacle(t_map *exit, int nb_receptacle, t_image *tab_image);

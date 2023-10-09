@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 19:52:52 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 13:40:32 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -568,6 +568,5 @@ bool	parse_texture(int fd, t_game *game, int *nb_line, char **rest)
 	*rest = line;
 	if (!check_texture(game->filename))
 		return (print_error("need the mandatory texture\n", 1), free(line), false);
-	printf_texture(game);
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/05 15:23:15 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 13:40:26 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,29 +91,26 @@ void	play_music(t_map *map_cell, t_music_game *music_tab, char *filename
 
 void	play_narrator(t_game *game, t_map *map_cell, t_music_game *music_tab)
 {
-	t_music_game	*music;
-
-	music = &music_tab[1];
-	if (music->is_playing == true)
+	if (music_tab[1].is_playing == true)
 	{
-		StopMusicStream(music->music);
-		UnloadMusicStream(music->music);
-		music->map_cell->type &= ~IS_PLAYING_NARRATOR;
-		music->map_cell = NULL;
-		music->is_playing = false;
-		music->is_subtitle = false;
+		StopMusicStream(music_tab[1].music);
+		UnloadMusicStream(music_tab[1].music);
+		music_tab[1].map_cell->type &= ~IS_PLAYING_NARRATOR;
+		music_tab[1].map_cell = NULL;
+		music_tab[1].is_playing = false;
+		music_tab[1].is_subtitle = false;
 		map_cell->narrator->offset = 0;
 	}
-	music->music = LoadMusicStream(map_cell->narrator->filename);
-	if (!IsMusicReady(music->music))
+	music_tab[1].music = LoadMusicStream(map_cell->narrator->filename);
+	if (!IsMusicReady(music_tab[1].music))
 		return ;
-	music->music.looping = false;
-	music->is_subtitle = true;
-	music->map_cell = map_cell;
-	music->is_playing = true;
+	music_tab[1].music.looping = false;
+	music_tab[1].is_subtitle = true;
+	music_tab[1].map_cell = map_cell;
+	music_tab[1].is_playing = true;
 	map_cell->type |= IS_PLAYING_NARRATOR;
 	map_cell->narrator->time = game->time;
-	PlayMusicStream(music->music);
+	PlayMusicStream(music_tab[1].music);
 }
 
 void	set_next_narrator(t_map *map_cell)
@@ -153,11 +150,11 @@ void	update_sounds(t_music_game *music_array)
 			else
 			{
 				UnloadMusicStream(music_array[i].music);
+				music_array[i].is_playing = false;
 				if (i == 1)
 					music_array[i].map_cell->type &= ~IS_PLAYING_NARRATOR;
 				else
 					music_array[i].map_cell->type &= ~IS_PLAYING_MUSIC & ~IS_PLAYING_MUSIC_OBJECT;
-				music_array[i].is_playing = false;
 			}
 		}
 		i++;

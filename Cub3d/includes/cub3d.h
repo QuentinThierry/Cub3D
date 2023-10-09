@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 15:22:58 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 17:15:08 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,10 @@
 #define ROTATION 75
 #define MAX_VOLUME 1.0
 #define TO_RADIAN .0174532
+#define ESC 65307
+#define LEFT_ARROW 65361
+#define RIGHT_ARROW 65363
+#define SHIFT 65505
 
 extern long tot_fps;
 extern long nb_fps;

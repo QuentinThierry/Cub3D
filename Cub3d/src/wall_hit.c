@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wall_hit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/07/07 22:14:15 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 17:28:21 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static inline t_fvector2	_get_wall_hit_se(t_fvector2 fpos,
 			comp.y += step.y;
 			map_pos.x += 1;
 		}
-		else 
+		else
 		{
 			if ((int)(comp.x) >= map_size.x || map_pos.y >= map_size.y)
 				return ((t_fvector2){-1, -1});
@@ -152,12 +152,13 @@ static inline t_fvector2	_get_wall_hit_nw(t_fvector2 fpos,
 	}
 }
 
-inline t_fvector2	get_wall_hit(t_fvector2 fpos, char **map, float angle, t_vector2 map_size)
+inline t_fvector2	get_wall_hit(t_fvector2 fpos, char **map, float angle,
+		t_vector2 map_size)
 {
 	t_vector2	sign;
 
 	if (fpos.x < 0 || fpos.y < 0 || fpos.x > map_size.x || fpos.y > map_size.y)
-		return((t_fvector2){-1, -1});
+		return ((t_fvector2){-1, -1});
 	sign = get_sign(angle);
 	angle = fabs(tan(angle * TO_RADIAN));
 	if (sign.x == 1 && sign.y == 1)

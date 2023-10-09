@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_close.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 22:15:44 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 17:10:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	destroy_all_images(t_game *game)
 
 	if (game->image)
 	{
-		if (game->image->img)
+		if (game->mlx_ptr && game->image->img)
 			mlx_destroy_image(game->mlx_ptr, game->image->img);
 		free(game->image);
 	}
@@ -27,7 +27,8 @@ void	destroy_all_images(t_game *game)
 		i = 0;
 		while (i < 6)
 		{
-			if (game->tab_images[i] && game->tab_images[i]->img)
+			if (game->mlx_ptr && game->tab_images[i] 
+				&& game->tab_images[i]->img)
 				mlx_destroy_image(game->mlx_ptr, game->tab_images[i]->img);
 			free(game->tab_images[i]);
 			i++;
@@ -40,9 +41,7 @@ int	ft_close(t_game *game)
 {
 	int	i;
 
-	if (!game->mlx_ptr)
-		exit(0);
-	if (game->win)
+	if (game->mlx_ptr && game->win)
 		mlx_destroy_window(game->mlx_ptr, game->win);
 	destroy_all_images(game);
 	if (game->map)
@@ -55,7 +54,8 @@ int	ft_close(t_game *game)
 	free(game->player);
 	if (game->filename)
 		free_tab(game->filename, 4);
-	mlx_destroy_display(game->mlx_ptr);
+	if (game->mlx_ptr)
+		mlx_destroy_display(game->mlx_ptr);
 	free(game->mlx_ptr);
 	if (nb_fps)
 		printf("Moyenne fps : %ld\n", (long)tot_fps / nb_fps);

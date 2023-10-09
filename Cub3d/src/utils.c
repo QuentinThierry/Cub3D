@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 15:17:36 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 17:27:05 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall)
 		if (player.f_real_pos.y > wall.y)
 			return (e_north);
 		else
-		 	return (e_south);
+			return (e_south);
 	}
 	else
 	{
 		if (player.f_real_pos.x > wall.x)
 			return (e_west);
 		else
-		 	return (e_east);
+			return (e_east);
 	}
 }
 
@@ -35,14 +35,13 @@ t_image	*get_image(t_game *game, enum e_orientation orient)
 	return (game->tab_images[orient]);
 }
 
-
-int skip_whitespace(char *str)
+int	skip_whitespace(char *str)
 {
 	int	i;
 
 	i = 0;
 	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\v' || str[i] == '\n'
-			|| str[i] == '\f' || str[i] == '\r')
+		|| str[i] == '\f' || str[i] == '\r')
 		i++;
 	return (i);
 }

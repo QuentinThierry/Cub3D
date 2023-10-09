@@ -6,13 +6,13 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 17:13:27 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 17:32:33 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-bool	init_mlx(t_game *game)
+static bool	_init_mlx(t_game *game)
 {
 	game->mlx_ptr = mlx_init();
 	if (!game->mlx_ptr)
@@ -67,7 +67,7 @@ static bool	load_floor_ceiling_img(t_image **tab_image, t_game *game)
 	return (true);
 }
 
-bool	load_image(t_game *game)
+static bool	_load_image(t_game *game)
 {
 	int	i;
 
@@ -102,9 +102,9 @@ bool	load_image(t_game *game)
 
 bool	init_all(t_game *game)
 {
-	if (!init_mlx(game))
+	if (!_init_mlx(game))
 		return (print_error(NULL, 0), false);
-	if (!load_image(game))
+	if (!_load_image(game))
 		return (print_error(NULL, 0), false);
 	return (true);
 }

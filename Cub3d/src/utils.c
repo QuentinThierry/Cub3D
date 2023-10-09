@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 17:27:05 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 17:31:17 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,19 +127,6 @@ void	free_tab(char **str, int sizey)
 
 	i = 0;
 	while (i < sizey)
-	{
-		free(str[i]);
-		i++;
-	}
-	free(str);
-}
-
-void	free_str(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != NULL)
 	{
 		free(str[i]);
 		i++;

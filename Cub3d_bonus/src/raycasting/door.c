@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 17:23:00 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 13:42:51 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -401,19 +401,19 @@ void	open_door(t_game *game)
 		if (door->is_opening_door == 1)
 		{
 			door->is_opening_door = -1;
-			door->time = game->time;
+			// door->time = game->time;
 		}
 		else if (door->is_opening_door == -1)
 		{
 			door->is_opening_door = 1;
-			door->time = game->time;
+			// door->time = game->time;
 		}
 		else
 		{
 			if (door->door_percent == 0)
 			{
 				door->is_opening_door = 1;
-				door->time = game->time;
+				// door->time = game->time;
 			}
 			else
 			{
@@ -421,7 +421,7 @@ void	open_door(t_game *game)
 					return ;
 				door->is_opening_door = -1;
 				game->map[(int)ray.hit.y][(int)ray.hit.x].type |= WALL;
-				door->time = game->time;
+				// door->time = game->time;
 			}
 		}
 	}

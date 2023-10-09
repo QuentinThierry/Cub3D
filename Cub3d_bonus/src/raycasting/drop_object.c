@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drop_object.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:00:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 15:52:16 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/05 20:40:28 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	_unlock_door(t_game *game, t_map *map_cell, t_player *player, t_musi
 	map_cell->type |= DOOR_UNLOCK;
 	map_cell->sprite[e_door_image] = map_cell->sprite[e_door_image + 1];
 	((t_door *)map_cell->arg)->is_opening_door = 1;
-	((t_door *)map_cell->arg)->time = game->time;
+	// ((t_door *)map_cell->arg)->time = game->time;
 	if ((map_cell->type & MUSIC) == MUSIC)
 	{
 		map_cell->music = get_music(game->file_music, game->nb_music, map_cell->symbol, e_music_receptacle_complete);

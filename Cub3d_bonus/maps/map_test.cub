@@ -32,6 +32,10 @@ R_a_d ./assets/smiley.xpm ./assets/cobble.xpm
 T_5 ./assets/exit
 MR_5 ./assets/sounds/game-ove.wav ./assets/sounds/countdown.wav
 
+D_d_y ./assets/door.xpm ./assets/door.xpm
+MR_y ./assets/sounds/laugh.wav ./assets/sounds/scream.wav
+OW_t ./assets/cobble.xpm
+
 MAP
 1111111111111111111111111111
 1000000i0000000001000000001

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 18:55:30 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 13:42:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ int	on_update(t_game *game)
 	long					fps;
 
 	if (last_time.tv_sec == 0)
+	{
+		game->last_time = &last_time;
 		clock_gettime(CLOCK_REALTIME, &last_time);
+	}
 	clock_gettime(CLOCK_REALTIME, &time);
 	update_sounds(game->music_array);
 	game->time = time_to_long(&time);

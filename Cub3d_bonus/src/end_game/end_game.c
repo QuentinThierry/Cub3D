@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 18:10:31 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/05 18:41:28 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 13:42:42 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	open_exit(t_game *game, t_door *door, t_end *end)
 	if (door->is_opening_door == 0)
 	{
 		door->is_opening_door = 1;
-		door->time = game->time;
+		// door->time = game->time;
 	}
 	end_step_door_open(game->delta_time, game->exit, game->map, end);
 	if (door->door_percent == 90)

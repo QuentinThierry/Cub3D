@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/09 18:47:48 by qthierry         ###   ########.fr        #
+#    Updated: 2023/10/09 19:36:07 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,10 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			ft_strncmp.c \
 			ft_strdup.c \
 			ft_memset.c \
+			wall_hit_se.c \
+			wall_hit_sw.c \
+			wall_hit_ne.c \
+			wall_hit_nw.c \
 			main.c
 
 SRC_DIR = ./src/

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 18:41:50 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 18:59:18 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	main(int argc, char **argv)
 		return (ft_close(&game), 1);
 	if (!init_all(&game))
 		return (ft_close(&game), 1);
-	game.constants = (double[5]){WIN_X / tan((FOV / 2.0) * TO_RADIAN)};
+	game.consts = (double[5]){WIN_X / tan((FOV / 2.0) * TO_RADIAN)};
 	mlx_hook(game.win, 02, (1L << 0), key_press_hook, &game);
 	mlx_hook(game.win, 03, (1L << 1), key_release_hook, game.player);
 	mlx_hook(game.win, 17, (1L << 5), ft_close, &game);

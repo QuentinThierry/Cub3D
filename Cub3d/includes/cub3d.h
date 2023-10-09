@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 18:45:57 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 19:35:01 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ enum e_images
 	e_floor
 };
 
+
 typedef struct s_vector2
 {
 	int	x;
@@ -68,6 +69,12 @@ typedef struct s_fvector2
 	double	x;
 	double	y;
 }	t_fvector2;
+
+typedef struct s_map_arg
+{
+	char 		**map;
+	t_vector2	map_size;
+} t_map_arg;
 
 typedef	struct s_player{
 	t_vector2	pos;
@@ -100,7 +107,7 @@ typedef struct s_game
 	t_vector2		map_size;
 	t_player		*player;
 	char			**filename;
-	const double	*constants;
+	const double	*consts;
 }	t_game;
 
 // ------ Utils------
@@ -136,11 +143,23 @@ void				bettermlx_get_data_addr(t_image *image, t_vector2 size);
 
 // ------ Raycasting ----
 void				raycasting(t_game *game);
-t_vector2			get_sign(double angle);
 t_fvector2			get_wall_hit(t_fvector2 fpos, char **map, float angle, t_vector2 map_size);
 enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall);
 void				draw_vert(t_game *game, int x, t_fvector2 wall, double dist);
 t_image				*get_image(t_game	*game, enum e_orientation orient);
+
+// ------- wall_hit_se -------
+t_fvector2	get_wall_hit_se(t_fvector2 fpos,
+								char **map, float angle, t_vector2 map_size);
+// ------- wall_hit_ne -------
+t_fvector2	get_wall_hit_ne(t_fvector2 fpos,
+								char **map, float angle, t_vector2 map_size);
+// ------- wall_hit_sw -------
+t_fvector2	get_wall_hit_sw(t_fvector2 fpos,
+								char **map, float angle, t_vector2 map_size);
+// ------- wall_hit_nw -------
+t_fvector2	get_wall_hit_nw(t_fvector2 fpos,
+								char **map, float angle);
 
 // ------- Print -------
 void				print_error(char *error, int print);

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 17:32:33 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 18:35:21 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@ static bool	_init_mlx(t_game *game)
 	game->win = mlx_new_window(game->mlx_ptr, WIN_X, WIN_Y, "cub3D");
 	if (!game->win)
 		return (false);
+	game->image = ft_calloc(1, sizeof(t_image));
+	if (game->image == NULL)
+		return (false);
+	game->image->img = mlx_new_image(game->mlx_ptr, WIN_X, WIN_Y);
+	if (game->image->img == NULL)
+		return (false);
+	bettermlx_get_data_addr(game->image, (t_vector2){WIN_X, WIN_Y});
 	return (true);
 }
 
@@ -71,13 +78,6 @@ static bool	_load_image(t_game *game)
 {
 	int	i;
 
-	game->image = ft_calloc(1, sizeof(t_image));
-	if (game->image == NULL)
-		return (false);
-	game->image->img = mlx_new_image(game->mlx_ptr, WIN_X, WIN_Y);
-	if (game->image->img == NULL)
-		return (false);
-	bettermlx_get_data_addr(game->image, (t_vector2){WIN_X, WIN_Y});
 	game->tab_images = ft_calloc(6, sizeof(t_image *));
 	if (!game->tab_images)
 		return (false);

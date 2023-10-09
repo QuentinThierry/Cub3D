@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 18:08:48 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 19:37:32 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,16 @@ int	ft_strlen(char *str)
 	{
 		i++;
 	}
+	return (i);
+}
+
+
+int	find_next_wsp(char *line, int i)
+{
+	while (line[i] != '\0' && !(line[i] == ' ' || line[i] == '\t'
+			|| line[i] == '\v' || line[i] == '\n' || line[i] == '\f'
+			|| line[i] == '\r'))
+		i++;
 	return (i);
 }
 

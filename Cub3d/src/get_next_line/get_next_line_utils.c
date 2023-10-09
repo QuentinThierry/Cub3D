@@ -6,12 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:06:58 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 18:07:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 18:34:01 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/get_next_line.h"
-
 
 ssize_t	find_end_line(char const *str, ssize_t len)
 {

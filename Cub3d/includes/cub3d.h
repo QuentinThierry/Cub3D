@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 18:10:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 19:36:59 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,9 @@ void				player_move(t_player *player, double delta_time);
 int					on_update(t_game *game);
 
 // ------ Init ------
+bool				parse_map(char *filename, t_game *game, int nb_line);
+bool				create_map(t_game *game, int fd, char *line);
+bool				find_color(char *str, t_game *game, char texture);
 bool				init_all(t_game *game);
 int					find_next_wsp(char *line, int i);
 bool				parse_file(char *filename, t_game *game);

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/09 16:27:35 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 18:03:35 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,19 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/stat.h>
-# include <string.h>
-# include <strings.h>
+# include <string.h> // remove
 # include <unistd.h>
 # include <stdbool.h>
 # include <math.h>
 # include <time.h>
 # include <stdint.h>
 # include <dirent.h>
-# include <pthread.h>
-# include <signal.h>
-# include <float.h>
+# include <stdlib.h>
+# include <stdio.h>
 # include <X11/keysym.h>
 
 # include "minilibx-linux/mlx.h"
-# include "minilibx-linux/mlx_int.h"
-# include "get_next_line.h"
 # include "raudio/src/raudio.h"
-
-# include <X11/X.h>
-# include <X11/Xlib.h>
-
-# define FREE(x) free(x), x = NULL
-# define FREE_IMG(x, y) free_image(x, y), y = NULL
 
 # define WIN_X 1280 //1920 - 918 - 1280
 # define WIN_Y 720 //1080 - 468 - 720

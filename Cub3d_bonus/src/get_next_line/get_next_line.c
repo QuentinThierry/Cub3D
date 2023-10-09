@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:07:06 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/17 15:51:52 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 17:54:51 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../../includes/get_next_line.h"
 
 char	*get_next_line(int fd)
 {

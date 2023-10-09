@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 18:46:37 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 17:55:05 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
+#include "../../includes/get_next_line.h"
 
 void	remove_end_whitespace(char *str)
 {

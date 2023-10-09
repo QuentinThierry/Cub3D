@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   move.c                                             :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/19 19:11:50 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 15:00:31 by jvigny           ###   ########.fr       */
+/*   Created: 2022/11/08 10:14:05 by jvigny            #+#    #+#             */
+/*   Updated: 2023/10/09 15:22:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	move_forward(t_player *player)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	t_vector2 sign;
-	
-	sign = get_sign(player->angle);
-	player->f_pos.x += sin(player->angle) * MOUV * sign.x;
-	player->pos.x = (int)player->f_pos.x;
-	player->f_real_pos.x = player->f_pos.x / CHUNK_SIZE;
-	player->f_pos.y += cos(player->angle) * MOUV * sign.y;
-	player->pos.y = (int)player->f_pos.y;
-	player->f_real_pos.y = player->f_pos.y / CHUNK_SIZE;
+	size_t			i;
+	unsigned char	tmp;
+	unsigned char	*tmp2;
+
+	tmp = (unsigned char)c;
+	tmp2 = (unsigned char *)s;
+	i = 0;
+	while (i < n)
+	{
+		tmp2[i] = tmp;
+		i++;
+	}
+	return (s);
 }

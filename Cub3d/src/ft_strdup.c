@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   move.c                                             :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/19 19:11:50 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 15:00:31 by jvigny           ###   ########.fr       */
+/*   Created: 2022/11/08 18:04:11 by jvigny            #+#    #+#             */
+/*   Updated: 2023/10/09 15:20:26 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	move_forward(t_player *player)
+char	*ft_strdup(const char *s)
 {
-	t_vector2 sign;
-	
-	sign = get_sign(player->angle);
-	player->f_pos.x += sin(player->angle) * MOUV * sign.x;
-	player->pos.x = (int)player->f_pos.x;
-	player->f_real_pos.x = player->f_pos.x / CHUNK_SIZE;
-	player->f_pos.y += cos(player->angle) * MOUV * sign.y;
-	player->pos.y = (int)player->f_pos.y;
-	player->f_real_pos.y = player->f_pos.y / CHUNK_SIZE;
+	char	*res;
+	size_t	len;
+	size_t	i;
+
+	i = 0;
+	len = ft_strlen((char *)s);
+	res = ft_calloc(sizeof(char), len + 1);
+	if (res == 0)
+		return (0);
+	while (i < len)
+	{
+		res[i] = s[i];
+		i++;
+	}
+	res[i] = 0;
+	return (res);
 }

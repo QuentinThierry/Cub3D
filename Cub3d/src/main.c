@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 21:45:04 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:12:01 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,6 @@ int	on_update(t_game *game)
 
 	if (last_time.tv_sec == 0)
 		clock_gettime(CLOCK_REALTIME, &last_time);
-	
-
-
-	
 	if (game->player->angle + game->player->angle >= 360)
 		game->player->angle = game->player->angle - 360;
 	if (game->player->angle + game->player->angle < 0)
@@ -34,10 +30,6 @@ int	on_update(t_game *game)
 	player_move(game->player, game->delta_time);
 	raycasting(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
-	
-
-
-	
 	clock_gettime(CLOCK_REALTIME, &cur_time);
 	game->delta_time = (cur_time.tv_sec - last_time.tv_sec + (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
 	fps = (long)(1.0 / game->delta_time);
@@ -56,8 +48,12 @@ int main(int argc, char **argv)
 	game = (t_game){0};
 	if (argc != 2)
 		return (printf("Error : Invalid nubmber of arguments\n"), 1);
+	if (WIN_X < 100 || WIN_Y < 100)
+		return (print_error("Invalid window size\n", 1), 1);
 	game.filename = ft_calloc(4, sizeof(char *));
-	if (parse_file(argv[1], &game) == -1)
+	if (game.filename == NULL)
+		return (print_error(NULL, 0), 1);
+	if (!parse_file(argv[1], &game))
 		return (1);
 	if (!check_map(&game))
 		return (1);

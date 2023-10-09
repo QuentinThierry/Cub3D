@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/08/13 19:05:36 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:22:58 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,16 +110,20 @@ typedef struct s_game
 }	t_game;
 
 // ------ Utils------
-void	*ft_calloc(size_t nmemb, size_t size);
-enum e_orientation	get_wall_orientation(t_game *game, t_player player, t_fvector2 wall);
-t_image	*get_image(t_game	*game, enum e_orientation orient);
-int skip_whitespace(char *str);
-t_vector2	get_dimension_maps(int fd, int nb_line, char *line, bool *error);
-void	remove_new_line(char *str);
+void		*ft_calloc(size_t nmemb, size_t size);
+enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall);
+t_image		*get_image(t_game	*game, enum e_orientation orient);
+int			skip_whitespace(char *str);
+t_vector2	get_dimension_maps(int fd, char *line, bool *error);
+void		remove_new_line(char *str);
 extern void	*ft_memcpy(void *dest, const void *src, const size_t n);
-void	printf_texture(t_game *game);
-void	free_tab(char **str, int sizey);
-void	free_str(char **str);
+void		printf_texture(t_game *game);
+void		free_tab(char **str, int sizey);
+void		free_str(char **str);
+int			ft_strlen(char *str);
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
+char		*ft_strdup(const char *s);
+void		*ft_memset(void *s, int c, size_t n);
 
 bool		init_mlx(t_game *game);
 bool		load_image(t_game *game);
@@ -134,13 +138,14 @@ int			on_update(t_game *game);
 void		move_forward(t_player *player);
 t_vector2	get_sign(double angle);
 int			ft_close(t_game *game);
-int			parse_file(char *filename, t_game *game);
+bool			parse_file(char *filename, t_game *game);
 void		print_map(t_game *game);
 t_fvector2	get_wall_hit(t_fvector2 fpos, char **map, float angle, t_vector2 map_size);
 bool		check_map(t_game *game);
+void		print_error(char *error, int print);
 
 // bettermlx.c
-void	bettermlx_get_data_addr(t_image *image, t_vector2 size);
+void		bettermlx_get_data_addr(t_image *image, t_vector2 size);
 
 // --------2D--------
 t_fvector2	get_wall_hit_2d(t_game *gavoidme, double angle);
@@ -149,6 +154,6 @@ void		quadrillage(t_game *game);
 bool		find_player(t_game *game);
 
 // ------Init.c -------
-bool	init_all(t_game *game);
+bool		init_all(t_game *game);
 
 #endif

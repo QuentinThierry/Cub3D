@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 22:03:05 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:17:36 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-enum e_orientation	get_wall_orientation(t_game *game, t_player player, t_fvector2 wall)
+enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall)
 {
 	if ((wall.x - (int)wall.x) != 0)
 	{
@@ -47,18 +47,53 @@ int skip_whitespace(char *str)
 	return (i);
 }
 
+int	ft_strlen(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		i++;
+	}
+	return (i);
+}
+
 void	remove_new_line(char *str)
 {
 	int	len;
 
-	len = strlen(str);
+	len = ft_strlen(str);
 	if (len >= 1 && str[len - 1] == '\n')
 		str[len - 1] = '\0';
 }
 
-t_vector2	get_dimension_maps(int fd, int nb_line, char *line, bool *error)
+void	remove_end_whitespace(char *str)
 {
-	int			i;
+	int	i;
+
+	i = ft_strlen(str) - 1;
+	if (i <= 0)
+		return ;
+	while (i >= 0 && (str[i] == ' ' || str[i] == '\t' || str[i] == '\v'
+			|| str[i] == '\n' || str[i] == '\f' || str[i] == '\r'))
+		i--;
+	if (i + 1 < ft_strlen(str))
+		str[i + 1] = '\0';
+	return ;
+}
+
+/**
+ * @brief Get the dimension of the map in the file
+ * 
+ * @param fd fd to read the map and until the end of the file
+ * @param line last line read in the file with gnl
+ * @param error set on true if error occurs during the function NOT USE FOR
+ * 		THE MOMENT
+ * @return t_vector2 width and lenght of the map
+ */
+t_vector2	get_dimension_maps(int fd, char *line, bool *error)
+{
 	t_vector2	len;
 
 	*error = false;
@@ -66,12 +101,11 @@ t_vector2	get_dimension_maps(int fd, int nb_line, char *line, bool *error)
 	len.x = 0;
 	while (line != NULL)
 	{
-		i = skip_whitespace(line);
-		if (line[0] == '\n' || line[0] == '\0')
-			break;
-		remove_new_line(line);
-		if (len.x < (int)strlen(line))
-			len.x = strlen(line);
+		if (line[0] == '\n')
+			break ;
+		remove_end_whitespace(line);
+		if (len.x < (int)ft_strlen(line))
+			len.x = ft_strlen(line);
 		len.y++;
 		free(line);
 		line = get_next_line(fd);

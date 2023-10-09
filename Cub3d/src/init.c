@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/16 22:13:58 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:02:11 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 bool	init_mlx(t_game *game)
 {
-	t_image		*img;
-
 	game->mlx_ptr = mlx_init();
 	if (!game->mlx_ptr)
 		return (false);
@@ -101,8 +99,8 @@ bool	load_image(t_game *game)
 bool	init_all(t_game *game)
 {
 	if (!init_mlx(game))
-		return (ft_close(game), perror("Error"), 1);
+		return (ft_close(game), print_error(NULL, 0), 1);
 	if (!load_image(game))
-		return (ft_close(game), perror("Error"), 1);
+		return (ft_close(game), print_error(NULL, 0), 1);
 	return (true);
 }

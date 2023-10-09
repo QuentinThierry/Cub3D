@@ -3,21 +3,19 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
+#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/09 18:04:09 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/09 18:47:48 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3D
 
 CC = gcc
-CFLAGS = -g -Wall -Wextra# -03#-Werror
+CFLAGS = -g -Wall -Wextra -MMD# -03#-Werror
 LIBS = -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR)
-
-REDIRECT_ERROR = >/dev/null 2>&1
 
 # ------------------MLX-------------------
 MINILIBX_URL = https://github.com/42Paris/minilibx-linux.git
@@ -26,6 +24,7 @@ MINILIBX_HEADERS = $(MINILIBX_DIR)
 MINILIBX = $(MINILIBX_DIR)libmlx.a
 # ----------------------------------------
 
+REDIRECT_ERROR = >/dev/null 2>&1
 RESET_COLOR	:= \033[0m
 RED			:= \033[0;31m
 GREEN		:= \033[0;32m
@@ -64,6 +63,7 @@ SRC = $(addprefix $(SRC_DIR), $(SRC_LIST))
 OBJ_DIR = ./obj/
 OBJ_LIST = $(patsubst %.c, %.o, $(SRC_LIST))
 OBJ = $(addprefix $(OBJ_DIR), $(OBJ_LIST))
+DEP_LIST = $(patsubst %.o,%.d, $(OBJ))
 
 all:	$(NAME)
 
@@ -76,14 +76,16 @@ vrun: $(NAME)
 	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) maps/map.cub
 
 prun: CFLAGS += -pg
-prun: $(NAME)
+prun: clean $(NAME)
 	./$(NAME)
 	gprof cub3d gmon.out > analysis.txt
+
+-include $(DEP_LIST)
 
 $(NAME):	$(MINILIBX) $(OBJ_DIR) $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBS) $(INCLUDES) -o $(NAME)
 
-$(OBJ_DIR)%.o:	$(SRC_DIR)%.c $(HEADERS) Makefile
+$(OBJ_DIR)%.o:	$(SRC_DIR)%.c Makefile
 	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
 	
 $(OBJ_DIR): Makefile

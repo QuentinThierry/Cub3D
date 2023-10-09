@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 18:15:00 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 18:44:39 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,6 @@ bool	find_player(t_game *game)
 		}
 		index.y++;
 	}
-	player->speed = SPEED;
 	game->player = player;
 	if (is_player == false)
 		print_error("No player found on the map\n", 1);

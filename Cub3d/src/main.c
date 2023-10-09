@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 17:20:16 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 18:41:50 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,13 @@ long nb_fps = 0;
 
 int	on_update(t_game *game)
 {
-	static struct timespec	last_time = {0};
-	struct timespec			cur_time;
-	long					fps;
-
-	if (last_time.tv_sec == 0)
-		clock_gettime(CLOCK_REALTIME, &last_time);
 	if (game->player->angle + game->player->angle >= 360)
 		game->player->angle = game->player->angle - 360;
 	if (game->player->angle + game->player->angle < 0)
 		game->player->angle = game->player->angle + 360;
-	player_move(game->player, game->delta_time);
+	player_move(game->player);
 	raycasting(game);
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
-	clock_gettime(CLOCK_REALTIME, &cur_time);
-	game->delta_time = (cur_time.tv_sec - last_time.tv_sec + (cur_time.tv_nsec
-				- last_time.tv_nsec) / 1000000000.F);
-	fps = (long)(1.0 / game->delta_time);
-	tot_fps += fps;
-	nb_fps++;
-	if ((nb_fps % 50) == 0)
-		printf("fps : %ld\n", fps);
-	last_time = cur_time;
 	return (0);
 }
 

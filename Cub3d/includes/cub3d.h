@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 18:10:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 18:45:57 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <unistd.h>
 # include <stdbool.h>
 # include <math.h>
-# include <time.h>
 # include <stdint.h>
 # include <stdlib.h>
 # include <stdio.h>
@@ -31,18 +30,14 @@
 # define CHUNK_SIZE 50
 # define FOV 80
 # define MOUV 1
-# define SPEED 100
+# define SPEED 1
 # define SPRINT_BOOST 100
-# define ROTATION 75
-# define MAX_VOLUME 1.0
+# define ROTATION 1
 # define TO_RADIAN .0174532
 # define ESC 65307
 # define LEFT_ARROW 65361
 # define RIGHT_ARROW 65363
 # define SHIFT 65505
-
-extern long tot_fps;
-extern long nb_fps;
 
 enum e_orientation
 {
@@ -81,7 +76,6 @@ typedef	struct s_player{
 	double		angle;
 	t_vector2	dir;
 	int			view;
-	int			speed;
 }	t_player;
 
 typedef struct s_image
@@ -105,7 +99,6 @@ typedef struct s_game
 	char			**map;
 	t_vector2		map_size;
 	t_player		*player;
-	double			delta_time;
 	char			**filename;
 	const double	*constants;
 }	t_game;
@@ -125,7 +118,7 @@ void				free_tab(char **str, int sizey);
 //------- Hook ------
 int					key_press_hook(int key, t_game *game);
 int					key_release_hook(int key, t_player *player);
-void				player_move(t_player *player, double delta_time);
+void				player_move(t_player *player);
 int					on_update(t_game *game);
 
 // ------ Init ------

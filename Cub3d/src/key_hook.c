@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 17:16:38 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 18:43:30 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ int	key_press_hook(int key, t_game *game)
 		game->player->dir.y -= 1;
 	if (key == 's')
 		game->player->dir.y += 1;
-	if (key == SHIFT)
-		game->player->speed += SPRINT_BOOST;
 	return (0);
 }
 
@@ -47,31 +45,29 @@ int	key_release_hook(int key, t_player *player)
 		player->dir.y += 1;
 	if (key == 's')
 		player->dir.y -= 1;
-	if (key == SHIFT)
-		player->speed -= SPRINT_BOOST;
 	return (0);
 }
 
-void	player_move(t_player *player, double delta_time)
+void	player_move(t_player *player)
 {
 	t_fvector2	move_value;
 
 	if (player->view != 0)
-		player->angle += ROTATION * delta_time * player->view;
+		player->angle += ROTATION * player->view;
 	move_value.x = 0;
 	move_value.y = 0;
 	if (player->dir.y != 0)
 	{
-		move_value.x -= sinf(player->angle * TO_RADIAN) * player->speed
+		move_value.x -= sinf(player->angle * TO_RADIAN) * SPEED
 			* player->dir.y;
-		move_value.y += cosf(player->angle * TO_RADIAN) * player->speed
+		move_value.y += cosf(player->angle * TO_RADIAN) * SPEED
 			* player->dir.y;
 	}
 	if (player->dir.x != 0)
 	{
-		move_value.x += cosf(player->angle * TO_RADIAN) * player->speed
+		move_value.x += cosf(player->angle * TO_RADIAN) * SPEED
 			* player->dir.x;
-		move_value.y += sinf(player->angle * TO_RADIAN) * player->speed
+		move_value.y += sinf(player->angle * TO_RADIAN) * SPEED
 			* player->dir.x;
 	}
 	if (player->dir.x != 0 || player->dir.y != 0)
@@ -81,8 +77,8 @@ void	player_move(t_player *player, double delta_time)
 	}
 	if (player->dir.x != 0 || player->dir.y != 0)
 	{
-		player->f_pos.x += move_value.x * delta_time;
-		player->f_pos.y += move_value.y * delta_time;
+		player->f_pos.x += move_value.x;
+		player->f_pos.y += move_value.y;
 		player->pos.y = (int)player->f_pos.y;
 		player->pos.x = (int)player->f_pos.x;
 		player->f_real_pos.y = player->f_pos.y / CHUNK_SIZE;

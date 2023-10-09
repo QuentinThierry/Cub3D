@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 21:27:20 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/09 17:08:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 18:10:54 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool	check_map(t_game *game)
 			if (map[y][x] == '0')
 			{
 				if (!_check_sides(map, x, y, game->map_size))
-					return (print_error("Error : Map not closed\n", 1), false);
+					return (print_error("Map not closed\n", 1), false);
 			}
 			x++;
 		}

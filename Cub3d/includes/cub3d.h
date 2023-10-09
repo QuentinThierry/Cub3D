@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 17:40:35 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 18:10:01 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,15 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/stat.h>
-# include <string.h>
-# include <strings.h>
 # include <unistd.h>
 # include <stdbool.h>
 # include <math.h>
 # include <time.h>
 # include <stdint.h>
+# include <stdlib.h>
+# include <stdio.h>
 
 # include "minilibx-linux/mlx.h"
-# include "get_next_line.h"
-
-# include <X11/X.h>
 
 # define WIN_X 1080 //1920 - 918
 # define WIN_Y 1080 //1080 - 468
@@ -133,7 +130,10 @@ int					on_update(t_game *game);
 
 // ------ Init ------
 bool				init_all(t_game *game);
+int					find_next_wsp(char *line, int i);
 bool				parse_file(char *filename, t_game *game);
+bool				parse_texture(int fd, t_game *game, int *nb_line,
+						char **rest);
 t_vector2			get_dimension_maps(int fd, char *line, bool *error);
 bool				find_player(t_game *game);
 int					skip_whitespace(char *str);

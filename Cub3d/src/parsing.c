@@ -6,11 +6,12 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 17:24:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 18:15:00 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+#include "../includes/get_next_line.h"
 
 char	**init_map(t_vector2 len)
 {
@@ -42,9 +43,9 @@ bool	parse_map(int fd, char *filename, t_game *game, int nb_line, char *line)
 	i = 0;
 	game->map_size = get_dimension_maps(fd, line, &error);
 	if (game->map_size.x == 0 || game->map_size.y == 0)
-		return (print_error("Error : Empty map\n", 1), false);
+		return (print_error("Empty map\n", 1), false);
 	if (error == true)
-		return (print_error("Error : Unknown element in map\n", 1), false);
+		return (print_error("Unknown element in map\n", 1), false);
 	maps = init_map(game->map_size);
 	if (maps == NULL)
 		return (print_error(NULL, 0), false);
@@ -96,7 +97,7 @@ bool	find_player(t_game *game)
 				|| game->map[index.y][index.x] == 'E')
 			{
 				if (is_player)
-					return (print_error("Error : Too much players\n", 1), false);
+					return (print_error("Too much players\n", 1), false);
 				is_player = true;
 				player->pos.x = index.x * CHUNK_SIZE + CHUNK_SIZE / 2.0;
 				player->pos.y = index.y * CHUNK_SIZE + CHUNK_SIZE / 2.0;
@@ -125,62 +126,6 @@ bool	find_player(t_game *game)
 	return (is_player);
 }
 
-bool	find_color(char *str, t_game *game, char texture)
-{
-	int				i;
-	int				nb_color;
-	int				tmp;
-	unsigned int	color;
-
-	nb_color = 0;
-	color = 0;
-	i = skip_whitespace(str);
-	while (str[i] != 0)
-	{
-		tmp = 0;
-		while (str[i] >= '0' && str[i] <= '9')
-		{
-			tmp = tmp * 10 + str[i] - '0';
-			if (tmp > 255)
-				return (print_error("Error : Color not between 0 and 255\n", 1),
-					false);
-			i++;
-		}
-		color = (color << 8) + tmp;
-		nb_color++;
-		i += skip_whitespace(str + i);
-		if (str[i] == '\0' || nb_color == 3)
-			break ;
-		if (str[i] != ',')
-			return (print_error("Error : wrong format of color\n", 1), false);
-		i += 1 + skip_whitespace(str + i + 1);
-	}
-	if (nb_color != 3 || str[i] != '\0')
-		return (print_error("Error : Wrong format of color\n", 1), false);
-	if (texture == 'F')
-		game->floor_color = color;
-	else
-		game->ceiling_color = color;
-	return (true);
-}
-
-bool	find_texture(t_game *game, char *str, enum e_images orient)
-{
-	char	*filename;
-	int		i;
-	int		len;
-
-	i = skip_whitespace(str);
-	len = ft_strlen(str + i);
-	if (len >= 1 && str[i + len - 1] == '\n')
-		str[i + len - 1] = '\0';
-	filename = ft_strdup(str + i);
-	if (filename == NULL)
-		return (print_error("Error : malloc failed\n", 1), false);
-	game->filename[orient] = filename;
-	return (true);
-}
-
 int	find_next_wsp(char *line, int i)
 {
 	while (line[i] != '\0' && !(line[i] == ' ' || line[i] == '\t'
@@ -190,77 +135,6 @@ int	find_next_wsp(char *line, int i)
 	return (i);
 }
 
-bool	cmp_texture(char *line, t_game *game, int i)
-{
-	int	next_wsp;
-
-	next_wsp = find_next_wsp(line, i);
-	if (next_wsp - i == 1)
-	{
-		if (line[i] == 'F')
-			return (find_color(line + i + 1, game, 'F'));
-		else if (line[i] == 'C')
-			return (find_color(line + i + 1, game, 'C'));
-	}
-	else if (next_wsp - i == 2)
-	{
-		if (ft_strncmp(line + i, "NO", 2) == 0)
-			return (find_texture(game, line + i + 2, e_north_wall));
-		else if (ft_strncmp(line + i, "SO", 2) == 0)
-			return (find_texture(game, line + i + 2, e_south_wall));
-		else if (ft_strncmp(line + i, "WE", 2) == 0)
-			return (find_texture(game, line + i + 2, e_west_wall));
-		else if (ft_strncmp(line + i, "EA", 2) == 0)
-			return (find_texture(game, line + i + 2, e_east_wall));
-	}
-	return (print_error("Error : invalid identifier\n", 1), false);
-}
-
-// ? attention missing mandatory texture
-bool	parse_texture(int fd, t_game *game, int *nb_line, char **rest)
-{
-	char	*line;
-	int		i;
-	int		cpt_texture;
-
-	cpt_texture = 0;
-	(*nb_line) = 0;
-	line = get_next_line(fd);
-	while (line != NULL)
-	{
-		(*nb_line)++;
-		if (line[0] == '\n')
-		{
-			free(line);
-			line = get_next_line(fd);
-			continue ;
-		}
-		i = skip_whitespace(line);
-		if (ft_strlen(line + i) < 1)
-			return (print_error("Error : Line to short\n", 1), free(line),
-				false);
-		if (!cmp_texture(line, game, i))
-			return (free(line), false);
-		cpt_texture++;
-		free(line);
-		line = get_next_line(fd);
-		if (cpt_texture == 6)
-			break ;
-	}
-	*rest = line;
-	return (true);
-}
-
-void	printf_texture(t_game *game)
-{
-	printf("no : %s\n", game->filename[e_north_wall]);
-	printf("su : %s\n", game->filename[e_south_wall]);
-	printf("ea : %s\n", game->filename[e_east_wall]);
-	printf("we : %s\n", game->filename[e_west_wall]);
-	printf("floor : %x\n", game->floor_color);
-	printf("ceiling : %x\n", game->ceiling_color);
-}
-
 bool	check_filename(char *filename)
 {
 	int	len;
@@ -268,13 +142,13 @@ bool	check_filename(char *filename)
 
 	len = ft_strlen(filename);
 	if (len < 4)
-		return (print_error("Error : Wrong name of file\n", 1), false);
+		return (print_error("Wrong name of file\n", 1), false);
 	if (ft_strncmp(filename + (len - 4), ".cub", 4) != 0)
-		return (print_error("Error : Wrong name of file\n", 1), false);
+		return (print_error("Wrong name of file\n", 1), false);
 	fd = open(filename, O_DIRECTORY);
 	if (fd != -1)
 		return (close(fd),
-			print_error("Error : Need a file not a directory\n", 1), false);
+			print_error("Need a file not a directory\n", 1), false);
 	return (true);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 15:34:48 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 18:24:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -377,7 +377,7 @@ void	open_door(t_game *game)
 	t_ray			ray;
 	t_door			*door;
 
-	ray = get_object_hit((t_launch_ray){'\0', DOOR, 1}, game->map, game->player->f_real_pos, game->player->angle);
+	ray = get_object_hit((t_launch_ray){'\0', DOOR, 1}, game->map, game->player->f_pos, game->player->angle);
 	if (ray.hit.x != -1)
 	{
 		if ((game->map[(int)ray.hit.y][(int)ray.hit.x].type & DOOR_LOCK) == DOOR_LOCK)
@@ -417,7 +417,7 @@ void	open_door(t_game *game)
 			}
 			else
 			{
-				if (!possible_to_open_door(ray.orient, ray.hit, game->player->f_real_pos))
+				if (!possible_to_open_door(ray.orient, ray.hit, game->player->f_pos))
 					return ;
 				door->is_opening_door = -1;
 				game->map[(int)ray.hit.y][(int)ray.hit.x].type |= WALL;

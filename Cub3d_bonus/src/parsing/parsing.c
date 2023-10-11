@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 17:55:05 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/11 18:23:24 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,8 +175,8 @@ bool	find_player(t_game *game)
 				if (is_player)
 					return (print_error("Too much players\n", 1), free(player), false);
 				is_player = true;
-				player->f_real_pos.x = index.x + 1 / 2.0;
-				player->f_real_pos.y = index.y + 1 / 2.0;
+				player->f_pos.x = index.x + 1 / 2.0;
+				player->f_pos.y = index.y + 1 / 2.0;
 				if (game->map[index.y][index.x].symbol == 'N')
 					player->angle = 0;
 				else if (game->map[index.y][index.x].symbol == 'E')

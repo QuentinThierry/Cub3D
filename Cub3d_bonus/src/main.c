@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 15:34:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 18:22:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int	on_update(t_game *game)
 	clock_gettime(CLOCK_REALTIME, &time);
 	update_sounds(game->music_array);
 	game->time = time_to_long(&time);
-	if ((game->map[(int)game->player->f_real_pos.y][(int)game->player->f_real_pos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
-		take_object(game, game->player, &game->map[(int)game->player->f_real_pos.y][(int)game->player->f_real_pos.x], game->music_array);
+	if ((game->map[(int)game->player->f_pos.y][(int)game->player->f_pos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
+		take_object(game, game->player, &game->map[(int)game->player->f_pos.y][(int)game->player->f_pos.x], game->music_array);
 	player_move(game, game->player, game->delta_time, game->map);
 	if (game->player->angle + game->player->angle >= 360)
 		game->player->angle = game->player->angle - 360;

@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/11 17:21:46 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/11 18:04:32 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -136,6 +136,7 @@ SRC_LOADINGSCREEN = \
 ENDGAME = end_game/
 SRC_ENDGAME = \
 			end_game.c \
+			end_open_door.c \
 			end_door.c \
 			end_game_raycaster.c
 

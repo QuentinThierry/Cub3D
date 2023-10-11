@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 15:34:32 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 18:26:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,20 +108,20 @@ void	player_move(t_game *game, t_player *player, double delta_time, t_map **map)
 	}
 	if (player->dir.x != 0 || player->dir.y != 0)
 	{
-		move_value.x = player->f_real_pos.x + move_value.x * delta_time;
-		move_value.y = player->f_real_pos.y + move_value.y * delta_time;
+		move_value.x = player->f_pos.x + move_value.x * delta_time;
+		move_value.y = player->f_pos.y + move_value.y * delta_time;
 		move_value = check_colliding(game, move_value, map);
-		if (((int)move_value.x != (int)player->f_real_pos.x || (int)move_value.y != (int)player->f_real_pos.y)
+		if (((int)move_value.x != (int)player->f_pos.x || (int)move_value.y != (int)player->f_pos.y)
 			&& (map[(int)move_value.y][(int)move_value.x].type & MUSIC) == MUSIC)
 			play_music(&map[(int)move_value.y][(int)move_value.x],
 				game->music_array, map[(int)move_value.y][(int)move_value.x].music, IS_PLAYING_MUSIC);
-		if (((int)move_value.x != (int)player->f_real_pos.x || (int)move_value.y != (int)player->f_real_pos.y)
+		if (((int)move_value.x != (int)player->f_pos.x || (int)move_value.y != (int)player->f_pos.y)
 			&& (map[(int)move_value.y][(int)move_value.x].type & NARRATOR) == NARRATOR)
 		{
 			play_narrator(game, &map[(int)move_value.y][(int)move_value.x], game->music_array);
 			map[(int)move_value.y][(int)move_value.x].type ^= NARRATOR;
 		}
-		game->player->f_real_pos = move_value;
+		game->player->f_pos = move_value;
 	}
 }
 

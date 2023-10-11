@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 21:31:22 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 16:03:38 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 18:18:22 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ enum e_status
 	e_game = -1,
 	e_go_in_font_of_door = 0,
 	e_open_door,
-	e_walk_through_door,
+	e_walk,
 	e_end
 };
 

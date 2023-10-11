@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/11 17:20:38 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 18:22:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ typedef struct s_music_game
 
 typedef struct s_player
 {
-	t_dvector2	f_real_pos;
+	t_dvector2	f_pos;
 	t_vector2	mouse_pos;
 	float		angle;
 	t_vector2	dir;

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/09 13:50:30 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 18:25:03 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static inline void	draw_pixel_line(t_game *game, register t_dvector2 map_point, 
 				image = get_image_non_wall(game, map_point, e_ceiling);
 				image2 = get_image_non_wall(game, map_point, e_floor);
 			}
-			dist = get_dist(game->player->f_real_pos, map_point);
+			dist = get_dist(game->player->f_pos, map_point);
 			if (dist >= DIST_MIN_DARK * DIST_MIN_DARK)
 			{
 				dark_quantity = (-DIST_MIN_DARK + sqrtf(dist)) / (DIST_MAX_DARK - DIST_MIN_DARK);
@@ -138,8 +138,8 @@ void	draw_line_ceiling(t_game *game, t_fvector2 xdist_yscreen, t_fvector2 cos_si
 	left_p.y = cos_sin.y * h;
 	a.y = ((hit.y - left_p.y) / dist_to_left) * fabsf(dist_to_left * 2) / WIN_X;
 	a.x = ((hit.x - left_p.x) / dist_to_left) * fabsf(dist_to_left * 2) / WIN_X;
-	map_point.x = game->player->f_real_pos.x + left_p.x;
-	map_point.y = game->player->f_real_pos.y + left_p.y;
+	map_point.x = game->player->f_pos.x + left_p.x;
+	map_point.y = game->player->f_pos.y + left_p.y;
 	draw_pixel_line(game, map_point, a, xdist_yscreen.y);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/09 18:03:35 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 22:00:05 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include <X11/keysym.h>
 
 # include "minilibx-linux/mlx.h"
-# include "raudio/src/raudio.h"
+# include "enum.h"
 
 # define WIN_X 1280 //1920 - 918 - 1280
 # define WIN_Y 720 //1080 - 468 - 720
@@ -99,20 +99,18 @@
 # define DARK_COLOR_OPTION 0x101010
 # define DIST_TO_WALL 0.0999
 
-# define BACKGROUND_MUSIC "./assets/sounds/test.wav"
-
 // KEYBINDS
 # define DFL_KEY_LEFT_MOVE 'a'
 # define DFL_KEY_RIGHT_MOVE 'd'
 # define DFL_KEY_FORWARD_MOVE 'w'
 # define DFL_KEY_BACKWARD_MOVE 's'
-# define DFL_KEY_LEFT_LOOK XK_Left
-# define DFL_KEY_RIGHT_LOOK XK_Right
+# define DFL_KEY_LEFT_LOOK 0xff51
+# define DFL_KEY_RIGHT_LOOK 0xff53
 # define DFL_KEY_PAUSE 'p'
 # define DFL_KEY_MINIMAP_ZOOM '='
 # define DFL_KEY_MINIMAP_DEZOOM '-'
 # define DFL_KEY_INTERACT_DOOR ' '
-# define DFL_KEY_SPRINT XK_Shift_L
+# define DFL_KEY_SPRINT 0xffe1
 
 // t_type for arg
 # define NONE 0b0
@@ -140,8 +138,6 @@
 # define IS_PLAYING_MUSIC_OBJECT 0b1000000000000000000000
 # define IS_PLAYING_NARRATOR 0b10000000000000000000000
 
-
-
 extern long tot_fps;
 extern long nb_fps;
 
@@ -149,61 +145,6 @@ typedef unsigned char	t_byte;
 typedef u_int32_t		t_pixel32;
 typedef u_int32_t		t_type;
 typedef u_int32_t		t_keybind;
-typedef Music			t_music;
-
-enum e_orientation
-{
-	e_north = 0,
-	e_east,
-	e_south,
-	e_west,
-	e_floor,
-	e_ceiling,
-	e_wall,
-	e_door,
-	e_door_lock,
-	e_door_unlock,
-	e_object_wall,
-	e_object_entity,		//transparent
-	e_object_interactive,
-	e_object_interactive_hand,
-	e_object_interactive_before,
-	e_object_interactive_after,
-	e_receptacle_empty,
-	e_receptacle_full,
-	e_exit,
-	e_music,
-	e_music_object,
-	e_music_receptacle,
-	e_music_receptacle_complete,
-	e_narrator,
-	e_narrator_receptacle,
-	e_narrator_receptacle_complete,
-	e_end_screen,
-	e_object_image = e_north,
-	e_door_image = e_north,
-	e_object_interactive_image = e_north,
-	e_object_interactive_hand_image,
-	e_object_interactive_before_image,
-	e_object_interactive_after_image,
-	e_receptacle_empty_image = e_north,
-	e_receptacle_full_image
-};
-
-enum e_keybinds
-{
-	e_key_left_move,
-	e_key_right_move,
-	e_key_forward_move,
-	e_key_backward_move,
-	e_key_left_look,
-	e_key_right_look,
-	e_key_pause,
-	e_key_minimap_zoom,
-	e_key_minimap_dezoom,
-	e_key_interact_door,
-	e_key_sprint
-};
 
 typedef struct s_vector2
 {
@@ -236,24 +177,14 @@ typedef struct s_launch_ray
 	float	dist;
 }	t_launch_ray;
 
-typedef struct s_music_name
-{
-	char				*filename;
-	char				*subtitle;
-	unsigned int		offset;
-	long int			time;
-	enum e_orientation	orient;
-	char				symbol;
-}	t_music_name;
-
 typedef struct s_object
 {
 	t_dvector2		map_pos;
 	bool			visited;
 	float			dist;
-	long int		time;	//for animation
+	long int		time;
 	char			symbol_receptacle;
-	bool			is_completed;	//receptacle
+	bool			is_completed;
 	char			*music;
 }	t_object;
 
@@ -273,7 +204,7 @@ typedef struct s_image
 typedef struct s_sprite
 {
 	int			index;
-	int			frame;		// -1 -> not a animation
+	int			frame;
 	long int	time;
 }	t_sprite;
 
@@ -285,18 +216,10 @@ typedef struct s_map
 	void			*arg;
 	t_sprite		sprite[6];
 	char			*music;
-	t_music_name	*narrator;
+	struct s_music_name	*narrator;
 }	t_map;
 
-typedef struct s_music_game
-{
-	t_music		music;
-	t_map		*map_cell;
-	bool		is_playing;
-	bool		is_subtitle;
-}	t_music_game;
-
-typedef	struct s_player
+typedef struct s_player
 {
 	t_dvector2	f_real_pos;
 	t_vector2	mouse_pos;
@@ -312,7 +235,6 @@ typedef struct s_door
 {
 	float		door_percent;
 	int			is_opening_door;
-	// long int	time;
 	t_vector2	map_pos;
 	char		symbol_unlock_door;
 	int			nb_receptacle_completed;
@@ -338,15 +260,15 @@ typedef struct s_animation
 
 typedef struct s_texture
 {
-	char				*filename;				//file
-	char				**filename_d;			//dir
-	int					nb_file;				//dir
-	t_animation			*animation;				//dir
-	int					nb_animation;			//dir
-	int					total;					//all
-	enum e_orientation	orient;					//all
-	char				symbol;					//all
-	char				symbol_receptacle;		//all
+	char				*filename;
+	char				**filename_d;
+	int					nb_file;
+	t_animation			*animation;
+	int					nb_animation;
+	int					total;
+	enum e_orientation	orient;
+	char				symbol;
+	char				symbol_receptacle;
 }	t_texture;
 
 typedef struct s_minimap
@@ -424,25 +346,16 @@ typedef struct s_menu
 	long			time_start_menu;
 }	t_menu;
 
-enum e_status
-{
-	e_game = -1,
-	e_go_in_font_of_door = 0,
-	e_open_door,
-	e_walk_through_door,
-	e_end
-};
-
 typedef struct s_end
 {
-	enum e_status	status;
-	t_fvector2		dest;
-	t_fvector2		dir;
-	float			dir_angle;
-	int				dest_angle;
-	enum e_orientation orient;
-	t_image			*end_screen;
-}	t_end;
+	enum e_status		status;
+	t_fvector2			dest;
+	t_fvector2			dir;
+	float				dir_angle;
+	int					dest_angle;
+	enum e_orientation	orient;
+	t_image				*end_screen;
+}	t_end; 
 
 typedef struct s_game
 {
@@ -457,7 +370,7 @@ typedef struct s_game
 	t_dvector2		subtitle_size_letter;
 	t_texture		*filename;
 	int				nb_file;
-	t_music_name	*file_music;
+	struct s_music_name	*file_music;
 	int				nb_music;
 	t_map			**map;
 	t_vector2		map_size;
@@ -471,7 +384,7 @@ typedef struct s_game
 	t_object		**object_array;
 	int				nb_doors;
 	t_map			**door_array;
-	t_music_game	*music_array;
+	struct s_music_game	*music_array;
 	float			*dist_tab;
 	float			*height_tab;
 	t_loading		*loading_screen;
@@ -495,7 +408,7 @@ void		free_tab(void **str, int size);
 void		free_map(t_map **map, t_vector2 size);
 void		free_tab_object(t_object **str, int size);
 void		free_str(char **str);
-void		free_music_file(t_music_name *music_tab, int size);
+void		free_music_file(struct s_music_name *music_tab, int size);
 void		free_minimap(t_minimap *minimap, void *mlx_ptr);
 void		free_map_object(t_map **map, t_vector2 size);
 char		*ft_strjoin(char *str, char *str1);
@@ -503,22 +416,26 @@ char		*ft_strjoin_slash(char *str, char *str1, bool add_slash);
 int			ft_atoi(const char *str);
 int			get_len_texture(t_texture *texture, int len);
 void		ft_bzero(void *s, size_t n);
-int			find_next_wsp(char *line , int i);
-void		draw_rectangle(t_image *image, t_vector2 pos, t_vector2 size, t_pixel32 color);
+int			find_next_wsp(char *line, int i);
+void		draw_rectangle(t_image *image, t_vector2 pos, t_vector2 size,
+				t_pixel32 color);
 void		print_error(char *error, int print);
 bool		is_only_wall(unsigned int type);
 char		*ft_strdup(const char *s);
 
 // -------Parsing-------
-void		exit_door_no_receptacle(t_map *exit, int nb_receptacle, t_image *tab_image);
+void		exit_door_no_receptacle(t_map *exit, int nb_receptacle,
+				t_image *tab_image);
 bool		parse_file(char *filename, t_game *game);
-t_sprite	fill_texture(t_texture *tab, int len, char symbol, enum e_orientation orient);
+t_sprite	fill_texture(t_texture *tab, int len, char symbol,
+				enum e_orientation orient);
 t_vector2	get_dimension_maps(int fd, char *line, bool *error);
 bool		is_wall(char symbol, t_texture *tab, int len, bool *error);
 int			skip_whitespace(char *str);
 bool		get_wall(t_game *game, t_map *map, char symbol);
 bool		get_none_wall(t_game *game, t_map *map, bool error, char symbol);
-bool		ft_fill_wall(t_game *game, char *line, t_map *map, t_vector2 map_size);
+bool		ft_fill_wall(t_game *game, char *line, t_map *map,
+				t_vector2 map_size);
 bool		find_player(t_game *game);
 bool		check_map(t_game *game);
 bool		ft_read_config(t_animation *animation, int index);
@@ -527,9 +444,10 @@ bool		is_door(char symbol, t_texture *tab, int len, t_texture *type_door);
 bool		is_object(char symbol, t_texture *tab, int len);
 bool		is_object_interactive(char symbol, t_texture *tab, int len);
 bool		is_receptacle(char symbol, t_texture *tab, int len, char *c);
-bool		is_sound(t_music_name *filename, int nb_music, char symbol);
+bool		is_sound(struct s_music_name *filename, int nb_music, char symbol);
 bool		fill_object_and_doors(t_game *game);
-bool		find_music(t_game *game, char *str, enum e_orientation orient, int i);
+bool		find_music(t_game *game, char *str, enum e_orientation orient,
+				int i);
 
 // -------Print--------
 void		printf_texture(t_game *game);
@@ -542,17 +460,17 @@ bool		init_mlx(t_game *game);
 bool		load_image_tab(t_game *game, bool *print_error);
 void		init_mouse(t_game *game);
 
-
 // -------Hook---------
 void		key_press_hook(t_keybind key, t_game *game);
 void		key_release_hook(t_keybind key, t_game *game);
 int			exit_hook(int key, t_game *game);
 int			mouse_leave(t_game *game);
-int			mouse_hook(int x,int y, t_game *game);
+int			mouse_hook(int x, int y, t_game *game);
 int			mouse_stay_in_window_hook(int x, int y, t_game *game);
 int			on_update(t_game *game);
-void		player_move(t_game *game, t_player *player, double delta_time, t_map **map);
-int			mouse_click(int button, int x, int y,t_game *game);
+void		player_move(t_game *game, t_player *player, double delta_time,
+				t_map **map);
+int			mouse_click(int button, int x, int y, t_game *game);
 int			ft_close(t_game *game);
 
 t_dvector2	check_colliding(t_game *game, t_dvector2 new_pos, t_map **map);
@@ -564,16 +482,17 @@ void		raycasting(t_game *game);
 t_vector2	get_sign(float angle);
 void		draw_objects(t_game *game);
 
-
-enum e_orientation	get_wall_orientation(t_dvector2 player, t_dvector2 wall);
+t_orient	get_wall_orientation(t_dvector2 player, t_dvector2 wall);
 t_image		*get_image_wall(t_game	*game, t_ray ray, int *x_door);
-t_image		*get_image_non_wall(t_game *game, t_dvector2 hit, enum e_orientation orient);
+t_image		*get_image_non_wall(t_game *game, t_dvector2 hit,
+				enum e_orientation orient);
 
 // draw
 void		draw_vert(t_game *game, int x, t_ray ray, double height);
 
 // image_operations.c
-void		draw_image_on_image_alpha(t_image *dest, t_image *src, t_vector2 offset_dest);
+void		draw_image_on_image_alpha(t_image *dest, t_image *src,
+				t_vector2 offset_dest);
 
 // bettermlx.c
 t_image		*btmlx_new_image(void *mlx_ptr, t_vector2 size);
@@ -587,26 +506,36 @@ void		zoom_hook_handle(t_minimap *minimap, double delta_time);
 void		draw_minimap(t_game *game);
 void		generate_minimap_bounds(t_game *game);
 bool		init_minimap(t_game *game);
-void		draw_rotated_image(t_image *img_dest, t_image *img_src, t_vector2 pos, float angle);
+void		draw_rotated_image(t_image *img_dest, t_image *img_src,
+				t_vector2 pos, float angle);
 void		draw_rectangular_minimap(t_game *game);
 void		draw_minimap_buf_on_main_image(t_minimap *mmap, t_image *image);
 
 // ------------ Door ----------
-t_dvector2	door_hit_ver_se(t_dvector2 hit, float step, float door_angle, float player_angle);
-t_dvector2	door_hit_hor_se(t_dvector2 hit, float step, float door_angle, float player_angle);
-t_dvector2	door_hit_ver_ne(t_dvector2 hit, float step, float door_angle, float player_angle);
-t_dvector2	door_hit_hor_ne(t_dvector2 hit, float step, float door_angle, float player_angle);
-t_dvector2	door_hit_ver_sw(t_dvector2 hit, float step, float door_angle, float player_angle);
-t_dvector2	door_hit_hor_sw(t_dvector2 hit, float step, float door_angle, float player_angle);
-t_dvector2	door_hit_ver_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
-t_dvector2	door_hit_hor_nw(t_dvector2 hit, float step, float door_angle, float player_angle);
+t_dvector2	door_hit_ver_se(t_dvector2 hit, float step, float door_angle,
+				float player_angle);
+t_dvector2	door_hit_hor_se(t_dvector2 hit, float step, float door_angle,
+				float player_angle);
+t_dvector2	door_hit_ver_ne(t_dvector2 hit, float step, float door_angle,
+				float player_angle);
+t_dvector2	door_hit_hor_ne(t_dvector2 hit, float step, float door_angle,
+				float player_angle);
+t_dvector2	door_hit_ver_sw(t_dvector2 hit, float step, float door_angle,
+				float player_angle);
+t_dvector2	door_hit_hor_sw(t_dvector2 hit, float step, float door_angle,
+				float player_angle);
+t_dvector2	door_hit_ver_nw(t_dvector2 hit, float step, float door_angle,
+				float player_angle);
+t_dvector2	door_hit_hor_nw(t_dvector2 hit, float step, float door_angle,
+				float player_angle);
 float		get_texture_door(t_ray ray);
-void		end_step_door_open(double time, t_map *map_cell, t_map **map, t_end *end);
-void		update_doors(t_map **doors, int	nb_doors, double time, t_map **map);
+void		end_step_door_open(double time, t_map *map_cell, t_map **map,
+				t_end *end);
+void		update_doors(t_map **doors, int nb_doors, double time, t_map **map);
 void		open_door(t_game *game);
 
-
-t_ray		get_object_hit(t_launch_ray object, t_map **map, t_dvector2 begin, float angle);
+t_ray		get_object_hit(t_launch_ray object, t_map **map, t_dvector2 begin,
+				float angle);
 void		draw_objects(t_game *game);
 
 long int	time_to_long(struct timespec *time);
@@ -618,10 +547,10 @@ void		draw_ceiling(t_game *game);
 bool		loading_screen(t_game *game);
 bool		update_loading_screen(t_game *game, t_loading *loading_screen);
 void		free_loading_screen(t_game *game);
-void		draw_image_with_transparence(char *dest_addr, t_image *src
-				, t_vector2 begin_src, t_vector2 size_src);
-void		draw_image_with_green_sreen(char *dest_addr, t_image *src
-				, t_vector2 begin_src, t_vector2 size_src);
+void		draw_image_with_transparence(char *dest_addr, t_image *src,
+				t_vector2 begin_src, t_vector2 size_src);
+void		draw_image_with_green_sreen(char *dest_addr, t_image *src,
+				t_vector2 begin_src, t_vector2 size_src);
 
 // ------- menu ----------
 int			menu_loop_hook(t_game *game);
@@ -638,11 +567,12 @@ void		apply_menu_dark_filter(t_image *menu_image);
 void		draw_option_menu(t_game *game, t_option_menu *opt_menu);
 void		draw_pause_menu(t_game *game, t_pause_menu *pause_menu);
 void		resume_menu(t_game *game, t_menu *menu);
-void		draw_centered_text_at_y(t_game *game, t_image *image, int y, const char *text);
+void		draw_centered_text_at_y(t_game *game, t_image *image, int y,
+				const char *text);
 void		check_mouse_is_in_button(t_button *button, int x, int y);
-void		draw_text_at_with_backgroud(t_game *game, t_image *image, t_vector2 pos, const char *text);
+void		draw_text_at_with_backgroud(t_game *game, t_image *image,
+				t_vector2 pos, const char *text);
 void		draw_alpha_rectangle(t_image *dest, t_vector2 pos, t_vector2 size);
-
 
 // ------ Blur ------------
 void		blur_image(t_image *dest, t_image *src,
@@ -650,31 +580,17 @@ void		blur_image(t_image *dest, t_image *src,
 
 // ------ Object interactive -----
 void		take_object_click(t_game *game, t_player *player, t_map **map);
-void		take_object(t_game *game, t_player *player, t_map *cell_map, t_music_game *music_tab);
-void		drop_object(t_player *player, t_map **map, t_map *exit, t_game *game);
+void		take_object(t_game *game, t_player *player, t_map *cell_map,
+				struct s_music_game *music_tab);
+void		drop_object(t_player *player, t_map **map,
+				t_map *exit, t_game *game);
 t_object	*find_empty_object(t_game *game);
 void		draw_hand_item(t_game *game, t_player *player);
 
 // ----------END ------------
 bool		init_end_screen(t_game *game);
 void		end_of_the_game(t_game *game, enum e_orientation orient);
-t_ray		get_wall_hit_end(t_dvector2 fpos, t_map **map, float angle, enum e_status status);
-
-// -------- Music ----------
-char			*get_music(t_music_name *filename, int nb_music, char symbol, enum e_orientation orient);
-t_music_name	*get_narrator(t_music_name *filename, int nb_music, char symbol, enum e_orientation orient);
-bool			init_audio(t_game *game);
-void			update_sounds(t_music_game *music_array);
-void			close_audio(t_music_game *music_tab);
-void			play_music(t_map *map_cell, t_music_game *music_tab, char *filename, unsigned int type);
-void			play_narrator(t_game *game, t_map *map_cell, t_music_game *music_tab);
-void			play_sound_fail(t_game *game, t_map *map_cell, t_music_game *music_tab);
-void			set_next_narrator(t_map *map_cell);
-void			update_map_cell_music(t_map *map_cell, t_map *old_map_cell, t_music_game *music_array);
-void			clear_sound(t_music_game *music_array);
-void			print_subtitle(t_game *game, t_map *map_cell);
-
-void			free_image(void *mlx_ptr, t_image *image);
-
+t_ray		get_wall_hit_end(t_dvector2 fpos, t_map **map, float angle,
+				enum e_status status);
 
 #endif

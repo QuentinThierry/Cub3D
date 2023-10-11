@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   menu_hooks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:16:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/05 20:56:01 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 21:43:04 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
+#include "../../includes/audio.h"
 
 static const double	g_max_fps_frequence = 1. / MAX_MENU_FPS;
 

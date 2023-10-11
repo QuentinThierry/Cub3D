@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   drop_object.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:00:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 20:40:28 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 21:42:33 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
+#include "../../includes/audio.h"
 
 t_dvector2	find_pos(t_player *player);
 

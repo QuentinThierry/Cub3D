@@ -6,11 +6,12 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 18:10:31 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/09 13:50:09 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 21:43:28 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
+#include "../../includes/audio.h"
 
 void	raycasting_end(t_game *game);
 void	find_dest(t_end *end, const enum e_orientation orient,

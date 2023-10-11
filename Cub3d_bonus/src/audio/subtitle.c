@@ -6,11 +6,13 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 12:38:01 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 13:53:21 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 21:37:32 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
+#include "../../includes/audio.h"
+
 #define SUBTITLE_TIME 5000
 #define MAX_CARACTER 100
 

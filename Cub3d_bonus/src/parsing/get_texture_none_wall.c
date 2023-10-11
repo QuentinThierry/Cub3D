@@ -6,11 +6,12 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 18:04:49 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 18:21:03 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 21:49:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
+#include "../../includes/audio.h"
 
 static void	_get_default_none_wall(t_game *game, t_map *map)
 {

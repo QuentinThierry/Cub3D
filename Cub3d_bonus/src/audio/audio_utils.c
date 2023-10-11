@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   audio_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 15:55:15 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 17:59:30 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 21:37:19 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
+#include "../../includes/audio.h"
 
 bool	is_sound(t_music_name *filename, int nb_music, char symbol)
 {

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
+#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/09 17:57:42 by qthierry         ###   ########.fr        #
+#    Updated: 2023/10/09 21:14:25 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,9 +23,7 @@ RESET_COLOR	:= \033[0m
 RED			:= \033[0;31m
 GREEN		:= \033[0;32m
 
-HEADERS_LIST = cub3d_bonus.h get_next_line.h
 HEADERS_DIR = ./includes/
-HEADERS = $(addprefix $(HEADERS_DIR), $(HEADERS_LIST))
 
 # ------------------MLX-------------------
 MINILIBX_URL = https://github.com/42Paris/minilibx-linux.git
@@ -168,7 +166,7 @@ run: $(NAME)
 	./$(NAME) maps/map.cub
 
 vrun: $(NAME)
-	valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.supp ./$(NAME) maps/map_test.cub
+	valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.supp ./$(NAME) maps/map.cub
 
 prun: CFLAGS += -pg
 prun: $(NAME)
@@ -232,7 +230,7 @@ clean_audio:
 clean:
 	rm -rf $(OBJ_DIR)
 
-fclean:	clean #clean_minilibx clean_audio
+fclean:	clean clean_minilibx clean_audio
 	rm -rf $(NAME)
 
 re: fclean all

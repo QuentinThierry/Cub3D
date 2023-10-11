@@ -6,12 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 15:55:15 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 21:37:19 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 15:34:22 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
-#include "../../includes/audio.h"
 
 bool	is_sound(t_music_name *filename, int nb_music, char symbol)
 {

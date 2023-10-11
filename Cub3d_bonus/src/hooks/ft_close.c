@@ -6,12 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 21:50:40 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 15:34:30 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
-#include "../../includes/audio.h"
 
 void	free_image(void *mlx_ptr, t_image *image)
 {

@@ -6,12 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 21:42:21 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 15:34:52 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
-#include "../../includes/audio.h"
 
 void	take_object(t_game *game, t_player *player, t_map *cell_map, t_music_game *music_tab)
 {

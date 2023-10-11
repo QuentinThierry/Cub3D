@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/09 22:00:05 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 15:35:36 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <X11/keysym.h>
 
 # include "minilibx-linux/mlx.h"
+# include "raudio/src/raudio.h"
 # include "enum.h"
 
 # define WIN_X 1280 //1920 - 918 - 1280
@@ -112,6 +113,8 @@
 # define DFL_KEY_INTERACT_DOOR ' '
 # define DFL_KEY_SPRINT 0xffe1
 
+# define BACKGROUND_MUSIC "./assets/sounds/test1.mp3"
+
 // t_type for arg
 # define NONE 0b0
 # define WALL 0b1
@@ -188,6 +191,18 @@ typedef struct s_object
 	char			*music;
 }	t_object;
 
+typedef Music	t_music;
+
+typedef struct s_music_name
+{
+	char				*filename;
+	char				*subtitle;
+	unsigned int		offset;
+	long int			time;
+	t_orient			orient;
+	char				symbol;
+}	t_music_name;
+
 typedef struct s_image
 {
 	void		*img;
@@ -218,6 +233,14 @@ typedef struct s_map
 	char			*music;
 	struct s_music_name	*narrator;
 }	t_map;
+
+typedef struct s_music_game
+{
+	t_music		music;
+	t_map		*map_cell;
+	bool		is_playing;
+	bool		is_subtitle;
+}	t_music_game;
 
 typedef struct s_player
 {
@@ -592,5 +615,26 @@ bool		init_end_screen(t_game *game);
 void		end_of_the_game(t_game *game, enum e_orientation orient);
 t_ray		get_wall_hit_end(t_dvector2 fpos, t_map **map, float angle,
 				enum e_status status);
+
+// ---------Music-----------
+char			*get_music(t_music_name *filename, int nb_music, char symbol,
+					t_orient orient);
+t_music_name	*get_narrator(t_music_name *filename, int nb_music, char symbol,
+					t_orient orient);
+bool			init_audio(t_game *game);
+void			update_sounds(t_music_game *music_array);
+void			close_audio(t_music_game *music_tab);
+void			play_music(t_map *map_cell, t_music_game *music_tab,
+					char *filename, unsigned int type);
+void			play_narrator(t_game *game, t_map *map_cell,
+					t_music_game *music_tab);
+void			play_sound_fail(t_game *game, t_map *map_cell,
+					t_music_game *music_tab);
+void			set_next_narrator(t_map *map_cell);
+void			update_map_cell_music(t_map *map_cell, t_map *old_map_cell,
+					t_music_game *music_array);
+void			clear_sound(t_music_game *music_array);
+void			print_subtitle(t_game *game, t_map *map_cell);
+void			free_image(void *mlx_ptr, t_image *image);
 
 #endif

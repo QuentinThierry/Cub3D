@@ -6,12 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/09 21:50:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 15:34:37 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
-#include "../../includes/audio.h"
 
 // with background
 void	draw_centered_text_at_y(t_game *game,

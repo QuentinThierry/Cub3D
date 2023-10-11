@@ -6,12 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/09 21:37:23 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 15:34:24 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
-#include "../../includes/audio.h"
 
 bool	init_audio(t_game *game)
 {

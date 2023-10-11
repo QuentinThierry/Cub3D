@@ -6,12 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 14:53:39 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/09 21:50:50 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 15:34:33 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
-#include "../../includes/audio.h"
 
 static const t_vector2	g_button_size =
 {

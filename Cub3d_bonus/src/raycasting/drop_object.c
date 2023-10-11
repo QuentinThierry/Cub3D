@@ -6,12 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:00:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 15:25:57 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 15:34:50 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
-#include "../../includes/audio.h"
 
 t_dvector2	find_pos(t_player *player);
 

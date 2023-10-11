@@ -6,12 +6,12 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 21:43:45 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 15:33:54 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
-#include "../includes/audio.h"
+
 
 void	printf_texture(t_game *game)
 {

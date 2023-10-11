@@ -6,12 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 21:27:20 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/09 21:49:22 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 15:34:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
-#include "../../includes/audio.h"
 
 static bool	_check_sides(t_map **map, int x, int y, t_vector2 map_size)
 {

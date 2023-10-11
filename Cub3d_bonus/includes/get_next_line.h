@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:07:09 by jvigny            #+#    #+#             */
-/*   Updated: 2023/07/17 15:51:27 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 15:37:05 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 100

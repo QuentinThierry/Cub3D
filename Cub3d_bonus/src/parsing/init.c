@@ -6,12 +6,11 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 21:50:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 15:34:44 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
-#include "../../includes/audio.h"
 
 static bool	_init_value_malloc(t_game *game)
 {

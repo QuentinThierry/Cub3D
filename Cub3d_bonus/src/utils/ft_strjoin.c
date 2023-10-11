@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:46:25 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/04 15:41:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 15:44:20 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ char	*ft_strjoin(char *str, char *str1)
 	size_t	i;
 
 	i = 0;
-	len = strlen(str1);
+	len = ft_strlen(str1);
 	if (str != NULL)
-		len += strlen(str);
+		len += ft_strlen(str);
 	res_f = ft_calloc(sizeof(char), len + 1);
 	if (res_f == NULL)
 		return (NULL);
@@ -48,7 +48,7 @@ char	*ft_strjoin_slash(char *str, char *str1, bool add_slash)
 	size_t	i;
 
 	i = 0;
-	len = strlen(str) + strlen(str1) + add_slash;
+	len = ft_strlen(str) + ft_strlen(str1) + add_slash;
 	res = ft_calloc(sizeof(char), len + 1);
 	if (res == NULL)
 		return (NULL);

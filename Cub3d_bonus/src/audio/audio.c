@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/11 15:34:24 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 15:56:53 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,10 @@ void	play_music(t_map *map_cell, t_music_game *music_tab, char *filename
 		return ;
 	music->music = LoadMusicStream(filename);
 	if (!IsMusicReady(music->music))
+	{
+		print_error("Loading music fail\n", 1);
 		return ;
+	}
 	music->music.looping = false;
 	music->map_cell = map_cell;
 	music->is_playing = true;
@@ -107,7 +110,10 @@ void	play_narrator(t_game *game, t_map *map_cell, t_music_game *music_tab)
 	}
 	music_tab[1].music = LoadMusicStream(map_cell->narrator->filename);
 	if (!IsMusicReady(music_tab[1].music))
+	{
+		print_error("Loading music fail\n", 1);
 		return ;
+	}
 	music_tab[1].music.looping = false;
 	music_tab[1].is_subtitle = true;
 	music_tab[1].map_cell = map_cell;

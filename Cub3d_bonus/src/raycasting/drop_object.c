@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:00:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 15:34:50 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 16:05:11 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	_set_object_on_cell(t_map *map_cell, t_player *player, t_dvector2 po
 	map_cell->type |= player->item.type;
 	if ((player->item.type & MUSIC_OBJECT) == MUSIC_OBJECT)
 		((t_object *)map_cell->arg)->music = ((t_object *)player->item.arg)->music;
-	if ((player->item.type & IS_PLAYING_MUSIC_OBJECT) == IS_PLAYING_MUSIC_OBJECT)
+	if ((player->item.type & IS_PLAYING_OBJECT) == IS_PLAYING_OBJECT)
 		update_map_cell_music(map_cell, &player->item, music_tab);
 	map_cell->sprite[e_object_interactive_image] = player->item.sprite[e_object_interactive_image];
 	map_cell->sprite[e_object_interactive_hand_image] = player->item.sprite[e_object_interactive_hand_image];

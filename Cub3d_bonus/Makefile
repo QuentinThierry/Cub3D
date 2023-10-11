@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/09 21:14:25 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/11 16:10:25 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -123,6 +123,8 @@ SRC_MENU = \
 AUDIO = audio/
 SRC_AUDIO = \
 			audio.c \
+			init_audio.c \
+			update_audio.c \
 			audio_utils.c \
 			subtitle.c
 

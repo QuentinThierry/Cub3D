@@ -6,57 +6,13 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/11 15:56:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 16:09:51 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-bool	init_audio(t_game *game)
-{
-	InitAudioDevice();
-	if (!IsAudioDeviceReady() || NB_MAX_SOUNDS <= 1)
-		return (print_error("Audio init failed\n", 1), false);
-	game->music_array = ft_calloc(NB_MAX_SOUNDS, sizeof(t_music_game));
-	if (game->music_array == NULL)
-		return (false);
-	game->music_array[0].music = LoadMusicStream(BACKGROUND_MUSIC);
-	if (!IsMusicReady(game->music_array[0].music))
-		return (print_error("Background music init failed\n", 1), false);
-	game->music_array[0].is_playing = true;
-	return (true);
-}
-
-void	close_audio(t_music_game *music_tab)
-{
-	int	i;
-
-	if (!IsAudioDeviceReady())
-		return (free(music_tab));
-	if (music_tab == NULL)
-	{
-		free(music_tab);
-		CloseAudioDevice();
-		return ;
-	}
-	i = 0;
-	while (i < NB_MAX_SOUNDS)
-	{
-		if (music_tab[i].is_playing == true)
-		{
-			if (IsMusicStreamPlaying(music_tab[i].music))
-				StopMusicStream(music_tab[i].music);
-			UnloadMusicStream(music_tab[i].music);
-			if (music_tab[i].music.ctxType == 1)
-				free(music_tab[i].music.ctxData);
-		}
-		i++;
-	}
-	CloseAudioDevice();
-	free(music_tab);
-}
-
-static t_music_game	*find_empty_place(t_music_game *music_tab)
+static t_music_game	*_find_empty_place(t_music_game *music_tab)
 {
 	int	i;
 
@@ -76,9 +32,9 @@ void	play_music(t_map *map_cell, t_music_game *music_tab, char *filename
 	t_music_game	*music;
 
 	if ((map_cell->type & IS_PLAYING_MUSIC) == IS_PLAYING_MUSIC
-		|| (map_cell->type & IS_PLAYING_MUSIC_OBJECT) == IS_PLAYING_MUSIC_OBJECT)
+		|| (map_cell->type & IS_PLAYING_OBJECT) == IS_PLAYING_OBJECT)
 		return ;
-	music = find_empty_place(music_tab);
+	music = _find_empty_place(music_tab);
 	if (music == NULL)
 		return ;
 	music->music = LoadMusicStream(filename);
@@ -123,7 +79,7 @@ void	play_narrator(t_game *game, t_map *map_cell, t_music_game *music_tab)
 	PlayMusicStream(music_tab[1].music);
 }
 
-void	set_next_narrator(t_map *map_cell)
+static void	_set_next_narrator(t_map *map_cell)
 {
 	if ((map_cell->type & NARRATOR) == NARRATOR)
 	{
@@ -142,69 +98,6 @@ void	play_sound_fail(t_game *game, t_map *map_cell, t_music_game *music_tab)
 	else if ((map_cell->type & NARRATOR) == NARRATOR)
 	{
 		play_narrator(game, map_cell, music_tab);
-		set_next_narrator(map_cell);
-	}
-}
-
-void	update_sounds(t_music_game *music_array)
-{
-	int	i;
-
-	i = 0;
-	while (i < NB_MAX_SOUNDS)
-	{
-		if (music_array[i].is_playing == true)
-		{
-			if (IsMusicStreamPlaying(music_array[i].music))
-				UpdateMusicStream(music_array[i].music);
-			else
-			{
-				UnloadMusicStream(music_array[i].music);
-				if (music_array[i].music.ctxType == 1)
-					free(music_array[i].music.ctxData);
-				music_array[i].is_playing = false;
-				if (i == 1)
-					music_array[i].map_cell->type &= ~IS_PLAYING_NARRATOR;
-				else
-					music_array[i].map_cell->type &= ~IS_PLAYING_MUSIC & ~IS_PLAYING_MUSIC_OBJECT;
-			}
-		}
-		i++;
-	}
-}
-
-void	update_map_cell_music(t_map *map_cell, t_map *old_map_cell, t_music_game *music_array)
-{
-	int	i;
-
-	i = 0;
-	while (i < NB_MAX_SOUNDS)
-	{
-		if (music_array[i].map_cell == old_map_cell)
-		{
-			music_array[i].map_cell = map_cell;
-			return ;
-		}
-		i++;
-	}
-}
-
-void	clear_sound(t_music_game *music_array)
-{
-	int	i;
-
-	i = 1;
-	while (i < NB_MAX_SOUNDS)
-	{
-		if (music_array[i].is_playing == true)
-		{
-			if (IsMusicStreamPlaying(music_array[i].music))
-				StopMusicStream(music_array[i].music);
-			UnloadMusicStream(music_array[i].music);
-			if (music_array[i].music.ctxType == 1)
-				free(music_array[i].music.ctxData);
-			music_array[i].is_playing = false;
-		}
-		i++;
+		_set_next_narrator(map_cell);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 15:34:52 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 16:05:11 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ void	take_object(t_game *game, t_player *player, t_map *cell_map, t_music_game *
 	}
 	if ((cell_map->type & MUSIC_OBJECT) == MUSIC_OBJECT)
 		play_music(&player->item, music_tab,
-			((t_object *)player->item.arg)->music, IS_PLAYING_MUSIC_OBJECT);
-	if ((cell_map->type & IS_PLAYING_MUSIC_OBJECT) == IS_PLAYING_MUSIC_OBJECT)
+			((t_object *)player->item.arg)->music, IS_PLAYING_OBJECT);
+	if ((cell_map->type & IS_PLAYING_OBJECT) == IS_PLAYING_OBJECT)
 		update_map_cell_music(&player->item, cell_map, music_tab);
-	cell_map->type &= ~MUSIC_OBJECT & ~IS_PLAYING_MUSIC_OBJECT;
+	cell_map->type &= ~MUSIC_OBJECT & ~IS_PLAYING_OBJECT;
 	cell_map->symbol = '0';
 	cell_map->arg = NULL;
 	cell_map->type &= ~OBJECT_INTERACTIVE;
@@ -74,7 +74,7 @@ void	take_object_click(t_game *game, t_player *player, t_map **map)
 	player->item.type = map[(int)pos.y][(int)pos.x].type;
 	player->item.type &= ~WALL;
 	player->item.type &= ~MUSIC & ~IS_PLAYING_MUSIC;
-	map[(int)pos.y][(int)pos.x].type &= ~MUSIC_OBJECT & ~IS_PLAYING_MUSIC_OBJECT;
+	map[(int)pos.y][(int)pos.x].type &= ~MUSIC_OBJECT & ~IS_PLAYING_OBJECT;
 	player->item.sprite[e_object_interactive_image] = map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_image];
 	player->item.sprite[e_object_interactive_hand_image] = map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_hand_image];
 	player->item.arg = find_empty_object(game);
@@ -82,7 +82,7 @@ void	take_object_click(t_game *game, t_player *player, t_map **map)
 	((t_object *)player->item.arg)->map_pos = pos;
 	player->has_item = true;
 	if ((player->item.type & MUSIC_OBJECT) == MUSIC_OBJECT)
-		play_music(&player->item, game->music_array, ((t_object *)player->item.arg)->music, IS_PLAYING_MUSIC_OBJECT);
+		play_music(&player->item, game->music_array, ((t_object *)player->item.arg)->music, IS_PLAYING_OBJECT);
 	if ((map[(int)pos.y][(int)pos.x].type & NARRATOR) == NARRATOR)
 	{
 		play_narrator(game, &map[(int)pos.y][(int)pos.x], game->music_array);

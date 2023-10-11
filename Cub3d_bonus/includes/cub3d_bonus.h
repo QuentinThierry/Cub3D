@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/11 15:35:36 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 16:04:53 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@
 # define NARRATOR 0b1000000000000000000
 # define NARRATOR_RECEPTACLE 0b10000000000000000000
 # define IS_PLAYING_MUSIC 0b100000000000000000000
-# define IS_PLAYING_MUSIC_OBJECT 0b1000000000000000000000
+# define IS_PLAYING_OBJECT 0b1000000000000000000000
 # define IS_PLAYING_NARRATOR 0b10000000000000000000000
 
 extern long tot_fps;

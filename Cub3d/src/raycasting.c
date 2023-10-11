@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 19:26:09 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 19:54:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static const int	g_half_screen = WIN_X * WIN_Y / 2 * 4;
 
-double	dist(t_game *game, double x, double y, double angle)
+__attribute__((always_inline))
+static inline double	dist(t_game *game, double x, double y, double angle)
 {
 	t_fvector2	delta;
 	double		res;
@@ -28,7 +29,8 @@ double	dist(t_game *game, double x, double y, double angle)
 	return (res);
 }
 
-static void	draw_floor_ceiling(t_game *game)
+__attribute__((always_inline))
+static inline void	draw_floor_ceiling(t_game *game)
 {
 	ft_memcpy(game->image->addr,
 		game->tab_images[e_ceiling]->addr, g_half_screen);
@@ -49,7 +51,7 @@ void	raycasting(t_game *game)
 	x = -WIN_X / 2;
 	while (x < WIN_X / 2)
 	{
-		angle = atanf(x / game->consts[0]) * 180 / M_PI;
+		angle = atanf(x / game->consts) * 180 / M_PI;
 		if (game->player->angle + angle >= 360)
 			angle = angle - 360;
 		if (game->player->angle + angle < 0)
@@ -59,7 +61,7 @@ void	raycasting(t_game *game)
 		if (wall.x == -1 && wall.y == -1)
 			height = 0;
 		else
-			height = 1 / dist(game, wall.x, wall.y, angle) * game->consts[0];
+			height = 1 / dist(game, wall.x, wall.y, angle) * game->consts;
 		draw_vert(game, x + WIN_X / 2, wall, height);
 		x++;
 	}

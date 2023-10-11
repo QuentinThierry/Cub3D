@@ -6,11 +6,12 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 18:58:37 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 15:42:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
+
 
 void	printf_texture(t_game *game)
 {
@@ -61,7 +62,6 @@ void	printf_music(t_game *game)
 			, game->file_music[i].orient, i, game->file_music[i].subtitle);
 		i++;
 	}
-	fflush(stdout);
 }
 
 void	print_map(t_game *game)
@@ -82,7 +82,6 @@ void	print_map(t_game *game)
 			// printf("%d",game->map[y][x].sprite[e_west].index);
 			// printf("%d",game->map[y][x].sprite[e_down].index);
 			// printf("%d",game->map[y][x].sprite[e_up].index);
-			// fflush(stdout);
 			// write(1, "|", 1);
 			x++;
 		}

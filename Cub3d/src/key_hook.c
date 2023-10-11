@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hook.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:26:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 18:43:30 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 19:45:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,10 @@ int	key_release_hook(int key, t_player *player)
 	return (0);
 }
 
-void	player_move(t_player *player)
+static t_fvector2	set_move_value(t_player *player)
 {
 	t_fvector2	move_value;
 
-	if (player->view != 0)
-		player->angle += ROTATION * player->view;
 	move_value.x = 0;
 	move_value.y = 0;
 	if (player->dir.y != 0)
@@ -70,11 +68,21 @@ void	player_move(t_player *player)
 		move_value.y += sinf(player->angle * TO_RADIAN) * SPEED
 			* player->dir.x;
 	}
-	if (player->dir.x != 0 || player->dir.y != 0)
+	if (player->dir.x != 0 && player->dir.y != 0)
 	{
 		move_value.x *= 0.707;
 		move_value.y *= 0.707;
 	}
+	return (move_value);
+}
+
+void	player_move(t_player *player)
+{
+	t_fvector2	move_value;
+
+	if (player->view != 0)
+		player->angle += ROTATION * player->view;
+	move_value = set_move_value(player);
 	if (player->dir.x != 0 || player->dir.y != 0)
 	{
 		player->f_pos.x += move_value.x;

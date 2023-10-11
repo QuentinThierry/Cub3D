@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 18:08:48 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/09 20:00:28 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,6 @@ enum e_orientation	get_wall_orientation(t_player player, t_fvector2 wall)
 	}
 }
 
-t_image	*get_image(t_game *game, enum e_orientation orient)
-{
-	return (game->tab_images[orient]);
-}
-
 int	skip_whitespace(char *str)
 {
 	int	i;
@@ -47,25 +42,13 @@ int	skip_whitespace(char *str)
 	return (i);
 }
 
-int	ft_strlen(char *str)
+int	find_next_wsp(char *line, int i)
 {
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
+	while (line[i] != '\0' && !(line[i] == ' ' || line[i] == '\t'
+			|| line[i] == '\v' || line[i] == '\n' || line[i] == '\f'
+			|| line[i] == '\r'))
 		i++;
-	}
 	return (i);
-}
-
-void	remove_new_line(char *str)
-{
-	int	len;
-
-	len = ft_strlen(str);
-	if (len >= 1 && str[len - 1] == '\n')
-		str[len - 1] = '\0';
 }
 
 void	remove_end_whitespace(char *str)
@@ -97,8 +80,7 @@ t_vector2	get_dimension_maps(int fd, char *line, bool *error)
 	t_vector2	len;
 
 	*error = false;
-	len.y = 0;
-	len.x = 0;
+	len = (t_vector2){0};
 	while (line != NULL)
 	{
 		if (line[0] == '\n')
@@ -120,17 +102,4 @@ t_vector2	get_dimension_maps(int fd, char *line, bool *error)
 	free(line);
 	close(fd);
 	return (len);
-}
-
-void	free_tab(char **str, int sizey)
-{
-	int	i;
-
-	i = 0;
-	while (i < sizey)
-	{
-		free(str[i]);
-		i++;
-	}
-	free(str);
 }

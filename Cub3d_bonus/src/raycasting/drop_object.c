@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drop_object.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:00:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 20:40:28 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/11 15:34:50 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,12 @@ static void	_complete_receptacle(t_game *game, t_map *map_cell, t_player *player
 	frame = (float)exit_door->nb_receptacle_completed
 		* (game->tab_images[exit->sprite[e_door_image].index].nb_total_frame - 1) / game->total_receptacle ;
 	frame = roundf(frame);
+	if (frame == game->tab_images[exit->sprite[e_door_image].index].nb_total_frame - 1
+		&& exit_door->nb_receptacle_completed != game->total_receptacle)
+		return ;
 	if (frame != exit->sprite[e_door_image].frame)
 		exit->sprite[e_door_image].frame = frame;
-	if (frame == game->tab_images[exit->sprite[e_door_image].index].nb_total_frame - 1)
+	if (exit_door->nb_receptacle_completed == game->total_receptacle)
 		exit->type &= ~DOOR_LOCK;
 }
 

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
+#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/09 19:36:07 by qthierry         ###   ########.fr        #
+#    Updated: 2023/10/09 20:00:44 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,9 +44,12 @@ SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \
 			draw.c \
 			parsing.c \
 			parse_texture.c \
+			parse_map.c \
+			find_color.c \
 			ft_calloc.c \
 			init.c \
 			ft_memcpy.c \
+			ft_strlen.c \
 			ft_close.c \
 			wall_hit.c \
 			check_map.c \

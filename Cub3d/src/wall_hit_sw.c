@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   wall_hit_sw.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 19:26:00 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/09 19:37:51 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/09 19:47:53 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static t_fvector2	find_wall(t_map_arg map, t_fvector2 comp,
+__attribute__((always_inline))
+static inline t_fvector2	find_wall(t_map_arg map, t_fvector2 comp,
 		t_fvector2 step, t_vector2 map_pos)
 {
 	while (true)

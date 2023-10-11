@@ -6,14 +6,14 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/11 18:04:32 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/11 19:08:41 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3D_bonus
 
 CC = gcc
-CFLAGS = -g -Wall -Wextra -MMD#-O3#-fsanitize=address#-Werror
+CFLAGS = -g -Wall -Wextra -MMD -O3 -fsanitize=address,leak,undefined#-Werror
 LIBS = -L$(MINILIBX_DIR) -lmlx -lX11 -lXext -lm  -L$(RAUDIO_SRC) -lraudio
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR) -I$(RAUDIO_HEADERS)
 
@@ -137,7 +137,9 @@ ENDGAME = end_game/
 SRC_ENDGAME = \
 			end_game.c \
 			end_open_door.c \
+			end_open_door1.c \
 			end_door.c \
+			end_utils.c \
 			end_game_raycaster.c
 
 SRC_LIST =	$(addprefix $(GNL), $(SRC_GNL)) \

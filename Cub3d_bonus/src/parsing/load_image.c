@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 14:56:51 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 18:41:41 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 16:40:52 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,8 @@ bool	load_image_tab(t_game *game, bool *print_error)
 			LOADING_FONT, (t_vector2){WIN_X / 3 * 2, WIN_Y / 16 / 3 * 2});
 	if (game->subtitle_font == NULL)
 		return (false);
-	game->subtitle_size_letter.x = game->subtitle_font->size.x * WIDTH_LETTER / WIDTH_ALPHA;
-	game->subtitle_size_letter.y = game->subtitle_font->size.y;
+	game->subtitle_size.x = game->subtitle_font->size.x * WIDTH_LETTER / WIDTH_ALPHA;
+	game->subtitle_size.y = game->subtitle_font->size.y;
 	game->nb_images = get_len_texture(game->filename, game->nb_file);
 	game->tab_images = ft_calloc(game->nb_images, sizeof(t_image));
 	if (game->tab_images == NULL)

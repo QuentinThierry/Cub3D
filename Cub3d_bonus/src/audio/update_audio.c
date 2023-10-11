@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:09:34 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 16:10:49 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 16:59:05 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,16 @@ void	update_sounds(t_music_game *music_array)
 				if (i == 1)
 					music_array[i].map_cell->type &= ~IS_PLAYING_NARRATOR;
 				else
-					music_array[i].map_cell->type &= ~IS_PLAYING_MUSIC & ~IS_PLAYING_OBJECT;
+					music_array[i].map_cell->type &= ~IS_PLAYING_MUSIC
+						& ~IS_PLAYING_OBJECT;
 			}
 		}
 		i++;
 	}
 }
 
-void	update_map_cell_music(t_map *map_cell, t_map *old_map_cell, t_music_game *music_array)
+void	update_map_cell_music(t_map *map_cell, t_map *old_map_cell,
+		t_music_game *music_array)
 {
 	int	i;
 

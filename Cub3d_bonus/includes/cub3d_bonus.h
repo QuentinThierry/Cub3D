@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/11 16:04:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 17:20:38 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,9 @@
 # define DFL_KEY_SPRINT 0xffe1
 
 # define BACKGROUND_MUSIC "./assets/sounds/test1.mp3"
+
+#define SUBTITLE_TIME 5000
+#define MAX_CARACTER 100
 
 // t_type for arg
 # define NONE 0b0
@@ -390,7 +393,7 @@ typedef struct s_game
 	t_image			*font;
 	t_dvector2		size_letter;
 	t_image			*subtitle_font;
-	t_dvector2		subtitle_size_letter;
+	t_dvector2		subtitle_size;
 	t_texture		*filename;
 	int				nb_file;
 	struct s_music_name	*file_music;

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 19:04:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 15:43:21 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 16:40:46 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	print_text(t_game *game, char *str, t_image *alpha, t_vector2 start_pos)
 		start_pos.x = 0;
 	if (start_pos.y < 0)
 		start_pos.y = 0;
-	if (start_pos.y + game->subtitle_size_letter.y > game->image->size.y)
+	if (start_pos.y + game->subtitle_size.y > game->image->size.y)
 		return ;
 	while (str[i])
 	{

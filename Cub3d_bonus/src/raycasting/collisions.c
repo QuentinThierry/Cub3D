@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 01:05:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/05 15:45:15 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 18:24:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ static inline void	check_interactive_object(t_game *game, t_map **map, t_dvector
 {
 	t_ray	ray;
 
-	ray = get_object_hit((t_launch_ray){'\0', OBJECT_INTERACTIVE, get_dist(game->player->f_real_pos, fpos)},
-			map, game->player->f_real_pos, game->player->angle);
+	ray = get_object_hit((t_launch_ray){'\0', OBJECT_INTERACTIVE, get_dist(game->player->f_pos, fpos)},
+			map, game->player->f_pos, game->player->angle);
 	if (ray.hit.x != -1)
 		take_object(game, game->player, &map[(int)ray.hit.y][(int)ray.hit.x], game->music_array);
 }
@@ -38,8 +38,8 @@ static t_dvector2	slide_wall_x(t_game *game, t_dvector2 fpos, t_map **map, t_dve
 
 	x = (int)fpos.x;
 	dir = ((dest.x - fpos.x) > 0) * 2 - 1;
-	ray = get_object_hit((t_launch_ray){'\0', OBJECT_INTERACTIVE, get_dist(game->player->f_real_pos, fpos)},
-			map, game->player->f_real_pos, game->player->angle);
+	ray = get_object_hit((t_launch_ray){'\0', OBJECT_INTERACTIVE, get_dist(game->player->f_pos, fpos)},
+			map, game->player->f_pos, game->player->angle);
 	if (ray.hit.x != -1)
 		take_object(game, game->player, &map[(int)ray.hit.y][(int)ray.hit.x], game->music_array);
 	while ((dir == 1 && x < dest.x) || (dir == -1 && x > dest.x))
@@ -69,7 +69,7 @@ static t_dvector2	slide_wall_y(t_game *game, t_dvector2 fpos, t_map **map, t_dve
 
 	y = (int)fpos.y;
 	dir = ((dest.y - fpos.y) > 0) * 2 - 1;
-	ray = get_object_hit((t_launch_ray){'\0', OBJECT_INTERACTIVE, get_dist(game->player->f_real_pos, fpos)}, map, game->player->f_real_pos, game->player->angle);
+	ray = get_object_hit((t_launch_ray){'\0', OBJECT_INTERACTIVE, get_dist(game->player->f_pos, fpos)}, map, game->player->f_pos, game->player->angle);
 	if (ray.hit.x != -1)
 		take_object(game, game->player, &map[(int)ray.hit.y][(int)ray.hit.x], game->music_array);
 	while ((dir == 1 && y < dest.y) || (dir == -1 && y > dest.y))
@@ -294,20 +294,20 @@ t_dvector2	check_colliding(t_game *game, t_dvector2 new_pos, t_map **map)
 {
 	t_vector2	sign;
 
-	if (game->player->f_real_pos.x - new_pos.x < 0)
+	if (game->player->f_pos.x - new_pos.x < 0)
 		sign.x = 1;
 	else
 		sign.x = -1;
-	if (game->player->f_real_pos.y - new_pos.y < 0)
+	if (game->player->f_pos.y - new_pos.y < 0)
 		sign.y = 1;
 	else
 		sign.y = -1;
 	if (sign.x == 1 && sign.y == 1)
-		return (_get_collision_se(game->player->f_real_pos, map, new_pos, game));
+		return (_get_collision_se(game->player->f_pos, map, new_pos, game));
 	else if (sign.x == 1 && sign.y == -1)
-		return (_get_collision_ne(game->player->f_real_pos, map, new_pos, game));
+		return (_get_collision_ne(game->player->f_pos, map, new_pos, game));
 	else if (sign.x == -1 && sign.y == 1)
-		return (_get_collision_sw(game->player->f_real_pos, map, new_pos, game));
+		return (_get_collision_sw(game->player->f_pos, map, new_pos, game));
 	else
-		return (_get_collision_nw(game->player->f_real_pos, map, new_pos, game));
+		return (_get_collision_nw(game->player->f_pos, map, new_pos, game));
 }

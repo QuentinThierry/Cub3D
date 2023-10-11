@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 18:10:31 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/11 15:34:28 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 18:22:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,13 @@ bool	init_end_screen(t_game *game)
  * @param door 
  * @param end 
  */
-static void	open_exit(t_game *game, t_door *door, t_end *end)
+static void	_open_exit(t_game *game, t_door *door, t_end *end)
 {
 	if (door->is_opening_door == 0)
-	{
 		door->is_opening_door = 1;
-		// door->time = game->time;
-	}
 	end_step_door_open(game->delta_time, game->exit, game->map, end);
 	if (door->door_percent == 90)
-		end->status = e_walk_through_door;
+		end->status = e_walk;
 }
 
 /**
@@ -59,26 +56,31 @@ static void	open_exit(t_game *game, t_door *door, t_end *end)
  * @return true 
  * @return false 
  */
-static bool	move_to_dest(t_player *player, const t_end *end, const double delta_time)
+static bool	_move_to_dest(t_player *player, t_end *end, const double delta_time)
 {
-	player->f_real_pos.x += end->dir.x * SPEED / 3. * delta_time;
-	player->f_real_pos.y += end->dir.y * SPEED / 3. * delta_time;
+	player->f_pos.x += end->dir.x * SPEED / 3. * delta_time;
+	player->f_pos.y += end->dir.y * SPEED / 3. * delta_time;
 	player->angle += end->dir_angle / 3. * delta_time;
-	if ((end->dir.x < 0 && player->f_real_pos.x < end->dest.x)
-		|| (end->dir.x > 0 && player->f_real_pos.x > end->dest.x))
-		player->f_real_pos.x = end->dest.x;
-	if ((end->dir.y < 0 && player->f_real_pos.y < end->dest.y)
-		|| (end->dir.y > 0 && player->f_real_pos.y > end->dest.y))
-		player->f_real_pos.y = end->dest.y;
+	if ((end->dir.x < 0 && player->f_pos.x < end->dest.x)
+		|| (end->dir.x > 0 && player->f_pos.x > end->dest.x))
+		player->f_pos.x = end->dest.x;
+	if ((end->dir.y < 0 && player->f_pos.y < end->dest.y)
+		|| (end->dir.y > 0 && player->f_pos.y > end->dest.y))
+		player->f_pos.y = end->dest.y;
 	if ((end->dir_angle < 0 && player->angle < end->dest_angle)
 		|| (end->dir_angle > 0 && player->angle > end->dest_angle))
 		player->angle = end->dest_angle;
-	if (player->f_real_pos.x == end->dest.x && player->f_real_pos.y == end->dest.y)
+	if (player->f_pos.x == end->dest.x
+		&& player->f_pos.y == end->dest.y)
 	{
 		if (player->angle == end->dest_angle
 			|| (end->dest_angle == 0 && player->angle == 360)
 			|| (end->dest_angle == 360 && player->angle == 0))
+		{
+			if (end->status == e_go_in_font_of_door)
+				next_dest(end, player->f_pos);
 			return (true);
+		}
 	}
 	return (false);
 }
@@ -101,14 +103,11 @@ int	update_loop(t_game *game)
 	update_sounds(game->music_array);
 	game->time = time_to_long(&time);
 	if (game->end->status == e_go_in_font_of_door)
-	{
-		if (move_to_dest(game->player, game->end, game->delta_time))
-			next_dest(game->end, game->player->f_real_pos);
-	}
+		_move_to_dest(game->player, game->end, game->delta_time);
 	else if (game->end->status == e_open_door)
-		open_exit(game, game->exit->arg, game->end);
-	else if (game->end->status == e_walk_through_door)
-		if (move_to_dest(game->player, game->end, game->delta_time))
+		_open_exit(game, game->exit->arg, game->end);
+	else if (game->end->status == e_walk)
+		if (_move_to_dest(game->player, game->end, game->delta_time))
 			game->end->status = e_end;
 	raycasting_end(game);
 	print_subtitle(game, game->music_array[1].map_cell);
@@ -134,8 +133,8 @@ void	end_of_the_game(t_game *game, const enum e_orientation orient)
 	{
 		game->exit->music = get_music(game->file_music, game->nb_music,
 				game->exit->symbol, e_music_receptacle_complete);
-		play_music(game->exit, game->music_array, game->exit->music, IS_PLAYING_MUSIC);
-		game->exit->type &= ~MUSIC;
+		play_music(game->exit, game->music_array, game->exit->music,
+			IS_PLAYING_MUSIC);
 	}
 	if ((game->exit->type & NARRATOR) == NARRATOR
 		|| (game->exit->type & NARRATOR_RECEPTACLE) == NARRATOR_RECEPTACLE)
@@ -145,7 +144,8 @@ void	end_of_the_game(t_game *game, const enum e_orientation orient)
 		play_narrator(game, game->exit, game->music_array);
 		game->exit->type &= ~NARRATOR & ~NARRATOR_RECEPTACLE;
 	}
-	find_dest(game->end, orient, ((t_door *)game->exit->arg)->map_pos, game->player);
+	find_dest(game->end, orient, ((t_door *)game->exit->arg)->map_pos,
+		game->player);
 	game->end->orient = orient;
 	game->end->status = e_go_in_font_of_door;
 	mlx_hook(game->win, 2, (1L << 0), exit_hook, game);

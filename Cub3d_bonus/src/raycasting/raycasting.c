@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 15:58:23 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 18:23:41 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	raycasting(t_game *game)
 	t_dvector2	fpos;
 	float		dist;
 
-	fpos = game->player->f_real_pos;
+	fpos = game->player->f_pos;
 	x = -WIN_X / 2;
 	while (x < WIN_X / 2)
 	{
@@ -53,7 +53,7 @@ void	raycasting(t_game *game)
 		if (game->player->angle + angle < 0)
 			angle = angle + 360;
 		ray = get_wall_hit(fpos, game->map, game->player->angle + angle);
-		dist = get_dist(game->player->f_real_pos, ray.hit);
+		dist = get_dist(game->player->f_pos, ray.hit);
 		game->dist_tab[x + WIN_X / 2] = dist;
 		dist *= cosf(angle * TO_RADIAN);
 		if (dist == 0)

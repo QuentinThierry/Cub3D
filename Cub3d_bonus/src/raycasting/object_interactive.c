@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 16:05:11 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 18:25:35 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ t_dvector2	find_pos(t_player *player)
 		pos.y = 1;
 	else if (pos.y < -1)
 		pos.y = -1;
-	pos.x += player->f_real_pos.x;
-	pos.y += player->f_real_pos.y;
+	pos.x += player->f_pos.x;
+	pos.y += player->f_pos.y;
 	return (pos);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:39:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 15:56:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 18:25:18 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,8 @@ void	find_object_projection(t_game *game, t_object *object, t_player *player)
 	int			x_screen;
 
 	player_angle = player->angle;
-	relative_pos.x = (object->map_pos.x - player->f_real_pos.x);
-	relative_pos.y = (object->map_pos.y - player->f_real_pos.y);
+	relative_pos.x = (object->map_pos.x - player->f_pos.x);
+	relative_pos.y = (object->map_pos.y - player->f_pos.y);
 	arctan2 = (atan2f(-relative_pos.y, relative_pos.x) * 180 / M_PI);
 
 	if (arctan2 > 0) // positive
@@ -159,8 +159,8 @@ static void	fill_object_dist(t_game *game)
 	{
 		if (game->object_array[i]->visited)
 		{
-			relative_pos.x = (game->object_array[i]->map_pos.x - game->player->f_real_pos.x);
-			relative_pos.y = (game->object_array[i]->map_pos.y - game->player->f_real_pos.y);
+			relative_pos.x = (game->object_array[i]->map_pos.x - game->player->f_pos.x);
+			relative_pos.y = (game->object_array[i]->map_pos.y - game->player->f_pos.y);
 			game->object_array[i]->dist = sqrtf(relative_pos.x * relative_pos.x + relative_pos.y * relative_pos.y);
 		}
 		else

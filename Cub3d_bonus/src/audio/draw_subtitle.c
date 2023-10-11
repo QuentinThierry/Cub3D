@@ -6,13 +6,14 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 17:19:58 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 17:23:23 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 18:11:58 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-static int	_find_max_caracter(const char *text, bool *is_word_cut)
+__attribute__((always_inline))
+static inline int	_find_max_caracter(const char *text, bool *is_word_cut)
 {
 	int	i;
 

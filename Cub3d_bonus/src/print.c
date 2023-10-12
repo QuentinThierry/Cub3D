@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 15:42:31 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/12 14:31:40 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	print_map(t_game *game)
 		while(x < game->map_size.x)
 		{
 			// write(1, "|", 1);
-			write(1, &(game->map[y][x].symbol), 1);
+			printf("%c", game->map[y][x].symbol);
 			// printf("%d",game->map[y][x].sprite[e_north].index);
 			// printf("%d",game->map[y][x].sprite[e_east].index);
 			// printf("%d",game->map[y][x].sprite[e_south].index);
@@ -85,7 +85,7 @@ void	print_map(t_game *game)
 			// write(1, "|", 1);
 			x++;
 		}
-		write(1, "\n", 1);
+		printf("\n");
 		y++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 15:28:17 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/12 14:30:45 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	register int		i = 0;
 	int					y;
 	int					y1;
-	int					x_img;
+	int					x_img = 0;
 	int					x_door;
 	float				y_img = 0;
-	t_image				*image;
+	t_image				*image = NULL;
 	enum e_orientation	orient;
-	float				delta_y_img;
+	float				delta_y_img = 0;
 	int					size_line;
 	char				*addr;
 	float				dark_quantity;

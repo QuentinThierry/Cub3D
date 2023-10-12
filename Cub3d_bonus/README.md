@@ -40,9 +40,10 @@ FIX :
 <!-- - protect text draw outside of the screen -->
 <!-- - change check map to fit the new type possible -->
 <!-- - file structure for bonus and mandatory -->
-- white space at the end of a texture printf error because file not found
-- Makefile with file headers
+<!-- - Makefile with file headers -->
 <!-- - does animation continue when object on the hand ??? -->
+- white space at the end of a texture printf error because file not found
+- decalage de bit with -fsanitize
 
 Minimap : 
 <!-- - if screen is too small, do not draw minimap -->

@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/12 14:32:11 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/12 15:12:25 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -131,7 +131,9 @@ SRC_AUDIO = \
 
 LOADINGSCREEN = loading_screen/
 SRC_LOADINGSCREEN = \
-			loading_screen.c
+			init_loading_screen.c \
+			loading_screen.c \
+			draw_image.c
 
 ENDGAME = end_game/
 SRC_ENDGAME = \

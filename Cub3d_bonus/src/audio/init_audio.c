@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 16:07:03 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 16:07:51 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/12 19:42:18 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ bool	init_audio(t_game *game)
 	game->music_array = ft_calloc(NB_MAX_SOUNDS, sizeof(t_music_game));
 	if (game->music_array == NULL)
 		return (false);
+	SetMasterVolume(DFL_SOUND);
 	game->music_array[0].music = LoadMusicStream(BACKGROUND_MUSIC);
 	if (!IsMusicReady(game->music_array[0].music))
 		return (print_error("Background music init failed\n", 1), false);

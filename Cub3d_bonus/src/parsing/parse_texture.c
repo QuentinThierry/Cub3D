@@ -3,110 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parse_texture.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 17:55:15 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/12 20:54:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 #include "../../includes/get_next_line.h"
 
-/**
- * @brief read the config file and stock the usefull information
- * 
- * @param animation 
- * @param index 
- * @return true 
- * @return false 
- */
-bool	ft_read_config(t_animation *animation, int index)
-{
-	int		fd;
-	char	*buffer;
-	bool	error;
-
-	error = false;
-	fd = open(animation->filename[index], O_RDONLY);
-	if (fd == -1)
-		return (print_error(NULL, 0), false);
-	buffer = get_next_line(fd);
-	if (buffer != NULL)
-		animation->time_sprite = ft_atoi(buffer);
-	free(buffer);
-	if (animation->time_sprite <= 0)
-		error = true;
-	buffer = get_next_line(fd);
-	if (buffer != NULL)
-		animation->time_animation = ft_atoi(buffer);
-	free(buffer);
-	if (animation->time_animation <= 0)
-		error = true;
-	buffer = get_next_line(fd);
-	while (buffer != NULL)
-	{
-		if (!(buffer[0] == '\n' || buffer[0] == '\0'))
-			error = true;
-		free(buffer);
-		buffer = get_next_line(fd);
-	}
-	close(fd);
-	if (error == true)
-		print_error("Wrong format of config file\n", 1);
-	return (!error);
-}
-
-void	swap(char **str, int a, int b)
-{
-	char	*tmp;
-
-	tmp = str[a];
-	str[a] = str[b];
-	str[b] = tmp;
-}
-
-/**
- * @brief sort the filenstrncmpames of animation by alphbetic order and return if
- *		"config.cfg" is present. "config.cfg" will have the first position
- * 
- * @param anim 
- * @return true 
- * @return false 
- */
-bool	sort_animation(t_animation *anim)
-{
-	int		i;
-	int		j;
-	bool	has_config;
-
-	i = 0;
-	has_config = false;
-	while (i < anim->nb_sprite)
-	{
-		if (ft_strlen(anim->filename[i]) >= 10 && ft_strcmp(anim->filename[i]
-				+ (ft_strlen(anim->filename[i]) - 10), "config.cfg") == 0)
-		{
-			swap(anim->filename, i, 0);
-			has_config = true;
-			break ;
-		}
-		i++;
-	}
-	i = 1;
-	while (i + 1 < anim->nb_sprite)
-	{
-		j = 1;
-		while (j + 1 < anim->nb_sprite)
-		{
-			if (ft_strcmp(anim->filename[j], anim->filename[j + 1]) > 0)
-				swap(anim->filename, j, j + 1);
-			j++;
-		}
-		i++;
-	}
-	return (has_config);
-}
+bool	sort_animation(t_animation *anim);
 
 /**
  * @brief read directory to parse the animation find in the file.
@@ -383,7 +290,7 @@ bool	multiple_texture(t_game *game, int *index, char *str,
  * @return true On success
  * @return false ERROR, error already print
  */
-static bool	_find_texture(t_game *game, char *str, int index, enum e_orientation orient)
+bool	find_texture(t_game *game, char *str, int index, enum e_orientation orient)
 {
 	DIR			*dir;
 	char		*filename;
@@ -429,90 +336,6 @@ static bool	_find_texture(t_game *game, char *str, int index, enum e_orientation
 	return (true);
 }
 
-/**
- * @brief compare the identifier of the texture to assign at the right place
- * 
- * @param line string with the identifier + texture separate by a space
- * @param game struct to add the texture
- * @param i index to the begin of the indentifier
- * @param is_end if the world "MAP" is find is_end is set at true
- * @return true On success
- * @return false ERROR, error already print
- */
-static bool	_cmp_texture(char *line, t_game *game, int i, bool *is_end)
-{
-	int	next_wsp;
-
-	next_wsp = find_next_wsp(line, i);
-	if (next_wsp - i == 1)
-	{
-		if (line[i] == 'F')
-			return (_find_texture(game, line + i + 1, e_floor, e_floor));
-		else if (line[i] == 'C')
-			return (_find_texture(game, line + i + 1, e_ceiling, e_ceiling));
-		else
-			return (_find_texture(game, line + i + 1, game->nb_file, e_wall));
-	}
-	else if (next_wsp - i == 2)
-	{
-		if (ft_strncmp(line + i, "NO", 2) == 0)
-			return (_find_texture(game, line + i + 2, e_north, e_north));
-		else if (ft_strncmp(line + i, "SO", 2) == 0)
-			return (_find_texture(game, line + i + 2, e_south, e_south));
-		else if (ft_strncmp(line + i, "WE", 2) == 0)
-			return (_find_texture(game, line + i + 2, e_west, e_west));
-		else if (ft_strncmp(line + i, "EA", 2) == 0)
-			return (_find_texture(game, line + i + 2, e_east, e_east));
-	}
-	else if (next_wsp - i == 3)
-	{
-		if (ft_strncmp(line + i, "MAP\n", 4) == 0 || ft_strncmp(line + i, "MAP\0", 4) == 0)
-			return (*is_end = true, true);
-		if (ft_strncmp(line + i, "N_", 2) == 0)
-			return (_find_texture(game, line + i + 3, game->nb_file, e_north));
-		else if (ft_strncmp(line + i, "S_", 2) == 0)
-			return (_find_texture(game, line + i + 3, game->nb_file, e_south));
-		else if (ft_strncmp(line + i, "W_", 2) == 0)
-			return (_find_texture(game, line + i + 3, game->nb_file, e_west));
-		else if (ft_strncmp(line + i, "E_", 2) == 0)
-			return (_find_texture(game, line + i + 3, game->nb_file, e_east));
-		else if (ft_strncmp(line + i, "F_", 2) == 0)
-			return (_find_texture(game, line + i + 3, game->nb_file, e_floor));
-		else if (ft_strncmp(line + i, "C_", 2) == 0)
-			return (_find_texture(game, line + i + 3, game->nb_file, e_ceiling));
-		else if (ft_strncmp(line + i, "D_", 2) == 0)
-			return (_find_texture(game, line + i + 3, game->nb_file, e_door));
-		else if (ft_strncmp(line + i, "T_", 2) == 0)
-			return (_find_texture(game, line + i + 3, game->nb_file, e_exit));
-		else if (ft_strncmp(line + i, "M_", 2) == 0)
-			return (find_music(game, line + i + 3, e_music, 0));
-		else if (ft_strncmp(line + i, "H_", 2) == 0)
-			return (find_music(game, line + i + 3, e_narrator, 0));
-	}
-	else if (next_wsp - i == 4)
-	{
-		if (ft_strncmp(line + i, "OE_", 3) == 0)
-			return (_find_texture(game, line + i + 4, game->nb_file, e_object_entity));
-		else if (ft_strncmp(line + i, "OW_", 3) == 0)
-			return (_find_texture(game, line + i + 4, game->nb_file, e_object_wall));
-		else if (ft_strncmp(line + i, "OI_", 3) == 0)
-			return (_find_texture(game, line + i + 4, game->nb_file, e_object_interactive));
-		else if (ft_strncmp(line + i, "MR_", 3) == 0)
-			return (find_music(game, line + i + 4, e_music_receptacle, 0));
-		else if (ft_strncmp(line + i, "MO_", 3) == 0)
-			return (find_music(game, line + i + 4, e_music_object, 0));
-		else if (ft_strncmp(line + i, "HR_", 3) == 0)
-			return (find_music(game, line + i + 4, e_narrator_receptacle, 0));
-	}
-	else if (next_wsp - i == 5)
-	{
-		if (ft_strncmp(line + i, "R_", 2) == 0)
-			return (_find_texture(game, line + i + 5, game->nb_file, e_receptacle_empty));
-		if (ft_strncmp(line + i, "D_", 2) == 0)
-			return (_find_texture(game, line + i + 5, game->nb_file, e_door_lock));
-	}
-	return (print_error("invalid identifier\n", 1), false);
-}
 
 bool	check_texture(t_texture	*filename)
 {
@@ -527,6 +350,8 @@ bool	check_texture(t_texture	*filename)
 	}
 	return (true);
 }
+
+bool	cmp_texture(char *line, t_game *game, int i, bool *is_end);
 
 /**
  * @brief Parse the first part of the file that contain the name of the texture
@@ -547,7 +372,7 @@ bool	parse_texture(int fd, t_game *game, int *nb_line, char **rest)
 	is_end = false;
 	(*nb_line) = 0;
 	line = get_next_line(fd);
-	while (line != NULL)
+	while (line != NULL && is_end == false)
 	{
 		(*nb_line)++;
 		if (line[0] == '\n')
@@ -559,12 +384,10 @@ bool	parse_texture(int fd, t_game *game, int *nb_line, char **rest)
 		i = skip_whitespace(line);
 		if (ft_strlen(line + i) < 1)
 			return (print_error("Line to short\n", 1), free(line), false);
-		if (!_cmp_texture(line, game, i, &is_end))
+		if (!cmp_texture(line, game, i, &is_end))
 			return (free(line), false);
 		free(line);
 		line = get_next_line(fd);
-		if (is_end == true)
-			break ;
 	}
 	*rest = line;
 	if (!check_texture(game->filename))

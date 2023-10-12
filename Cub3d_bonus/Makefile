@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/12 15:12:25 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/12 16:52:41 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,7 +80,8 @@ SRC_PARSING = \
 			load_image.c \
 			parsing.c \
 			parse_texture.c \
-			parse_music.c
+			parse_music.c \
+			fill_object_door.c
 
 RAYCASTING = raycasting/
 SRC_RAYCASTING = \

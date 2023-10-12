@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 16:34:46 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 19:01:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/12 16:41:05 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,31 @@ static int	get_nb_sprite_animation(int nb_animation, t_texture *texture)
 	return (res);
 }
 
-static t_sprite	random_texture(t_texture *texture_tab, int index,
-				bool is_random)
+static int	_get_size(int index, t_texture *texture_tab)
 {
-	int	nb;
-	int	size;
 	int	i;
-	int	random;
+	int	size;
 
-	size = 0;
 	i = 0;
-	if (index == -1)
-		return ((t_sprite){-1, -1, 0});
+	size = 0;
 	while (i < index)
 	{
 		size += texture_tab[i].total;
 		i++;
 	}
+	return (size);
+}
+
+static t_sprite	random_texture(t_texture *texture_tab, int index,
+				bool is_random)
+{
+	int	nb;
+	int	size;
+	int	random;
+
+	if (index == -1)
+		return ((t_sprite){-1, -1, 0});
+	size = _get_size(index, texture_tab);
 	if (texture_tab[index].filename != NULL)
 		return ((t_sprite){size, -1, 0});
 	nb = texture_tab[index].nb_file + texture_tab[index].nb_animation;
@@ -54,11 +62,24 @@ static t_sprite	random_texture(t_texture *texture_tab, int index,
 			random = rand() % nb;
 		if (random < texture_tab[index].nb_file)
 			return ((t_sprite){size + random, -1, 0});
-		size += texture_tab[index].nb_file + get_nb_sprite_animation(random - texture_tab[index].nb_file, &texture_tab[index]);
-		random = rand() % (texture_tab[index].animation[random - texture_tab[index].nb_file].nb_sprite - 1);
+		size += texture_tab[index].nb_file + get_nb_sprite_animation(random
+				- texture_tab[index].nb_file, &texture_tab[index]);
+		random = rand() % (texture_tab[index].animation[random
+				- texture_tab[index].nb_file].nb_sprite - 1);
 		return ((t_sprite){size, random, 0});
 	}
 	return ((t_sprite){size, 0, 0});
+}
+
+static void	_set_orient_ref(t_texture *tab, enum e_orientation orient, int i,
+				int *orient_ref)
+{
+	if (tab->orient == orient && (orient == e_north || orient == e_east
+			|| orient == e_south || orient == e_west) && tab->symbol == '1')
+		*orient_ref = i;
+	else if (tab->orient == orient && (orient == e_floor || orient == e_ceiling)
+		&& tab->symbol == '0')
+		*orient_ref = i;
 }
 
 /**
@@ -93,12 +114,7 @@ t_sprite	fill_texture(t_texture *tab, int len, char symbol,
 					|| orient == e_west) && tab[i].orient == e_wall)
 				symbol_ref = i;
 		}
-		if (tab[i].orient == orient && (orient == e_north || orient == e_east
-				|| orient == e_south || orient == e_west) && tab[i].symbol == '1')
-			orient_ref = i;
-		else if (tab[i].orient == orient && (orient == e_floor || orient == e_ceiling)
-			&& tab[i].symbol == '0')
-			orient_ref = i;
+		_set_orient_ref(&tab[i], orient, i, &orient_ref);
 		i++;
 	}
 	if (symbol_ref == -1)

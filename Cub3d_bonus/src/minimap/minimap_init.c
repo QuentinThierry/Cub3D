@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:34:06 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/12 20:04:33 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/12 20:14:31 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ void	generate_minimap_bounds(t_game *game)
 			x++;
 			p = p - 2 * y + 2 * x + 1;
 		}
-		minimap->bounds[g_minimap_size.x / 2 - x] = y + (y & 1);
-		minimap->bounds[g_minimap_size.x / 2 - y] = x + (x & 1);
+		minimap->bounds[g_minimap_size.x / 2 - x] = y;
+		minimap->bounds[g_minimap_size.x / 2 - y] = x;
 	}
 }
 

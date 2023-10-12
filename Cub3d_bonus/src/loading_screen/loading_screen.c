@@ -6,14 +6,12 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 19:04:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/12 15:10:57 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/12 15:34:45 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-static const t_vector2	g_size_font = (t_vector2){WIN_X, WIN_Y / 16};
-static const t_vector2	g_size_background = (t_vector2){WIN_X, WIN_Y};
 static const t_vector2	g_size_loading_bar = (t_vector2){WIN_X / 3, WIN_Y / 16};
 
 void	print_text(t_game *game, char *str, t_image *alpha, t_vector2 pos)

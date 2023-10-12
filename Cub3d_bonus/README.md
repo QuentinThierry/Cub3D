@@ -100,3 +100,4 @@ Sound :
 
 Global :
 - replace all my_mlx_pixel_put by its simplier version
+- add `-ldl -pthread` for compile on all system

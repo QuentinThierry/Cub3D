@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_menu.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 14:53:39 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/11 15:34:33 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/11 18:26:35 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static const int	g_inter_button_y =
 	(WIN_Y - (WIN_Y / 10) * NB_OPTIONS_BUTTONS / 2) / (NB_OPTIONS_BUTTONS * 2);
 
 static const char	*g_description_opt_button[NB_OPTIONS_BUTTONS] =
-	{"Forward", "Left", "Backward", "Right", "Look Left", "Look Right",
+	{"Left", "Right", "Forward", "Backward", "Look Left", "Look Right",
 	"Pause", "Map Zoom", "Map Unzoom", "Door Interact", "Sprint"};
 
 static const char	*g_description_slider_button[NB_SLIDERS] =

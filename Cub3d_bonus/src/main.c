@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 18:22:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/12 18:32:59 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	move_mouse(t_game *game);
 int main(int argc, char **argv)
 {
 	t_game	game;
-	bool	error;
 	
 	game = (t_game){0};
 	if (argc != 2)
@@ -72,12 +71,8 @@ int main(int argc, char **argv)
 		return (print_error("Invalid window size\n", 1), 1);
 	if (!init_game(&game, argv[1]))
 		return (1);
-	if (!load_image_tab(&game, &error))
-	{
-		if (error == true)
-			print_error(NULL, 0);
+	if (!load_image_tab(&game))
 		return (ft_close(&game), 1);
-	}
 	free_filename(&game);
 	free_loading_screen(&game);
 	exit_door_no_receptacle(game.exit, game.total_receptacle, game.tab_images);

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/04 14:56:51 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 16:40:52 by jvigny           ###   ########.fr       */
+/*   Created: 2023/10/12 18:23:04 by jvigny            #+#    #+#             */
+/*   Updated: 2023/10/12 18:28:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,20 +59,28 @@ static t_image	*_resize_img(t_image *src,
 	return (dst);
 }
 
+static t_image	*_load_image(t_game *game, t_image *img, char *filename)
+{
+	img->img = mlx_xpm_file_to_image(game->mlx_ptr, filename,
+			&(img->size.x), &(img->size.y));
+	if (img->img == NULL)
+		return (NULL);
+	img->addr = mlx_get_data_addr(img->img,
+			&img->opp, &img->size_line, &img->endian);
+	if (img->opp != 32)
+		return (NULL);
+	img->opp /= 8;
+	return (img);
+}
+
 bool	load_resize_image(t_game *game, t_image *img, char *filename,
 		t_vector2 dst_size)
 {
 	t_image	dst;
 
-	img->img = mlx_xpm_file_to_image(game->mlx_ptr, filename,
-			&(img->size.x), &(img->size.y));
-	if (img->img == NULL)
+	img = _load_image(game, img, filename);
+	if (img == NULL)
 		return (false);
-	img->addr = mlx_get_data_addr(img->img,
-			&img->opp, &img->size_line, &img->endian);
-	if (img->opp != 32)
-		return (false);
-	img->opp /= 8;
 	if ((img->size.x == dst_size.x && img->size.y == dst_size.y)
 		|| (dst_size.x == 0 || dst_size.y == 0))
 		return (true);
@@ -90,84 +98,5 @@ bool	load_resize_image(t_game *game, t_image *img, char *filename,
 	*img = dst;
 	if (!update_loading_screen(game, game->loading_screen))
 		return (false);
-	return (true);
-}
-
-bool	load_image_tab(t_game *game, bool *print_error)
-{
-	t_image		*tab_image;
-	int			i;
-	int			j;
-	int			h;
-	int			index;
-
-	*print_error = true;
-	game->subtitle_font = btmlx_xpm_file_to_image_bilinear_resize(game->mlx_ptr,
-			LOADING_FONT, (t_vector2){WIN_X / 3 * 2, WIN_Y / 16 / 3 * 2});
-	if (game->subtitle_font == NULL)
-		return (false);
-	game->subtitle_size.x = game->subtitle_font->size.x * WIDTH_LETTER / WIDTH_ALPHA;
-	game->subtitle_size.y = game->subtitle_font->size.y;
-	game->nb_images = get_len_texture(game->filename, game->nb_file);
-	game->tab_images = ft_calloc(game->nb_images, sizeof(t_image));
-	if (game->tab_images == NULL)
-		return (false);
-	i = 0;
-	index = 0;
-	tab_image = game->tab_images;
-	while (i < game->nb_file)
-	{
-		if (game->filename[i].filename != NULL)
-		{
-			if (game->filename[i].orient == e_object_interactive_hand)
-			{
-				if (!load_resize_image(game, &(tab_image[index]), game->filename[i].filename, (t_vector2){WIN_X / 3, WIN_X / 3}))
-					return (false);
-			}
-			else if (!load_image(game, &(tab_image[index]), game->filename[i].filename, NULL))
-				return (false);
-			index++;
-		}
-		else
-		{
-			j = 0;
-			while (j < game->filename[i].nb_file)
-			{
-				if (game->filename[i].orient == e_object_interactive_hand)
-				{
-					if (!load_resize_image(game, &(tab_image[index]), game->filename[i].filename_d[j], (t_vector2){WIN_X / 3, WIN_X / 3}))
-						return (false);
-				}
-				else if (!load_image(game, &(tab_image[index]), game->filename[i].filename_d[j], NULL))
-					return (false);
-				j++;
-				index++;
-			}
-			j = 0;
-			while (j < game->filename[i].nb_animation)
-			{
-				h = 1;
-				if (!ft_read_config(&(game->filename[i].animation[j]), 0))
-					return (*print_error = false, false);
-				while (h < game->filename[i].animation[j].nb_sprite)
-				{
-					if (game->filename[i].orient == e_object_interactive_hand)
-					{
-						if (!load_resize_image(game, &(tab_image[index]), game->filename[i].animation[j].filename[h], (t_vector2){WIN_X / 3, WIN_X / 3}))
-							return (false);
-						tab_image[index].time_animation = game->filename[i].animation[j].time_animation;
-						tab_image[index].time_frame = game->filename[i].animation[j].time_sprite;
-						tab_image[index].nb_total_frame = game->filename[i].animation[j].nb_sprite - 1;
-					}
-					else if (!load_image(game, &(tab_image[index]), game->filename[i].animation[j].filename[h], &(game->filename[i].animation[j])))
-						return (false);
-					index++;
-					h++;
-				}
-				j++;
-			}
-		}
-		i++;
-	}
 	return (true);
 }

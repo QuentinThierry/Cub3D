@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/11 18:22:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/12 18:36:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,6 @@
 # define LOADING_BORDURE "./assets/loading_bordure.xpm"
 # define LOADING_CENTER "./assets/loading_center.xpm"
 # define LOADING_FONT "./assets/ascii.xpm"
-# define WIDTH_ALPHA 1880
-# define WIDTH_LETTER (1880 / 94.)
 # define HEIGHT_ALPHA 34
 # define GREEN_SCREEN 0x00ff00
 # define END_SCREEN "./assets/end.xpm"
@@ -483,7 +481,7 @@ void		printf_music(t_game *game);
 // -------Init---------
 bool		init_game(t_game *game, char *filename);
 bool		init_mlx(t_game *game);
-bool		load_image_tab(t_game *game, bool *print_error);
+bool		load_image_tab(t_game *game);
 void		init_mouse(t_game *game);
 
 // -------Hook---------

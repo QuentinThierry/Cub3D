@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 15:34:44 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/12 17:49:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,19 +90,4 @@ bool	init_mlx(t_game *game)
 	game->image->opp /= 8;
 	_init_hook(game);
 	return (true);
-}
-
-void	move_mouse(t_game *game)
-{
-	mlx_mouse_move(game->mlx_ptr, game->win, WIN_X / 2, WIN_Y / 2);
-	game->player->mouse_pos.x = WIN_X / 2;
-	game->player->mouse_pos.y = WIN_Y / 2;
-}
-
-void	init_mouse(t_game *game)
-{
-	mlx_mouse_move(game->mlx_ptr, game->win, WIN_X / 2, WIN_Y / 2);
-	// mlx_mouse_hide(game->mlx_ptr, game->win);
-	game->player->mouse_pos.x = WIN_X / 2;
-	game->player->mouse_pos.y = WIN_Y / 2;
 }

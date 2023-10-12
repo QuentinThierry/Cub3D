@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   audio.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/11 15:56:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/12 19:46:58 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ bool	init_audio(t_game *game)
 	game->music_array = ft_calloc(NB_MAX_SOUNDS, sizeof(t_music_game));
 	if (game->music_array == NULL)
 		return (false);
+	SetMasterVolume(DFL_SOUND);
 	game->music_array[0].music = LoadMusicStream(BACKGROUND_MUSIC);
 	if (!IsMusicReady(game->music_array[0].music))
 		return (print_error("Background music init failed\n", 1), false);

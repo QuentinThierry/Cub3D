@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/09 13:50:30 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/12 14:33:55 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ static inline void	draw_pixel_line(t_game *game, register t_dvector2 map_point, 
 	register int	i;
 	const t_image	*game_image = game->image;
 	t_vector2		last_map_pos;
-	t_image			*image;
-	t_image			*image2;
+	t_image			*image = NULL;
+	t_image			*image2 = NULL;
 	register float	dark_quantity;
 	register int	color_ceiling;
 	register int	color_floor;

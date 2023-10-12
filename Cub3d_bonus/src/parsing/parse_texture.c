@@ -3,15 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   parse_texture.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 17:55:15 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/12 19:37:52 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 #include "../../includes/get_next_line.h"
+
+static void	_get_config(int fd, t_animation *animation, bool *error)
+{
+	char	*buffer;
+
+	buffer = get_next_line(fd);
+	if (buffer != NULL)
+		animation->time_sprite = ft_atoi(buffer);
+	free(buffer);
+	if (animation->time_sprite <= 0)
+		*error = true;
+	buffer = get_next_line(fd);
+	if (buffer != NULL)
+		animation->time_animation = ft_atoi(buffer);
+	free(buffer);
+	if (animation->time_animation <= 0)
+		*error = true;
+}
 
 /**
  * @brief read the config file and stock the usefull information
@@ -31,18 +49,7 @@ bool	ft_read_config(t_animation *animation, int index)
 	fd = open(animation->filename[index], O_RDONLY);
 	if (fd == -1)
 		return (print_error(NULL, 0), false);
-	buffer = get_next_line(fd);
-	if (buffer != NULL)
-		animation->time_sprite = ft_atoi(buffer);
-	free(buffer);
-	if (animation->time_sprite <= 0)
-		error = true;
-	buffer = get_next_line(fd);
-	if (buffer != NULL)
-		animation->time_animation = ft_atoi(buffer);
-	free(buffer);
-	if (animation->time_animation <= 0)
-		error = true;
+	_get_config(fd, animation, &error);
 	buffer = get_next_line(fd);
 	while (buffer != NULL)
 	{
@@ -66,19 +73,10 @@ void	swap(char **str, int a, int b)
 	str[b] = tmp;
 }
 
-/**
- * @brief sort the filenstrncmpames of animation by alphbetic order and return if
- *		"config.cfg" is present. "config.cfg" will have the first position
- * 
- * @param anim 
- * @return true 
- * @return false 
- */
-bool	sort_animation(t_animation *anim)
+static bool	_move_config(t_animation *anim)
 {
-	int		i;
-	int		j;
 	bool	has_config;
+	int		i;
 
 	i = 0;
 	has_config = false;
@@ -93,6 +91,24 @@ bool	sort_animation(t_animation *anim)
 		}
 		i++;
 	}
+	return (has_config);
+}
+
+/**
+ * @brief sort the filenstrncmpames of animation by alphbetic order and return if
+ *		"config.cfg" is present. "config.cfg" will have the first position
+ * 
+ * @param anim 
+ * @return true 
+ * @return false 
+ */
+bool	sort_animation(t_animation *anim)
+{
+	int		i;
+	int		j;
+	bool	has_config;
+
+	has_config = _move_config(anim);
 	i = 1;
 	while (i + 1 < anim->nb_sprite)
 	{

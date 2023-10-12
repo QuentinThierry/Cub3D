@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/12 19:28:49 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/12 20:27:45 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,6 +82,7 @@ SRC_PARSING = \
 			load_image.c \
 			load_image_tab.c \
 			parsing.c \
+			parse_map.c \
 			parse_texture.c \
 			parse_music.c \
 			load_subtitle.c \

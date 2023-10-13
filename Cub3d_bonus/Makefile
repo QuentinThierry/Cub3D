@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/12 20:56:06 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/13 16:30:57 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,6 +71,9 @@ SRC_UTILS = \
 
 PARSING = parsing/
 SRC_PARSING = \
+			is_existing.c \
+			read_dir.c \
+			read_anim.c \
 			check_map.c \
 			sort_anim.c \
 			ft_fill_wall.c \
@@ -83,6 +86,7 @@ SRC_PARSING = \
 			init_mouse.c \
 			load_image.c \
 			load_image_tab.c \
+			multiple_texture.c \
 			parsing.c \
 			parse_map.c \
 			parse_texture.c \

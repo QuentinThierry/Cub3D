@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 14:32:29 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/13 12:47:19 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 13:32:13 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*get_filename(char *str, int *i)
 	tmp = -1;
 	*i += skip_whitespace(str + *i);
 	if (str[*i] == '\0')
-		return (print_error("Empty sound\n", 1), NULL);
+		return (print_error("Empty texture\n", 1), NULL);
 	len = find_next_wsp(str + *i, 0);
 	if (len >= 0 && (str[*i + len] == ' ' || str[*i + len] == '\t'
 			|| str[*i + len] == '\v' || str[*i + len] == '\n'
@@ -104,14 +104,13 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 	index = game->nb_music;
 	if (_is_existing(game, *(str - 1), orient))
 		return (print_error("Multiples definition of a sound\n", 1), false);
-	if (index >= game->nb_music)
-		if (!_realloc_tab(game, index))
-			return (false);
+	if (!_realloc_tab(game, index))
+		return (false);
 	game->file_music[index].orient = orient;
 	game->file_music[index].symbol = *(str - 1);
 	len = ft_strlen(str);
 	if (i >= len)
-		return (print_error("Empty sound\n", 1), false);
+		return (print_error("1Empty sound\n", 1), false);
 	game->file_music[index].filename = get_filename(str, &i);
 	if (game->file_music[index].filename == NULL)
 		return (false);

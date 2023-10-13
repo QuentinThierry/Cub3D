@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 14:48:28 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:23:30 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,15 @@ void	resume_menu(t_game *game, t_menu *menu)
 		mlx_hook(game->win, 8, (1L << 5), mouse_leave, game);
 		mlx_mouse_hook(game->win, mouse_click, game);
 		mlx_loop_hook(game->mlx_ptr, on_update, game);
-		adjust_animation_time(game);
+		if (ft_strcmp(game->menu->pause_menu.play_button.text, "RESUME") == 0)
+			adjust_animation_time(game);
+		else
+			game->menu->pause_menu.play_button.text = "RESUME";
 		init_mouse(game);
 	}
 	else if (menu->state == OPTION_MENU)
 		menu->state = PAUSE_MENU;
 }
-
 void	set_pause_menu_mode(t_game *game)
 {
 	struct timespec	time_start;
@@ -79,6 +81,7 @@ void	set_pause_menu_mode(t_game *game)
 	mlx_hook(game->win, 6, (1L << 6), NULL, NULL);
 	mlx_mouse_show(game->mlx_ptr, game->win);
 	mlx_loop_hook(game->mlx_ptr, menu_loop_hook, game);
+	apply_menu_dark_filter(game->image, DARK_PERCENT_PAUSE);
 	blur_image(game->menu->background_image,
 		game->image, game->menu->h_rgb_blur_buffer,
 		game->menu->v_rgb_blur_buffer);

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 14:53:39 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/11 18:24:38 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:23:45 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ static void	fill_pause_menu_button(t_pause_menu *pause_menu,
 	pause_menu->play_button.pos
 		= (t_vector2){WIN_X / 2 - pause_menu->play_button.size.x / 2,
 		WIN_Y / 3 - pause_menu->play_button.size.y / 2};
-	pause_menu->play_button.text = "RESUME";
+	pause_menu->play_button.text = "PLAY";
 	pause_menu->option_button.base_image = button_image;
 	pause_menu->option_button.hovered_image = button_hovered_image;
 	pause_menu->option_button.size = pause_menu->option_button.base_image->size;

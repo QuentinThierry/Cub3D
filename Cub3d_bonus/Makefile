@@ -6,14 +6,14 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/13 15:13:16 by qthierry         ###   ########.fr        #
+#    Updated: 2023/10/13 16:53:43 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3D_bonus
 
 CC = gcc
-CFLAGS = -g -Wall -Wextra -MMD #-fsanitize=address,leak,undefined#-Werror
+CFLAGS = -g -Wall -Wextra -MMD#-fsanitize=address,leak,undefined#-Werror
 LIBS = -L$(MINILIBX_DIR) -lmlx -lX11 -lXext -lm  -L$(RAUDIO_SRC) -lraudio
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR) -I$(RAUDIO_HEADERS)
 

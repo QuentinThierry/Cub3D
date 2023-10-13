@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 15:10:49 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:28:36 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,10 @@
 
 # define SIZE_BOX_BLUR 9
 # define DARK_PERCENT_OPTION 0.5
+# define DARK_PERCENT_PAUSE 0.25
 # define NB_OPTIONS_BUTTONS 11
 # define NB_SLIDERS 11
-# define KEY_TEXT_CHANGE "Press any key"
+# define KEY_TEXT_CHANGE "Press a new key"
 # define COLOR_BAR_OPTION 0x707070
 # define DARK_COLOR_OPTION 0x101010
 # define DIST_TO_WALL 0.0999
@@ -587,7 +588,7 @@ void		set_pause_menu_mode(t_game *game);
 bool		init_pause_menu(t_game *game);
 void		draw_text_in_button(t_game *game, t_image *image, t_button *button);
 void		draw_button(t_button *button, t_image *image);
-void		apply_menu_dark_filter(t_image *menu_image);
+void		apply_menu_dark_filter(t_image *menu_image, const float intensity);
 void		draw_option_menu(t_game *game, t_option_menu *opt_menu);
 void		draw_pause_menu(t_game *game, t_pause_menu *pause_menu);
 void		resume_menu(t_game *game, t_menu *menu);

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:16:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 16:57:08 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/13 19:42:46 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,39 @@
 
 static const double	g_max_fps_frequence = 1. / MAX_MENU_FPS;
 
+void	key_press_no_pause(t_keybind key, t_game *game)
+{
+	if (key == XK_Escape)
+		ft_close(game);
+	else if (key == game->keybinds[e_key_left_look])
+		game->player->view -= 1;
+	else if (key == game->keybinds[e_key_right_look])
+		game->player->view += 1;
+	else if (key == game->keybinds[e_key_right_move])
+		game->player->dir.x += 1;
+	else if (key == game->keybinds[e_key_left_move])
+		game->player->dir.x -= 1;
+	else if (key == game->keybinds[e_key_forward_move])
+		game->player->dir.y -= 1;
+	else if (key == game->keybinds[e_key_backward_move])
+		game->player->dir.y += 1;
+	else if (key == game->keybinds[e_key_sprint])
+		game->player->speed += SPRINT_BOOST;
+	else if (key == game->keybinds[e_key_minimap_dezoom])
+		game->minimap->zoom_dir -= 1;
+	else if (key == game->keybinds[e_key_minimap_zoom])
+		game->minimap->zoom_dir += 1;
+	else if (key == game->keybinds[e_key_interact_door])
+		open_door(game);
+}
+
 void	choose_key_hook(t_keybind key, t_game *game)
 {
 	int			i;
 	static bool	has_drawn_key_used;
 
-	if (key == XK_Escape)
-		ft_close(game);
 	i = 0;
+	key_press_no_pause(key, game);
 	while (i < NB_OPTIONS_BUTTONS)
 	{
 		if (key == game->keybinds[i]
@@ -36,6 +61,9 @@ void	choose_key_hook(t_keybind key, t_game *game)
 		i++;
 	}
 	has_drawn_key_used = false;
+	if (game->keybinds[game->menu->option_menu.pressed_button] != key)
+		key_press_hook(game->keybinds[game->menu->option_menu.pressed_button],
+		game);
 	game->menu->option_menu.buttons[game->menu->option_menu.pressed_button].text
 		= get_key_str(key);
 	game->menu->state = OPTION_MENU;

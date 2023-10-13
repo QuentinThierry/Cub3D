@@ -6,12 +6,11 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 15:10:04 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 15:11:44 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/13 19:53:48 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
-
 
 static void	draw_slider_linked_text(t_game *game,
 	t_slider *slider, t_image *image)

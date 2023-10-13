@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/13 14:48:57 by qthierry         ###   ########.fr        #
+#    Updated: 2023/10/13 15:13:16 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -124,6 +124,8 @@ SRC_MENU = \
 			option_menu.c \
 			init_menu.c \
 			draw_button.c \
+			draw_slider.c \
+			menu_utils.c \
 			pause_menu.c
 
 AUDIO = audio/

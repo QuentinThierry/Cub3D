@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/12 18:36:31 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 15:10:49 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -597,6 +597,7 @@ void		check_mouse_is_in_button(t_button *button, int x, int y);
 void		draw_text_at_with_backgroud(t_game *game, t_image *image,
 				t_vector2 pos, const char *text);
 void		draw_alpha_rectangle(t_image *dest, t_vector2 pos, t_vector2 size);
+void		draw_slider(t_game *game, t_slider *slider, t_image *image);
 
 // ------ Blur ------------
 void		blur_image(t_image *dest, t_image *src,

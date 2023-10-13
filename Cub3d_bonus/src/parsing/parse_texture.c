@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_texture.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:50:12 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 17:55:15 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:48:53 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -309,6 +309,7 @@ bool	multiple_texture(t_game *game, int *index, char *str,
 	DIR		*dir;
 	char	*filename;
 	void	*tmp;
+	char	tmp1;
 
 	i = 0;
 	cpt = 0;
@@ -318,6 +319,12 @@ bool	multiple_texture(t_game *game, int *index, char *str,
 		nb_file = 4;
 	while (cpt < nb_file)
 	{
+		tmp1 = -1;
+		len = ft_strlen(str);
+		if (i >= len && nb_file == 4 && cpt == 2)
+			break ;
+		if (i >= len)
+			return (print_error("Empty texture\n", 1), false);
 		i += skip_whitespace(str + i);
 		if (str[i] == '\0')
 		{
@@ -329,10 +336,15 @@ bool	multiple_texture(t_game *game, int *index, char *str,
 		if (len >= 0 && (str[i + len] == ' ' || str[i + len] == '\t'
 				|| str[i + len] == '\v' || str[i + len] == '\n' || str[i + len] == '\f'
 				|| str[i + len] == '\r'))
+		{
+			tmp1 = str[i + len];
 			str[i + len] = '\0';
+		}
 		filename = ft_strdup(str + i);
 		if (filename == NULL)
 			return (print_error("malloc failed\n", 1), false);
+		if (tmp1 != -1)
+			str[i + len] = tmp1;
 		i += len + 1;
 		if (*index >= game->nb_file)
 		{

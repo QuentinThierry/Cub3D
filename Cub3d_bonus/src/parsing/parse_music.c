@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 14:32:29 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 15:34:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 16:53:21 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 	void	*tmp;
 	int		len;
 	int		index;
+	char	tmp1 = -1;
 
 	index = game->nb_music;
 	if (_is_existing(game, *(str - 1), orient))
@@ -111,6 +112,8 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 	}
 	game->file_music[index].orient = orient;
 	game->file_music[index].symbol = *(str - 1);
+	if (i >= ft_strlen(str))
+		return (print_error("Empty texture\n", 1), false);
 	i += skip_whitespace(str + i);
 	if (str[i] == '\0')
 		return (print_error("Empty texture\n", 1), false);
@@ -118,16 +121,24 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 	if (len >= 0 && (str[i + len] == ' ' || str[i + len] == '\t'
 			|| str[i + len] == '\v' || str[i + len] == '\n'
 			|| str[i + len] == '\f' || str[i + len] == '\r'))
+	{
+		tmp1 = str[i + len];
 		str[i + len] = '\0';
+	}
 	filename = ft_strdup(str + i);
 	if (filename == NULL)
 		return (print_error("malloc failed\n", 1), false);
+	if (tmp1 != -1)
+		str[i + len] = tmp1;
 	i += len + 1;
 	game->file_music[index].filename = filename;
 	if (orient == e_narrator || orient == e_narrator_receptacle
 		|| orient == e_narrator_receptacle_complete
 		|| orient == e_narrator_receptacle_complete)
 	{
+		tmp1 = -1;
+		if (i >= ft_strlen(str))
+			return (print_error("Empty texture\n", 1), false);
 		i += skip_whitespace(str + i);
 		if (str[i] == '\0')
 			return (print_error("Empty texture\n", 1), false);
@@ -135,10 +146,15 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 		if (len >= 0 && (str[i + len] == ' ' || str[i + len] == '\t'
 				|| str[i + len] == '\v' || str[i + len] == '\n'
 				|| str[i + len] == '\f' || str[i + len] == '\r'))
+		{
+			tmp1 = str[i + len];
 			str[i + len] = '\0';
+		}
 		filename = ft_strdup(str + i);
 		if (filename == NULL)
 			return (print_error("malloc failed\n", 1), false);
+		if (tmp1 != -1)
+			str[i + len] = tmp1;
 		i += len + 1;
 		game->file_music[index].subtitle = filename;
 		if (!load_subtitle(&game->file_music[index]))

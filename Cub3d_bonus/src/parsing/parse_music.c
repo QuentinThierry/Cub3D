@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 14:32:29 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/13 13:32:13 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 16:38:35 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 	game->file_music[index].symbol = *(str - 1);
 	len = ft_strlen(str);
 	if (i >= len)
-		return (print_error("1Empty sound\n", 1), false);
+		return (print_error("Empty sound\n", 1), false);
 	game->file_music[index].filename = get_filename(str, &i);
 	if (game->file_music[index].filename == NULL)
 		return (false);

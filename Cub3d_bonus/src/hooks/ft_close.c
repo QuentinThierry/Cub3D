@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 15:34:30 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 17:03:35 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,36 +40,10 @@ void	free_menu(void *mlx_ptr, t_menu *menu)
 	free(menu);
 }
 
-int	ft_close(t_game *game)
+static void	_free_mlx(t_game *game)
 {
 	int	i;
 
-	close_audio(game->music_array);
-	if (game->file_music != NULL)
-		free_music_file(game->file_music, game->nb_music);
-	if (game->object_array != NULL)
-		free_tab_object(game->object_array, game->nb_objects);
-	if (game->player != NULL)
-		free(game->player);
-	if (game->map != NULL)
-		free_map((void *)game->map, game->map_size);
-	if (game->filename != NULL)
-		free_filename(game);
-	free(game->dist_tab);
-	free(game->height_tab);
-	free(game->door_array);
-	free(game->keybinds);
-	if (game->filename)
-		free_filename(game);
-	free_minimap(game->minimap, game->mlx_ptr);
-	free_menu(game->mlx_ptr, game->menu);
-	free_loading_screen(game);
-	free_image(game->mlx_ptr, game->font);
-	free_image(game->mlx_ptr, game->subtitle_font);
-	free_image(game->mlx_ptr, game->image);
-	if (game->end != NULL)
-		free_image(game->mlx_ptr, game->end->end_screen);
-	free(game->end);
 	if (game->mlx_ptr)
 	{
 		mlx_do_key_autorepeaton(game->mlx_ptr);
@@ -86,6 +60,42 @@ int	ft_close(t_game *game)
 		mlx_destroy_display(game->mlx_ptr);
 		free(game->mlx_ptr);
 	}
+}
+
+static void	_ft_close_bis(t_game *game)
+{
+	if (game->file_music != NULL)
+		free_music_file(game->file_music, game->nb_music);
+	if (game->object_array != NULL)
+		free_tab_object(game->object_array, game->nb_objects);
+	if (game->player != NULL)
+		free(game->player);
+	if (game->map != NULL)
+		free_map((void *)game->map, game->map_size);
+	if (game->filename != NULL)
+		free_filename(game);
+	free(game->dist_tab);
+	free(game->height_tab);
+	free(game->door_array);
+	free(game->keybinds);
+}
+
+int	ft_close(t_game *game)
+{
+	close_audio(game->music_array);
+	_ft_close_bis(game);
+	if (game->filename)
+		free_filename(game);
+	free_minimap(game->minimap, game->mlx_ptr);
+	free_menu(game->mlx_ptr, game->menu);
+	free_loading_screen(game);
+	free_image(game->mlx_ptr, game->font);
+	free_image(game->mlx_ptr, game->subtitle_font);
+	free_image(game->mlx_ptr, game->image);
+	if (game->end != NULL)
+		free_image(game->mlx_ptr, game->end->end_screen);
+	free(game->end);
+	_free_mlx(game);
 	if (nb_fps != 0)
 		printf("Moyenne fps : %ld\n", (long)tot_fps / nb_fps);
 	exit(0);

@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/13 16:55:46 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/13 17:18:32 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -123,6 +123,8 @@ SRC_DRAW = \
 
 HOOKS = hooks/
 SRC_HOOKS = key_hook.c \
+			move_player.c \
+			mouse_hook.c \
 			ft_close.c
 
 MENU = menu/

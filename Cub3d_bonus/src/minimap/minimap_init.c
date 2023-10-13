@@ -6,14 +6,14 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:34:06 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/04 16:00:52 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/13 13:13:14 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-static const t_vector2	g_minimap_size =
-(t_vector2)
+static const t_vector2	g_minimap_size
+	= (t_vector2)
 {
 	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_SIZE,
 	((WIN_X <= WIN_Y) * WIN_X + (WIN_X > WIN_Y) * WIN_Y) * MINIMAP_SIZE
@@ -90,10 +90,8 @@ bool	init_minimap(t_game *game)
 		return (false);
 	generate_minimap_bounds(game);
 	minimap->image = btmlx_new_image(game->mlx_ptr, g_minimap_size);
-	if (!minimap->image)
-		return (false);
 	minimap->buffer_img = btmlx_new_image(game->mlx_ptr, g_minimap_size);
-	if (!minimap->buffer_img)
+	if (!minimap->buffer_img || !minimap->image)
 		return (false);
 	if (!generate_background_image(game))
 		return (false);

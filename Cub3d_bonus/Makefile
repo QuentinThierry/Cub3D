@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/13 17:18:32 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/13 18:29:22 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -118,7 +118,9 @@ SRC_MINIMAP = \
 DRAW = draw/
 SRC_DRAW = \
 			draw.c \
+			animation.c \
 			image_operations.c \
+			get_sprite.c \
 			get_image.c
 
 HOOKS = hooks/

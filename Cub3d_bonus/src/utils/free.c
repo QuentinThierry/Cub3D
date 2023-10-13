@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 16:27:51 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 15:34:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 12:58:14 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,11 @@ void	free_filename(t_game *game)
 	int	i;
 	int	j;
 
-	i = 0;
-	while (i < game->nb_file)
+	i = -1;
+	while (++i < game->nb_file)
 	{
 		if (game->filename[i].filename != NULL)
-		{
 			free(game->filename[i].filename);
-		}
 		else
 		{
 			if (game->filename[i].filename_d != NULL)
@@ -34,12 +32,10 @@ void	free_filename(t_game *game)
 			{
 				free_tab((void **)game->filename[i].animation[j].filename,
 					game->filename[i].animation[j].nb_sprite);
-				game->filename[i].animation[j].filename = NULL;
-				j++;
+				game->filename[i].animation[j++].filename = NULL;
 			}
 			free(game->filename[i].animation);
 		}
-		i++;
 	}
 	free(game->filename);
 	game->filename = NULL;

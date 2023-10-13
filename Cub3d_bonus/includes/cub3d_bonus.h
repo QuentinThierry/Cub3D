@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 19:50:58 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/13 20:22:52 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,12 @@
 # define COLOR_BAR_OPTION 0x707070
 # define DARK_COLOR_OPTION 0x101010
 # define DIST_TO_WALL 0.0999
+
+# define XPM_DFL_BUTTON "./assets/button.xpm"
+# define XPM_HOV_BUTTON "./assets/button_hovered.xpm"
+# define XPM_EXIT_BUTTON "./assets/button_exit_option.xpm"
+# define XPM_HOR_SLIDER "./assets/slider_hor.xpm"
+# define XPM_VERT_SLIDER "./assets/slider_vert.xpm"
 
 // KEYBINDS
 # define DFL_KEY_LEFT_MOVE 'a'
@@ -600,6 +606,8 @@ void		draw_text_at_with_backgroud(t_game *game, t_image *image,
 void		draw_alpha_rectangle(t_image *dest, t_vector2 pos, t_vector2 size);
 void		draw_slider(t_game *game, t_slider *slider, t_image *image);
 void		choose_key_hook(t_keybind key, t_game *game);
+bool		allocate_menu(t_game *game,
+			t_image **button_image, t_image **button_hovered_image);
 
 // ------ Blur ------------
 void		blur_image(t_image *dest, t_image *src,

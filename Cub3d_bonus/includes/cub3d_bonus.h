@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 18:28:36 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/13 19:50:58 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -599,6 +599,7 @@ void		draw_text_at_with_backgroud(t_game *game, t_image *image,
 				t_vector2 pos, const char *text);
 void		draw_alpha_rectangle(t_image *dest, t_vector2 pos, t_vector2 size);
 void		draw_slider(t_game *game, t_slider *slider, t_image *image);
+void		choose_key_hook(t_keybind key, t_game *game);
 
 // ------ Blur ------------
 void		blur_image(t_image *dest, t_image *src,

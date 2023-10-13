@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/13 20:24:20 by qthierry         ###   ########.fr        #
+#    Updated: 2023/10/13 21:18:47 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -119,7 +119,8 @@ SRC_HOOKS = key_hook.c \
 
 MENU = menu/
 SRC_MENU = \
-			blur.c \
+			horizontal_blur.c \
+			vertical_blur.c \
 			menu_key_hooks.c \
 			menu_mouse_hooks.c \
 			menu_loop_hook.c \

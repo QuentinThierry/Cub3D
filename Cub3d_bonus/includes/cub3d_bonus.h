@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 20:22:52 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/13 21:17:34 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -608,6 +608,7 @@ void		draw_slider(t_game *game, t_slider *slider, t_image *image);
 void		choose_key_hook(t_keybind key, t_game *game);
 bool		allocate_menu(t_game *game,
 			t_image **button_image, t_image **button_hovered_image);
+void		horizontal_blur(t_image *src, int *h_buffer);
 
 // ------ Blur ------------
 void		blur_image(t_image *dest, t_image *src,

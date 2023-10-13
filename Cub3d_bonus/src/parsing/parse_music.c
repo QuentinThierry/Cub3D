@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 14:32:29 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/12 19:28:23 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 12:47:19 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,24 +44,36 @@ char	*get_filename(char *str, int *i)
 {
 	int		len;
 	char	*filename;
+	char	tmp;
 
+	tmp = -1;
 	*i += skip_whitespace(str + *i);
 	if (str[*i] == '\0')
-		return (print_error("Empty texture\n", 1), NULL);
+		return (print_error("Empty sound\n", 1), NULL);
 	len = find_next_wsp(str + *i, 0);
 	if (len >= 0 && (str[*i + len] == ' ' || str[*i + len] == '\t'
 			|| str[*i + len] == '\v' || str[*i + len] == '\n'
 			|| str[*i + len] == '\f' || str[*i + len] == '\r'))
+	{
+		tmp = str[*i + len];
 		str[*i + len] = '\0';
+	}
 	filename = ft_strdup(str + *i);
 	if (filename == NULL)
 		return (print_error("malloc failed\n", 1), NULL);
+	if (tmp != -1)
+		str[*i + len] = tmp;
 	*i += len + 1;
 	return (filename);
 }
 
 static bool	_get_subtitle(char *str, int *i, t_music_name *music)
 {
+	int	len;
+
+	len = ft_strlen(str);
+	if (*i >= len)
+		return (print_error("Empty subtitle\n", 1), false);
 	music->subtitle = get_filename(str, i);
 	if (music->subtitle == NULL)
 		return (false);
@@ -86,7 +98,8 @@ static bool	_realloc_tab(t_game *game, int index)
 
 bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 {
-	int		index;
+	int	index;
+	int	len;
 
 	index = game->nb_music;
 	if (_is_existing(game, *(str - 1), orient))
@@ -96,6 +109,9 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 			return (false);
 	game->file_music[index].orient = orient;
 	game->file_music[index].symbol = *(str - 1);
+	len = ft_strlen(str);
+	if (i >= len)
+		return (print_error("Empty sound\n", 1), false);
 	game->file_music[index].filename = get_filename(str, &i);
 	if (game->file_music[index].filename == NULL)
 		return (false);

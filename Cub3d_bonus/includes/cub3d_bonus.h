@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/12 18:36:31 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 14:26:09 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -448,6 +448,8 @@ bool		is_only_wall(unsigned int type);
 char		*ft_strdup(const char *s);
 
 // -------Parsing-------
+bool		realloc_tab_texture(t_game *game, int index);
+char		*get_filename(char *str, int *i);
 void		exit_door_no_receptacle(t_map *exit, int nb_receptacle,
 				t_image *tab_image);
 bool		parse_file(char *filename, t_game *game);

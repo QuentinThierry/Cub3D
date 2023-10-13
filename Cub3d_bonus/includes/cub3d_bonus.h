@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 14:26:09 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 21:21:11 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,19 @@
 
 # define SIZE_BOX_BLUR 9
 # define DARK_PERCENT_OPTION 0.5
+# define DARK_PERCENT_PAUSE 0.25
 # define NB_OPTIONS_BUTTONS 11
 # define NB_SLIDERS 11
-# define KEY_TEXT_CHANGE "Press any key"
+# define KEY_TEXT_CHANGE "Press a new key"
 # define COLOR_BAR_OPTION 0x707070
 # define DARK_COLOR_OPTION 0x101010
 # define DIST_TO_WALL 0.0999
+
+# define XPM_DFL_BUTTON "./assets/button.xpm"
+# define XPM_HOV_BUTTON "./assets/button_hovered.xpm"
+# define XPM_EXIT_BUTTON "./assets/button_exit_option.xpm"
+# define XPM_HOR_SLIDER "./assets/slider_hor.xpm"
+# define XPM_VERT_SLIDER "./assets/slider_vert.xpm"
 
 // KEYBINDS
 # define DFL_KEY_LEFT_MOVE 'a'
@@ -589,7 +596,7 @@ void		set_pause_menu_mode(t_game *game);
 bool		init_pause_menu(t_game *game);
 void		draw_text_in_button(t_game *game, t_image *image, t_button *button);
 void		draw_button(t_button *button, t_image *image);
-void		apply_menu_dark_filter(t_image *menu_image);
+void		apply_menu_dark_filter(t_image *menu_image, const float intensity);
 void		draw_option_menu(t_game *game, t_option_menu *opt_menu);
 void		draw_pause_menu(t_game *game, t_pause_menu *pause_menu);
 void		resume_menu(t_game *game, t_menu *menu);
@@ -599,6 +606,11 @@ void		check_mouse_is_in_button(t_button *button, int x, int y);
 void		draw_text_at_with_backgroud(t_game *game, t_image *image,
 				t_vector2 pos, const char *text);
 void		draw_alpha_rectangle(t_image *dest, t_vector2 pos, t_vector2 size);
+void		draw_slider(t_game *game, t_slider *slider, t_image *image);
+void		choose_key_hook(t_keybind key, t_game *game);
+bool		allocate_menu(t_game *game,
+			t_image **button_image, t_image **button_hovered_image);
+void		horizontal_blur(t_image *src, int *h_buffer);
 
 // ------ Blur ------------
 void		blur_image(t_image *dest, t_image *src,

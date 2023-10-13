@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
+#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/13 20:08:50 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/13 21:22:30 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3D_bonus
 
 CC = gcc
-CFLAGS = -g -Wall -Wextra -MMD #-fsanitize=address,leak,undefined#-Werror
+CFLAGS = -g -Wall -Wextra -MMD#-fsanitize=address,leak,undefined#-Werror
 LIBS = -L$(MINILIBX_DIR) -lmlx -lX11 -lXext -lm  -L$(RAUDIO_SRC) -lraudio
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR) -I$(RAUDIO_HEADERS)
 
@@ -136,10 +136,17 @@ SRC_HOOKS = key_hook.c \
 
 MENU = menu/
 SRC_MENU = \
-			blur.c \
-			menu_hooks.c \
+			horizontal_blur.c \
+			vertical_blur.c \
+			menu_key_hooks.c \
+			menu_mouse_hooks.c \
+			menu_loop_hook.c \
 			option_menu.c \
 			init_menu.c \
+			init_menu_images.c \
+			draw_button.c \
+			draw_slider.c \
+			menu_utils.c \
 			pause_menu.c
 
 AUDIO = audio/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   menu_hooks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:16:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/11 15:34:35 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 16:57:08 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	menu_mouse_down_hook(int mouse_button, int x, int y, t_game *game)
 			{
 				game->menu->state = CHOOSING_KEY_MENU;
 				opt_menu->pressed_button = i;
-				apply_menu_dark_filter(game->menu->image);
+				apply_menu_dark_filter(game->menu->image, DARK_PERCENT_OPTION);
 				draw_centered_text_at_y(game, game->menu->image, WIN_Y / 2. - game->size_letter.y / 2,
 					KEY_TEXT_CHANGE);
 				mlx_hook(game->win, 2, (1L << 0), (void *)choose_key_hook, game);

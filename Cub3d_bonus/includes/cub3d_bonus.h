@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/11 15:35:36 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 17:00:30 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@
 
 # define SIZE_BOX_BLUR 9
 # define DARK_PERCENT_OPTION 0.5
+# define DARK_PERCENT_PAUSE 0.25
 # define NB_OPTIONS_BUTTONS 11
 # define NB_SLIDERS 11
 # define KEY_TEXT_CHANGE "Press any key"
@@ -586,7 +587,7 @@ void		set_pause_menu_mode(t_game *game);
 bool		init_pause_menu(t_game *game);
 void		draw_text_in_button(t_game *game, t_image *image, t_button *button);
 void		draw_button(t_button *button, t_image *image);
-void		apply_menu_dark_filter(t_image *menu_image);
+void		apply_menu_dark_filter(t_image *menu_image, const float intensity);
 void		draw_option_menu(t_game *game, t_option_menu *opt_menu);
 void		draw_pause_menu(t_game *game, t_pause_menu *pause_menu);
 void		resume_menu(t_game *game, t_menu *menu);

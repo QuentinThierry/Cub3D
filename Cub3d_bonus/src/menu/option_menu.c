@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:10:09 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/04 17:32:39 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:00:11 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,20 @@ const char	*get_key_str(t_keybind key)
 }
 
 __attribute__((always_inline))
-static inline t_pixel32	get_alpha_pixel(t_pixel32 pixel, t_pixel32 color)
+static inline t_pixel32	get_alpha_pixel(t_pixel32 pixel,
+	t_pixel32 color, const float intensity)
 {
-	const float	dark_quantity = 1 - DARK_PERCENT_OPTION;
+	const float	dark_quantity = 1 - intensity;
 
 	return (((unsigned char)(((pixel >> 16) & 0xFF) * dark_quantity
-			+ ((color >> 16) & 0xff) * DARK_PERCENT_OPTION) << 16)
+			+ ((color >> 16) & 0xff) * intensity) << 16)
 	| ((unsigned char)(((pixel >> 8) & 0xFF) * dark_quantity
-			+ ((color >> 8) & 0xff) * DARK_PERCENT_OPTION) << 8)
+			+ ((color >> 8) & 0xff) * intensity) << 8)
 	| (unsigned char)((pixel & 0xFF) * dark_quantity
-			+ (color & 0xff) * DARK_PERCENT_OPTION));
+			+ (color & 0xff) * intensity));
 }
 
-void	apply_menu_dark_filter(t_image *menu_image)
+void	apply_menu_dark_filter(t_image *menu_image, const float intensity)
 {
 	int			x;
 	int			y;
@@ -96,7 +97,8 @@ void	apply_menu_dark_filter(t_image *menu_image)
 		x = 0;
 		while (x < img_size_x)
 		{
-			*pix_addr = get_alpha_pixel(*pix_addr, DARK_COLOR_OPTION);
+			*pix_addr
+				= get_alpha_pixel(*pix_addr, DARK_COLOR_OPTION, intensity);
 			pix_addr++;
 			x++;
 		}
@@ -144,7 +146,7 @@ void	draw_alpha_rectangle(t_image *dest, t_vector2 pos, t_vector2 size)
 		x = 0;
 		while (x < size.x)
 		{
-			addr_pixel[x] = get_alpha_pixel(addr_pixel[x], 0xeeeeee);
+			addr_pixel[x] = get_alpha_pixel(addr_pixel[x], 0xeeeeee, DARK_PERCENT_OPTION);
 			x++;
 		}
 		addr_pixel += dest->size.x;

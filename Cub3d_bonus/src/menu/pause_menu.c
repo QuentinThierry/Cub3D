@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pause_menu.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/11 15:34:37 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 16:58:51 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,6 +224,7 @@ void	set_pause_menu_mode(t_game *game)
 	mlx_hook(game->win, 6, (1L << 6), NULL, NULL);
 	mlx_mouse_show(game->mlx_ptr, game->win);
 	mlx_loop_hook(game->mlx_ptr, menu_loop_hook, game);
+	apply_menu_dark_filter(game->image, DARK_PERCENT_PAUSE);
 	blur_image(game->menu->background_image,
 		game->image, game->menu->h_rgb_blur_buffer,
 		game->menu->v_rgb_blur_buffer);

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 16:58:51 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:14:49 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,10 @@ void	resume_menu(t_game *game, t_menu *menu)
 		mlx_hook(game->win, 8, (1L << 5), mouse_leave, game);
 		mlx_mouse_hook(game->win, mouse_click, game);
 		mlx_loop_hook(game->mlx_ptr, on_update, game);
-		adjust_animation_time(game);
+		if (ft_strcmp(game->menu->pause_menu.play_button.text, "RESMUE") == 0)
+			adjust_animation_time(game);
+		else
+			game->menu->pause_menu.play_button.text = "RESUME";
 		init_mouse(game);
 	}
 	else if (menu->state == OPTION_MENU)

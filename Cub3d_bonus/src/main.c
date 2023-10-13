@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 15:34:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 17:11:21 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,13 @@ int main(int argc, char **argv)
 		return (ft_close(&game), 1);
 	}
 	free_filename(&game);
+	ft_memcpy(game.image->addr, game.loading_screen->background->addr,
+		WIN_X * WIN_Y * 4);
 	free_loading_screen(&game);
 	exit_door_no_receptacle(game.exit, game.total_receptacle, game.tab_images);
 	PlayMusicStream(game.music_array[0].music);
 	move_mouse(&game);
+	set_pause_menu_mode(&game);
 	mlx_loop(game.mlx_ptr);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 15:36:03 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/13 12:52:09 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/13 13:20:49 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static uint	compute_alpha_red(t_pixel32 *src_pix,
 				* (1 - (src_pos.x - (int)src_pos.x))
 				+ (src_pix[src->size.x + 1] >> 16 & 0xff)
 				* (src_pos.x - (int)src_pos.x)) * (src_pos.y - (int)src_pos.y));
-	return (a << 24 | r << 16);
+	return ((uint)a << 24 | r << 16);
 }
 
 static uint	compute_green_blue(t_pixel32 *src_pix,

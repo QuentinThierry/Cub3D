@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:33:47 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 14:45:17 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 13:06:31 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,4 @@ void	draw_rectangle(t_image *image, t_vector2 pos, t_vector2 size,
 		}
 		y++;
 	}
-}
-
-bool	is_only_wall(unsigned int type)
-{
-	return ((type & WALL) == WALL && (type & OBJECT) != OBJECT
-		&& (type & OBJECT_INTERACTIVE) != OBJECT_INTERACTIVE
-		&& (type & RECEPTACLE) != RECEPTACLE);
 }

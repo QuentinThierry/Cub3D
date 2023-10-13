@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:10:09 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 16:49:09 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/13 19:44:31 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	draw_alpha_rectangle(t_image *dest, t_vector2 pos, t_vector2 size)
 		while (x < size.x)
 		{
 			addr_pixel[x] = get_alpha_pixel(addr_pixel[x],
-				0xeeeeee, DARK_PERCENT_OPTION);
+					0xeeeeee, DARK_PERCENT_OPTION);
 			x++;
 		}
 		addr_pixel += dest->size.x;

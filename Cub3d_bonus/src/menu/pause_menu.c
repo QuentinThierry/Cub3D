@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 17:23:30 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/13 19:44:18 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	resume_menu(t_game *game, t_menu *menu)
 	else if (menu->state == OPTION_MENU)
 		menu->state = PAUSE_MENU;
 }
+
 void	set_pause_menu_mode(t_game *game)
 {
 	struct timespec	time_start;

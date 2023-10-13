@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 18:25:35 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 20:21:24 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	take_object(t_game *game, t_player *player, t_map *cell_map, t_music_game *
 	player->has_item = true;
 }
 
-t_dvector2	find_pos(t_player *player)
+t_vector2	find_pos(t_player *player)
 {
 	t_dvector2	pos;
 
@@ -54,43 +54,43 @@ t_dvector2	find_pos(t_player *player)
 		pos.y = -1;
 	pos.x += player->f_pos.x;
 	pos.y += player->f_pos.y;
-	return (pos);
+	return ((t_vector2){(int)pos.x, (int)pos.y});
 }
 
 void	take_object_click(t_game *game, t_player *player, t_map **map)
 {
-	t_dvector2	pos;
+	t_vector2	pos;
 
 	pos = find_pos(player);
-	if ((map[(int)pos.y][(int)pos.x].type & RECEPTACLE) == RECEPTACLE
-		&& ((map[(int)pos.y][(int)pos.x].type & DOOR_LOCK) == DOOR_LOCK
-		|| (map[(int)pos.y][(int)pos.x].type & OBJECT) == OBJECT))
-		play_sound_fail(game, &map[(int)pos.y][(int)pos.x], game->music_array);
-	if (!((map[(int)pos.y][(int)pos.x].type & WALL) == WALL
-		&& (map[(int)pos.y][(int)pos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE
-		&& (map[(int)pos.y][(int)pos.x].type & OBJECT) == OBJECT))
+	if ((map[pos.y][pos.x].type & RECEPTACLE) == RECEPTACLE
+		&& ((map[pos.y][pos.x].type & DOOR_LOCK) == DOOR_LOCK
+		|| (map[pos.y][pos.x].type & OBJECT) == OBJECT))
+		play_sound_fail(game, &map[pos.y][pos.x], game->music_array);
+	if (!((map[pos.y][pos.x].type & WALL) == WALL
+		&& (map[pos.y][pos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE
+		&& (map[pos.y][pos.x].type & OBJECT) == OBJECT))
 		return ;
-	player->item.symbol = map[(int)pos.y][(int)pos.x].symbol;
-	player->item.type = map[(int)pos.y][(int)pos.x].type;
+	player->item.symbol = map[pos.y][pos.x].symbol;
+	player->item.type = map[pos.y][pos.x].type;
 	player->item.type &= ~WALL;
 	player->item.type &= ~MUSIC & ~IS_PLAYING_MUSIC;
-	map[(int)pos.y][(int)pos.x].type &= ~MUSIC_OBJECT & ~IS_PLAYING_OBJECT;
-	player->item.sprite[e_object_interactive_image] = map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_image];
-	player->item.sprite[e_object_interactive_hand_image] = map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_hand_image];
+	map[pos.y][pos.x].type &= ~MUSIC_OBJECT & ~IS_PLAYING_OBJECT;
+	player->item.sprite[e_object_interactive_image] = map[pos.y][pos.x].sprite[e_object_interactive_image];
+	player->item.sprite[e_object_interactive_hand_image] = map[pos.y][pos.x].sprite[e_object_interactive_hand_image];
 	player->item.arg = find_empty_object(game);
-	((t_object *)player->item.arg)->music = ((t_object *)map[(int)pos.y][(int)pos.x].arg)->music;
-	((t_object *)player->item.arg)->map_pos = pos;
+	((t_object *)player->item.arg)->music = ((t_object *)map[pos.y][pos.x].arg)->music;
+	((t_object *)player->item.arg)->map_pos = (t_dvector2){pos.x, pos.y};
 	player->has_item = true;
 	if ((player->item.type & MUSIC_OBJECT) == MUSIC_OBJECT)
 		play_music(&player->item, game->music_array, ((t_object *)player->item.arg)->music, IS_PLAYING_OBJECT);
-	if ((map[(int)pos.y][(int)pos.x].type & NARRATOR) == NARRATOR)
+	if ((map[pos.y][pos.x].type & NARRATOR) == NARRATOR)
 	{
-		play_narrator(game, &map[(int)pos.y][(int)pos.x], game->music_array);
+		play_narrator(game, &map[pos.y][pos.x], game->music_array);
 		player->item.type &= ~NARRATOR;
-		map[(int)pos.y][(int)pos.x].type &= ~NARRATOR;
+		map[pos.y][pos.x].type &= ~NARRATOR;
 	}
-	map[(int)pos.y][(int)pos.x].type &= ~OBJECT_INTERACTIVE;
-	map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_image] = map[(int)pos.y][(int)pos.x].sprite[e_object_interactive_after_image];
+	map[pos.y][pos.x].type &= ~OBJECT_INTERACTIVE;
+	map[pos.y][pos.x].sprite[e_object_interactive_image] = map[pos.y][pos.x].sprite[e_object_interactive_after_image];
 }
 
 void	update_anim(long int time, t_sprite *sprite, t_image *img);

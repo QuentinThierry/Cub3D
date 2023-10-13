@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 01:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/12 14:31:40 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 20:30:41 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	printf_texture(t_game *game)
 	{
 		if (game->filename[i].filename != NULL)
 			printf("texture %s	char : %c	%c	orientation : %d	index : %d		total : %d\n"
-				, game->filename[i].filename, game->filename[i].symbol, game->filename[i].symbol_receptacle
+				, game->filename[i].filename, game->filename[i].symbol, game->filename[i].sym_rcp
 				, game->filename[i].orient, i, game->filename[i].total);
 		else
 		{

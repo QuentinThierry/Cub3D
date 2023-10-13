@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 14:26:09 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 20:31:27 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ typedef struct s_object
 	bool			visited;
 	float			dist;
 	long int		time;
-	char			symbol_receptacle;
+	char			sym_rcp;
 	bool			is_completed;
 	char			*music;
 }	t_object;
@@ -260,7 +260,7 @@ typedef struct s_door
 	float		door_percent;
 	int			is_opening_door;
 	t_vector2	map_pos;
-	char		symbol_unlock_door;
+	char		open_door;
 	int			nb_receptacle_completed;
 }	t_door;
 
@@ -292,7 +292,7 @@ typedef struct s_texture
 	int					total;
 	enum e_orientation	orient;
 	char				symbol;
-	char				symbol_receptacle;
+	char				sym_rcp;
 }	t_texture;
 
 typedef struct s_minimap

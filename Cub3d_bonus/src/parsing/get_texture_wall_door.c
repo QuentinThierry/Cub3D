@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:45:44 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/12 17:47:55 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 20:30:41 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ bool	get_wall_door(t_game *game, t_map *map, t_texture *type_door)
 	if (type_door->orient == e_door_lock)
 	{
 		map->type |= DOOR_LOCK | RECEPTACLE;
-		((t_door *)map->arg)->symbol_unlock_door = type_door->symbol_receptacle;
+		((t_door *)map->arg)->open_door = type_door->sym_rcp;
 		map->sprite[e_door_image + 1] = fill_texture(game->filename,
 				game->nb_file, map->symbol, e_door_unlock);
 	}

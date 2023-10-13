@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 17:57:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/12 17:47:45 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 20:30:41 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static bool	_get_wall_receptacle(t_game *game, t_map *map, char c)
 	map->arg = ft_calloc(1, sizeof(t_object));
 	if (map->arg == NULL)
 		return (print_error(NULL, 0), false);
-	((t_object *)map->arg)->symbol_receptacle = c;
+	((t_object *)map->arg)->sym_rcp = c;
 	return (true);
 }
 

@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/14 16:34:58 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/14 18:05:49 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -176,6 +176,8 @@ SRC_ENDGAME = \
 			end_open_door.c \
 			end_open_door1.c \
 			wall_hit_end.c \
+			wall_hit_end_ne.c \
+			wall_hit_end_se.c \
 			end_door.c \
 			end_utils.c \
 			end_game_raycaster.c

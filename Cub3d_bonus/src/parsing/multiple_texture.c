@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 14:23:28 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/13 14:25:30 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/13 20:30:41 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ static bool	_set_info(enum e_orientation orient, int cpt, char *str,
 	if (orient == e_receptacle_empty)
 	{
 		texture->orient = e_receptacle_empty + cpt;
-		texture->symbol_receptacle = *(str - 3);
+		texture->sym_rcp = *(str - 3);
 	}
 	else if (orient == e_door_lock)
 	{
 		texture->orient = e_door_lock + cpt;
-		texture->symbol_receptacle = *(str - 3);
+		texture->sym_rcp = *(str - 3);
 	}
 	else
 		texture->orient = e_object_interactive + cpt;

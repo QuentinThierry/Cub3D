@@ -44,6 +44,7 @@ FIX :
 <!-- - does animation continue when object on the hand ??? -->
 - white space at the end of a texture printf error because file not found
 - decalage de bit with -fsanitize
+- ADD parsing to check if each music file is existing
 
 Minimap : 
 <!-- - if screen is too small, do not draw minimap -->

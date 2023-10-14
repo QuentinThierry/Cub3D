@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
+#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/13 21:22:30 by qthierry         ###   ########.fr        #
+#    Updated: 2023/10/14 13:35:18 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -123,6 +123,7 @@ SRC_MINIMAP = \
 DRAW = draw/
 SRC_DRAW = \
 			draw.c \
+			draw_hand_item.c \
 			animation.c \
 			image_operations.c \
 			get_sprite.c \
@@ -203,7 +204,7 @@ run: $(NAME)
 	./$(NAME) maps/map.cub
 
 vrun: $(NAME)
-	valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.supp ./$(NAME) maps/map.cub
+	valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.supp ./$(NAME) maps/map_test.cub
 
 prun: CFLAGS += -pg
 prun: $(NAME)
@@ -253,7 +254,7 @@ $(RAUDIO):
 		cd $(RAUDIO_DIR) && git pull; \
 	fi
 	@echo "   ${GREEN}- Compiling sources...${RESET_COLOR}"
-	gcc -c $(RAUDIO_SRC)raudio.c $(RAUDIO_DEFINE) -o $(RAUDIO_SRC)raudio.o
+	gcc -g -c $(RAUDIO_SRC)raudio.c $(RAUDIO_DEFINE) -o $(RAUDIO_SRC)raudio.o
 	ar rcs $(RAUDIO) $(RAUDIO_SRC)raudio.o
 	rm -f $(RAUDIO_SRC)raudio.o
 	@echo "${GREEN}~ DONE ~\n${RESET_COLOR}"

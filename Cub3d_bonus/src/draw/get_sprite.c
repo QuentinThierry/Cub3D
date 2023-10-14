@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 18:28:18 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/13 18:28:33 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/14 13:19:57 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,19 @@ static t_sprite	*_get_image_south(t_map **map, t_ray ray, float *dist,
 	*type = map[wall.y - 1][wall.x].type;
 	if ((map[wall.y - 1][wall.x].type & DOOR) == DOOR)
 		return (*dist = get_texture_door(ray),
-			&(map[wall.y - 1][wall.x].sprite[e_door_image]));
+			&(map[wall.y - 1][wall.x].sprite[e_door_img]));
 	else if ((map[wall.y - 1][wall.x].type & DOOR_SOUTH) == DOOR_SOUTH)
 	{
 		if (ray.hit.x < (int)ray.hit.x + 0.5)
 			return (*type = map[wall.y][wall.x].type,
 				*dist = (int)ray.hit.x + 0.5 - ray.hit.x,
-				&(map[wall.y][wall.x].sprite[e_door_image]));
+				&(map[wall.y][wall.x].sprite[e_door_img]));
 	}
 	else if ((map[wall.y - 1][wall.x].type & DOOR_SOUTH_END) == DOOR_SOUTH_END)
 		if (ray.hit.x >= (int)ray.hit.x + 0.5)
 			return (*type = map[wall.y][wall.x].type,
 				*dist = ray.hit.x - ((int)ray.hit.x + 0.5),
-				&(map[wall.y][wall.x].sprite[e_door_image]));
+				&(map[wall.y][wall.x].sprite[e_door_img]));
 	return (&(map[wall.y - 1][wall.x].sprite[ray.orient]));
 }
 
@@ -50,19 +50,19 @@ static t_sprite	*_get_image_north(t_map **map, t_ray ray, float *dist,
 	*type = map[wall.y][wall.x].type;
 	if ((map[wall.y][wall.x].type & DOOR) == DOOR)
 		return (*dist = get_texture_door(ray),
-			&(map[wall.y][wall.x].sprite[e_door_image]));
+			&(map[wall.y][wall.x].sprite[e_door_img]));
 	else if ((map[wall.y][wall.x].type & DOOR_NORTH) == DOOR_NORTH)
 	{
 		if (ray.hit.x < (int)ray.hit.x + 0.5)
 			return (*type = map[wall.y - 1][wall.x].type,
 				*dist = 1 - ((int)ray.hit.x - ray.hit.x + 0.5),
-				&(map[wall.y - 1][wall.x].sprite[e_door_image]));
+				&(map[wall.y - 1][wall.x].sprite[e_door_img]));
 	}
 	else if ((map[wall.y][wall.x].type & DOOR_NORTH_END) == DOOR_NORTH_END)
 		if (ray.hit.x >= (int)ray.hit.x + 0.5)
 			return (*type = map[wall.y - 1][wall.x].type,
 				*dist = 1 -(ray.hit.x - ((int)ray.hit.x + 0.5)),
-				&(map[wall.y - 1][wall.x].sprite[e_door_image]));
+				&(map[wall.y - 1][wall.x].sprite[e_door_img]));
 	return (&(map[wall.y][wall.x].sprite[ray.orient]));
 }
 
@@ -75,19 +75,19 @@ static t_sprite	*_get_image_west(t_map **map, t_ray ray, float *dist, int *type)
 	*type = map[wall.y][wall.x].type;
 	if ((map[wall.y][wall.x].type & DOOR) == DOOR)
 		return (*dist = get_texture_door(ray),
-			&(map[wall.y][wall.x].sprite[e_door_image]));
+			&(map[wall.y][wall.x].sprite[e_door_img]));
 	else if ((map[wall.y][wall.x].type & DOOR_WEST) == DOOR_WEST)
 	{
 		if (ray.hit.y > (int)ray.hit.y + 0.5)
 			return (*type = map[wall.y][wall.x - 1].type,
 				*dist = (int)ray.hit.y + 1 - ray.hit.y + 0.5,
-				&(map[wall.y][wall.x - 1].sprite[e_door_image]));
+				&(map[wall.y][wall.x - 1].sprite[e_door_img]));
 	}
 	else if ((map[wall.y][wall.x].type & DOOR_WEST_END) == DOOR_WEST_END)
 		if (ray.hit.y <= (int)ray.hit.y + 0.5)
 			return (*type = map[wall.y][wall.x - 1].type,
 				*dist = (ray.hit.y - (int)ray.hit.y + 0.5),
-				&(map[wall.y][wall.x - 1].sprite[e_door_image]));
+				&(map[wall.y][wall.x - 1].sprite[e_door_img]));
 	return (&(map[wall.y][wall.x].sprite[ray.orient]));
 }
 
@@ -102,19 +102,19 @@ static t_sprite	*_get_image_east(t_map **map, t_ray ray, float *dist, int *type)
 	*type = map[wall.y][wall.x - 1].type;
 	if ((map[wall.y][wall.x - 1].type & DOOR) == DOOR)
 		return (*dist = get_texture_door(ray),
-			&(map[wall.y][wall.x - 1].sprite[e_door_image]));
+			&(map[wall.y][wall.x - 1].sprite[e_door_img]));
 	else if ((map[wall.y][wall.x - 1].type & DOOR_EAST) == DOOR_EAST)
 	{
 		if (ray.hit.y > (int)ray.hit.y + 0.5)
 			return (*type = map[wall.y][wall.x].type,
 				*dist = ray.hit.y - (int)ray.hit.y - 0.5,
-				&(map[wall.y][wall.x].sprite[e_door_image]));
+				&(map[wall.y][wall.x].sprite[e_door_img]));
 	}
 	else if ((map[wall.y][wall.x - 1].type & DOOR_EAST_END) == DOOR_EAST_END)
 		if (ray.hit.y <= (int)ray.hit.y + 0.5)
 			return (*type = map[wall.y][wall.x].type,
 				*dist = 0.5 - (ray.hit.y - (int)ray.hit.y),
-				&(map[wall.y][wall.x].sprite[e_door_image]));
+				&(map[wall.y][wall.x].sprite[e_door_img]));
 	return (&(map[wall.y][wall.x - 1].sprite[ray.orient]));
 }
 

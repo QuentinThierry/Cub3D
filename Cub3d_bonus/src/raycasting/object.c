@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:39:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 18:25:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/14 13:19:11 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ void	draw_object_projection(t_game *game, t_object *object, float object_dist, i
 	height = 1 / object_dist * game->constants[0];
 	if ((game->map[(int)object->map_pos.y][(int)object->map_pos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE
 		&& (game->map[(int)object->map_pos.y][(int)object->map_pos.x].type & WALL) == WALL)
-		image = get_image_wall(game, (t_ray){object->map_pos, e_object_interactive_before_image}, &x);
+		image = get_image_wall(game, (t_ray){object->map_pos, e_obj_int_before_img}, &x);
 	else
-		image = get_image_wall(game, (t_ray){object->map_pos, e_object_image}, &x);
+		image = get_image_wall(game, (t_ray){object->map_pos, e_object_img}, &x);
 	size_ratio = (float)image->size.x / image->size.y;
 	width = height * size_ratio;
 	if (width > height)

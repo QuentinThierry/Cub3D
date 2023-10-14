@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 18:04:49 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/12 17:19:22 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/14 13:17:30 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static bool	_get_none_wall_object(t_game *game, t_map *map)
 			map->symbol, e_floor);
 	map->sprite[e_ceiling] = fill_texture(game->filename, game->nb_file,
 			map->symbol, e_ceiling);
-	map->sprite[e_object_image] = fill_texture(game->filename, game->nb_file,
+	map->sprite[e_object_img] = fill_texture(game->filename, game->nb_file,
 			map->symbol, e_object_entity);
 	map->arg = ft_calloc(1, sizeof(t_object));
 	if (map->arg == NULL)
@@ -58,9 +58,9 @@ static bool	_get_none_wall_object_interactive(t_game *game, t_map *map)
 			map->symbol, e_floor);
 	map->sprite[e_ceiling] = fill_texture(game->filename, game->nb_file,
 			map->symbol, e_ceiling);
-	map->sprite[e_object_interactive_image] = fill_texture(game->filename,
+	map->sprite[e_obj_int_img] = fill_texture(game->filename,
 			game->nb_file, map->symbol, e_object_interactive);
-	map->sprite[e_object_interactive_hand_image] = fill_texture(game->filename,
+	map->sprite[e_obj_int_hand_img] = fill_texture(game->filename,
 			game->nb_file, map->symbol, e_object_interactive_hand);
 	map->arg = ft_calloc(1, sizeof(t_object));
 	if (map->arg == NULL)

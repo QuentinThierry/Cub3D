@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 21:27:20 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/12 15:38:23 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/14 13:15:47 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,8 @@ void	exit_door_no_receptacle(t_map *exit, int nb_receptacle,
 {
 	if (nb_receptacle == 0 && exit != NULL)
 	{
-		exit->sprite[e_door_image].frame
-			= tab_image[exit->sprite[e_door_image].index].nb_total_frame - 1;
+		exit->sprite[e_door_img].frame
+			= tab_image[exit->sprite[e_door_img].index].nb_total_frame - 1;
 		exit->type ^= DOOR_LOCK;
 	}
 }

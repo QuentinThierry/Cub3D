@@ -6,13 +6,14 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/13 20:21:24 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/14 13:31:24 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
-void	take_object(t_game *game, t_player *player, t_map *cell_map, t_music_game *music_tab)
+void	take_object(t_game *game, t_player *player, t_map *cell_map,
+		t_music_game *music_tab)
 {
 	if (!(player->has_item == false && (cell_map->type & WALL) != WALL))
 		return ;
@@ -57,71 +58,46 @@ t_vector2	find_pos(t_player *player)
 	return ((t_vector2){(int)pos.x, (int)pos.y});
 }
 
+static void	_set_item_player(t_game *game, t_player *player, t_map *map_cell,
+				t_vector2 pos)
+{
+	player->has_item = true;
+	player->item.symbol = map_cell->symbol;
+	player->item.type = map_cell->type;
+	player->item.type &= ~WALL & ~MUSIC & ~IS_PLAYING_MUSIC;
+	player->item.sprite[e_obj_int_img] = map_cell->sprite[e_obj_int_img];
+	player->item.sprite[e_obj_int_hand_img]
+		= map_cell->sprite[e_obj_int_hand_img];
+	player->item.arg = find_empty_object(game);
+	((t_object *)player->item.arg)->music = ((t_object *)map_cell->arg)->music;
+	((t_object *)player->item.arg)->map_pos = (t_dvector2){pos.x, pos.y};
+}
+
 void	take_object_click(t_game *game, t_player *player, t_map **map)
 {
 	t_vector2	pos;
+	t_map		*map_cell;
 
 	pos = find_pos(player);
-	if ((map[pos.y][pos.x].type & RECEPTACLE) == RECEPTACLE
-		&& ((map[pos.y][pos.x].type & DOOR_LOCK) == DOOR_LOCK
-		|| (map[pos.y][pos.x].type & OBJECT) == OBJECT))
-		play_sound_fail(game, &map[pos.y][pos.x], game->music_array);
-	if (!((map[pos.y][pos.x].type & WALL) == WALL
-		&& (map[pos.y][pos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE
-		&& (map[pos.y][pos.x].type & OBJECT) == OBJECT))
+	map_cell = &map[pos.y][pos.x];
+	if ((map_cell->type & RECEPTACLE) == RECEPTACLE
+		&& ((map_cell->type & DOOR_LOCK) == DOOR_LOCK
+			|| (map_cell->type & OBJECT) == OBJECT))
+		play_sound_fail(game, map_cell, game->music_array);
+	if (!((map_cell->type & WALL) == WALL && (map_cell->type & OBJECT) == OBJECT
+			&& (map_cell->type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE))
 		return ;
-	player->item.symbol = map[pos.y][pos.x].symbol;
-	player->item.type = map[pos.y][pos.x].type;
-	player->item.type &= ~WALL;
-	player->item.type &= ~MUSIC & ~IS_PLAYING_MUSIC;
-	map[pos.y][pos.x].type &= ~MUSIC_OBJECT & ~IS_PLAYING_OBJECT;
-	player->item.sprite[e_object_interactive_image] = map[pos.y][pos.x].sprite[e_object_interactive_image];
-	player->item.sprite[e_object_interactive_hand_image] = map[pos.y][pos.x].sprite[e_object_interactive_hand_image];
-	player->item.arg = find_empty_object(game);
-	((t_object *)player->item.arg)->music = ((t_object *)map[pos.y][pos.x].arg)->music;
-	((t_object *)player->item.arg)->map_pos = (t_dvector2){pos.x, pos.y};
-	player->has_item = true;
+	_set_item_player(game, player, map_cell, pos);
+	map_cell->type &= ~MUSIC_OBJECT & ~IS_PLAYING_OBJECT;
 	if ((player->item.type & MUSIC_OBJECT) == MUSIC_OBJECT)
-		play_music(&player->item, game->music_array, ((t_object *)player->item.arg)->music, IS_PLAYING_OBJECT);
-	if ((map[pos.y][pos.x].type & NARRATOR) == NARRATOR)
+		play_music(&player->item, game->music_array,
+			((t_object *)player->item.arg)->music, IS_PLAYING_OBJECT);
+	if ((map_cell->type & NARRATOR) == NARRATOR)
 	{
-		play_narrator(game, &map[pos.y][pos.x], game->music_array);
+		play_narrator(game, map_cell, game->music_array);
 		player->item.type &= ~NARRATOR;
-		map[pos.y][pos.x].type &= ~NARRATOR;
+		map_cell->type &= ~NARRATOR;
 	}
-	map[pos.y][pos.x].type &= ~OBJECT_INTERACTIVE;
-	map[pos.y][pos.x].sprite[e_object_interactive_image] = map[pos.y][pos.x].sprite[e_object_interactive_after_image];
-}
-
-void	update_anim(long int time, t_sprite *sprite, t_image *img);
-
-void	draw_hand_item(t_game *game, t_player *player)
-{
-	t_image		*image;
-	t_sprite	*sprite;
-	t_vector2	size;
-	int			begin;
-
-	sprite = &player->item.sprite[e_object_interactive_hand_image];
-	image = &game->tab_images[sprite->index];
-	if (sprite->frame != -1)
-	{
-		if (sprite->time == 0)
-			sprite->time = game->time;
-		if (sprite->frame < image->nb_total_frame
-			&& game->time - sprite->time >= image->time_frame)
-			update_anim(game->time, sprite, image);
-		else if (sprite->frame == image->nb_total_frame
-			&& game->time - sprite->time >= image->time_animation)
-			update_anim(game->time, sprite, image);
-		if (sprite->frame != image->nb_total_frame)
-			image = &(game->tab_images[sprite->index + sprite->frame]);
-	}
-	size = image->size;
-	if ((WIN_Y - image->size.y) < 0)
-		size.y = WIN_Y;
-	if ((WIN_X - image->size.x) < 0)
-		size.x = WIN_X;
-	begin = (WIN_Y - size.y) * game->image->size_line + (WIN_X - size.x) * 4;
-	draw_image_with_green_sreen(game->image->addr + begin, image, (t_vector2){0}, size);
+	map_cell->type &= ~OBJECT_INTERACTIVE;
+	map_cell->sprite[e_obj_int_img] = map_cell->sprite[e_obj_int_after_img];
 }

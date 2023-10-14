@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 21:31:22 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 18:18:22 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/14 13:14:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,14 @@ typedef enum e_orientation
 	e_narrator_receptacle,
 	e_narrator_receptacle_complete,
 	e_end_screen,
-	e_object_image = e_north,
-	e_door_image = e_north,
-	e_object_interactive_image = e_north,
-	e_object_interactive_hand_image,
-	e_object_interactive_before_image,
-	e_object_interactive_after_image,
-	e_receptacle_empty_image = e_north,
-	e_receptacle_full_image
+	e_object_img = e_north,
+	e_door_img = e_north,
+	e_obj_int_img = e_north,
+	e_obj_int_hand_img,
+	e_obj_int_before_img,
+	e_obj_int_after_img,
+	e_receptacle_empty_img = e_north,
+	e_receptacle_full_img
 }	t_orient;
 
 enum e_keybinds

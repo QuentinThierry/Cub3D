@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:00:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/13 20:35:08 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/14 13:18:49 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ static void	_set_object_on_cell(t_map *map_cell, t_player *player,
 			= ((t_object *)player->item.arg)->music;
 	if ((player->item.type & IS_PLAYING_OBJECT) == IS_PLAYING_OBJECT)
 		update_map_cell_music(map_cell, &player->item, music_tab);
-	map_cell->sprite[e_object_interactive_image]
-		= player->item.sprite[e_object_interactive_image];
-	map_cell->sprite[e_object_interactive_hand_image]
-		= player->item.sprite[e_object_interactive_hand_image];
+	map_cell->sprite[e_obj_int_img]
+		= player->item.sprite[e_obj_int_img];
+	map_cell->sprite[e_obj_int_hand_img]
+		= player->item.sprite[e_obj_int_hand_img];
 	player->has_item = false;
 }
 
@@ -39,7 +39,7 @@ static void	_unlock_door(t_game *game, t_map *map_cell,
 {
 	map_cell->type &= ~DOOR_LOCK;
 	map_cell->type |= DOOR_UNLOCK;
-	map_cell->sprite[e_door_image] = map_cell->sprite[e_door_image + 1];
+	map_cell->sprite[e_door_img] = map_cell->sprite[e_door_img + 1];
 	((t_door *)map_cell->arg)->is_opening_door = 1;
 	if ((map_cell->type & MUSIC) == MUSIC)
 	{
@@ -87,23 +87,23 @@ static void	_complete_receptacle(t_game *game, t_map *map_cell,
 
 	_play_sound_receptacle(game, map_cell);
 	((t_object *)map_cell->arg)->is_completed = true;
-	map_cell->sprite[e_receptacle_empty_image]
-		= map_cell->sprite[e_receptacle_full_image];
+	map_cell->sprite[e_receptacle_empty_img]
+		= map_cell->sprite[e_receptacle_full_img];
 	player->has_item = false;
 	if (exit == NULL || exit->arg == NULL)
 		return ;
 	exit_door = exit->arg;
 	exit_door->nb_receptacle_completed++;
 	frame = (float)exit_door->nb_receptacle_completed
-		* (game->tab_images[exit->sprite[e_door_image].index].nb_total_frame
+		* (game->tab_images[exit->sprite[e_door_img].index].nb_total_frame
 			- 1) / game->total_receptacle ;
 	frame = roundf(frame);
 	if (frame
-		== game->tab_images[exit->sprite[e_door_image].index].nb_total_frame - 1
+		== game->tab_images[exit->sprite[e_door_img].index].nb_total_frame - 1
 		&& exit_door->nb_receptacle_completed != game->total_receptacle)
 		return ;
-	if (frame != exit->sprite[e_door_image].frame)
-		exit->sprite[e_door_image].frame = frame;
+	if (frame != exit->sprite[e_door_img].frame)
+		exit->sprite[e_door_img].frame = frame;
 	if (exit_door->nb_receptacle_completed == game->total_receptacle)
 		exit->type &= ~DOOR_LOCK;
 }

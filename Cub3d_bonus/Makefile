@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
+#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/14 13:35:18 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/14 15:58:53 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -109,6 +109,7 @@ SRC_RAYCASTING = \
 			open_door.c \
 			floor.c \
 			object.c \
+			object_compute.c \
 			object_interactive.c \
 			drop_object.c \
 			ray_object.c
@@ -125,6 +126,7 @@ SRC_DRAW = \
 			draw.c \
 			draw_hand_item.c \
 			animation.c \
+			draw_object.c \
 			image_operations.c \
 			get_sprite.c \
 			get_image.c

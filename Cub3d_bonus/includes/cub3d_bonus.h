@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/14 13:35:06 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/14 15:58:14 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -427,6 +427,13 @@ typedef struct s_game
 	struct timespec	*last_time;
 }	t_game;
 
+typedef struct s_object_infos
+{
+	t_game		*game;
+	t_image		*image;
+	t_fvector2	dim_draw;
+}	t_object_infos;
+
 // ------ Utils------
 int			ft_strlen(const char *str);
 int			ft_strcmp(const char *s1, const char *s2);
@@ -514,7 +521,8 @@ double		get_wall_dist(t_game *game, double angle);
 void		raycasting(t_game *game);
 t_vector2	get_sign(float angle);
 void		draw_objects(t_game *game);
-
+void		find_object_projection(t_game *game,
+				t_object *object, t_player *player);
 t_orient	get_wall_orientation(t_dvector2 player, t_dvector2 wall);
 t_image		*get_image_wall(t_game	*game, t_ray ray, int *x_door);
 t_image		*get_image_non_wall(t_game *game, t_dvector2 hit,
@@ -522,6 +530,8 @@ t_image		*get_image_non_wall(t_game *game, t_dvector2 hit,
 
 // draw
 void		draw_vert(t_game *game, int x, t_ray ray, double height);
+void		draw_object_projection(t_game *game, t_object *object,
+				float object_dist, int x_pos);
 
 // image_operations.c
 void		draw_image_on_image_alpha(t_image *dest, t_image *src,

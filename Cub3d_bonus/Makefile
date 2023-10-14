@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/13 21:18:47 by qthierry         ###   ########.fr        #
+#    Updated: 2023/10/14 15:54:30 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -96,6 +96,7 @@ SRC_RAYCASTING = \
 			door.c \
 			floor.c \
 			object.c \
+			object_compute.c \
 			object_interactive.c \
 			drop_object.c \
 			ray_object.c
@@ -110,6 +111,7 @@ SRC_MINIMAP = \
 DRAW = draw/
 SRC_DRAW = \
 			draw.c \
+			draw_object.c \
 			image_operations.c \
 			get_image.c
 

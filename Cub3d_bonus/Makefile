@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/14 17:45:40 by qthierry         ###   ########.fr        #
+#    Updated: 2023/10/14 17:53:36 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,19 +72,27 @@ SRC_UTILS = \
 
 PARSING = parsing/
 SRC_PARSING = \
+			is_existing.c \
+			read_dir.c \
+			read_anim.c \
 			check_map.c \
+			sort_anim.c \
 			ft_fill_wall.c \
 			get_texture_wall.c \
 			get_texture_wall_door.c \
 			get_texture_none_wall.c \
 			fill_texture.c \
+			cmp_texture.c \
 			init.c \
 			init_mouse.c \
 			load_image.c \
 			load_image_tab.c \
+			multiple_texture.c \
 			parsing.c \
+			parse_map.c \
 			parse_texture.c \
 			parse_music.c \
+			load_subtitle.c \
 			fill_object_door.c
 
 RAYCASTING = raycasting/
@@ -92,8 +100,12 @@ SRC_RAYCASTING = \
 			raycasting.c \
 			collisions.c \
 			wall_hit.c \
-			wall_hit_end.c \
 			door.c \
+			door_raycasting.c \
+			door_raycasting1.c \
+			door_raycasting2.c \
+			door_raycasting3.c \
+			open_door.c \
 			floor.c \
 			object.c \
 			object_compute.c \
@@ -111,13 +123,18 @@ SRC_MINIMAP = \
 DRAW = draw/
 SRC_DRAW = \
 			draw.c \
+			draw_hand_item.c \
+			animation.c \
 			draw_object.c \
 			draw_floor.c \
 			image_operations.c \
+			get_sprite.c \
 			get_image.c
 
 HOOKS = hooks/
 SRC_HOOKS = key_hook.c \
+			move_player.c \
+			mouse_hook.c \
 			ft_close.c
 
 MENU = menu/
@@ -155,6 +172,7 @@ SRC_ENDGAME = \
 			end_game.c \
 			end_open_door.c \
 			end_open_door1.c \
+			wall_hit_end.c \
 			end_door.c \
 			end_utils.c \
 			end_game_raycaster.c
@@ -189,7 +207,7 @@ run: $(NAME)
 	./$(NAME) maps/map.cub
 
 vrun: $(NAME)
-	valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.supp ./$(NAME) maps/map.cub
+	valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.supp ./$(NAME) maps/map_test.cub
 
 prun: CFLAGS += -pg
 prun: $(NAME)
@@ -239,7 +257,7 @@ $(RAUDIO):
 		cd $(RAUDIO_DIR) && git pull; \
 	fi
 	@echo "   ${GREEN}- Compiling sources...${RESET_COLOR}"
-	gcc -c $(RAUDIO_SRC)raudio.c $(RAUDIO_DEFINE) -o $(RAUDIO_SRC)raudio.o
+	gcc -g -c $(RAUDIO_SRC)raudio.c $(RAUDIO_DEFINE) -o $(RAUDIO_SRC)raudio.o
 	ar rcs $(RAUDIO) $(RAUDIO_SRC)raudio.o
 	rm -f $(RAUDIO_SRC)raudio.o
 	@echo "${GREEN}~ DONE ~\n${RESET_COLOR}"

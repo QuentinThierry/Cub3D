@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 17:57:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/12 17:47:45 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/14 13:16:48 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static bool	_get_wall_object(t_game *game, t_map *map)
 			map->symbol, e_floor);
 	map->sprite[e_ceiling] = fill_texture(game->filename, game->nb_file,
 			map->symbol, e_ceiling);
-	map->sprite[e_object_image] = fill_texture(game->filename, game->nb_file,
+	map->sprite[e_object_img] = fill_texture(game->filename, game->nb_file,
 			map->symbol, e_object_wall);
 	map->arg = ft_calloc(1, sizeof(t_object));
 	if (map->arg == NULL)
@@ -58,14 +58,14 @@ static bool	_get_wall_object_interactive(t_game *game, t_map *map)
 	game->nb_objects += 2;
 	map->type |= OBJECT;
 	map->type |= OBJECT_INTERACTIVE;
-	map->sprite[e_object_interactive_image] = fill_texture(game->filename,
+	map->sprite[e_obj_int_img] = fill_texture(game->filename,
 			game->nb_file, map->symbol, e_object_interactive);
-	map->sprite[e_object_interactive_hand_image] = fill_texture(game->filename,
+	map->sprite[e_obj_int_hand_img] = fill_texture(game->filename,
 			game->nb_file, map->symbol, e_object_interactive_hand);
-	map->sprite[e_object_interactive_before_image]
+	map->sprite[e_obj_int_before_img]
 		= fill_texture(game->filename, game->nb_file, map->symbol,
 			e_object_interactive_before);
-	map->sprite[e_object_interactive_after_image] = fill_texture(game->filename,
+	map->sprite[e_obj_int_after_img] = fill_texture(game->filename,
 			game->nb_file, map->symbol, e_object_interactive_after);
 	map->sprite[e_floor] = fill_texture(game->filename, game->nb_file,
 			map->symbol, e_floor);
@@ -87,9 +87,9 @@ static bool	_get_wall_receptacle(t_game *game, t_map *map, char c)
 	game->total_receptacle++;
 	map->type |= OBJECT;
 	map->type |= RECEPTACLE;
-	map->sprite[e_receptacle_empty_image] = fill_texture(game->filename,
+	map->sprite[e_receptacle_empty_img] = fill_texture(game->filename,
 			game->nb_file, map->symbol, e_receptacle_empty);
-	map->sprite[e_receptacle_full_image] = fill_texture(game->filename,
+	map->sprite[e_receptacle_full_img] = fill_texture(game->filename,
 			game->nb_file, map->symbol, e_receptacle_full);
 	map->sprite[e_floor] = fill_texture(game->filename, game->nb_file,
 			map->symbol, e_floor);
@@ -98,7 +98,7 @@ static bool	_get_wall_receptacle(t_game *game, t_map *map, char c)
 	map->arg = ft_calloc(1, sizeof(t_object));
 	if (map->arg == NULL)
 		return (print_error(NULL, 0), false);
-	((t_object *)map->arg)->symbol_receptacle = c;
+	((t_object *)map->arg)->sym_rcp = c;
 	return (true);
 }
 

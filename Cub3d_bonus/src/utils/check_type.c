@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_type.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:00:18 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/13 13:07:58 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/13 20:30:41 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ bool	is_receptacle(char symbol, t_texture *tab, int len, char *c)
 		if (tab[i].symbol == symbol && (tab[i].orient == e_receptacle_empty
 				|| tab[i].orient == e_receptacle_full))
 		{
-			*c = tab[i].symbol_receptacle;
+			*c = tab[i].sym_rcp;
 			return (true);
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 15:51:45 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/14 15:54:28 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/14 15:59:32 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ static t_image	*get_object_image(t_game *game, t_object *object)
 		&& (game->map[(int)object->map_pos.y][(int)object->map_pos.x].type
 			& WALL) == WALL)
 		return (get_image_wall(game, (t_ray){object->map_pos,
-				e_object_interactive_before_image}, &dummy));
+				e_obj_int_before_img}, &dummy));
 	else
 		return (get_image_wall(game, (t_ray){object->map_pos,
-				e_object_image}, &dummy));
+				e_object_img}, &dummy));
 }
 
 static void	draw_object_pixel(t_object_infos *infos, t_vector2 xy,

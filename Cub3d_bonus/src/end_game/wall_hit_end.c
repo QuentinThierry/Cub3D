@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 16:04:05 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/05 16:15:55 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/14 13:52:47 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ static t_ray	_get_wall_hit_se_end(t_dvector2 fpos,
 			{
 				if ((map[(int)(comp.y)][map_pos.x].type & DOOR) == DOOR)
 				{
-					door = door_hit_ver_se((t_dvector2){map_pos.x, comp.y}, step.y,
-							(float)((t_door *)map[(int)(comp.y)][map_pos.x].arg)->door_percent, player_angle);
+					door = door_hit_ver_se((t_dvector2){map_pos.x, comp.y},
+							step.y, ((t_door *)map[(int)(comp.y)][map_pos.x].arg)->door_percent, player_angle);
 					if (door.x >= 0)
 						return ((t_ray){door, e_west});
 					else if (status == e_open_door && comp.y + step.y / 2 < (int)comp.y + 1)
@@ -273,7 +273,8 @@ static t_ray	_get_wall_hit_nw_end(t_dvector2 fpos,
 	}
 }
 
-t_ray	get_wall_hit_end(t_dvector2 fpos, t_map **map, float angle, enum e_status status)
+t_ray	get_wall_hit_end(t_dvector2 fpos, t_map **map, float angle,
+		enum e_status status)
 {
 	t_vector2	sign;
 

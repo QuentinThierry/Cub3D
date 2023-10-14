@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/14 17:54:31 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/14 18:51:18 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -441,6 +441,16 @@ typedef struct s_floor_infos
 	t_image		*img_ceil;
 	t_image		*img_floor;
 }	t_floor_infos;
+
+typedef struct s_draw_infos
+{
+	t_image		*image;
+	t_fvector2	img_pos;
+	t_vector2	pos;
+	float		dark_quantity;
+	float		delta_y_img;
+}	t_draw_infos;
+
 
 // ------ Utils------
 int			ft_strlen(const char *str);

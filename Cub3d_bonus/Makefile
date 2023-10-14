@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/14 17:56:04 by qthierry         ###   ########.fr        #
+#    Updated: 2023/10/14 18:55:15 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -126,7 +126,8 @@ SRC_MINIMAP = \
 
 DRAW = draw/
 SRC_DRAW = \
-			draw.c \
+			draw_wall_pixels.c \
+			draw_wall.c \
 			draw_hand_item.c \
 			animation.c \
 			draw_object.c \

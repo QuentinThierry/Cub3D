@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:25:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 18:23:41 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/14 14:48:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,29 +40,25 @@ void	raycasting(t_game *game)
 	double		height;
 	float		angle;
 	t_ray		ray;
-	t_dvector2	fpos;
 	float		dist;
 
-	fpos = game->player->f_pos;
-	x = -WIN_X / 2;
-	while (x < WIN_X / 2)
+	x = -WIN_X / 2 - 1;
+	while (++x < WIN_X / 2)
 	{
 		angle = atanf(x / game->constants[0]) * 180 / M_PI;
 		if (game->player->angle + angle >= 360)
 			angle = angle - 360;
-		if (game->player->angle + angle < 0)
+		else if (game->player->angle + angle < 0)
 			angle = angle + 360;
-		ray = get_wall_hit(fpos, game->map, game->player->angle + angle);
+		ray = get_wall_hit(game->player->f_pos, game->map,
+				game->player->angle + angle);
 		dist = get_dist(game->player->f_pos, ray.hit);
 		game->dist_tab[x + WIN_X / 2] = dist;
 		dist *= cosf(angle * TO_RADIAN);
-		if (dist == 0)
-			dist = 0.01;
+		dist += (dist == 0) * 0.01;
 		height = 1 / dist * game->constants[0];
 		game->height_tab[x + WIN_X / 2] = height / 2;
 		draw_vert(game, x + WIN_X / 2, ray, height);
-		x++;
 	}
-	draw_ceiling(game);
-	draw_objects(game);
+	(draw_ceiling(game), draw_objects(game));
 }

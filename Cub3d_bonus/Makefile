@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/14 13:35:18 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/14 13:39:06 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,7 +100,6 @@ SRC_RAYCASTING = \
 			raycasting.c \
 			collisions.c \
 			wall_hit.c \
-			wall_hit_end.c \
 			door.c \
 			door_raycasting.c \
 			door_raycasting1.c \
@@ -170,6 +169,7 @@ SRC_ENDGAME = \
 			end_game.c \
 			end_open_door.c \
 			end_open_door1.c \
+			wall_hit_end.c \
 			end_door.c \
 			end_utils.c \
 			end_game_raycaster.c

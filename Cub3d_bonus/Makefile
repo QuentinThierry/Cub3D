@@ -6,7 +6,7 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/14 17:53:36 by qthierry         ###   ########.fr        #
+#    Updated: 2023/10/14 17:56:04 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -99,6 +99,10 @@ RAYCASTING = raycasting/
 SRC_RAYCASTING = \
 			raycasting.c \
 			collisions.c \
+			wall_hit_se.c \
+			wall_hit_sw.c \
+			wall_hit_ne.c \
+			wall_hit_nw.c \
 			wall_hit.c \
 			door.c \
 			door_raycasting.c \

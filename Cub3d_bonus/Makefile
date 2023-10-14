@@ -6,14 +6,14 @@
 #    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/14 15:54:30 by qthierry         ###   ########.fr        #
+#    Updated: 2023/10/14 17:45:40 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3D_bonus
 
 CC = gcc
-CFLAGS = -g -Wall -Wextra -MMD#-fsanitize=address,leak,undefined#-Werror
+CFLAGS = -g -Wall -Wextra -MMD# -fsanitize=address,leak,undefined#-Werror
 LIBS = -L$(MINILIBX_DIR) -lmlx -lX11 -lXext -lm  -L$(RAUDIO_SRC) -lraudio
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR) -I$(RAUDIO_HEADERS)
 
@@ -112,6 +112,7 @@ DRAW = draw/
 SRC_DRAW = \
 			draw.c \
 			draw_object.c \
+			draw_floor.c \
 			image_operations.c \
 			get_image.c
 

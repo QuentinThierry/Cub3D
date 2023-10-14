@@ -3,42 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   floor.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/12 14:28:52 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/14 17:35:39 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
 
 __attribute__((always_inline))
-static inline unsigned int	get_color_at(char *addr, int size_line, t_vector2 pos)
+static inline void	for_each_line_pixel(t_game *game, t_floor_infos *infos,
+	int i, int y_screen)
 {
-	return (*(int *)(addr + (pos.y * size_line + pos.x * 4)));
-}
-
-__attribute__((always_inline))
-static inline void	my_mlx_pixel_put(char *addr, int size_line, t_vector2 pos, int color)
-{
-	*(int *)(addr + (pos.y * size_line + pos.x * 4)) = color;
-}
-
-__attribute__((always_inline))
-static inline float	get_dist(t_dvector2 fpos, t_dvector2 wall)
-{
-	return (((wall.x - fpos.x) * (wall.x - fpos.x) + (wall.y - fpos.y) * (wall.y - fpos.y)));
-}
-
-__attribute__((always_inline))
-static inline unsigned int	dark_with_dist(unsigned int color, float dark_quantity)
-{
-	float	color_quantity;
-
-	color_quantity = 1 - dark_quantity;
-	return (((unsigned char)(((color >> 16) & 0xFF) * color_quantity + ((DARK_COLOR >> 16) & 0xff) * dark_quantity) << 16)
-		| ((unsigned char)(((color >> 8) & 0xFF) * color_quantity + ((DARK_COLOR >> 8) & 0xff) * dark_quantity) << 8)
-		| (unsigned char)((color & 0xFF) * color_quantity + (DARK_COLOR & 0xff) * dark_quantity));
+	if (game->map[(int)infos->map_point.y]
+		[(int)infos->map_point.x].sprite[e_ceiling].index != -1)
+	{
+		if (infos->last_map_pos.x != (int)infos->map_point.x
+			|| infos->last_map_pos.y != (int)infos->map_point.y)
+		{
+			infos->last_map_pos.x = (int)infos->map_point.x;
+			infos->last_map_pos.y = (int)infos->map_point.y;
+			infos->img_ceil
+				= get_image_non_wall(game, infos->map_point, e_ceiling);
+			infos->img_floor
+				= get_image_non_wall(game, infos->map_point, e_floor);
+		}
+		compute_pixel(infos, i, y_screen);
+	}
 }
 
 __attribute__((always_inline))
@@ -51,80 +43,38 @@ static inline bool	is_in_map(t_dvector2 pos, t_map **map, t_vector2 size_map)
 }
 
 __attribute__((always_inline))
-static inline void	draw_pixel_line(t_game *game, register t_dvector2 map_point, register t_fvector2 step_dir, int y_screen)
+static inline void	draw_pixel_line(t_game *game, t_dvector2 map_point,
+			t_fvector2 step_dir, int y_screen)
 {
-	register int	i;
-	const t_image	*game_image = game->image;
-	t_vector2		last_map_pos;
-	t_image			*image = NULL;
-	t_image			*image2 = NULL;
-	register float	dark_quantity;
-	register int	color_ceiling;
-	register int	color_floor;
-	register float	dist;
+	t_floor_infos	infos;
+	int				i;
 
+	infos = (t_floor_infos){0};
+	infos.map_point = map_point;
+	infos.last_map_pos.x = -(int)infos.map_point.x;
+	infos.last_map_pos.y = -(int)infos.map_point.y;
+	infos.game = game;
 	i = 0;
-	last_map_pos.x = -(int)map_point.x;
-	last_map_pos.y = -(int)map_point.y;
 	while (i < WIN_X)
 	{
-		if ((game->height_tab[i] > y_screen && game->end->status == e_game) || !is_in_map(map_point, game->map, game->map_size))
+		if ((game->height_tab[i] > y_screen && game->end->status == e_game)
+			|| !is_in_map(infos.map_point, game->map, game->map_size))
 		{
-			map_point.x += step_dir.x;
-			map_point.y += step_dir.y;
+			infos.map_point.x += step_dir.x;
+			infos.map_point.y += step_dir.y;
 			i++;
 			continue ;
 		}
-		if (game->map[(int)map_point.y][(int)map_point.x].sprite[e_ceiling].index != -1)
-		{
-			if (last_map_pos.x != (int)map_point.x || last_map_pos.y != (int)map_point.y)
-			{
-				last_map_pos.x = (int)map_point.x;
-				last_map_pos.y = (int)map_point.y;
-				image = get_image_non_wall(game, map_point, e_ceiling);
-				image2 = get_image_non_wall(game, map_point, e_floor);
-			}
-			dist = get_dist(game->player->f_pos, map_point);
-			if (dist >= DIST_MIN_DARK * DIST_MIN_DARK)
-			{
-				dark_quantity = (-DIST_MIN_DARK + sqrtf(dist)) / (DIST_MAX_DARK - DIST_MIN_DARK);
-				if (dark_quantity >= 1)
-				{
-					color_ceiling = DARK_COLOR;
-					color_floor = DARK_COLOR;
-				}
-				else
-				{
-					color_ceiling = dark_with_dist(get_color_at(image->addr, image->size_line,
-								(t_vector2){(map_point.x - last_map_pos.x) * image->size.x,
-								(map_point.y - last_map_pos.y) * image->size.y}), dark_quantity);
-					color_floor = dark_with_dist(get_color_at(image2->addr, image2->size_line,
-								(t_vector2){(map_point.x - last_map_pos.x) * image2->size.x,
-								(map_point.y - last_map_pos.y) * image2->size.y}), dark_quantity);
-				}
-			}
-			else
-			{
-				dark_quantity = 0;
-				color_ceiling = get_color_at(image->addr, image->size_line,
-						(t_vector2){(map_point.x - last_map_pos.x) * image->size.x,
-						(map_point.y - last_map_pos.y) * image->size.y});
-				color_floor = get_color_at(image2->addr, image2->size_line,
-						(t_vector2){(map_point.x - last_map_pos.x) * image2->size.x,
-						(map_point.y - last_map_pos.y) * image2->size.y});
-			}
-			my_mlx_pixel_put(game_image->addr, game_image->size_line,
-				(t_vector2){i, WIN_Y / 2 - y_screen}, color_ceiling);
-			my_mlx_pixel_put(game_image->addr, game_image->size_line,
-				(t_vector2){i, WIN_Y / 2 + y_screen - 1}, color_floor);
-		}
-		map_point.x += step_dir.x;
-		map_point.y += step_dir.y;
+		for_each_line_pixel(game, &infos, i, y_screen);
+		infos.map_point.x += step_dir.x;
+		infos.map_point.y += step_dir.y;
 		i++;
 	}
 }
 
-void	draw_line_ceiling(t_game *game, t_fvector2 xdist_yscreen, t_fvector2 cos_sin, t_fvector2 hit)
+__attribute__((always_inline))
+static inline void	draw_line_ceiling(t_game *game, t_fvector2 xdist_yscreen,
+	t_fvector2 cos_sin, t_fvector2 hit)
 {
 	float				dist_to_left;
 	float				h;

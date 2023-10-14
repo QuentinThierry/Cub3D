@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/14 15:53:54 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/14 17:33:21 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/stat.h>
-# include <string.h> // remove
 # include <unistd.h>
 # include <stdbool.h>
 # include <math.h>
@@ -434,6 +433,15 @@ typedef struct s_object_infos
 	t_fvector2	dim_draw;
 }	t_object_infos;
 
+typedef struct s_floor_infos
+{
+	t_game		*game;
+	t_dvector2	map_point;
+	t_vector2	last_map_pos;
+	t_image		*img_ceil;
+	t_image		*img_floor;
+}	t_floor_infos;
+
 // ------ Utils------
 int			ft_strlen(const char *str);
 int			ft_strcmp(const char *s1, const char *s2);
@@ -581,8 +589,9 @@ void		draw_objects(t_game *game);
 
 long int	time_to_long(struct timespec *time);
 
-// floor.c
+// floor
 void		draw_ceiling(t_game *game);
+void		compute_pixel(t_floor_infos *in, int i, int y_screen);
 
 // ------ Loading screen ------
 bool		loading_screen(t_game *game);

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 21:27:20 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/14 13:15:47 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 15:18:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ bool	_check_sound(t_game *game, t_map *map_cell)
 	void	*narrator;
 
 	if ((map_cell->type & MUSIC_OBJECT) == MUSIC_OBJECT
-		&& (map_cell->type & OBJECT_INTERACTIVE) != OBJECT_INTERACTIVE)
+		&& (map_cell->type & OBJ_INTER) != OBJ_INTER)
 		return (false);
 	if (((map_cell->type & RECEPTACLE) == RECEPTACLE
 			|| (map_cell->type & EXIT) == EXIT)

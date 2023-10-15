@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 18:46:16 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 19:04:11 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 16:28:09 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,22 @@ void	find_dest(t_end *end, const enum e_orientation orient,
 {
 	if (orient == e_north)
 	{
-		end->dest = (t_fvector2){exit.x + .5, exit.y - DIST_TO_WALL};
+		end->dest = (t_fvector2){exit.x + .5, exit.y - DIST_WALL};
 		end->dest_angle = 180;
 	}
 	else if (orient == e_south)
 	{
-		end->dest = (t_fvector2){exit.x + .5, exit.y + 1 + DIST_TO_WALL};
+		end->dest = (t_fvector2){exit.x + .5, exit.y + 1 + DIST_WALL};
 		end->dest_angle = 360;
 	}
 	else if (orient == e_east)
 	{
-		end->dest = (t_fvector2){exit.x + 1 + DIST_TO_WALL, exit.y + .5};
+		end->dest = (t_fvector2){exit.x + 1 + DIST_WALL, exit.y + .5};
 		end->dest_angle = 270;
 	}
 	else
 	{
-		end->dest = (t_fvector2){exit.x - DIST_TO_WALL, exit.y + .5};
+		end->dest = (t_fvector2){exit.x - DIST_WALL, exit.y + .5};
 		end->dest_angle = 90;
 	}
 	end->dir.x = end->dest.x - player->f_pos.x;
@@ -69,13 +69,13 @@ void	find_dest(t_end *end, const enum e_orientation orient,
 void	next_dest(t_end *end, const t_dvector2 player_pos)
 {
 	if (end->orient == e_south)
-		end->dest.y -= 1 + DIST_TO_WALL;
+		end->dest.y -= 1 + DIST_WALL;
 	else if (end->orient == e_north)
-		end->dest.y += 1 + DIST_TO_WALL;
+		end->dest.y += 1 + DIST_WALL;
 	else if (end->orient == e_east)
-		end->dest.x -= 1 + DIST_TO_WALL;
+		end->dest.x -= 1 + DIST_WALL;
 	else
-		end->dest.x += 1 + DIST_TO_WALL;
+		end->dest.x += 1 + DIST_WALL;
 	end->dir.x = end->dest.x - player_pos.x;
 	end->dir.y = end->dest.y - player_pos.y;
 	end->dir_angle = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_object.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 15:51:45 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/15 14:07:04 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 15:18:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static t_image	*get_object_image(t_game *game, t_object *object)
 	int	dummy;
 
 	if ((game->map[(int)object->map_pos.y][(int)object->map_pos.x].type
-		& OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE
+		& OBJ_INTER) == OBJ_INTER
 		&& (game->map[(int)object->map_pos.y][(int)object->map_pos.x].type
 			& WALL) == WALL)
 		return (get_image_wall(game, (t_ray){object->map_pos,

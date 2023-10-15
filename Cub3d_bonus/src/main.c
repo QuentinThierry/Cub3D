@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 13:52:21 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 15:18:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	on_update(t_game *game)
 	update_sounds(game->music_array);
 	game->time = time_to_long(&time);
 	if ((game->map[(int)game->player->f_pos.y][(int)game->player->f_pos.x].type
-		& OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
+		& OBJ_INTER) == OBJ_INTER)
 		take_object(game, game->player, &game->map[(int)game->player->f_pos.y]
 		[(int)game->player->f_pos.x], game->music_array);
 	player_move(game, game->player, game->delta_time, game->map);

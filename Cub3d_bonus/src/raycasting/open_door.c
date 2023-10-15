@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 20:05:59 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/13 20:08:24 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 16:28:09 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ float	get_texture_door(t_ray ray)
 static bool	_possible_to_open_door(enum e_orientation orient, t_dvector2 hit,
 		t_dvector2 pos)
 {
-	if (orient == e_north && hit.y - pos.y < DIST_TO_WALL)
+	if (orient == e_north && hit.y - pos.y < DIST_WALL)
 		return (false);
-	else if (orient == e_south && (hit.y + 1 - pos.y) * -1 < DIST_TO_WALL)
+	else if (orient == e_south && (hit.y + 1 - pos.y) * -1 < DIST_WALL)
 		return (false);
-	else if (orient == e_west && hit.x - pos.x < DIST_TO_WALL)
+	else if (orient == e_west && hit.x - pos.x < DIST_WALL)
 		return (false);
-	else if (orient == e_east && (hit.x + 1 - pos.x) * -1 < DIST_TO_WALL)
+	else if (orient == e_east && (hit.x + 1 - pos.x) * -1 < DIST_WALL)
 		return (false);
 	return (true);
 }

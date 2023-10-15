@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_image.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 15:10:38 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/12 15:11:13 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 17:00:33 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	draw_image_with_transparence(char *dest_addr, t_image *src
  * @param begin_src 
  * @param size_src 
  */
-void	draw_image_with_green_sreen(char *dest_addr, t_image *src
+void	draw_image_with_green_screen(char *dest_addr, t_image *src
 			, t_vector2 begin_src, t_vector2 size_src)
 {
 	int	y;

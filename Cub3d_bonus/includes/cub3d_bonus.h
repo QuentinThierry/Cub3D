@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/15 17:37:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 17:39:41 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,8 +324,8 @@ t_dvector2	check_colliding(t_game *game, t_dvector2 new_pos, t_map **map);
 t_dvector2	slide_wall_y(t_game *gm, t_dvector2 fpos, t_map **map,
 				t_dvector2 dest);
 t_dvector2	slide_wall_x(t_game *gm, t_dvector2 fpos, t_map **map,
-					t_dvector2 dest);
-void	check_interactive_object(t_game *game, t_map **map,
-					t_dvector2 fpos);
+				t_dvector2 dest);
+void		check_interactive_object(t_game *game, t_map **map,
+				t_dvector2 fpos);
 
 #endif

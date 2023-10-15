@@ -3,126 +3,70 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/15 14:17:05 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 14:43:28 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_BONUS_H
 # define CUB3D_BONUS_H
 
-# include <fcntl.h>
-# include <sys/types.h>
-# include <sys/stat.h>
-# include <unistd.h>
-# include <stdbool.h>
-# include <math.h>
-# include <time.h>
-# include <stdint.h>
-# include <dirent.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <X11/keysym.h>
+# include "config.h"
+# include "structs.h"
 
-# include "minilibx-linux/mlx.h"
-# include "raudio/src/raudio.h"
-# include "enum.h"
+extern long tot_fps;
+extern long nb_fps;
 
-# define WIN_X 1280 //1920 - 918 - 1280
-# define WIN_Y 720 //1080 - 468 - 720
-# define CHUNK_SIZE 100
-# define DFL_FOV 100 // check min is less than min and diff > 0
-# define MIN_FOV 70
-# define MAX_FOV 130
-# define DFL_SOUND 0.5 // check between 0 and 1
-# define SPEED 1
-# define SPRINT_BOOST 1
-# define ROTATION_KEYBOARD 125
-# define ROTATION_MOUSE 20
-# define SPEEP_DOOR_OPENING 100
-# define SPEEP_UNLOCK_DOOR_OPENING 50
+// ----------- INTERNAL_DEFINES -----------
+
 # define TO_RADIAN .01745329251994
-# define DARK_COLOR 0x101010
-# define DIST_MAX_DARK 15.
-# define DIST_MIN_DARK 3.
-# define DIST_TO_WALL 0.0999
-# define MAX_MENU_FPS 120
 
 // MINIMAP
-# define PATH_MMAP_PLAYER "../assets/minimap_player.xpm"
 # define MINIMAP_PLAYER_SIZE 12
 # define MMAP_CHUNK 20
-# define ZOOM_SPEED 50
 # define ZOOM_OFFSET 20
 # define MAX_ZOOM 20
 # define MIN_ZOOM -10
 // Represents the minimap padding equals to a percentage of the total window
 # define MINIMAP_PAD 0.05
-# define MINIMAP_WALL_COLOR 0x505050
-# define MINIMAP_BACKGROUND_COLOR 0x808080
-# define MINIMAP_DOOROPEN_COLOR 0x707070
-# define MINIMAP_DOORCLOSE_COLOR 0x656565
 // Represents the minimap size equals to a percentage of the total window
 # define MINIMAP_SIZE 0.25
 
-// access tab
+// CONSTANT TAB
 # define PLANE_DIST 0
 # define TAN_HALF_FOV 1
 # define COS_HALF_FOV 2
 
-# define NB_MAX_SOUNDS 16
-
-// infos for loading screen
-# define LOADING_SCREEN "./assets/smiley.xpm"
+// LOADING_SCREEN
 # define LOADING_BORDURE "./assets/loading_bordure.xpm"
 # define LOADING_CENTER "./assets/loading_center.xpm"
 # define LOADING_FONT "./assets/ascii.xpm"
 # define HEIGHT_ALPHA 34
-# define GREEN_SCREEN 0x00ff00
 # define END_SCREEN "./assets/end.xpm"
+# define GREEN_SCREEN 0x00ff00
 
 // MENU
 # define PAUSE_MENU 0
 # define OPTION_MENU 1
 # define CHOOSING_KEY_MENU 2
-
 # define SIZE_BOX_BLUR 9
 # define DARK_PERCENT_OPTION 0.5
 # define DARK_PERCENT_PAUSE 0.25
-# define NB_OPTIONS_BUTTONS 11
-# define NB_SLIDERS 11
+# define NB_SLIDERS 2
 # define KEY_TEXT_CHANGE "Press a new key"
 # define COLOR_BAR_OPTION 0x707070
 # define DARK_COLOR_OPTION 0x101010
+
+// GAMEPLAY
 # define DIST_TO_WALL 0.0999
 
-# define XPM_DFL_BUTTON "./assets/button.xpm"
-# define XPM_HOV_BUTTON "./assets/button_hovered.xpm"
-# define XPM_EXIT_BUTTON "./assets/button_exit_option.xpm"
-# define XPM_HOR_SLIDER "./assets/slider_hor.xpm"
-# define XPM_VERT_SLIDER "./assets/slider_vert.xpm"
+// SUBTITLES
+# define SUBTITLE_TIME 5000
+# define MAX_CARACTER 100
 
-// KEYBINDS
-# define DFL_KEY_LEFT_MOVE 'a'
-# define DFL_KEY_RIGHT_MOVE 'd'
-# define DFL_KEY_FORWARD_MOVE 'w'
-# define DFL_KEY_BACKWARD_MOVE 's'
-# define DFL_KEY_LEFT_LOOK 0xff51
-# define DFL_KEY_RIGHT_LOOK 0xff53
-# define DFL_KEY_PAUSE 'p'
-# define DFL_KEY_MINIMAP_ZOOM '='
-# define DFL_KEY_MINIMAP_DEZOOM '-'
-# define DFL_KEY_INTERACT_DOOR ' '
-# define DFL_KEY_SPRINT 0xffe1
-
-# define BACKGROUND_MUSIC "./assets/sounds/test1.mp3"
-
-#define SUBTITLE_TIME 5000
-#define MAX_CARACTER 100
-
-// t_type for arg
+// TYPES FOR CELLS
 # define NONE 0b0
 # define WALL 0b1
 # define DOOR 0b10
@@ -148,316 +92,7 @@
 # define IS_PLAYING_OBJECT 0b1000000000000000000000
 # define IS_PLAYING_NARRATOR 0b10000000000000000000000
 
-extern long tot_fps;
-extern long nb_fps;
-
-typedef unsigned char	t_byte;
-typedef u_int32_t		t_pixel32;
-typedef u_int32_t		t_type;
-typedef u_int32_t		t_keybind;
-
-typedef struct s_vector2
-{
-	int	x;
-	int	y;
-}	t_vector2;
-
-typedef struct s_dvector2
-{
-	double	x;
-	double	y;
-}	t_dvector2;
-
-typedef struct s_fvector2
-{
-	float	x;
-	float	y;
-}	t_fvector2;
-
-typedef struct s_info_wall
-{
-	float angle;
-	float player_angle;
-	enum e_status status;
-}	t_info_wall;
-
-typedef struct s_ray
-{
-	t_dvector2			hit;
-	enum e_orientation	orient;
-}	t_ray;
-
-typedef struct s_launch_ray
-{
-	char	symbol;
-	t_type	type;
-	float	dist;
-}	t_launch_ray;
-
-typedef struct s_object
-{
-	t_dvector2		map_pos;
-	bool			visited;
-	float			dist;
-	long int		time;
-	char			sym_rcp;
-	bool			is_completed;
-	char			*music;
-}	t_object;
-
-typedef Music	t_music;
-
-typedef struct s_music_name
-{
-	char				*filename;
-	char				*subtitle;
-	unsigned int		offset;
-	long int			time;
-	t_orient			orient;
-	char				symbol;
-}	t_music_name;
-
-typedef struct s_image
-{
-	void		*img;
-	char		*addr;
-	int			opp;
-	int			size_line;
-	int			endian;
-	t_vector2	size;
-	int			time_frame;
-	int			time_animation;
-	int			nb_total_frame;
-}	t_image;
-
-typedef struct s_sprite
-{
-	int			index;
-	int			frame;
-	long int	time;
-}	t_sprite;
-
-// Use to stock the map
-typedef struct s_map
-{
-	char			symbol;
-	t_type			type;
-	void			*arg;
-	t_sprite		sprite[6];
-	char			*music;
-	struct s_music_name	*narrator;
-}	t_map;
-
-typedef struct s_music_game
-{
-	t_music		music;
-	t_map		*map_cell;
-	bool		is_playing;
-	bool		is_subtitle;
-}	t_music_game;
-
-typedef struct s_player
-{
-	t_dvector2	f_pos;
-	t_vector2	mouse_pos;
-	float		angle;
-	t_vector2	dir;
-	int			view;
-	float		speed;
-	bool		has_item;
-	t_map		item;
-}	t_player;
-
-typedef struct s_door
-{
-	float		door_percent;
-	int			is_opening_door;
-	t_vector2	map_pos;
-	char		open_door;
-	int			nb_receptacle_completed;
-}	t_door;
-
-/**
- * @brief use to stock the texture during the parsing
- *
- *	During the parsing we can find :
- *	char *							t_animation *
- * - filename
- * - directory	-> filename / s
- *				-> directory / s	-> config
- *									-> filenames
- */
-typedef struct s_animation
-{
-	char	**filename;
-	int		nb_sprite;
-	int		time_sprite;
-	int		time_animation;
-}	t_animation;
-
-typedef struct s_texture
-{
-	char				*filename;
-	char				**filename_d;
-	int					nb_file;
-	t_animation			*animation;
-	int					nb_animation;
-	int					total;
-	enum e_orientation	orient;
-	char				symbol;
-	char				sym_rcp;
-}	t_texture;
-
-typedef struct s_minimap
-{
-	t_image		*image;
-	t_image		*buffer_img;
-	t_image		*back_img;
-	t_image		*player_img;
-	int			*bounds;
-	int			zoom_dir;
-	float		zoom;
-}	t_minimap;
-
-typedef struct s_loading
-{
-	t_image		*background;
-	t_image		*bordure;
-	t_image		*center;
-	int			nb_image_load;
-}	t_loading;
-
-typedef struct s_button
-{
-	t_image		*base_image;
-	t_image		*hovered_image;
-	t_vector2	pos;
-	t_vector2	size;
-	const char	*text;
-	const char	*linked_text;
-	bool		is_hovered;
-}	t_button;
-
-typedef struct t_slider
-{
-	t_vector2	pos;
-	t_vector2	size;
-	t_vector2	min_max_value;
-	t_image		*hor_image;
-	t_image		*vert_image;
-	const char	*linked_text;
-	float		percent;
-}	t_slider;
-
-typedef struct s_pause_menu
-{
-	t_button	play_button;
-	t_button	option_button;
-	t_button	quit_button;
-}	t_pause_menu;
-
-typedef struct s_option_menu
-{
-	t_button	buttons[NB_OPTIONS_BUTTONS];
-	t_button	exit_opt_button;
-	t_slider	slider_fov;
-	t_slider	slider_sound;
-	t_slider	*pressed_slider_ref;
-	t_vector2	vert_bar_pos;
-	t_vector2	vert_bar_size;
-	t_vector2	hor_bar_pos;
-	t_vector2	hor_bar_size;
-	t_byte		pressed_button;
-}	t_option_menu;
-
-typedef struct s_menu
-{
-	t_image			*image;
-	t_image			*background_image;
-	t_image			*exit_option_image;
-	t_byte			state;
-	int				*h_rgb_blur_buffer;
-	int				*v_rgb_blur_buffer;
-	t_pause_menu	pause_menu;
-	t_option_menu	option_menu;
-	long			time_start_menu;
-}	t_menu;
-
-typedef struct s_end
-{
-	enum e_status		status;
-	t_fvector2			dest;
-	t_fvector2			dir;
-	float				dir_angle;
-	int					dest_angle;
-	enum e_orientation	orient;
-	t_image				*end_screen;
-}	t_end; 
-
-typedef struct s_game
-{
-	t_image			*image;
-	void			*mlx_ptr;
-	void			*win;
-	t_image			*tab_images;
-	int				nb_images;
-	t_image			*font;
-	t_dvector2		size_letter;
-	t_image			*subtitle_font;
-	t_dvector2		subtitle_size;
-	t_texture		*filename;
-	int				nb_file;
-	struct s_music_name	*file_music;
-	int				nb_music;
-	t_map			**map;
-	t_vector2		map_size;
-	t_player		*player;
-	t_minimap		*minimap;
-	int				fov;
-	double			delta_time;
-	long int		time;
-	float			constants[3];
-	int				nb_objects;
-	t_object		**object_array;
-	int				nb_doors;
-	t_map			**door_array;
-	struct s_music_game	*music_array;
-	float			*dist_tab;
-	float			*height_tab;
-	t_loading		*loading_screen;
-	t_menu			*menu;
-	t_keybind		*keybinds;
-	t_map			*exit;
-	int				total_receptacle;
-	t_end			*end;
-	struct timespec	*last_time;
-}	t_game;
-
-typedef struct s_object_infos
-{
-	t_game		*game;
-	t_image		*image;
-	t_fvector2	dim_draw;
-}	t_object_infos;
-
-typedef struct s_floor_infos
-{
-	t_game		*game;
-	t_dvector2	map_point;
-	t_vector2	last_map_pos;
-	t_image		*img_ceil;
-	t_image		*img_floor;
-}	t_floor_infos;
-
-typedef struct s_draw_infos
-{
-	t_image		*image;
-	t_fvector2	img_pos;
-	t_vector2	pos;
-	float		dark_quantity;
-	float		delta_y_img;
-}	t_draw_infos;
-
+// -------------------------------------------------------
 
 // ------ Utils------
 int			ft_strlen(const char *str);
@@ -645,7 +280,7 @@ void		draw_alpha_rectangle(t_image *dest, t_vector2 pos, t_vector2 size);
 void		draw_slider(t_game *game, t_slider *slider, t_image *image);
 void		choose_key_hook(t_keybind key, t_game *game);
 bool		allocate_menu(t_game *game,
-			t_image **button_image, t_image **button_hovered_image);
+				t_image **button_image, t_image **button_hovered_image);
 void		horizontal_blur(t_image *src, int *h_buffer);
 
 // ------ Blur ------------
@@ -668,24 +303,24 @@ t_ray		get_wall_hit_end(t_dvector2 fpos, t_map **map, float angle,
 				enum e_status status);
 
 // ---------Music-----------
-char			*get_music(t_music_name *filename, int nb_music, char symbol,
-					t_orient orient);
-t_music_name	*get_narrator(t_music_name *filename, int nb_music, char symbol,
-					t_orient orient);
-bool			init_audio(t_game *game);
-void			update_sounds(t_music_game *music_array);
-void			close_audio(t_music_game *music_tab);
-void			play_music(t_map *map_cell, t_music_game *music_tab,
-					char *filename, unsigned int type);
-void			play_narrator(t_game *game, t_map *map_cell,
-					t_music_game *music_tab);
-void			play_sound_fail(t_game *game, t_map *map_cell,
-					t_music_game *music_tab);
-void			set_next_narrator(t_map *map_cell);
-void			update_map_cell_music(t_map *map_cell, t_map *old_map_cell,
-					t_music_game *music_array);
-void			clear_sound(t_music_game *music_array);
-void			print_subtitle(t_game *game, t_map *map_cell);
-void			free_image(void *mlx_ptr, t_image *image);
+char		*get_music(t_music_name *filename, int nb_music, char symbol,
+				t_orient orient);
+t_music_nam	*get_narrator(t_music_name *filename, int nb_music, char symbol,
+				t_orient orient);
+bool		init_audio(t_game *game);
+void		update_sounds(t_music_game *music_array);
+void		close_audio(t_music_game *music_tab);
+void		play_music(t_map *map_cell, t_music_game *music_tab,
+				char *filename, unsigned int type);
+void		play_narrator(t_game *game, t_map *map_cell,
+				t_music_game *music_tab);
+void		play_sound_fail(t_game *game, t_map *map_cell,
+				t_music_game *music_tab);
+void		set_next_narrator(t_map *map_cell);
+void		update_map_cell_music(t_map *map_cell, t_map *old_map_cell,
+				t_music_game *music_array);
+void		clear_sound(t_music_game *music_array);
+void		print_subtitle(t_game *game, t_map *map_cell);
+void		free_image(void *mlx_ptr, t_image *image);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 15:51:45 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/14 15:59:32 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 14:07:04 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ static inline unsigned int	dark_with_dist(unsigned int color,
 
 	color_quantity = 1 - dark_quantity;
 	return (((unsigned char)(((color >> 16) & 0xFF) * color_quantity
-			+ ((DARK_COLOR >> 16) & 0xff) * dark_quantity) << 16)
+			+ ((FOG_COLOR >> 16) & 0xff) * dark_quantity) << 16)
 		| ((unsigned char)(((color >> 8) & 0xFF) * color_quantity
-			+ ((DARK_COLOR >> 8) & 0xff) * dark_quantity) << 8)
+			+ ((FOG_COLOR >> 8) & 0xff) * dark_quantity) << 8)
 		| (unsigned char)((color & 0xFF) * color_quantity
-			+ (DARK_COLOR & 0xff) * dark_quantity));
+			+ (FOG_COLOR & 0xff) * dark_quantity));
 }
 
 static t_image	*get_object_image(t_game *game, t_object *object)
@@ -104,9 +104,9 @@ void	draw_object_projection(t_game *game, t_object *object,
 	x_pos = x_pos - infos.dim_draw.x / 2;
 	y_pos = WIN_Y / 2. - infos.dim_draw.y / 2.;
 	dark_quantity = 0;
-	if (object->dist >= DIST_MIN_DARK)
-		dark_quantity = (-DIST_MIN_DARK + object->dist)
-			/ (DIST_MAX_DARK - DIST_MIN_DARK);
+	if (object->dist >= DIST_MIN_FOG)
+		dark_quantity = (-DIST_MIN_FOG + object->dist)
+			/ (DIST_MAX_FOG - DIST_MIN_FOG);
 	draw_all_object_pixels(&infos,
 		(t_vector2){x_pos, y_pos}, object, dark_quantity);
 }

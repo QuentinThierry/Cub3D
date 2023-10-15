@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 18:53:56 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/14 18:54:10 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 14:06:37 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ static inline unsigned int	dark_with_dist(unsigned int color,
 
 	color_quantity = 1 - dark_quantity;
 	return (((unsigned char)(((color >> 16) & 0xFF) * color_quantity
-			+ ((DARK_COLOR >> 16) & 0xff) * dark_quantity) << 16)
+			+ ((FOG_COLOR >> 16) & 0xff) * dark_quantity) << 16)
 		| ((unsigned char)(((color >> 8) & 0xFF) * color_quantity
-		+ ((DARK_COLOR >> 8) & 0xff) * dark_quantity) << 8)
+		+ ((FOG_COLOR >> 8) & 0xff) * dark_quantity) << 8)
 		| (unsigned char)((color & 0xFF) * color_quantity
-		+ (DARK_COLOR & 0xff) * dark_quantity));
+		+ (FOG_COLOR & 0xff) * dark_quantity));
 }
 
 void	draw_pixel_dark(int end, t_image *image, t_vector2 pos_screen)
@@ -46,7 +46,7 @@ void	draw_pixel_dark(int end, t_image *image, t_vector2 pos_screen)
 	while (pos_screen.y < end)
 	{
 		my_mlx_pixel_put(image->addr,
-			image->size_line, pos_screen, DARK_COLOR);
+			image->size_line, pos_screen, FOG_COLOR);
 		pos_screen.y++;
 	}
 }

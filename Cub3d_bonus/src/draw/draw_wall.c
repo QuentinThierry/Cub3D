@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/14 18:55:44 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 14:07:04 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	if (infos.image->addr == NULL)
 		return (print_error("Invalid image\n", 1), (void)ft_close(game));
 	y = set_infos_struct(&infos, height, ray, x_door);
-	if (game->dist_tab[x] >= DIST_MIN_DARK)
-		infos.dark_quantity = (-DIST_MIN_DARK + game->dist_tab[x])
-			/ (DIST_MAX_DARK - DIST_MIN_DARK);
+	if (game->dist_tab[x] >= DIST_MIN_FOG)
+		infos.dark_quantity = (-DIST_MIN_FOG + game->dist_tab[x])
+			/ (DIST_MAX_FOG - DIST_MIN_FOG);
 	if (infos.dark_quantity >= 1)
 		return (draw_pixel_dark(end, game->image, (t_vector2){x, y}));
 	draw_near_pixel(&infos, game->image, end, (t_vector2){x, y});

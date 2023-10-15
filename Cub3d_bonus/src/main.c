@@ -6,21 +6,21 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/13 17:11:21 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 17:49:51 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-long tot_fps = 0;
-long nb_fps = 0;
+// long tot_fps = 0;	// Uncomment to display fps
+// long nb_fps = 0;		// Uncomment to display fps
 
 int	on_update(t_game *game)
 {
 	static struct timespec	last_time = {0};
 	struct timespec			cur_time;
 	struct timespec			time;
-	long					fps;
+	// long					fps;	// Uncomment to display fps
 
 	if (last_time.tv_sec == 0)
 	{
@@ -50,11 +50,11 @@ int	on_update(t_game *game)
 	clock_gettime(CLOCK_REALTIME, &cur_time);
 	game->delta_time = (cur_time.tv_sec - last_time.tv_sec
 			+ (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
-	fps = (long)(1.0 / game->delta_time);
-	tot_fps += fps;
-	nb_fps++;
-	if ((nb_fps % 50) == 0)
-		printf("fps : %ld\n", fps);
+	// fps = (long)(1.0 / game->delta_time);	// Uncomment to display fps
+	// tot_fps += fps;
+	// nb_fps++;
+	// if ((nb_fps % 50) == 0)
+	// 	printf("fps : %ld\n", fps);
 	last_time = cur_time;
 	return (0);
 }

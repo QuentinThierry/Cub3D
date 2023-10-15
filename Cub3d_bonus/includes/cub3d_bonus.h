@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/14 18:51:18 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 14:17:05 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,13 @@ typedef struct s_fvector2
 	float	x;
 	float	y;
 }	t_fvector2;
+
+typedef struct s_info_wall
+{
+	float angle;
+	float player_angle;
+	enum e_status status;
+}	t_info_wall;
 
 typedef struct s_ray
 {

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
+#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/14 18:55:15 by qthierry         ###   ########.fr        #
+#    Updated: 2023/10/15 14:16:59 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -178,6 +178,10 @@ SRC_ENDGAME = \
 			end_open_door.c \
 			end_open_door1.c \
 			wall_hit_end.c \
+			wall_hit_end_ne.c \
+			wall_hit_end_nw.c \
+			wall_hit_end_se.c \
+			wall_hit_end_sw.c \
 			end_door.c \
 			end_utils.c \
 			end_game_raycaster.c

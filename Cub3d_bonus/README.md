@@ -43,9 +43,9 @@ FIX :
 <!-- - Makefile with file headers -->
 <!-- - does animation continue when object on the hand ??? -->
 - white space at the end of a texture printf error because file not found
-- decalage de bit with -fsanitize
-- ADD parsing to check if each music file is existing
-- beug end screen with fog
+<!-- - decalage de bit with -fsanitize -->
+<!-- - ADD parsing to check if each music file is existing -->
+<!-- - beug end screen with fog -->
 
 Minimap : 
 <!-- - if screen is too small, do not draw minimap -->

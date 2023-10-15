@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drop_object.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:00:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 15:18:07 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 18:58:17 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	_set_object_on_cell(t_map *map_cell, t_player *player,
 static void	_unlock_door(t_game *game, t_map *map_cell,
 			t_player *player, t_music_game *music_tab)
 {
-	map_cell->type &= ~DOOR_LOCK;
+	map_cell->type &= ~DOOR_LOCK & ~RECEPTACLE;
 	map_cell->type |= DOOR_UNLOCK;
 	map_cell->sprite[e_door_img] = map_cell->sprite[e_door_img + 1];
 	((t_door *)map_cell->arg)->is_opening_door = 1;

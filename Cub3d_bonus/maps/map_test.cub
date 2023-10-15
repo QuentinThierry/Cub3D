@@ -30,7 +30,7 @@ OI_a ./assets/nounours.xpm ./assets/hand.xpm ./assets/table_nounours.xpm ./asset
 R_a_d ./assets/smiley.xpm ./assets/cobble.xpm
 
 T_5 ./assets/exit
-MR_5 ./assets/sounds/game-ove.wav ./assets/sounds/countdown.wav
+MR_5 ./assets/sounds/game-over.wav ./assets/sounds/countdown.wav
 
 D_d_y ./assets/door.xpm ./assets/door.xpm
 MR_y ./assets/sounds/laugh.wav ./assets/sounds/scream.wav

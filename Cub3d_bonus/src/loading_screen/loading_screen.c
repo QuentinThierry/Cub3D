@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loading_screen.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 19:04:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/12 15:34:45 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 17:00:28 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,11 @@ bool	update_loading_screen(t_game *game, t_loading *screen)
 	size_bar.y = screen->center->size.y;
 	game->image->addr = ft_memcpy(game->image->addr, screen->background->addr,
 			WIN_X * WIN_Y * 4);
-	draw_image_with_green_sreen(game->image->addr
+	draw_image_with_green_screen(game->image->addr
 		+ ((WIN_Y / 2 - screen->bordure->size.y / 2) * game->image->size_line
 			+ (WIN_X / 3) * 4), screen->bordure, (t_vector2){0},
 		g_size_loading_bar);
-	draw_image_with_green_sreen(game->image->addr
+	draw_image_with_green_screen(game->image->addr
 		+ ((WIN_Y / 2 - screen->center->size.y / 2) * game->image->size_line
 			+ (WIN_X / 3) * 4), screen->center, (t_vector2){0}, size_bar);
 	if (!_draw_text_loading(game, screen))

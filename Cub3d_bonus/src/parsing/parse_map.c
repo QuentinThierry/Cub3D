@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 20:24:43 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/12 20:26:29 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 15:46:13 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,13 @@ bool	parse_map(char *filename, t_game *game, int nb_line)
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
-		return (print_error(NULL, 0), free_map(game->map, game->map_size),
-			false);
+		return (print_error(NULL, 0), false);
 	line = _skip_texture(fd, nb_line);
 	y = -1;
 	while (line != NULL && ++y < game->map_size.y)
 	{
 		if (!ft_fill_wall(game, line, game->map[y], game->map_size))
-			return (close(fd), free(line), free_map(game->map, game->map_size),
-				false);
+			return (close(fd), free(line), false);
 		line = get_next_line(fd);
 	}
 	free(line);

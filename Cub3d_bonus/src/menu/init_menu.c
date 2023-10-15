@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 14:53:39 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 20:25:32 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 17:08:26 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,10 +174,15 @@ bool	init_pause_menu(t_game *game)
 	t_image			*button_image;
 	t_image			*button_hovered_image;
 
+	button_image = NULL;
+	button_hovered_image = NULL;
 	if (!allocate_menu(game, &button_image, &button_hovered_image))
 	{
-		return (free_image(game->mlx_ptr, button_image),
-			free_image(game->mlx_ptr, button_hovered_image), false);
+		if (button_image)
+			free_image(game->mlx_ptr, button_image);
+		if (button_hovered_image)
+			free_image(game->mlx_ptr, button_hovered_image);
+		return (false);
 	}
 	fill_option_button(game,
 		&game->menu->option_menu, button_image, button_hovered_image);

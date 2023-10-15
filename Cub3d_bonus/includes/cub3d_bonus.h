@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/15 15:13:56 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 17:29:36 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@
 
 extern long tot_fps;
 extern long nb_fps;
+
+# define FREE(x) free(x), x = NULL;
+# define FREE_IMAGE(x, mlx) mlx_destroy_image(mlx, x), x = NULL;
+# define CLOSE_FD(x) close(x), x = -1;
+# define BT_FREE_IMAGE(x, mlx) mlx_destroy_image(mlx, x->img), free(x), x = NULL;
 
 // ----------- INTERNAL_DEFINES -----------
 
@@ -251,7 +256,7 @@ bool		update_loading_screen(t_game *game, t_loading *loading_screen);
 void		free_loading_screen(t_game *game);
 void		draw_image_with_transparence(char *dest_addr, t_image *src,
 				t_vector2 begin_src, t_vector2 size_src);
-void		draw_image_with_green_sreen(char *dest_addr, t_image *src,
+void		draw_image_with_green_screen(char *dest_addr, t_image *src,
 				t_vector2 begin_src, t_vector2 size_src);
 
 // ------- menu ----------

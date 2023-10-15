@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_hand_item.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 13:31:07 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/14 13:31:30 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 17:00:28 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	draw_hand_item(t_game *game, t_player *player)
 			img = &(game->tab_images[sprite->index + sprite->frame]);
 	}
 	size = _get_size_draw(img);
-	draw_image_with_green_sreen(game->image->addr + (WIN_Y - size.y)
+	draw_image_with_green_screen(game->image->addr + (WIN_Y - size.y)
 		* game->image->size_line + (WIN_X - size.x) * 4, img, (t_vector2){0},
 		size);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_loading_screen.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:42:32 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/13 16:57:46 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 17:00:28 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ bool	loading_screen(t_game *game)
 		return (false);
 	game->image->addr = ft_memcpy(game->image->addr,
 			loading_screen->background->addr, WIN_X * WIN_Y * 4);
-	draw_image_with_green_sreen(game->image->addr
+	draw_image_with_green_screen(game->image->addr
 		+ ((WIN_Y / 2 - loading_screen->bordure->size.y / 2)
 			* game->image->size_line + (WIN_X / 3) * 4),
 		loading_screen->bordure, (t_vector2){0}, g_size_loading_bar);

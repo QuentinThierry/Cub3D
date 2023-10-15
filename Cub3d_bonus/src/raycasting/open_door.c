@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_door.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 20:05:59 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 16:28:09 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 20:09:44 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	open_door(t_game *game)
 	if ((type & NARRATOR) == NARRATOR)
 	{
 		play_narrator(game, map_cell, game->music_array);
-		type &= ~NARRATOR;
+		game->map[(int)ray.hit.y][(int)ray.hit.x].type &= ~NARRATOR;
 	}
 	_start_open_door(game, ray);
 }

@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/15 17:55:33 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/15 18:32:11 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,6 +72,7 @@ SRC_UTILS = \
 
 PARSING = parsing/
 SRC_PARSING = \
+			get_filename.c \
 			is_existing.c \
 			read_dir.c \
 			read_anim.c \

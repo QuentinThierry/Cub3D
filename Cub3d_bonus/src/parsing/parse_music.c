@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 14:32:29 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/13 16:38:35 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 18:31:21 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,33 +40,6 @@ static bool	_is_existing(t_game *game, char symbol, enum e_orientation orient)
 	return (false);
 }
 
-char	*get_filename(char *str, int *i)
-{
-	int		len;
-	char	*filename;
-	char	tmp;
-
-	tmp = -1;
-	*i += skip_whitespace(str + *i);
-	if (str[*i] == '\0')
-		return (print_error("Empty texture\n", 1), NULL);
-	len = find_next_wsp(str + *i, 0);
-	if (len >= 0 && (str[*i + len] == ' ' || str[*i + len] == '\t'
-			|| str[*i + len] == '\v' || str[*i + len] == '\n'
-			|| str[*i + len] == '\f' || str[*i + len] == '\r'))
-	{
-		tmp = str[*i + len];
-		str[*i + len] = '\0';
-	}
-	filename = ft_strdup(str + *i);
-	if (filename == NULL)
-		return (print_error("malloc failed\n", 1), NULL);
-	if (tmp != -1)
-		str[*i + len] = tmp;
-	*i += len + 1;
-	return (filename);
-}
-
 static bool	_get_subtitle(char *str, int *i, t_music_name *music)
 {
 	int	len;
@@ -96,6 +69,17 @@ static bool	_realloc_tab(t_game *game, int index)
 	return (true);
 }
 
+bool	check_sound(char *filename)
+{
+	int	fd;
+
+	fd = open(filename, O_RDONLY);
+	if (fd == -1)
+		return (print_error("Invalid sound\n", 1),false);
+	close(fd);
+	return (true);
+}
+
 bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 {
 	int	index;
@@ -112,7 +96,8 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 	if (i >= len)
 		return (print_error("Empty sound\n", 1), false);
 	game->file_music[index].filename = get_filename(str, &i);
-	if (game->file_music[index].filename == NULL)
+	if (game->file_music[index].filename == NULL
+		|| !check_sound(game->file_music[index].filename))
 		return (false);
 	if (orient == e_narrator || orient == e_narrator_receptacle
 		|| orient == e_narrator_receptacle_complete

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:55:10 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/15 14:43:36 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 15:13:44 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -339,5 +339,12 @@ typedef struct s_info_wall
 	float player_angle;
 	enum e_status status;
 }	t_info_wall;
+
+typedef struct s_info_get_object
+{
+	t_dvector2		max_pos;
+	t_dvector2		step;
+	t_launch_ray	obj;
+}	t_info_get_object;
 
 #endif

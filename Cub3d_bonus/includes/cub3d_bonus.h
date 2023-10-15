@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/15 14:43:28 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 15:13:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,6 @@ extern long nb_fps;
 # define IS_PLAYING_MUSIC 0b100000000000000000000
 # define IS_PLAYING_OBJECT 0b1000000000000000000000
 # define IS_PLAYING_NARRATOR 0b10000000000000000000000
-
-// -------------------------------------------------------
 
 // ------ Utils------
 int			ft_strlen(const char *str);

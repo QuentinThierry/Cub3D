@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 21:31:22 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/14 13:14:07 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 14:56:33 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 typedef enum e_orientation
 {
+	e_error = -1,
 	e_north = 0,
 	e_east,
 	e_south,

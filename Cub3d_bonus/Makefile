@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/15 14:16:59 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/15 15:10:21 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -115,6 +115,7 @@ SRC_RAYCASTING = \
 			object_compute.c \
 			object_interactive.c \
 			drop_object.c \
+			ray_object1.c \
 			ray_object.c
 
 MINIMAP = minimap/

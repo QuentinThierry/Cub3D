@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:00:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 19:20:18 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 19:34:37 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ void	drop_object(t_player *player, t_map **map, t_map *exit, t_game *game)
 	pos = find_pos(player);
 	pos.x = (int)pos.x + 0.5;
 	pos.y = (int)pos.y + 0.5;
+	if (map[(int)pos.y][(int)pos.x].symbol == ' ')
+		return ;
 	if ((map[(int)pos.y][(int)pos.x].type & WALL) != WALL
 		&& (map[(int)pos.y][(int)pos.x].type & DOOR) != DOOR
 		&& (map[(int)pos.y][(int)pos.x].type & OBJECT) != OBJECT

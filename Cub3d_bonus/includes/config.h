@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   config.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:58:02 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/15 14:20:21 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 18:09:27 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@
 # define MINIMAP_BACKGROUND_COLOR 0x808080
 # define MINIMAP_DOOROPEN_COLOR 0x707070
 # define MINIMAP_DOORCLOSE_COLOR 0x656565
-# define PATH_MMAP_PLAYER "../assets/minimap_player.xpm"
 
 // ----------- KEYBINDS -----------
 # define DFL_KEY_LEFT_MOVE 'a'

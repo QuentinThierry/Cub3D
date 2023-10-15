@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/12 14:34:09 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 14:55:56 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static inline unsigned int	dark_with_dist(unsigned int color, float dark_quantit
 	float	color_quantity;
 
 	color_quantity = 1 - dark_quantity;
-	return (((unsigned char)(((color >> 16) & 0xFF) * color_quantity + ((DARK_COLOR >> 16) & 0xff) * dark_quantity) << 16)
-		| ((unsigned char)(((color >> 8) & 0xFF) * color_quantity + ((DARK_COLOR >> 8) & 0xff) * dark_quantity) << 8)
-		| (unsigned char)((color & 0xFF) * color_quantity + (DARK_COLOR & 0xff) * dark_quantity));
+	return (((unsigned char)(((color >> 16) & 0xFF) * color_quantity + ((FOG_COLOR >> 16) & 0xff) * dark_quantity) << 16)
+		| ((unsigned char)(((color >> 8) & 0xFF) * color_quantity + ((FOG_COLOR >> 8) & 0xff) * dark_quantity) << 8)
+		| (unsigned char)((color & 0xFF) * color_quantity + (FOG_COLOR & 0xff) * dark_quantity));
 }
 
 void	draw_vert(t_game *game, int x, t_ray ray, double height)
@@ -50,8 +50,8 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	char				*addr;
 	float				dark_quantity;
 
-	if (game->dist_tab[x] >= DIST_MIN_DARK)
-		dark_quantity = (-DIST_MIN_DARK + game->dist_tab[x]) / (DIST_MAX_DARK - DIST_MIN_DARK);
+	if (game->dist_tab[x] >= DIST_MIN_FOG)
+		dark_quantity = (-DIST_MIN_FOG + game->dist_tab[x]) / (DIST_MAX_FOG - DIST_MIN_FOG);
 	else
 		dark_quantity = 0;
 	size_line = game->image->size_line;
@@ -88,7 +88,7 @@ void	draw_vert(t_game *game, int x, t_ray ray, double height)
 	{
 		while (i < y1)
 		{
-			my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, DARK_COLOR);
+			my_mlx_pixel_put(addr, size_line, (t_vector2){x, i}, FOG_COLOR);
 			y_img += delta_y_img;
 			i++;
 		}

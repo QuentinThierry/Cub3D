@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:39:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 15:56:01 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 14:55:56 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static inline unsigned int	dark_with_dist(unsigned int color, float dark_quantit
 	float	color_quantity;
 
 	color_quantity = 1 - dark_quantity;
-	return (((unsigned char)(((color >> 16) & 0xFF) * color_quantity + ((DARK_COLOR >> 16) & 0xff) * dark_quantity) << 16)
-		| ((unsigned char)(((color >> 8) & 0xFF) * color_quantity + ((DARK_COLOR >> 8) & 0xff) * dark_quantity) << 8)
-		| (unsigned char)((color & 0xFF) * color_quantity + (DARK_COLOR & 0xff) * dark_quantity));
+	return (((unsigned char)(((color >> 16) & 0xFF) * color_quantity + ((FOG_COLOR >> 16) & 0xff) * dark_quantity) << 16)
+		| ((unsigned char)(((color >> 8) & 0xFF) * color_quantity + ((FOG_COLOR >> 8) & 0xff) * dark_quantity) << 8)
+		| (unsigned char)((color & 0xFF) * color_quantity + (FOG_COLOR & 0xff) * dark_quantity));
 }
 
 void	draw_object_projection(t_game *game, t_object *object, float object_dist, int x_pos)
@@ -67,8 +67,8 @@ void	draw_object_projection(t_game *game, t_object *object, float object_dist, i
 	y_pos = WIN_Y / 2. - height / 2.;
 	x_ratio = image->size.x / width;
 	y_ratio = image->size.y / height;
-	if (object->dist >= DIST_MIN_DARK)
-		dark_quantity = (-DIST_MIN_DARK + object->dist) / (DIST_MAX_DARK - DIST_MIN_DARK);
+	if (object->dist >= DIST_MIN_FOG)
+		dark_quantity = (-DIST_MIN_FOG + object->dist) / (DIST_MAX_FOG - DIST_MIN_FOG);
 	else
 		dark_quantity = 0;
 	x = 0;

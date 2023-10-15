@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   floor.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 14:50:23 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/12 14:33:55 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 14:55:57 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ static inline unsigned int	dark_with_dist(unsigned int color, float dark_quantit
 	float	color_quantity;
 
 	color_quantity = 1 - dark_quantity;
-	return (((unsigned char)(((color >> 16) & 0xFF) * color_quantity + ((DARK_COLOR >> 16) & 0xff) * dark_quantity) << 16)
-		| ((unsigned char)(((color >> 8) & 0xFF) * color_quantity + ((DARK_COLOR >> 8) & 0xff) * dark_quantity) << 8)
-		| (unsigned char)((color & 0xFF) * color_quantity + (DARK_COLOR & 0xff) * dark_quantity));
+	return (((unsigned char)(((color >> 16) & 0xFF) * color_quantity + ((FOG_COLOR >> 16) & 0xff) * dark_quantity) << 16)
+		| ((unsigned char)(((color >> 8) & 0xFF) * color_quantity + ((FOG_COLOR >> 8) & 0xff) * dark_quantity) << 8)
+		| (unsigned char)((color & 0xFF) * color_quantity + (FOG_COLOR & 0xff) * dark_quantity));
 }
 
 __attribute__((always_inline))
@@ -85,13 +85,13 @@ static inline void	draw_pixel_line(t_game *game, register t_dvector2 map_point, 
 				image2 = get_image_non_wall(game, map_point, e_floor);
 			}
 			dist = get_dist(game->player->f_real_pos, map_point);
-			if (dist >= DIST_MIN_DARK * DIST_MIN_DARK)
+			if (dist >= DIST_MIN_FOG * DIST_MIN_FOG)
 			{
-				dark_quantity = (-DIST_MIN_DARK + sqrtf(dist)) / (DIST_MAX_DARK - DIST_MIN_DARK);
+				dark_quantity = (-DIST_MIN_FOG + sqrtf(dist)) / (DIST_MAX_FOG - DIST_MIN_FOG);
 				if (dark_quantity >= 1)
 				{
-					color_ceiling = DARK_COLOR;
-					color_floor = DARK_COLOR;
+					color_ceiling = FOG_COLOR;
+					color_floor = FOG_COLOR;
 				}
 				else
 				{

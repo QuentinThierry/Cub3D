@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loading_screen.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 19:04:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 15:43:21 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 14:57:30 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static const t_vector2	g_size_font = (t_vector2){WIN_X, WIN_Y / 16};
 static const t_vector2	g_size_background = (t_vector2){WIN_X, WIN_Y};
 static const t_vector2	g_size_loading_bar = (t_vector2){WIN_X / 3, WIN_Y / 16};
+static const double		g_resize_letter = (1880 / 94.) / 1880;
 
 __attribute__((always_inline))
 static inline t_pixel32	get_pix_alpha(t_pixel32 dest, t_pixel32 src)
@@ -193,7 +194,7 @@ static bool	_load_image(t_game *game, t_loading *loading_screen)
 			LOADING_FONT, g_size_font);
 	if (game->font == NULL)
 		return (false);
-	game->size_letter.x = game->font->size.x * WIDTH_LETTER / WIDTH_ALPHA;
+	game->size_letter.x = game->font->size.x * g_resize_letter;
 	game->size_letter.y = game->font->size.y;
 	loading_screen->background = btmlx_xpm_file_to_image_bilinear_resize(game->mlx_ptr,
 			LOADING_SCREEN, g_size_background);

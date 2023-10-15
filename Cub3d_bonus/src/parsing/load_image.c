@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   load_image.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 14:56:51 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 18:41:41 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 14:54:47 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d_bonus.h"
+
+static const double		g_resize_letter = (1880 / 94.) / 1880;
 
 bool	load_image(t_game *game, t_image *img, char *filename,
 		t_animation *anim)
@@ -106,7 +108,7 @@ bool	load_image_tab(t_game *game, bool *print_error)
 			LOADING_FONT, (t_vector2){WIN_X / 3 * 2, WIN_Y / 16 / 3 * 2});
 	if (game->subtitle_font == NULL)
 		return (false);
-	game->subtitle_size_letter.x = game->subtitle_font->size.x * WIDTH_LETTER / WIDTH_ALPHA;
+	game->subtitle_size_letter.x = game->subtitle_font->size.x * g_resize_letter;
 	game->subtitle_size_letter.y = game->subtitle_font->size.y;
 	game->nb_images = get_len_texture(game->filename, game->nb_file);
 	game->tab_images = ft_calloc(game->nb_images, sizeof(t_image));

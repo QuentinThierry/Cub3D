@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   door.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 15:34:48 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 19:20:42 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -443,8 +443,6 @@ static void	_step_door_open(t_door *door, double time, t_map *map_cell, t_map **
 			door->door_percent = 90;
 			door->is_opening_door = 0;
 			change_adjacent_wall(map, door->map_pos, true);
-			if ((map_cell->type & DOOR_UNLOCK) == DOOR_UNLOCK)
-				map_cell->type ^= DOOR;
 		}
 	}
 	else
@@ -455,8 +453,6 @@ static void	_step_door_open(t_door *door, double time, t_map *map_cell, t_map **
 		{
 			door->door_percent = 0;
 			door->is_opening_door = 0;
-			if ((map_cell->type & DOOR_UNLOCK) == DOOR_UNLOCK)
-				map_cell->type ^= DOOR;
 		}
 	}
 }

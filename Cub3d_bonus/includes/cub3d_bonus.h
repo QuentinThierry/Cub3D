@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/15 14:17:05 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 15:08:52 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -458,6 +458,12 @@ typedef struct s_draw_infos
 	float		delta_y_img;
 }	t_draw_infos;
 
+typedef struct s_info_get_object
+{
+	t_dvector2		max_pos;
+	t_dvector2		step;
+	t_launch_ray	obj;
+}	t_info_get_object;
 
 // ------ Utils------
 int			ft_strlen(const char *str);

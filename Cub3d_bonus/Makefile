@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/15 17:41:27 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/15 17:55:33 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -220,7 +220,7 @@ run: $(NAME)
 	./$(NAME) maps/map.cub
 
 vrun: $(NAME)
-	valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.supp ./$(NAME) maps/map_test.cub
+	valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.supp ./$(NAME) maps/map.cub
 
 prun: CFLAGS += -pg
 prun: $(NAME)

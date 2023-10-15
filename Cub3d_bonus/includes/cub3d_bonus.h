@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/15 17:39:41 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 17:49:44 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 
 # include "config.h"
 # include "structs.h"
-
-extern long tot_fps;
-extern long nb_fps;
 
 // ----------- INTERNAL_DEFINES -----------
 

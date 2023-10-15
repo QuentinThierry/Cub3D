@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:55:10 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/15 17:37:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 17:53:56 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,7 +305,7 @@ typedef struct s_game
 	t_map			*exit;
 	int				total_receptacle;
 	t_end			*end;
-	struct timespec	*last_time;
+	struct timespec	last_time;
 }	t_game;
 
 typedef struct s_object_infos

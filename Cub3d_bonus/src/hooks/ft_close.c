@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 18:30:39 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/13 17:03:35 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 17:49:50 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,5 @@ int	ft_close(t_game *game)
 		free_image(game->mlx_ptr, game->end->end_screen);
 	free(game->end);
 	_free_mlx(game);
-	if (nb_fps != 0)
-		printf("Moyenne fps : %ld\n", (long)tot_fps / nb_fps);
 	exit(0);
 }

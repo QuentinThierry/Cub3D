@@ -6,30 +6,34 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 15:18:07 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 18:04:45 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d_bonus.h"
 
-long tot_fps = 0;
-long nb_fps = 0;
+__attribute__((always_inline))
+static inline void	_update_screen(t_game *game)
+{
+	raycasting(game);
+	if (game->player->has_item == true)
+		draw_hand_item(game, game->player);
+	zoom_hook_handle(game->minimap, game->delta_time);
+	draw_minimap(game);
+	print_subtitle(game, game->music_array[1].map_cell);
+	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
+}
 
 int	on_update(t_game *game)
 {
-	static struct timespec	last_time = {0};
 	struct timespec			cur_time;
 	struct timespec			time;
-	long					fps;
 
-	if (last_time.tv_sec == 0)
-	{
-		game->last_time = &last_time;
-		clock_gettime(CLOCK_REALTIME, &last_time);
-	}
+	if (game->last_time.tv_sec == 0)
+		clock_gettime(CLOCK_REALTIME, &game->last_time);
 	clock_gettime(CLOCK_REALTIME, &time);
-	update_sounds(game->music_array);
 	game->time = time_to_long(&time);
+	update_sounds(game->music_array);
 	if ((game->map[(int)game->player->f_pos.y][(int)game->player->f_pos.x].type
 		& OBJ_INTER) == OBJ_INTER)
 		take_object(game, game->player, &game->map[(int)game->player->f_pos.y]
@@ -40,22 +44,11 @@ int	on_update(t_game *game)
 	if (game->player->angle + game->player->angle < 0)
 		game->player->angle = game->player->angle + 360;
 	update_doors(game->door_array, game->nb_doors, game->delta_time, game->map);
-	raycasting(game);
-	if (game->player->has_item == true)
-		draw_hand_item(game, game->player);
-	zoom_hook_handle(game->minimap, game->delta_time);
-	draw_minimap(game);
-	print_subtitle(game, game->music_array[1].map_cell);
-	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
+	_update_screen(game);
 	clock_gettime(CLOCK_REALTIME, &cur_time);
-	game->delta_time = (cur_time.tv_sec - last_time.tv_sec
-			+ (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
-	fps = (long)(1.0 / game->delta_time);
-	tot_fps += fps;
-	nb_fps++;
-	if ((nb_fps % 50) == 0)
-		printf("fps : %ld\n", fps);
-	last_time = cur_time;
+	game->delta_time = (cur_time.tv_sec - game->last_time.tv_sec
+			+ (cur_time.tv_nsec - game->last_time.tv_nsec) / 1000000000.F);
+	game->last_time = cur_time;
 	return (0);
 }
 void	move_mouse(t_game *game);

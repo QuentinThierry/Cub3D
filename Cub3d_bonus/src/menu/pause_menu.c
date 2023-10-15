@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pause_menu.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 19:44:18 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 17:53:32 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	adjust_animation_time(t_game *game)
 		}
 		i++;
 	}
-	*game->last_time = time_now;
+	game->last_time = time_now;
 }
 
 void	resume_menu(t_game *game, t_menu *menu)

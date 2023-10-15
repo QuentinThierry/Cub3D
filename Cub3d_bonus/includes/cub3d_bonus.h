@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/15 17:31:03 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 17:37:18 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ extern long nb_fps;
 # define DARK_COLOR_OPTION 0x101010
 
 // GAMEPLAY
-# define DIST_TO_WALL 0.0999
+# define DIST_WALL 0.0999
 
 // SUBTITLES
 # define SUBTITLE_TIME 5000
@@ -79,7 +79,7 @@ extern long nb_fps;
 # define DOOR_EAST_END 0b100000000
 # define DOOR_SOUTH_END 0b1000000000
 # define DOOR_WEST_END 0b10000000000
-# define OBJECT_INTERACTIVE 0b100000000000
+# define OBJ_INTER 0b100000000000
 # define RECEPTACLE 0b1000000000000
 # define DOOR_LOCK 0b10000000000000
 # define DOOR_UNLOCK 0b100000000000000
@@ -170,8 +170,6 @@ void		player_move(t_game *game, t_player *player, double delta_time,
 				t_map **map);
 int			mouse_click(int button, int x, int y, t_game *game);
 int			ft_close(t_game *game);
-
-t_dvector2	check_colliding(t_game *game, t_dvector2 new_pos, t_map **map);
 
 // -------Raycasting-----
 t_ray		get_wall_hit(t_dvector2 fpos, t_map **map, float angle);
@@ -320,5 +318,14 @@ void		update_map_cell_music(t_map *map_cell, t_map *old_map_cell,
 void		clear_sound(t_music_game *music_array);
 void		print_subtitle(t_game *game, t_map *map_cell);
 void		free_image(void *mlx_ptr, t_image *image);
+
+// -------- Collision ---------
+t_dvector2	check_colliding(t_game *game, t_dvector2 new_pos, t_map **map);
+t_dvector2	slide_wall_y(t_game *gm, t_dvector2 fpos, t_map **map,
+				t_dvector2 dest);
+t_dvector2	slide_wall_x(t_game *gm, t_dvector2 fpos, t_map **map,
+					t_dvector2 dest);
+void	check_interactive_object(t_game *game, t_map **map,
+					t_dvector2 fpos);
 
 #endif

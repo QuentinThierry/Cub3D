@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 18:54:24 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/14 13:31:24 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 15:18:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	take_object(t_game *game, t_player *player, t_map *cell_map,
 	cell_map->type &= ~MUSIC_OBJECT & ~IS_PLAYING_OBJECT;
 	cell_map->symbol = '0';
 	cell_map->arg = NULL;
-	cell_map->type &= ~OBJECT_INTERACTIVE;
+	cell_map->type &= ~OBJ_INTER;
 	cell_map->type &= ~OBJECT;
 	player->has_item = true;
 }
@@ -85,7 +85,7 @@ void	take_object_click(t_game *game, t_player *player, t_map **map)
 			|| (map_cell->type & OBJECT) == OBJECT))
 		play_sound_fail(game, map_cell, game->music_array);
 	if (!((map_cell->type & WALL) == WALL && (map_cell->type & OBJECT) == OBJECT
-			&& (map_cell->type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE))
+			&& (map_cell->type & OBJ_INTER) == OBJ_INTER))
 		return ;
 	_set_item_player(game, player, map_cell, pos);
 	map_cell->type &= ~MUSIC_OBJECT & ~IS_PLAYING_OBJECT;
@@ -98,6 +98,6 @@ void	take_object_click(t_game *game, t_player *player, t_map **map)
 		player->item.type &= ~NARRATOR;
 		map_cell->type &= ~NARRATOR;
 	}
-	map_cell->type &= ~OBJECT_INTERACTIVE;
+	map_cell->type &= ~OBJ_INTER;
 	map_cell->sprite[e_obj_int_img] = map_cell->sprite[e_obj_int_after_img];
 }

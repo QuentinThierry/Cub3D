@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 17:57:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/14 13:16:48 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 15:18:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static bool	_get_wall_object_interactive(t_game *game, t_map *map)
 {
 	game->nb_objects += 2;
 	map->type |= OBJECT;
-	map->type |= OBJECT_INTERACTIVE;
+	map->type |= OBJ_INTER;
 	map->sprite[e_obj_int_img] = fill_texture(game->filename,
 			game->nb_file, map->symbol, e_object_interactive);
 	map->sprite[e_obj_int_hand_img] = fill_texture(game->filename,

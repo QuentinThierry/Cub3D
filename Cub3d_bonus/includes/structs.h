@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:55:10 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/15 17:31:21 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 17:37:14 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -346,5 +346,13 @@ typedef struct s_info_get_object
 	t_dvector2		step;
 	t_launch_ray	obj;
 }	t_info_get_object;
+
+typedef struct s_info_collision
+{
+	t_dvector2	comp;
+	t_dvector2	pos;
+	t_dvector2	fpos;
+	t_dvector2	new_pos;
+}	t_info_collison;
 
 #endif

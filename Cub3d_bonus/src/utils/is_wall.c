@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_wall.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 13:07:38 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 13:11:09 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 15:18:07 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 bool	is_only_wall(unsigned int type)
 {
 	return ((type & WALL) == WALL && (type & OBJECT) != OBJECT
-		&& (type & OBJECT_INTERACTIVE) != OBJECT_INTERACTIVE
+		&& (type & OBJ_INTER) != OBJ_INTER
 		&& (type & RECEPTACLE) != RECEPTACLE);
 }
 

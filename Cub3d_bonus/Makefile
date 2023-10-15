@@ -6,7 +6,7 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/15 15:10:21 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/15 17:34:31 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -99,6 +99,10 @@ RAYCASTING = raycasting/
 SRC_RAYCASTING = \
 			raycasting.c \
 			collisions.c \
+			collision_se.c \
+			collision_sw.c \
+			collision_ne.c \
+			collision_nw.c \
 			wall_hit_se.c \
 			wall_hit_sw.c \
 			wall_hit_ne.c \

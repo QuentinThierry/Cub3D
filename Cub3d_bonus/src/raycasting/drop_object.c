@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:00:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 18:58:17 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 19:33:21 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,10 +114,11 @@ void	drop_object(t_player *player, t_map **map, t_map *exit, t_game *game)
 	t_type		type;
 
 	pos = find_pos(player);
+	if (map[pos.y][pos.x].symbol == ' ')
+		return ;
 	type = map[pos.y][pos.x].type;
 	if ((type & WALL) != WALL && (type & DOOR) != DOOR
-		&& (type & OBJECT) != OBJECT
-		&& (type & OBJ_INTER) != OBJ_INTER)
+		&& (type & OBJECT) != OBJECT && (type & OBJ_INTER) != OBJ_INTER)
 		_set_object_on_cell(&map[pos.y][pos.x], player, pos, game->music_array);
 	if ((type & RECEPTACLE) == RECEPTACLE && (type & DOOR_LOCK) == DOOR_LOCK)
 	{

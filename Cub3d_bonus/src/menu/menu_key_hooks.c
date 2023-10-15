@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:16:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 19:50:31 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 20:34:47 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ void	key_press_no_pause(t_keybind key, t_game *game)
 		game->minimap->zoom_dir -= 1;
 	else if (key == game->keybinds[e_key_minimap_zoom])
 		game->minimap->zoom_dir += 1;
-	else if (key == game->keybinds[e_key_interact_door])
-		open_door(game);
 }
 
 void	choose_key_hook(t_keybind key, t_game *game)
@@ -60,7 +58,7 @@ void	choose_key_hook(t_keybind key, t_game *game)
 	}
 	has_drawn_key_used = false;
 	if (game->keybinds[pressed_button] != key)
-		key_press_hook(game->keybinds[pressed_button], game);
+		key_press_no_pause(game->keybinds[pressed_button], game);
 	game->menu->option_menu.buttons[pressed_button].text = get_key_str(key);
 	game->menu->state = OPTION_MENU;
 	game->keybinds[pressed_button] = key;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   animation.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 17:53:20 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/13 18:07:40 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 18:23:13 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	_set_new_anim(t_sprite *sprite, long int time, t_image *img)
 void	update_anim(long int time, t_sprite *sprite, t_image *img)
 {
 	long	delta;
-	int		n_time;
+	long	n_time;
 
 	delta = time - sprite->time;
 	if (delta >= img->time_frame * img->nb_total_frame + img->time_animation)

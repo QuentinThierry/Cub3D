@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 14:32:29 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/13 16:53:21 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 18:39:31 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,17 @@ static bool	_is_existing(t_game *game, char symbol, enum e_orientation orient)
 	return (false);
 }
 
+bool	check_sound(char *filename)
+{
+	int	fd;
+
+	fd = open(filename, O_RDONLY);
+	if (fd == -1)
+		return (print_error("Invalid sound\n", 1),false);
+	close(fd);
+	return (true);
+}
+
 bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 {
 	char	*filename;
@@ -128,6 +139,8 @@ bool	find_music(t_game *game, char *str, enum e_orientation orient, int i)
 	filename = ft_strdup(str + i);
 	if (filename == NULL)
 		return (print_error("malloc failed\n", 1), false);
+	if (!check_sound(filename))
+		return (free(filename), false);
 	if (tmp1 != -1)
 		str[i + len] = tmp1;
 	i += len + 1;

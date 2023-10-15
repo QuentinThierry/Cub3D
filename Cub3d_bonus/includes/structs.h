@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:55:10 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/15 15:13:44 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 17:31:21 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,9 +335,9 @@ typedef struct s_draw_infos
 
 typedef struct s_info_wall
 {
-	float angle;
-	float player_angle;
-	enum e_status status;
+	float			angle;
+	float			player_angle;
+	enum e_status	status;
 }	t_info_wall;
 
 typedef struct s_info_get_object

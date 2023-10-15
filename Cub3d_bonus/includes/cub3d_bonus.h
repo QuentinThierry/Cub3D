@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/15 17:29:36 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 17:31:03 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,6 @@
 
 extern long tot_fps;
 extern long nb_fps;
-
-# define FREE(x) free(x), x = NULL;
-# define FREE_IMAGE(x, mlx) mlx_destroy_image(mlx, x), x = NULL;
-# define CLOSE_FD(x) close(x), x = -1;
-# define BT_FREE_IMAGE(x, mlx) mlx_destroy_image(mlx, x->img), free(x), x = NULL;
 
 // ----------- INTERNAL_DEFINES -----------
 

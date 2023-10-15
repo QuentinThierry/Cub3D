@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_music.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 14:32:29 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 18:31:21 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 18:48:03 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ bool	check_sound(char *filename)
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
-		return (print_error("Invalid sound\n", 1),false);
+		return (print_error("Invalid sound\n", 1), false);
 	close(fd);
 	return (true);
 }

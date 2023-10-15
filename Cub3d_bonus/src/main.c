@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/13 17:20:10 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/15 13:52:21 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ int	on_update(t_game *game)
 	clock_gettime(CLOCK_REALTIME, &time);
 	update_sounds(game->music_array);
 	game->time = time_to_long(&time);
-	if ((game->map[(int)game->player->f_pos.y][(int)game->player->f_pos.x].type & OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
-		take_object(game, game->player, &game->map[(int)game->player->f_pos.y][(int)game->player->f_pos.x], game->music_array);
+	if ((game->map[(int)game->player->f_pos.y][(int)game->player->f_pos.x].type
+		& OBJECT_INTERACTIVE) == OBJECT_INTERACTIVE)
+		take_object(game, game->player, &game->map[(int)game->player->f_pos.y]
+		[(int)game->player->f_pos.x], game->music_array);
 	player_move(game, game->player, game->delta_time, game->map);
 	if (game->player->angle + game->player->angle >= 360)
 		game->player->angle = game->player->angle - 360;
@@ -44,9 +46,7 @@ int	on_update(t_game *game)
 	zoom_hook_handle(game->minimap, game->delta_time);
 	draw_minimap(game);
 	print_subtitle(game, game->music_array[1].map_cell);
-	
 	mlx_put_image_to_window(game->mlx_ptr, game->win, game->image->img, 0, 0);
-
 	clock_gettime(CLOCK_REALTIME, &cur_time);
 	game->delta_time = (cur_time.tv_sec - last_time.tv_sec
 			+ (cur_time.tv_nsec - last_time.tv_nsec) / 1000000000.F);
@@ -60,10 +60,10 @@ int	on_update(t_game *game)
 }
 void	move_mouse(t_game *game);
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_game	game;
-	
+
 	game = (t_game){0};
 	if (argc != 2)
 		return (print_error("Invalid number of arguments\n", 1), 1);

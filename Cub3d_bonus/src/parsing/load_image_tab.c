@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 14:56:51 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/12 18:37:36 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/17 16:42:15 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ bool	load_image(t_game *game, t_image *img, char *filename,
 
 static const double	g_resize_letter = (1880 / 94.) / 1880;
 
+typedef struct s_info_load
+{
+	enum e_orientation	orient;
+	t_game				*game;
+}	t_info_load;
+
 static bool	_load_subtitle(t_game *game)
 {
 	game->subtitle_font = btmlx_xpm_file_to_image_bilinear_resize(game->mlx_ptr,
@@ -31,7 +37,7 @@ static bool	_load_subtitle(t_game *game)
 	return (true);
 }
 
-static bool	_load_animation(t_game *game, t_image *tab_image,
+static bool	_load_animation(t_info_load load, t_image *tab_image,
 				t_animation *animation, int	*index)
 {
 	int	i;
@@ -41,17 +47,17 @@ static bool	_load_animation(t_game *game, t_image *tab_image,
 	i = 1;
 	while (i < animation->nb_sprite)
 	{
-		if (game->filename[i].orient == e_object_interactive_hand)
+		if (load.orient == e_object_interactive_hand)
 		{
-			if (!load_resize_image(game, &(tab_image[*index]),
+			if (!load_resize_image(load.game, &(tab_image[*index]),
 					animation->filename[i], (t_vector2){WIN_X / 3, WIN_X / 3}))
 				return (print_error(NULL, 0), false);
 			tab_image[*index].time_animation = animation->time_animation;
 			tab_image[*index].time_frame = animation->time_sprite;
 			tab_image[*index].nb_total_frame = animation->nb_sprite - 1;
 		}
-		else if (!load_image(game, &(tab_image[*index]), animation->filename[i],
-				animation))
+		else if (!load_image(load.game, &(tab_image[*index]),
+				animation->filename[i], animation))
 			return (print_error(NULL, 0), false);
 		(*index)++;
 		i++;
@@ -82,7 +88,8 @@ static bool	_load_directory(t_game *game, t_image *tab_image,
 	i = -1;
 	while (++i < texture->nb_animation)
 	{
-		if (!_load_animation(game, tab_image, &texture->animation[i], index))
+		if (!_load_animation((t_info_load){texture->orient, game}, tab_image,
+			&texture->animation[i], index))
 			return (false);
 	}
 	return (true);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drop_object.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 16:00:23 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 15:34:50 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/15 19:34:37 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,10 @@ static void	_set_object_on_cell(t_map *map_cell, t_player *player, t_dvector2 po
 
 static void	_unlock_door(t_game *game, t_map *map_cell, t_player *player, t_music_game *music_tab)
 {
-	map_cell->type &= ~DOOR_LOCK;
+	map_cell->type &= ~DOOR_LOCK & ~RECEPTACLE;
 	map_cell->type |= DOOR_UNLOCK;
 	map_cell->sprite[e_door_image] = map_cell->sprite[e_door_image + 1];
 	((t_door *)map_cell->arg)->is_opening_door = 1;
-	// ((t_door *)map_cell->arg)->time = game->time;
 	if ((map_cell->type & MUSIC) == MUSIC)
 	{
 		map_cell->music = get_music(game->file_music, game->nb_music, map_cell->symbol, e_music_receptacle_complete);
@@ -98,6 +97,8 @@ void	drop_object(t_player *player, t_map **map, t_map *exit, t_game *game)
 	pos = find_pos(player);
 	pos.x = (int)pos.x + 0.5;
 	pos.y = (int)pos.y + 0.5;
+	if (map[(int)pos.y][(int)pos.x].symbol == ' ')
+		return ;
 	if ((map[(int)pos.y][(int)pos.x].type & WALL) != WALL
 		&& (map[(int)pos.y][(int)pos.x].type & DOOR) != DOOR
 		&& (map[(int)pos.y][(int)pos.x].type & OBJECT) != OBJECT

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:22:02 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 18:43:04 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/17 16:22:47 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,27 +29,27 @@ static inline float	get_dist(t_dvector2 fpos, t_dvector2 wall)
  */
 float	draw_light(t_game *game, t_ray *ray, float angle)
 {
-	if (game->end->orient == e_north && ray->hit.y > game->end->dest.y - .5)
+	if (game->end->orient == e_north && ray->hit.y > game->end->dest.y)
 	{
-		ray->hit = (t_dvector2){game->end->dest.x, game->end->dest.y - .5};
+		ray->hit = (t_dvector2){game->end->dest.x, game->end->dest.y};
 		ray->orient = e_end_screen;
 		return (get_dist(game->player->f_pos, ray->hit));
 	}
-	if (game->end->orient == e_south && ray->hit.y < game->end->dest.y + .5)
+	if (game->end->orient == e_south && ray->hit.y < game->end->dest.y)
 	{
-		ray->hit = (t_dvector2){game->end->dest.x, game->end->dest.y + .5};
+		ray->hit = (t_dvector2){game->end->dest.x, game->end->dest.y};
 		ray->orient = e_end_screen;
 		return (get_dist(game->player->f_pos, ray->hit));
 	}
-	if (game->end->orient == e_east && ray->hit.x < game->end->dest.x + .5)
+	if (game->end->orient == e_east && ray->hit.x < game->end->dest.x)
 	{
-		ray->hit = (t_dvector2){game->end->dest.x + .5, game->end->dest.y};
+		ray->hit = (t_dvector2){game->end->dest.x, game->end->dest.y};
 		ray->orient = e_end_screen;
 		return (get_dist(game->player->f_pos, ray->hit));
 	}
-	if (game->end->orient == e_west && ray->hit.x > game->end->dest.x - .5)
+	if (game->end->orient == e_west && ray->hit.x > game->end->dest.x)
 	{
-		ray->hit = (t_dvector2){game->end->dest.x - .5, game->end->dest.y};
+		ray->hit = (t_dvector2){game->end->dest.x, game->end->dest.y};
 		ray->orient = e_end_screen;
 		return (get_dist(game->player->f_pos, ray->hit));
 	}

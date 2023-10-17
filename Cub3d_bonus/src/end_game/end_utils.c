@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 18:46:16 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 16:28:09 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/17 16:22:54 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ void	find_dest(t_end *end, const enum e_orientation orient,
 void	next_dest(t_end *end, const t_dvector2 player_pos)
 {
 	if (end->orient == e_south)
-		end->dest.y -= 1 + DIST_WALL;
+		end->dest.y -= 0.5 + DIST_WALL;
 	else if (end->orient == e_north)
-		end->dest.y += 1 + DIST_WALL;
+		end->dest.y += 0.5 + DIST_WALL;
 	else if (end->orient == e_east)
-		end->dest.x -= 1 + DIST_WALL;
+		end->dest.x -= 0.5 + DIST_WALL;
 	else
-		end->dest.x += 1 + DIST_WALL;
+		end->dest.x += 0.5 + DIST_WALL;
 	end->dir.x = end->dest.x - player_pos.x;
 	end->dir.y = end->dest.y - player_pos.y;
 	end->dir_angle = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   config.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:58:02 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/15 18:09:27 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/19 18:21:39 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 // ----------- PLAYER -----------
 # define SPEED 1
 # define SPRINT_BOOST 1
-# define DFL_FOV 100 // check min is less than min and diff > 0
+# define DFL_FOV 85 // check min is less than min and diff > 0
 # define MIN_FOV 70
 # define MAX_FOV 130
 # define ROTATION_KEYBOARD 125

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
+#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/15 18:32:11 by jvigny           ###   ########.fr        #
+#    Updated: 2023/10/19 18:01:04 by qthierry         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = cub3D_bonus
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -MMD# -fsanitize=address,leak,undefined#-Werror
-LIBS = -L$(MINILIBX_DIR) -lmlx -lX11 -lXext -lm  -L$(RAUDIO_SRC) -lraudio
+LIBS = -L$(MINILIBX_DIR) -lmlx -lX11 -lXext -lm  -L$(RAUDIO_SRC) -lraudio -ldl -pthread
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR) -I$(RAUDIO_HEADERS)
 
 REDIRECT_ERROR = >/dev/null 2>&1

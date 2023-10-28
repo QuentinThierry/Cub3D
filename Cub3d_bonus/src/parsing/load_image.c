@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_image.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 14:56:51 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 14:54:47 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/10/28 14:38:05 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ bool	load_image_tab(t_game *game, bool *print_error)
 		{
 			if (game->filename[i].orient == e_object_interactive_hand)
 			{
-				if (!load_resize_image(game, &(tab_image[index]), game->filename[i].filename, (t_vector2){WIN_X / 3, WIN_X / 3}))
+				if (!load_resize_image(game, &(tab_image[index]), game->filename[i].filename, (t_vector2){WIN_Y / 3, WIN_Y / 3}))
 					return (false);
 			}
 			else if (!load_image(game, &(tab_image[index]), game->filename[i].filename, NULL))
@@ -137,7 +137,7 @@ bool	load_image_tab(t_game *game, bool *print_error)
 			{
 				if (game->filename[i].orient == e_object_interactive_hand)
 				{
-					if (!load_resize_image(game, &(tab_image[index]), game->filename[i].filename_d[j], (t_vector2){WIN_X / 3, WIN_X / 3}))
+					if (!load_resize_image(game, &(tab_image[index]), game->filename[i].filename_d[j], (t_vector2){WIN_Y / 3, WIN_Y / 3}))
 						return (false);
 				}
 				else if (!load_image(game, &(tab_image[index]), game->filename[i].filename_d[j], NULL))
@@ -155,7 +155,7 @@ bool	load_image_tab(t_game *game, bool *print_error)
 				{
 					if (game->filename[i].orient == e_object_interactive_hand)
 					{
-						if (!load_resize_image(game, &(tab_image[index]), game->filename[i].animation[j].filename[h], (t_vector2){WIN_X / 3, WIN_X / 3}))
+						if (!load_resize_image(game, &(tab_image[index]), game->filename[i].animation[j].filename[h], (t_vector2){WIN_Y / 3, WIN_Y / 3}))
 							return (false);
 						tab_image[index].time_animation = game->filename[i].animation[j].time_animation;
 						tab_image[index].time_frame = game->filename[i].animation[j].time_sprite;

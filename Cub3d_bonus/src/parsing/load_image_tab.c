@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 14:56:51 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/17 16:42:15 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/28 14:35:55 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static bool	_load_animation(t_info_load load, t_image *tab_image,
 		if (load.orient == e_object_interactive_hand)
 		{
 			if (!load_resize_image(load.game, &(tab_image[*index]),
-					animation->filename[i], (t_vector2){WIN_X / 3, WIN_X / 3}))
+					animation->filename[i], (t_vector2){WIN_Y / 3, WIN_Y / 3}))
 				return (print_error(NULL, 0), false);
 			tab_image[*index].time_animation = animation->time_animation;
 			tab_image[*index].time_frame = animation->time_sprite;
@@ -76,7 +76,7 @@ static bool	_load_directory(t_game *game, t_image *tab_image,
 		if (texture->orient == e_object_interactive_hand)
 		{
 			if (!load_resize_image(game, &(tab_image[*index]),
-					texture->filename_d[i], (t_vector2){WIN_X / 3, WIN_X / 3}))
+					texture->filename_d[i], (t_vector2){WIN_Y / 3, WIN_Y / 3}))
 				return (print_error(NULL, 0), false);
 		}
 		else if (!load_image(game, &(tab_image[*index]),
@@ -101,7 +101,7 @@ static bool	_load_filename(t_game *game, t_image *tab_image,
 	if (texture->orient == e_object_interactive_hand)
 	{
 		if (!load_resize_image(game, &(tab_image[*index]), texture->filename,
-				(t_vector2){WIN_X / 3, WIN_X / 3}))
+				(t_vector2){WIN_Y / 3, WIN_Y / 3}))
 			return (false);
 	}
 	else if (!load_image(game, &(tab_image[*index]), texture->filename, NULL))

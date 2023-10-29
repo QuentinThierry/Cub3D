@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 16:34:46 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/05 19:01:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/10/29 12:24:06 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@ static t_sprite	random_texture(t_texture *texture_tab, int index,
 		if (random < texture_tab[index].nb_file)
 			return ((t_sprite){size + random, -1, 0});
 		size += texture_tab[index].nb_file + get_nb_sprite_animation(random - texture_tab[index].nb_file, &texture_tab[index]);
-		random = rand() % (texture_tab[index].animation[random - texture_tab[index].nb_file].nb_sprite - 1);
-		return ((t_sprite){size, random, 0});
+		return ((t_sprite){size, 0, 0});
 	}
 	return ((t_sprite){size, 0, 0});
 }

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 17:25:32 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 17:34:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/11/01 18:55:57 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static inline t_dvector2	_collision_hit_ver_sw(t_game *game, t_map **map,
 		tmp = (t_dvector2){inf->pos.x + 0.0001, inf->comp.y
 			- (0.0001 / fabs(inf->fpos.x - inf->pos.x)
 				* fabs(inf->fpos.y - inf->comp.y))};
-		return (slide_wall_y(game, tmp, map, inf->new_pos));
+		return (printf("slide ver\n"), slide_wall_y(game, tmp, map, inf->new_pos));
 	}
 	inf->comp.y += step;
 	inf->pos.x += -1;
@@ -53,7 +53,7 @@ static inline t_dvector2	_collision_hit_hor_sw(t_game *game, t_map **map,
 		tmp = (t_dvector2){inf->comp.x + (0.0001
 				/ fabs(inf->fpos.y - inf->pos.y)
 				* fabs(inf->fpos.x - inf->comp.x)), inf->pos.y - 0.0001};
-		return (slide_wall_x(game, tmp, map, inf->new_pos));
+		return (printf("slide ver\n"), slide_wall_x(game, tmp, map, inf->new_pos));
 	}
 	inf->comp.x += step;
 	inf->pos.y += 1;
@@ -66,7 +66,7 @@ t_dvector2	get_collision_sw(t_game *game, t_map **map, float angle,
 	t_dvector2	res;
 
 	inf->pos = (t_dvector2){(int)inf->fpos.x + DIST_WALL,
-		(int)inf->fpos.y +1 - DIST_WALL};
+		(int)inf->fpos.y + 1 - DIST_WALL};
 	if (inf->pos.x > inf->fpos.x)
 		inf->pos.x -= 1;
 	if (inf->pos.y < inf->fpos.y)
@@ -77,7 +77,7 @@ t_dvector2	get_collision_sw(t_game *game, t_map **map, float angle,
 	{
 		if (inf->pos.y >= inf->comp.y)
 		{
-			res = _collision_hit_ver_sw(game, map, 1 / angle * -1, inf);
+			res = _collision_hit_ver_sw(game, map, 1 / angle, inf);
 			if (res.x != -1)
 				return (res);
 		}

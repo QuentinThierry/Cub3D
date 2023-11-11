@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_music.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 14:32:29 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 18:48:03 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/11/11 14:42:12 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,15 @@ static bool	_realloc_tab(t_game *game, int index)
 bool	check_sound(char *filename)
 {
 	int	fd;
+	DIR	*dir;
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 		return (print_error("Invalid sound\n", 1), false);
 	close(fd);
+	dir = opendir(filename);
+	if (dir != NULL)
+		return (closedir(dir), print_error("Invalid sound\n", 1), false);
 	return (true);
 }
 

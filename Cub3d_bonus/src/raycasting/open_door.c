@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_door.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 20:05:59 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 20:09:44 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/11/11 14:30:18 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,21 @@ static void	_start_open_door(t_game *game, t_ray ray)
 			door->is_opening_door = 1;
 		else
 		{
-			if (!_possible_to_open_door(ray.orient, ray.hit,
-					game->player->f_pos))
-				return ;
 			door->is_opening_door = -1;
 			game->map[(int)ray.hit.y][(int)ray.hit.x].type |= WALL;
 		}
+	}
+}
+
+void	_play_music_door(t_type type, t_map *map_cell, t_game *game, t_ray ray)
+{
+	if ((type & MUSIC) == MUSIC)
+		play_music(map_cell, game->music_array, map_cell->music,
+			IS_PLAYING_MUSIC);
+	if ((type & NARRATOR) == NARRATOR)
+	{
+		play_narrator(game, map_cell, game->music_array);
+		game->map[(int)ray.hit.y][(int)ray.hit.x].type &= ~NARRATOR;
 	}
 }
 
@@ -89,6 +98,8 @@ void	open_door(t_game *game)
 			game->player->f_pos, game->player->angle);
 	if (ray.hit.x == -1)
 		return ;
+	if (!_possible_to_open_door(ray.orient, ray.hit, game->player->f_pos))
+		return ;
 	map_cell = &game->map[(int)ray.hit.y][(int)ray.hit.x];
 	type = game->map[(int)ray.hit.y][(int)ray.hit.x].type;
 	if ((type & DOOR_LOCK) == DOOR_LOCK)
@@ -97,13 +108,6 @@ void	open_door(t_game *game)
 		return ;
 	if ((type & EXIT) == EXIT)
 		return (end_of_the_game(game, ray.orient));
-	if ((type & MUSIC) == MUSIC)
-		play_music(map_cell, game->music_array, map_cell->music,
-			IS_PLAYING_MUSIC);
-	if ((type & NARRATOR) == NARRATOR)
-	{
-		play_narrator(game, map_cell, game->music_array);
-		game->map[(int)ray.hit.y][(int)ray.hit.x].type &= ~NARRATOR;
-	}
+	_play_music_door(type, map_cell, game, ray);
 	_start_open_door(game, ray);
 }

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 17:17:55 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/13 17:19:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/11/11 14:15:28 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ void	player_move(t_game *game, t_player *player, double delta_time,
 		move = check_colliding(game, move, map);
 		if (((int)move.x != (int)player->f_pos.x
 				|| (int)move.y != (int)player->f_pos.y)
-			&& (map[(int)move.y][(int)move.x].type & MUSIC) == MUSIC)
+			&& (map[(int)move.y][(int)move.x].type & MUSIC) == MUSIC
+			&& (map[(int)move.y][(int)move.x].type & DOOR) != DOOR)
 			play_music(&map[(int)move.y][(int)move.x],
 				game->music_array, map[(int)move.y][(int)move.x].music,
 				IS_PLAYING_MUSIC);

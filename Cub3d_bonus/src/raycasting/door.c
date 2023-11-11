@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   door.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:20:37 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 19:20:42 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/11/11 14:34:00 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -380,6 +380,8 @@ void	open_door(t_game *game)
 	ray = get_object_hit((t_launch_ray){'\0', DOOR, 1}, game->map, game->player->f_real_pos, game->player->angle);
 	if (ray.hit.x != -1)
 	{
+		if (!possible_to_open_door(ray.orient, ray.hit, game->player->f_real_pos))
+			return ;
 		if ((game->map[(int)ray.hit.y][(int)ray.hit.x].type & DOOR_LOCK) == DOOR_LOCK)
 		{
 			play_sound_fail(game, &game->map[(int)ray.hit.y][(int)ray.hit.x], game->music_array);
@@ -401,27 +403,21 @@ void	open_door(t_game *game)
 		if (door->is_opening_door == 1)
 		{
 			door->is_opening_door = -1;
-			// door->time = game->time;
 		}
 		else if (door->is_opening_door == -1)
 		{
 			door->is_opening_door = 1;
-			// door->time = game->time;
 		}
 		else
 		{
 			if (door->door_percent == 0)
 			{
 				door->is_opening_door = 1;
-				// door->time = game->time;
 			}
 			else
 			{
-				if (!possible_to_open_door(ray.orient, ray.hit, game->player->f_real_pos))
-					return ;
 				door->is_opening_door = -1;
 				game->map[(int)ray.hit.y][(int)ray.hit.x].type |= WALL;
-				// door->time = game->time;
 			}
 		}
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_wall.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:24:19 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 14:07:04 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/11/13 13:16:05 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static int	set_infos_struct(t_draw_infos *infos, double height, t_ray ray,
 		infos->img_pos.x = (ray.hit.x - (int)ray.hit.x) * infos->image->size.x;
 	else
 		infos->img_pos.x = (ray.hit.y - (int)ray.hit.y) * infos->image->size.x;
-	if (ray.orient == e_west || ray.orient == e_south)
-		infos->img_pos.x = infos->image->size.x - infos->img_pos.x - 1;
+	if (ray.orient == e_east || ray.orient == e_north)
+		infos->img_pos.x = infos->image->size.x - infos->img_pos.x;
 	if (x_door != -1)
 		infos->img_pos.x = x_door;
 	return (y);

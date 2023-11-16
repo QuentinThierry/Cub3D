@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 18:16:58 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/15 20:32:52 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/11/16 20:05:35 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,8 @@ void	menu_mouse_up_hook(int mouse_button, int x, int y, t_game *game)
 
 void	menu_key_press(t_keybind key, t_game *game)
 {
-	if (key == game->keybinds[e_key_pause])
+	if (key == game->keybinds[e_key_pause]
+		&& ft_strcmp(game->menu->pause_menu.play_button.text, "RESUME") == 0)
 		resume_menu(game, game->menu);
 	else if (key == game->keybinds[e_key_left_look])
 		game->player->view -= 1;

@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:53:09 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 14:01:46 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/11/16 18:15:43 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,23 @@ static inline void	my_mlx_pixel_put(char *addr, int size_line,
 bool	get_old_pos(t_vector2 *old_pos, t_vector2 coo,
 				t_dvector2 cos_sin, t_image *img_src)
 {
-	old_pos->x = (coo.x - img_src->size.x / 2.) * cos_sin.x
-		- (coo.y - img_src->size.y / 2.) * cos_sin.y;
-	old_pos->y = (coo.x - img_src->size.x / 2.) * cos_sin.y
-		+ (coo.y - img_src->size.y / 2.) * cos_sin.x;
+	if ((((cos_sin.x >= -0.00001 && cos_sin.x <= 0.00001)
+				|| (cos_sin.x >= 0.99999 && cos_sin.x <= 1.00001)))
+		&& ((cos_sin.y >= -0.00001 && cos_sin.y <= 0.00001)
+			|| (cos_sin.y >= 0.99999 && cos_sin.y <= 1.00001)))
+	{
+		old_pos->x = (coo.x - img_src->size.x / 2.) * (int)(cos_sin.x + 0.5)
+			- (coo.y - img_src->size.y / 2.) * (int)(cos_sin.y + 0.5);
+		old_pos->y = (coo.x - img_src->size.x / 2.) * (int)(cos_sin.y + 0.5)
+			+ (coo.y - img_src->size.y / 2.) * (int)(cos_sin.x + 0.5);
+	}
+	else
+	{
+		old_pos->x = (coo.x - img_src->size.x / 2.) * cos_sin.x
+			- (coo.y - img_src->size.y / 2.) * cos_sin.y;
+		old_pos->y = (coo.x - img_src->size.x / 2.) * cos_sin.y
+			+ (coo.y - img_src->size.y / 2.) * cos_sin.x;
+	}
 	if (old_pos->x + img_src->size.x / 2. < img_src->size.x
 		&& old_pos->x + img_src->size.x / 2. >= 0
 		&& old_pos->y + img_src->size.y / 2. < img_src->size.y

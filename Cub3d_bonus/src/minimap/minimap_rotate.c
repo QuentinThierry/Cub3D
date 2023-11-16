@@ -6,7 +6,7 @@
 /*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:53:09 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/04 17:13:17 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/11/16 18:24:15 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,21 @@ void	draw_rotated_image(t_image *img_dest, t_image *img_src, t_vector2 pos, floa
 		coo.x = 0;
 		while (coo.x < img_src->size.x)
 		{
-			old_pos.x = (coo.x - image_size_div2.x) * cos_angle - (coo.y - image_size_div2.y) * sin_angle;
-			old_pos.y = (coo.x - image_size_div2.x) * sin_angle + (coo.y - image_size_div2.y) * cos_angle;
+			if ((((cos_angle >= -0.00001 && cos_angle <= 0.00001)
+				|| (cos_angle >= 0.99999 && cos_angle <= 1.00001)))
+				&& ((sin_angle >= -0.00001 && sin_angle <= 0.00001)
+				|| (sin_angle >= 0.99999 && sin_angle <= 1.00001)))
+			{
+				old_pos.x = (coo.x - img_src->size.x / 2.) * (int)(cos_angle + 0.5)
+					- (coo.y - img_src->size.y / 2.) * (int)(sin_angle + 0.5);
+				old_pos.y = (coo.x - img_src->size.x / 2.) * (int)(sin_angle + 0.5)
+					+ (coo.y - img_src->size.y / 2.) * (int)(cos_angle + 0.5);
+			}
+			else
+			{
+				old_pos.x = (coo.x - image_size_div2.x) * cos_angle - (coo.y - image_size_div2.y) * sin_angle;
+				old_pos.y = (coo.x - image_size_div2.x) * sin_angle + (coo.y - image_size_div2.y) * cos_angle;
+			}
 			if (old_pos.x + image_size_div2.x < img_src->size.x && old_pos.x + image_size_div2.x >= 0
 				&& old_pos.y + image_size_div2.y < img_src->size.y && old_pos.y + image_size_div2.y >= 0)
 			{
@@ -60,6 +73,8 @@ void	draw_rotated_image(t_image *img_dest, t_image *img_src, t_vector2 pos, floa
 		coo.y++;
 	}
 }
+
+
 
 void	draw_minimap_buf_on_main_image(t_minimap *mmap, t_image *image)
 {

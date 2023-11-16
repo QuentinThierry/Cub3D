@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 21:27:20 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/11 15:34:39 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/11/16 19:54:16 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,17 @@ static bool	_check_door(t_map **map, int x, int y)
 	bool	door;
 
 	door = false;
-	if ((is_only_wall(map[y - 1][x].type) && is_only_wall(map[y + 1][x].type)))
+	if (is_only_wall(map[y - 1][x].type) && is_only_wall(map[y + 1][x].type))
 	{
-		if (((map[y - 1][x].type & DOOR) == DOOR || (map[y + 1][x].type & DOOR) == DOOR))
-			return (false);
-		door = true;
+		if ((map[y - 1][x].type & DOOR) != DOOR
+			&& (map[y + 1][x].type & DOOR) != DOOR)
+			door = true;
 	}
-	if ((is_only_wall(map[y][x - 1].type) && is_only_wall(map[y][x + 1].type)))
+	if (is_only_wall(map[y][x - 1].type) && is_only_wall(map[y][x + 1].type))
 	{
-		if (((map[y][x - 1].type & DOOR) == DOOR || (map[y][x + 1].type & DOOR) == DOOR))
-			return (false);
-		door = true;
+		if ((map[y][x - 1].type & DOOR) != DOOR
+			&& (map[y][x + 1].type & DOOR) != DOOR)
+			door = true;
 	}
 	return (door);
 }

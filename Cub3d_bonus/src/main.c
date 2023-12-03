@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 17:49:51 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/12/03 18:57:42 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int main(int argc, char **argv)
 		return (print_error("Invalid window size\n", 1), 1);
 	if (!init_game(&game, argv[1]))
 		return (1);
+	print_map(&game);
 	if (!load_image_tab(&game, &error))
 	{
 		if (error == true)
@@ -86,6 +87,14 @@ int main(int argc, char **argv)
 	PlayMusicStream(game.music_array[0].music);
 	move_mouse(&game);
 	set_pause_menu_mode(&game);
+	if ((game.map[(int)game.player->f_real_pos.y][(int)game.player->f_real_pos.x].type & MUSIC) == MUSIC)
+		play_music(&game.map[(int)game.player->f_real_pos.y][(int)game.player->f_real_pos.x],
+			game.music_array, game.map[(int)game.player->f_real_pos.y][(int)game.player->f_real_pos.x].music, IS_PLAYING_MUSIC);
+	if ((game.map[(int)game.player->f_real_pos.y][(int)game.player->f_real_pos.x].type & NARRATOR) == NARRATOR)
+	{
+		play_narrator(&game, &game.map[(int)game.player->f_real_pos.y][(int)game.player->f_real_pos.x], game.music_array);
+		game.map[(int)game.player->f_real_pos.y][(int)game.player->f_real_pos.x].type &= ~NARRATOR;
+	}
 	mlx_loop(game.mlx_ptr);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 15:55:15 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 15:34:22 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/12/03 19:08:10 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,22 @@ t_music_name	*get_narrator(t_music_name *filename, int nb_music, char symbol,
 		i++;
 	}
 	return (NULL);
+}
+
+void	play_first_music(t_game *game)
+{
+	if ((game->map[(int)game->player->f_pos.y][(int)game->player->f_pos.x].type
+		& MUSIC) == MUSIC)
+		play_music(&game->map[(int)game->player->f_pos.y]
+		[(int)game->player->f_pos.x], game->music_array,
+			game->map[(int)game->player->f_pos.y]
+		[(int)game->player->f_pos.x].music, IS_PLAYING_MUSIC);
+	if ((game->map[(int)game->player->f_pos.y][(int)game->player->f_pos.x].type
+		& NARRATOR) == NARRATOR)
+	{
+		play_narrator(game, &game->map[(int)game->player->f_pos.y]
+		[(int)game->player->f_pos.x], game->music_array);
+		game->map[(int)game->player->f_pos.y]
+		[(int)game->player->f_pos.x].type &= ~NARRATOR;
+	}
 }

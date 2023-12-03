@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 12:38:01 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/11 17:21:14 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/12/03 14:49:23 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	print_subtitle(t_game *game, t_map *map_cell)
 		+ game->subtitle_size.y};
 
 	if (game->music_array[1].is_subtitle == false || map_cell == NULL
-		|| map_cell->narrator == NULL)
+		|| map_cell->narrator == NULL || map_cell->narrator->subtitle == NULL)
 		return ;
 	narrator = map_cell->narrator;
 	if (game->time - narrator->time > SUBTITLE_TIME)

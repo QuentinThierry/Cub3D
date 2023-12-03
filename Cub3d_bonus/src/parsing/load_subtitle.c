@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 19:26:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/12 19:29:32 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/12/03 14:38:21 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static bool	_check_format(char *filename)
 	return (true);
 }
 
-static char	*_read_subtitle(int fd, int *ret)
+static char	*_read_subtitle(int fd, int *ret, int *empty)
 {
 	char	*tmp;
 	char	*res;
@@ -35,8 +35,10 @@ static char	*_read_subtitle(int fd, int *ret)
 	res = NULL;
 	buffer[READ_SIZE] = 0;
 	*ret = read(fd, buffer, READ_SIZE);
+	*empty = true;
 	while (*ret > 0)
 	{
+		*empty = false;
 		if (*ret != READ_SIZE)
 			buffer[*ret] = 0;
 		tmp = ft_strjoin(res, buffer);
@@ -54,14 +56,15 @@ bool	load_subtitle(t_music_name *music)
 	int		fd;
 	int		ret;
 	char	*res;
+	int		empty;
 
 	if (!_check_format(music->subtitle))
 		return (false);
 	fd = open(music->subtitle, O_RDONLY);
 	if (fd == -1)
 		return (print_error(NULL, 0), false);
-	res = _read_subtitle(fd, &ret);
-	if (res == NULL)
+	res = _read_subtitle(fd, &ret, &empty);
+	if (res == NULL && empty == false)
 		return (false);
 	free(music->subtitle);
 	music->subtitle = res;

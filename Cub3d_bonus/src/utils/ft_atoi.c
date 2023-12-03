@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 16:42:46 by jvigny            #+#    #+#             */
-/*   Updated: 2023/12/03 18:23:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/12/03 18:25:26 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 int	ft_atoi(const char *str)
 {
 	long	res;
-	int	i;
-	int	sign;
+	int		i;
+	int		sign;
 
 	res = 0;
 	i = 0;

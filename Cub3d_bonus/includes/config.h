@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   config.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:58:02 by qthierry          #+#    #+#             */
-/*   Updated: 2023/12/04 19:24:30 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/12/04 19:30:21 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define CONFIG_H
 
 // ----------- WINDOW -------------
-# define WIN_X 1280
-# define WIN_Y 720
+# define WIN_X 1920
+# define WIN_Y 1080
 
 // ----------- PLAYER -----------
 # define SPEED 1

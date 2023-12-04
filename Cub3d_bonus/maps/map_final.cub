@@ -125,11 +125,11 @@ R_J_I ./assets/bureau/e3/chevalet_in_progress.xpm ./assets/bureau/e3/chevalet.xp
 F_I ./assets/bureau/e3/floor.xpm
 C_I ./assets/bureau/e3/ceiling.xpm
 MR_I ./assets/sounds/void.wav ./assets/sounds/office/e3/brush.wav
-HR_I ./assets/sounds/void.wav ./assets/sounds/subtitle/void.txt ./assets/sounds/narrator/29-finish_painting_beach.wav ./assets/sounds/subtitle/29-finish_painting_beach.txt
+HR_I ./assets/sounds/narrator/27-not_finished_painting_beach.wav ./assets/sounds/subtitle/27-not_finish_painting_house.txt  ./assets/sounds/narrator/28-finish_painting_house.wav ./assets/sounds/subtitle/28-finish_painting_house.txt
 R_%_K ./assets/bureau/e3/chevalet1_in_progress.xpm ./assets/bureau/e3/chevalet1.xpm
 F_K ./assets/bureau/e3/floor.xpm
 C_K ./assets/bureau/e3/ceiling.xpm
-HR_K ./assets/sounds/narrator/27-not_finished_painting_beach.wav ./assets/sounds/subtitle/27-not_finish_painting_house.txt  ./assets/sounds/narrator/28-finish_painting_house.wav ./assets/sounds/subtitle/28-finish_painting_house.txt
+HR_K ./assets/sounds/void.wav ./assets/sounds/subtitle/void.txt ./assets/sounds/narrator/29-finish_painting_beach.wav ./assets/sounds/subtitle/29-finish_painting_beach.txt
 MR_K ./assets/sounds/void.wav ./assets/sounds/office/e3/brush.wav
 OI_J ./assets/bureau/e3/palette_green.xpm ./assets/bureau/e3/palette_item_green.xpm
 F_J ./assets/bureau/e3/floor.xpm

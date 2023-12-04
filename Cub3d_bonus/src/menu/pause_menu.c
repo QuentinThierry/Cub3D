@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pause_menu.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 18:57:18 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 19:39:08 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/12/04 15:55:13 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,20 @@ void	adjust_animation_time(t_game *game)
 	*game->last_time = time_now;
 }
 
+void update_subtitle(t_game *game)
+{
+	struct timespec	time;
+
+	if (game->music_array[1].is_subtitle == true
+		&& game->music_array[1].map_cell != NULL
+		&& game->music_array[1].map_cell->narrator != NULL)
+	{
+		clock_gettime(CLOCK_REALTIME, &time);
+		game->music_array[1].map_cell->narrator->time += (time_to_long(&time)
+				- game->menu->time_start_menu);
+	}
+}
+
 void	resume_menu(t_game *game, t_menu *menu)
 {
 	if (menu->state == PAUSE_MENU)
@@ -177,6 +191,7 @@ void	resume_menu(t_game *game, t_menu *menu)
 		mlx_hook(game->win, 8, (1L << 5), mouse_leave, game);
 		mlx_mouse_hook(game->win, mouse_click, game);
 		mlx_loop_hook(game->mlx_ptr, on_update, game);
+		update_subtitle(game);
 		if (ft_strcmp(game->menu->pause_menu.play_button.text, "RESUME") == 0)
 			adjust_animation_time(game);
 		else

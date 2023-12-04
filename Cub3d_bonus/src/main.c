@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/12/04 14:18:54 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/12/04 15:51:16 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,9 @@ void	move_mouse(t_game *game);
 
 int main(int argc, char **argv)
 {
-	t_game	game;
-	bool	error;
+	t_game					game;
+	bool					error;
+	struct timespec			time;
 	
 	game = (t_game){0};
 	if (argc != 2)
@@ -86,6 +87,8 @@ int main(int argc, char **argv)
 	PlayMusicStream(game.music_array[0].music);
 	move_mouse(&game);
 	set_pause_menu_mode(&game);
+	clock_gettime(CLOCK_REALTIME, &time);
+	game.time = time_to_long(&time);
 	if ((game.map[(int)game.player->f_real_pos.y][(int)game.player->f_real_pos.x].type & MUSIC) == MUSIC)
 		play_music(&game.map[(int)game.player->f_real_pos.y][(int)game.player->f_real_pos.x],
 			game.music_array, game.map[(int)game.player->f_real_pos.y][(int)game.player->f_real_pos.x].music, IS_PLAYING_MUSIC);

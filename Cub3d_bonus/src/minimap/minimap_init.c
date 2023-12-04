@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap_init.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:34:06 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 13:13:14 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/12/04 14:10:10 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ bool	init_minimap(t_game *game)
 	if (!generate_background_image(game))
 		return (false);
 	minimap->player_img = btmlx_xpm_file_to_image(game->mlx_ptr,
-			"assets/minimap_player.xpm", (t_vector2){
+			MINIMAP_PLAYER_IMAGE, (t_vector2){
 			g_minimap_size.x / MINIMAP_PLAYER_SIZE,
 			g_minimap_size.y / MINIMAP_PLAYER_SIZE});
 	if (!minimap->player_img)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 20:24:43 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 15:46:13 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/12/04 22:22:44 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ bool	parse_map(char *filename, t_game *game, int nb_line)
 	}
 	free(line);
 	game->map = game->map;
+	while (line != NULL)
+		line = get_next_line(fd);
 	close(fd);
 	if (!fill_object_and_doors(game))
 		return (false);

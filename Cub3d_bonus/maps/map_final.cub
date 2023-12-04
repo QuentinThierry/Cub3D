@@ -92,7 +92,6 @@ C_; ./assets/bureau/e1/ceiling.xpm
 F_; ./assets/bureau/e1/floor.xpm
 
 < ./assets/bureau/e2/wall
-= ./assets/bureau/e2/window_boss1.xpm
 > ./assets/bureau/e2/window_boss2.xpm
 ? ./assets/bureau/e2/window_boss3.xpm
 F_@ ./assets/bureau/e2/floor_boss.xpm
@@ -121,6 +120,9 @@ H_M ./assets/sounds/narrator/23-star_statue.wav ./assets/sounds/subtitle/23-star
 G ./assets/bureau/e3/wall
 F_H ./assets/bureau/e3/floor.xpm
 C_H ./assets/bureau/e3/ceiling.xpm
+H_= ./assets/sounds/narrator/26-opened_door_art.wav ./assets/sounds/subtitle/26-opened_door_art.txt
+F_= ./assets/bureau/e3/floor.xpm
+C_= ./assets/bureau/e3/ceiling.xpm
 R_J_I ./assets/bureau/e3/chevalet_in_progress.xpm ./assets/bureau/e3/chevalet.xpm
 F_I ./assets/bureau/e3/floor.xpm
 C_I ./assets/bureau/e3/ceiling.xpm
@@ -141,6 +143,12 @@ C_L ./assets/bureau/e3/ceiling.xpm
 P ./assets/noel/e1/wall1.xpm
 F_Q ./assets/noel/e1/floor.xpm
 C_Q ./assets/noel/e1/ceiling.xpm
+H__ ./assets/sounds/narrator/31-enter_living_room_2.wav ./assets/sounds/subtitle/31-enter_living_room_2.txt
+F__ ./assets/noel/e1/floor.xpm
+C__ ./assets/noel/e1/ceiling.xpm
+F_~ ./assets/noel/e1/floor.xpm
+C_~ ./assets/noel/e1/ceiling.xpm
+H_~ ./assets/sounds/narrator/24-door_living_room_enter.wav ./assets/sounds/subtitle/24-door_living_room_enter.txt
 R_M_R ./assets/noel/e1/sapin_moche.xpm ./assets/noel/e1/sapin_moche_etoile.xpm
 F_R ./assets/noel/e1/floor.xpm
 C_R ./assets/noel/e1/ceiling.xpm
@@ -170,9 +178,9 @@ N_Z ./assets/noel/e1/wall1.xpm
 
 D_2_[ ./assets/doors/door_noel_close.xpm ./assets/doors/door_noel.xpm
 MR_[ ./assets/sounds/door_locked.wav ./assets/sounds/open_door_long.wav
+HR_[ ./assets/sounds/narrator/30-closed_door_living_room_2.wav ./assets/sounds/subtitle/30-closed_door_living_room_2.txt ./assets/sounds/void.wav ./assets/sounds/subtitle/void.txt
 F_[ ./assets/noel/e1/floor.xpm
 C_[ ./assets/noel/e1/ceiling.xpm
-HR_[ ./assets/sounds/narrator/30-closed_door_living_room_2.wav ./assets/sounds/subtitle/30-closed_door_living_room_2.txt ./assets/sounds/narrator/31-enter_living_room_2.wav ./assets/sounds/subtitle/31-enter_living_room_2.txt
 
 D_\ ./assets/doors/door_couloir.xpm
 M_\ ./assets/sounds/open_door_short.wav
@@ -182,6 +190,7 @@ H_\ ./assets/sounds/narrator/4-opened_child_door.wav ./assets/sounds/subtitle/4-
 
 N_m ./assets/enfance/salle_de_jeu/e1_wall2.xpm
 E_m ./assets/doors/childhood/wall_entry_e1_left.xpm
+W_m ./assets/doors/childhood/wall_e1_e2_right.xpm
 
 W_n ./assets/doors/childhood/wall_entry_e1_right.xpm
 N_n ./assets/enfance/salle_de_jeu/e1_wall2.xpm
@@ -194,7 +203,6 @@ HR_] ./assets/sounds/void.wav ./assets/sounds/subtitle/void.txt ./assets/sounds/
 E_^ ./assets/doors/childhood/wall_e1_e2_left.xpm
 N_^ ./assets/enfance/chambre/wall_chambre_sombre.xpm
 S_^ ./assets/enfance/salle_de_jeu/e1_wall2.xpm
-W__ ./assets/doors/childhood/wall_e1_e2_right.xpm
 
 D_` ./assets/doors/door_boss_open.xpm
 M_` ./assets/sounds/open_door_short.wav
@@ -229,11 +237,12 @@ D_y_d ./assets/doors/door_couloir_close_rond.xpm ./assets/doors/door_couloir.xpm
 MR_d ./assets/sounds/door_locked.wav ./assets/sounds/open_door_long.wav
 F_d ./assets/doors/noel/floor_entry_n1.xpm
 C_d ./assets/doors/noel/ceiling_entry_n1.xpm
-HR_d ./assets/sounds/void.wav ./assets/sounds/subtitle/void.txt ./assets/sounds/narrator/24-door_living_room_enter.wav ./assets/sounds/subtitle/24-door_living_room_enter.txt
 W_o ./assets/doors/noel/wall_entry_n1_right.xpm
 N_o ./assets/noel/e1/wall1.xpm
 E_p ./assets/doors/noel/wall_entry_n1_left.xpm
 N_p ./assets/noel/e1/wall1.xpm
+W_p ./assets/bureau/e2/window_boss1.xpm
+
 
 D_z_e ./assets/doors/door_couloir_close_carre.xpm ./assets/doors/door_couloir.xpm
 HR_e ./assets/sounds/narrator/2-closed_manor_door.wav ./assets/sounds/subtitle/2-closed_manor_door.txt ./assets/sounds/narrator/3-opened_manor_door.wav ./assets/sounds/subtitle/3-opened_manor_door.txt
@@ -249,7 +258,6 @@ D_w_g ./assets/doors/door_office_close_red.xpm ./assets/doors/door_office1.xpm
 MR_g ./assets/sounds/door_locked.wav ./assets/sounds/open_door_long.wav
 C_g ./assets/doors/office/ceiling_b2_art.xpm
 F_g ./assets/doors/office/floor_b2_art.xpm
-HR_g ./assets/sounds/void.wav ./assets/sounds/subtitle/void.txt ./assets/sounds/narrator/26-opened_door_art.wav ./assets/sounds/subtitle/26-opened_door_art.txt
 
 S_h ./assets/doors/office/wall_b2_art_left.xpm
 
@@ -278,11 +286,11 @@ MAP
          1111b!!!!PPPPPPP1
          1020a"#${PQQQQUP1
          /4|0c"""!PQXYVQP1
-         1300'%""!PQQQQQP1
-         1111&&^]_PP[PPPP1
+         1300'%""!PQ_QQQP1
+         1111&&^]mPP[PPPP1
 111111111111(,--.(PQQQQRP1
 111111111111(-+-.(PQQTQQP1
-110000z00001(...u(PQQQQwP1
+110000z00001(...u(PQ~QQwP1
 110000000001)m\n))ZpdoZZZ1
 110000E0000e00000000000tF1
 110000000001116qfr11111111
@@ -292,6 +300,6 @@ MAP
              555l55<<<<<<1
              55:77jDO@@@?1
         GGGGGh5;77`AAACA>1
-        GKHHHg7777kBMBBB=1
-        GIJHLi55555<<<<<<1
+        GKHH=g7777kBMBBBp1
+        GIHJLi55555<<<<<<1
         GGGGGG

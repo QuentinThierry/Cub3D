@@ -56,6 +56,7 @@ MO_3 ./assets/sounds/childhood/e3/paper.wav
 H_3 ./assets/sounds/narrator/18-letter.wav ./assets/sounds/subtitle/18-letter.txt
 F_4 ./assets/enfance/salon/chimney_floor/
 M_4 ./assets/sounds/childhood/e3/fireplace.wav
+OE_| ./assets/enfance/salon/lamp.xpm
 
 5 ./assets/bureau/e1/wall_bureau
 S_6 ./assets/bureau/e1/wall_bureau/wall.xpm
@@ -77,6 +78,9 @@ OI_* ./assets/bureau/e1/peluche.xpm ./assets/bureau/e1/peluche_item.xpm
 C_* ./assets/bureau/e1/ceiling.xpm
 F_* ./assets/bureau/e1/floor.xpm
 H_* ./assets/sounds/narrator/8-teddybear.wav ./assets/sounds/subtitle/8-teddybear.txt
+OE_} ./assets/bureau/e1/coat_hanger.xpm
+C_} ./assets/bureau/e1/ceiling.xpm
+F_} ./assets/bureau/e1/floor.xpm
 
 OI_: ./assets/bureau/e1/lettre_demission.xpm ./assets/bureau/e1/lettre_demission_item.xpm ./assets/bureau/e1/poubelle.xpm ./assets/bureau/e1/poubelle_empty.xpm
 C_: ./assets/bureau/e1/ceiling.xpm
@@ -264,7 +268,7 @@ OI_z ./assets/doors/key_hanged.xpm ./assets/doors/key_square_item.xpm
 MAP
          1111b!!!!PPPPPPP1
          1020a"#${PQQQQUP1
-         /400c"""!PQXYVQP1
+         /4|0c"""!PQXYVQP1
          1300'%""!PQQQQQP1
          1111&&^]_PP[PPPP1
 111111111111(,--.(PQQQQRP1

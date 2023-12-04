@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 17:16:22 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/11 16:09:51 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/12/04 18:03:14 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	play_sound_fail(t_game *game, t_map *map_cell, t_music_game *music_tab)
 {
 	if ((map_cell->type & MUSIC) == MUSIC)
 		play_music(map_cell, music_tab, map_cell->music, IS_PLAYING_MUSIC);
-	else if ((map_cell->type & NARRATOR) == NARRATOR)
+	if ((map_cell->type & NARRATOR) == NARRATOR)
 	{
 		play_narrator(game, map_cell, music_tab);
 		_set_next_narrator(map_cell);

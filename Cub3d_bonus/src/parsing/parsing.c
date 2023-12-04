@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:45:00 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 17:55:05 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/12/04 22:25:33 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,11 @@ bool	parse_map(int fd, char *filename, t_game *game, int nb_line, char *line)
 			return (free(line), free_map((void *)maps, game->map_size), false);
 		line = get_next_line(fd);
 		y++;
+	}
+	while (line != NULL)
+	{
+		free(line);
+		line = get_next_line(fd);
 	}
 	free(line);
 	game->map = maps;

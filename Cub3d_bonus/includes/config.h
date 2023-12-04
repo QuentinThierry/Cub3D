@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   config.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
+/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:58:02 by qthierry          #+#    #+#             */
-/*   Updated: 2023/12/04 13:57:05 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/12/04 19:24:30 by qthierry         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@
 # define DFL_KEY_SPRINT 0xffe1
 
 // ----------- LOADING_SCREEN -----------
-# define LOADING_SCREEN "./assets/xpm/test/smiley.xpm"
+# define LOADING_SCREEN "./assets/xpm/mandatory/menu_screen.xpm"
 
 // ----------- MISCELLANEOUS -----------
 # define SPEEP_DOOR_OPENING 100

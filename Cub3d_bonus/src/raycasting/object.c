@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 18:39:14 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 14:55:56 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/12/04 14:47:16 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,11 @@ void	draw_object_projection(t_game *game, t_object *object, float object_dist, i
 	x_ratio = image->size.x / width;
 	y_ratio = image->size.y / height;
 	if (object->dist >= DIST_MIN_FOG)
+	{
 		dark_quantity = (-DIST_MIN_FOG + object->dist) / (DIST_MAX_FOG - DIST_MIN_FOG);
+		if (dark_quantity > 1)
+			dark_quantity = 1;
+	}
 	else
 		dark_quantity = 0;
 	x = 0;

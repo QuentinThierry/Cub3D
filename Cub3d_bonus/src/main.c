@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/12/03 18:57:42 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/12/04 14:18:54 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ int main(int argc, char **argv)
 		return (print_error("Invalid window size\n", 1), 1);
 	if (!init_game(&game, argv[1]))
 		return (1);
-	print_map(&game);
 	if (!load_image_tab(&game, &error))
 	{
 		if (error == true)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   config.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:58:02 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/15 14:20:21 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/12/04 14:17:39 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,15 @@
 // ----------- SOUND -----------
 # define DFL_SOUND 0.5 // check between 0 and 1
 # define NB_MAX_SOUNDS 16
-# define BACKGROUND_MUSIC "./assets/sounds/test1.mp3"
+# define BACKGROUND_MUSIC "./assets/sounds/void.wav"
 
 // ----------- MENU -----------
 # define MAX_MENU_FPS 120
-# define XPM_DFL_BUTTON "./assets/button.xpm"
-# define XPM_HOV_BUTTON "./assets/button_hovered.xpm"
-# define XPM_EXIT_BUTTON "./assets/button_exit_option.xpm"
-# define XPM_HOR_SLIDER "./assets/slider_hor.xpm"
-# define XPM_VERT_SLIDER "./assets/slider_vert.xpm"
+# define XPM_DFL_BUTTON "./assets/xpm/mandatory/button.xpm"
+# define XPM_HOV_BUTTON "./assets/xpm/mandatory/button_hovered.xpm"
+# define XPM_EXIT_BUTTON "./assets/xpm/mandatory/button_exit_option.xpm"
+# define XPM_HOR_SLIDER "./assets/xpm/mandatory/slider_hor.xpm"
+# define XPM_VERT_SLIDER "./assets/xpm/mandatory/slider_vert.xpm"
 
 // ----------- FOG -----------
 # define FOG_COLOR 0x101010
@@ -50,7 +50,8 @@
 # define MINIMAP_BACKGROUND_COLOR 0x808080
 # define MINIMAP_DOOROPEN_COLOR 0x707070
 # define MINIMAP_DOORCLOSE_COLOR 0x656565
-# define PATH_MMAP_PLAYER "../assets/minimap_player.xpm"
+# define PATH_MMAP_PLAYER "../assets/xpm/mandatory/minimap_player.xpm"
+# define MINIMAP_PLAYER_IMAGE "assets/xpm/mandatory/minimap_player.xpm"
 
 // ----------- KEYBINDS -----------
 # define DFL_KEY_LEFT_MOVE 'a'
@@ -66,7 +67,7 @@
 # define DFL_KEY_SPRINT 0xffe1
 
 // ----------- LOADING_SCREEN -----------
-# define LOADING_SCREEN "./assets/smiley.xpm"
+# define LOADING_SCREEN "./assets/xpm/test/smiley.xpm"
 
 // ----------- MISCELLANEOUS -----------
 # define SPEEP_DOOR_OPENING 100

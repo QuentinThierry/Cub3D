@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_menu.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 14:53:39 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/13 17:06:52 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/12/04 14:16:48 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,15 +124,15 @@ bool	allocate_menu(t_game *game,
 	game->menu->v_rgb_blur_buffer = ft_calloc(WIN_X * WIN_Y * 3, sizeof(int));
 	if (!game->menu->h_rgb_blur_buffer || !game->menu->v_rgb_blur_buffer)
 		return (false);
-	*button_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button.xpm", g_button_size);
-	*button_hovered_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button_hovered.xpm", g_button_size);
+	*button_image = btmlx_xpm_file_to_image(game->mlx_ptr, XPM_DFL_BUTTON, g_button_size);
+	*button_hovered_image = btmlx_xpm_file_to_image(game->mlx_ptr, XPM_HOV_BUTTON, g_button_size);
 	game->menu->image = btmlx_new_image(game->mlx_ptr, (t_vector2){WIN_X, WIN_Y});
 	game->menu->background_image = btmlx_new_image(game->mlx_ptr, (t_vector2){WIN_X, WIN_Y});
-	game->menu->option_menu.exit_opt_button.base_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/button_exit_option.xpm", g_exit_button_size);
-	game->menu->option_menu.slider_fov.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_hor.xpm", g_slider_hor_size);
-	game->menu->option_menu.slider_fov.vert_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_vert.xpm", g_slider_vert_size);
-	game->menu->option_menu.slider_sound.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_hor.xpm", g_slider_hor_size);
-	game->menu->option_menu.slider_sound.vert_image = btmlx_xpm_file_to_image(game->mlx_ptr, "./assets/slider_vert.xpm", g_slider_vert_size);
+	game->menu->option_menu.exit_opt_button.base_image = btmlx_xpm_file_to_image(game->mlx_ptr, XPM_EXIT_BUTTON, g_exit_button_size);
+	game->menu->option_menu.slider_fov.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, XPM_HOR_SLIDER, g_slider_hor_size);
+	game->menu->option_menu.slider_fov.vert_image = btmlx_xpm_file_to_image(game->mlx_ptr, XPM_VERT_SLIDER, g_slider_vert_size);
+	game->menu->option_menu.slider_sound.hor_image = btmlx_xpm_file_to_image(game->mlx_ptr, XPM_HOR_SLIDER, g_slider_hor_size);
+	game->menu->option_menu.slider_sound.vert_image = btmlx_xpm_file_to_image(game->mlx_ptr, XPM_VERT_SLIDER, g_slider_vert_size);
 	return (*button_image && *button_hovered_image && game->menu->image
 		&& game->menu->background_image
 		&& game->menu->option_menu.exit_opt_button.base_image

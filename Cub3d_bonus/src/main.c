@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 18:04:45 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/12/04 15:45:15 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	on_update(t_game *game)
 	return (0);
 }
 void	move_mouse(t_game *game);
+void	play_first_music(t_game *game);
 
 int	main(int argc, char **argv)
 {
@@ -74,6 +75,7 @@ int	main(int argc, char **argv)
 	PlayMusicStream(game.music_array[0].music);
 	move_mouse(&game);
 	set_pause_menu_mode(&game);
+	play_first_music(&game);
 	mlx_loop(game.mlx_ptr);
 	return (0);
 }

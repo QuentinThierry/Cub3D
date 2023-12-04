@@ -169,12 +169,13 @@ C_w ./assets/noel/e1/ceiling.xpm
 N_Z ./assets/noel/e1/wall1.xpm
 
 D_2_[ ./assets/doors/door_noel_close.xpm ./assets/doors/door_noel.xpm
+MR_[ ./assets/sounds/door_locked.wav ./assets/sounds/open_door_long.wav
 F_[ ./assets/noel/e1/floor.xpm
 C_[ ./assets/noel/e1/ceiling.xpm
 HR_[ ./assets/sounds/narrator/30-closed_door_living_room_2.wav ./assets/sounds/subtitle/30-closed_door_living_room_2.txt ./assets/sounds/narrator/31-enter_living_room_2.wav ./assets/sounds/subtitle/31-enter_living_room_2.txt
 
 D_\ ./assets/doors/door_couloir.xpm
-M_\ ./assets/sounds/open_door.wav
+M_\ ./assets/sounds/open_door_short.wav
 F_\ ./assets/doors/childhood/floor_entry_e1.xpm
 C_\ ./assets/doors/childhood/ceiling_entry_e1.xpm
 H_\ ./assets/sounds/narrator/4-opened_child_door.wav ./assets/sounds/subtitle/4-opened_child_door.txt
@@ -186,6 +187,7 @@ W_n ./assets/doors/childhood/wall_entry_e1_right.xpm
 N_n ./assets/enfance/salle_de_jeu/e1_wall2.xpm
 
 D_s_] ./assets/doors/door_room_close.xpm ./assets/doors/door_room.xpm
+MR_e ./assets/sounds/door_locked.wav ./assets/sounds/open_door_long.wav
 F_] ./assets/doors/childhood/floor_e1_e2.xpm
 C_] ./assets/doors/childhood/ceiling_e1_e2.xpm
 HR_] ./assets/sounds/void.wav ./assets/sounds/subtitle/void.txt ./assets/sounds/narrator/12-opened_door_room.wav ./assets/sounds/subtitle/12-opened_door_room.txt
@@ -195,10 +197,12 @@ S_^ ./assets/enfance/salle_de_jeu/e1_wall2.xpm
 W__ ./assets/doors/childhood/wall_e1_e2_right.xpm
 
 D_` ./assets/doors/door_boss_open.xpm
+M_f ./assets/sounds/open_door_short.wav
 C_` ./assets/doors/office/ceiling_b2_boss.xpm
 F_` ./assets/doors/office/floor_b2_boss.xpm
 
 D_j_v ./assets/doors/door_boss_close.xpm ./assets/doors/door_boss_close.xpm
+MR_v ./assets/sounds/door_locked.wav ./assets/sounds/open_door_long.wav
 C_v ./assets/doors/office/ceiling_b2_boss.xpm
 F_v ./assets/doors/office/floor_b2_boss.xpm
 
@@ -211,6 +215,7 @@ E_k ./assets/bureau/e2/wall/wall_boss2.xpm
 W_k ./assets/bureau/e1/wall_bureau/wall3.xpm
 
 D_t_a ./assets/doors/door_couloir_close_coeur.xpm ./assets/doors/door_couloir.xpm
+MR_v ./assets/sounds/door_locked.wav ./assets/sounds/open_door_long.wav
 F_a ./assets/doors/childhood/floor_e2_e3.xpm
 C_a ./assets/doors/childhood/ceiling_e2_e3.xpm
 HR_a ./assets/sounds/narrator/14-closed_grandma.wav ./assets/sounds/subtitle/14-closed_grandma.txt ./assets/sounds/narrator/16-opened_door_grandma.wav ./assets/sounds/subtitle/16-opened_door_grandma.txt
@@ -221,6 +226,7 @@ N_c ./assets/doors/childhood/wall_e2_e3_left.xpm
 E_c ./assets/enfance/chambre/wall_chambre_sombre.xpm
 
 D_y_d ./assets/doors/door_couloir_close_rond.xpm ./assets/doors/door_couloir.xpm
+MR_d ./assets/sounds/door_locked.wav ./assets/sounds/open_door_long.wav
 F_d ./assets/doors/noel/floor_entry_n1.xpm
 C_d ./assets/doors/noel/ceiling_entry_n1.xpm
 HR_d ./assets/sounds/void.wav ./assets/sounds/subtitle/void.txt ./assets/sounds/narrator/24-door_living_room_enter.wav ./assets/sounds/subtitle/24-door_living_room_enter.txt
@@ -231,14 +237,16 @@ N_p ./assets/noel/e1/wall1.xpm
 
 D_z_e ./assets/doors/door_couloir_close_carre.xpm ./assets/doors/door_couloir.xpm
 HR_e ./assets/sounds/narrator/2-closed_manor_door.wav ./assets/sounds/subtitle/2-closed_manor_door.txt ./assets/sounds/narrator/3-opened_manor_door.wav ./assets/sounds/subtitle/3-opened_manor_door.txt
-MR_e ./assets/sounds/door_locked.wav ./assets/sounds/open_door.wav
+MR_e ./assets/sounds/door_locked.wav ./assets/sounds/open_door_long.wav
 
 D_f ./assets/doors/door_couloir.xpm
+M_f ./assets/sounds/open_door_short.wav
 F_f ./assets/doors/office/floor_entry_b1.xpm
 C_f ./assets/doors/office/ceiling_entry_b1.xpm
 H_f ./assets/sounds/narrator/7-opened_office1_door.wav ./assets/sounds/subtitle/7-opened_office1_door.txt
 
 D_w_g ./assets/doors/door_office_close_red.xpm ./assets/doors/door_office1.xpm
+MR_g ./assets/sounds/door_locked.wav ./assets/sounds/open_door_long.wav
 C_g ./assets/doors/office/ceiling_b2_art.xpm
 F_g ./assets/doors/office/floor_b2_art.xpm
 HR_g ./assets/sounds/void.wav ./assets/sounds/subtitle/void.txt ./assets/sounds/narrator/26-opened_door_art.wav ./assets/sounds/subtitle/26-opened_door_art.txt
@@ -249,6 +257,7 @@ N_i ./assets/doors/office/wall_b2_art_right.xpm
 W_i ./assets/bureau/e3/wall/wall_art1.xpm
 
 D_u_l ./assets/doors/door_office_close_black.xpm ./assets/doors/door_office1.xpm
+MR_l ./assets/sounds/door_locked.wav ./assets/sounds/open_door_long.wav
 C_l ./assets/bureau/e1/ceiling.xpm
 F_l ./assets/bureau/e1/floor.xpm
 HR_l ./assets/sounds/void.wav ./assets/sounds/subtitle/void.txt ./assets/sounds/narrator/19-opened_office_door.wav ./assets/sounds/subtitle/19-opened_office_door.txt

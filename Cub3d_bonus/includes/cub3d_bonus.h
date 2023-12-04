@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/15 17:49:44 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/12/04 13:55:48 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@
 # define COS_HALF_FOV 2
 
 // LOADING_SCREEN
-# define LOADING_BORDURE "./assets/loading_bordure.xpm"
-# define LOADING_CENTER "./assets/loading_center.xpm"
-# define LOADING_FONT "./assets/ascii.xpm"
+# define LOADING_BORDURE "./assets/xpm/mandatory/loading_bordure.xpm"
+# define LOADING_CENTER "./assets/xpm/mandatory/loading_center.xpm"
+# define LOADING_FONT "./assets/xpm/mandatory/ascii.xpm"
 # define HEIGHT_ALPHA 34
-# define END_SCREEN "./assets/end.xpm"
+# define END_SCREEN "./assets/xpm/mandatory/end.xpm"
 # define GREEN_SCREEN 0x00ff00
 
 // MENU

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/12/04 14:08:58 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/12/04 18:21:12 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@
 
 // SUBTITLES
 # define SUBTITLE_TIME 5000
-# define MAX_CARACTER 100
+# define MAX_CARACTER 85
 
 // TYPES FOR CELLS
 # define NONE 0b0

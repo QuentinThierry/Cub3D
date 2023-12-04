@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 15:51:45 by qthierry          #+#    #+#             */
-/*   Updated: 2023/10/15 15:18:07 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/12/04 14:51:50 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,12 @@ void	draw_object_projection(t_game *game, t_object *object,
 	y_pos = WIN_Y / 2. - infos.dim_draw.y / 2.;
 	dark_quantity = 0;
 	if (object->dist >= DIST_MIN_FOG)
+	{
 		dark_quantity = (-DIST_MIN_FOG + object->dist)
 			/ (DIST_MAX_FOG - DIST_MIN_FOG);
+		if (dark_quantity > 1)
+			dark_quantity = 1;
+	}
 	draw_all_object_pixels(&infos,
 		(t_vector2){x_pos, y_pos}, object, dark_quantity);
 }

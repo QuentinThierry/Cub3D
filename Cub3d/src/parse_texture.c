@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 17:43:46 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 19:00:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/12/05 20:25:20 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,15 @@ static bool	_find_texture(t_game *game, char *str, enum e_images orient)
 	int		i;
 	int		len;
 
+	if (game->filename[orient] != NULL)
+		return (print_error("Multiple definition of texture\n", 1), false);
 	i = skip_whitespace(str);
 	len = ft_strlen(str + i);
 	if (len >= 1 && str[i + len - 1] == '\n')
 		str[i + len - 1] = '\0';
 	filename = ft_strdup(str + i);
 	if (filename == NULL)
-		return (print_error("malloc failed\n", 1), false);
+		return (print_error("Malloc failed\n", 1), false);
 	game->filename[orient] = filename;
 	return (true);
 }

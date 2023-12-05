@@ -3,7 +3,7 @@ SO ./assets/xpm/test/wall_red_wood.xpm
 WE ./assets/xpm/test/wall_red_wood.xpm
 EA ./assets/xpm/test/wall_red_wood.xpm
 F ./assets/xpm/test/floor_wood_plank.xpm
-C ./assets/xpm/ceiling.xpm
+C ./assets/xpm/test/ceiling.xpm
 
 H_E ./assets/sounds/narrator/1-start.wav ./assets/sounds/subtitle/1-start.txt
 
@@ -277,7 +277,7 @@ W_r ./assets/doors/office/wall_entry_b1_left.xpm
 S_r ./assets/bureau/e1/wall_bureau/wall1.xpm
 
 OI_t ./assets/doors/key_heart.xpm ./assets/doors/key_heart_item.xpm
-E_x ./assets/xpm/wall_key.xpm
+E_x ./assets/xpm/test/wall_key.xpm
 OI_y ./assets/doors/key_round.xpm ./assets/doors/key_round_item.xpm ./assets/doors/key_round_item.xpm ./assets/doors/key_round_item.xpm
 
 OI_z ./assets/doors/key_hanged.xpm ./assets/doors/key_square_item.xpm

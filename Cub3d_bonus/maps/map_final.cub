@@ -57,6 +57,7 @@ H_3 ./assets/sounds/narrator/18-letter.wav ./assets/sounds/subtitle/18-letter.tx
 F_4 ./assets/enfance/salon/chimney_floor/
 M_4 ./assets/sounds/childhood/e3/fireplace.wav
 OE_| ./assets/enfance/salon/lamp.xpm
+F_| ./assets/enfance/salon/floor_light.xpm
 
 5 ./assets/bureau/e1/wall_bureau
 S_6 ./assets/bureau/e1/wall_bureau/wall.xpm

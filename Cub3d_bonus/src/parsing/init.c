@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/12 17:49:31 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/12/05 19:26:12 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ bool	init_mlx(t_game *game)
 	game->mlx_ptr = mlx_init();
 	if (game->mlx_ptr == NULL)
 		return (false);
-	game->win = mlx_new_window(game->mlx_ptr, WIN_X, WIN_Y, "cub3D");
+	game->win = mlx_new_window(game->mlx_ptr, WIN_X, WIN_Y, "Le dernier voyage");
 	if (game->win == NULL)
 		return (false);
 	init_mouse(game);

@@ -244,7 +244,6 @@ E_p ./assets/doors/noel/wall_entry_n1_left.xpm
 N_p ./assets/noel/e1/wall1.xpm
 W_p ./assets/bureau/e2/window_boss1.xpm
 
-
 D_z_e ./assets/doors/door_couloir_close_carre.xpm ./assets/doors/door_couloir.xpm
 HR_e ./assets/sounds/narrator/2-closed_manor_door.wav ./assets/sounds/subtitle/2-closed_manor_door.txt ./assets/sounds/narrator/3-opened_manor_door.wav ./assets/sounds/subtitle/3-opened_manor_door.txt
 MR_e ./assets/sounds/door_locked.wav ./assets/sounds/open_door_long.wav

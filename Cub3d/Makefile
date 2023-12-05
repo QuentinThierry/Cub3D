@@ -6,14 +6,14 @@
 #    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/09 20:00:44 by jvigny           ###   ########.fr        #
+#    Updated: 2023/12/05 20:33:45 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3D
 
 CC = gcc
-CFLAGS = -g -Wall -Wextra -MMD# -03#-Werror
+CFLAGS = -Wall -Wextra -Werror -MMD
 LIBS = -lm -L$(MINILIBX_DIR) -lmlx -lX11 -lXext
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR)
 
@@ -82,11 +82,6 @@ run: $(NAME)
 vrun: $(NAME)
 	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) maps/map.cub
 
-prun: CFLAGS += -pg
-prun: clean $(NAME)
-	./$(NAME)
-	gprof cub3d gmon.out > analysis.txt
-
 -include $(DEP_LIST)
 
 $(NAME):	$(MINILIBX) $(OBJ_DIR) $(OBJ)
@@ -122,4 +117,4 @@ fclean:	clean clean_minilibx
 
 re: fclean all
 
-.PHONY : all clean fclean re clean_minilibx bonus run vrun prun
+.PHONY : all clean fclean re clean_minilibx bonus run vrun

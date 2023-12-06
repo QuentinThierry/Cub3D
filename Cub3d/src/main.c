@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:08 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 19:53:18 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/12/05 20:09:03 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	main(int argc, char **argv)
 
 	game = (t_game){0};
 	if (argc != 2)
-		return (printf("Error : Invalid nubmber of arguments\n"), 1);
+		return (print_error("Invalid number of arguments\n", 1), 1);
 	if (WIN_X < 100 || WIN_Y < 100)
 		return (print_error("Invalid window size\n", 1), 1);
 	game.filename = ft_calloc(4, sizeof(char *));

@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
+#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/19 18:01:04 by qthierry         ###   ########.fr        #
+#    Updated: 2023/12/06 13:29:12 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = cub3D_bonus
+NAME = le_dernier_voyage
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -MMD# -fsanitize=address,leak,undefined#-Werror
+CFLAGS = -Wall -Wextra -Werror -MMD
 LIBS = -L$(MINILIBX_DIR) -lmlx -lX11 -lXext -lm  -L$(RAUDIO_SRC) -lraudio -ldl -pthread
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR) -I$(RAUDIO_HEADERS)
 
@@ -223,11 +223,6 @@ run: $(NAME)
 vrun: $(NAME)
 	valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.supp ./$(NAME) maps/map.cub
 
-prun: CFLAGS += -pg
-prun: $(NAME)
-	./$(NAME) maps/couloir.cub
-	gprof $(NAME) gmon.out > analysis.txt
-
 -include $(DEP_LIST)
 
 $(NAME):	$(MINILIBX) $(RAUDIO) $(OBJ_DIR) $(OBJ)
@@ -290,4 +285,4 @@ fclean:	clean clean_minilibx clean_audio
 
 re: fclean all
 
-.PHONY : all bonus clean fclean re run vrun prun clean_minilibx clean_audio
+.PHONY : all bonus clean fclean re run vrun clean_minilibx clean_audio

@@ -3,7 +3,7 @@ SO ./assets/xpm/test/wall_red_wood.xpm
 WE ./assets/xpm/test/wall_red_wood.xpm
 EA ./assets/xpm/test/wall_red_wood.xpm
 F ./assets/xpm/test/floor_wood_plank.xpm
-C ./assets/xpm/ceiling.xpm
+C ./assets/xpm/test/ceiling.xpm
 
 H_E ./assets/sounds/narrator/1-start.wav ./assets/sounds/subtitle/1-start.txt
 
@@ -57,6 +57,7 @@ H_3 ./assets/sounds/narrator/18-letter.wav ./assets/sounds/subtitle/18-letter.tx
 F_4 ./assets/enfance/salon/chimney_floor/
 M_4 ./assets/sounds/childhood/e3/fireplace.wav
 OE_| ./assets/enfance/salon/lamp.xpm
+F_| ./assets/enfance/salon/floor_light.xpm
 
 5 ./assets/bureau/e1/wall_bureau
 S_6 ./assets/bureau/e1/wall_bureau/wall.xpm
@@ -243,7 +244,6 @@ E_p ./assets/doors/noel/wall_entry_n1_left.xpm
 N_p ./assets/noel/e1/wall1.xpm
 W_p ./assets/bureau/e2/window_boss1.xpm
 
-
 D_z_e ./assets/doors/door_couloir_close_carre.xpm ./assets/doors/door_couloir.xpm
 HR_e ./assets/sounds/narrator/2-closed_manor_door.wav ./assets/sounds/subtitle/2-closed_manor_door.txt ./assets/sounds/narrator/3-opened_manor_door.wav ./assets/sounds/subtitle/3-opened_manor_door.txt
 MR_e ./assets/sounds/door_locked.wav ./assets/sounds/open_door_long.wav
@@ -277,7 +277,7 @@ W_r ./assets/doors/office/wall_entry_b1_left.xpm
 S_r ./assets/bureau/e1/wall_bureau/wall1.xpm
 
 OI_t ./assets/doors/key_heart.xpm ./assets/doors/key_heart_item.xpm
-E_x ./assets/xpm/wall_key.xpm
+E_x ./assets/xpm/test/wall_key.xpm
 OI_y ./assets/doors/key_round.xpm ./assets/doors/key_round_item.xpm ./assets/doors/key_round_item.xpm ./assets/doors/key_round_item.xpm
 
 OI_z ./assets/doors/key_hanged.xpm ./assets/doors/key_square_item.xpm

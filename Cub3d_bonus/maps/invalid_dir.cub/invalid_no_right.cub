@@ -1,0 +1,16 @@
+NO ./assets/xpm/test/wallpaper_torn_sale.xpm
+SO ./assets/xpm/test/wall_red_wood.xpm
+WE ./assets/xpm/test/abimee.xpm
+EA ./assets/xpm/test/no_right.xpm
+C ./assets/xpm/test/ceiling.xpm
+F ./assets/xpm/test/floor_wood_plank.xpm
+
+MAP
+11111111111111111
+10000100000000001
+10N00001111000001
+10000100001111101
+10111100001   101
+10000100001111101
+10000000000000001
+11111111111111111

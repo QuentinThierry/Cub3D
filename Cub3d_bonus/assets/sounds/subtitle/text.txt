@@ -1,0 +1,140 @@
+1 : Début -- l'air perdu et sonné
+- Ahhh ma tête...
+- J'suis où ?
+- Qu'est ce que je fais ici ? Comment je me suis retrouvé là ?
+- Un bruit sourd... une lumière... ça fait combien de temps que je suis là ?
+
+2 : Porte manoir (fermée) -- marmonne
+- Il doit bien avoir une clé pour ouvrir ça, non ?
+
+3 : Porte manoir (ouverte)
+- *bruit de courant d'air* Un courant d'air ? D'où est-ce que ça peut venir ?
+
+4 : Porte enfant (ouverte)
+- Tiens une porte ouverte
+
+5 : Boite a musique
+- C'est une berceuse pour enfant, apaisante et douce comme cet endroit.
+
+6 : Table peluche (vide)
+- C'est comme si il manquait quelque chose d'important.
+
+7 : Porte bureau
+- Encore une porte ? Cet endroit n'a vraiment aucun sens.
+
+8 : Nounours (prendre)
+- Qui mettrait un nounours dans un bureau ? -- l'air surpris / intrigué
+
+9 : Table peluche (remplie) -- content, fier de lui
+- Voilà. C'est mieux comme ça, bon appétit les peluches. Je connais un enfant qui sera content.
+
+10 : Lettre demission bureau (prendre)
+- Une lettre de demission, pourquoi ? Celui qui travaille ici ne doit pas être très épanouie, mais bref. Au moins il aura essayé. //
+
+11 : Poubelle (remplie)
+- La prochaine fois il prendra son courage a deux mains. Ce sera peut être la bonne.
+- Tiens, une note du patron : "T'as encore oublié tes clefs, je les ai mises dans le tiroir du bas -- l'air enervé" -- effet petit echo
+
+12 : Porte chambre (ouverte)
+- Cette chambre... c'est la premiere fois que je la vois et pourtant j'ai l'impression de la connaître dans ses moindres details.
+
+13 : Chaise
+- Je me souviens. Ma grand mère me lisait toujours ce livre avant de dormir, c'était mon préféré. Elle me manque tellement... je donnerai tout pour l'entendre une derniere fois.
+- Un jour, elle m'a dit que lorsqu'on mourrait on rejoingnait les étoiles, alors je lui ai demandé si on était tous né pour mourir, elle m'a dit non, on est tous né pour briller.
+
+14 : Porte salon (fermée)
+- Encore fermé. Il faut que je sorte de ce labyrinthe. Il y a peut être une sortie quelque part ?
+
+15 : Porte fin (fermée)
+- Ça a l'air de bouger. Il n'y a pas de cadenas, mais c'est fermé. Pourquoi cette porte est elle ornée d'une horloge ?
+- Elle semble figé dans le temps.
+- J'entend qu'elle renferme un ancien mécanisme qui semble encore plus étrange que cet endroit.
+
+16 : Porte salon (ouverte) -- légèrement paniqué et dans l'incompréhension
+- Oh merde... C'est ici, c'est ell- c'est chez elle ! La maison de mon enfance, ma grand mère. Comment je me suis retrouvé ici ?
+
+17 : Collier (prendre)
+- Ce collier était a ma grand-mère. Il representait beaucoup pour elle... Elle me manque tant.
+
+18 : Lettre grand-mère
+- Mon petit prince,
+- Si tu lis cette lettre c'est que je ne suis plus de ce monde.
+- Je suis sur que tu as bien grandi depuis ta derniere visite,
+- Je me souviens encore de ton sourire qui rechauffait mon coeur.
+- De cet enfant qui debordait de rêves, d'espoir, de créativité et de talent.
+- J'espere de tout mon coeur que tu as pû suivre ta voie et t'épanouir dans ce monde si cruel. Les regrets sont et seront toujours là. Alors réalise tes rêves pour ne pas en avoir.
+- PS : Si tu as besoin d'un coup de pouce, tu trouveras quelque chose dans le meuble de ton ancienne salle de jeu.
+
+19 : Porte bureau 2 (ouverte)
+- C'était donc moi... je me souviens de cette sensation... ces murs étouffants, cette pièce qui m'enfermait dans cette vie dont j'étais prisonnier. Mais aujourd'hui tout a changé.
+
+20 : Poubelle 2
+- Maintenant je ne veux plus avoir de regrets, je veux suivre ma propre voie pour être heureux, je dois le faire.
+
+21 : Bureau boss (remplie)
+- Voila, ENFIN, c'est fait. Il est temps de repartir de zero, une nouvelle vie m'attend.
+- Ah d'ailleurs j'y pense, ma grand mère avait toujours un double des clefs chez elle, elle les cachait dans la bouche d'aeration... ça pourrait m'etre utile.
+
+22 : Statue (casser)
+- Peut être qu'en voyant ça il se souviendra de mon existence.
+
+23 : Statue (etoile)
+- Qu'est ce que ça fait ici ? Je ne l'avais jamais vu avant
+
+24 : Case derrière porte noel 1 (marcher)
+- C'est noel ici ? Ou sont les guirelandes, les invités, et l'esprit de Noël ?
+- Sans eux, sans ma famille, mes amis, tout parait si vide et melancolique. Seul la tristesse domine ici. J'ai tout perdu, mon travail, ma grand mere, tout ce qui semblait avoir un sens.
+
+25 : Tablette
+- Mes parents m'ont toujours soutenu, dans les pires moment comme dans le meilleurs. 
+- Au point de ma vie ou j'etais seul, ils m'ont rappelé les conseils de ma grand mere.
+- Peut être qu'ils avaient raison et que je devrai reprendre ma vie en main et terminer d'ouvrir cette cage.
+- Je devrai commencer par regarder ce qu'ils m'ont laissé dans le meuble.
+
+26 : Porte atelier (ouverte)
+- L'ancien garage de mes parents. Ils le savaient depuis tout ce temps. Ce que je voulais, ce que je desirais depuis toujours, la liberté.
+- Grace a leur force, j'ai rallumé cette flamme qui s'était eteinte des annees plus tot.
+- J'ai enfin trouvé la force de transformer ce viel endroit en l'atelier d'art de mes reves.
+
+27 : Tableau vide 
+- Je dois maintenant finir ma toile.
+
+28 : Tableau fini (maison)
+- Tout les étés je partais en vacances la bas. Je me souviens encore de l'odeur des fleurs que ma grand mère adorait tant.
+
+29 : Tableau fini (plage)
+- Des enfants ? Mes enfants. Comment ai-je pu les oublier ? Ils sont toute ma vie, ma raison de vivre. 
+
+30 : Porte collier (fermée)
+- Il n'y a pas de cadenas sur cette porte, pourtant elle est fermée.
+
+31 : Case derrière porte collier (ouverte)
+- Je me sens mieux, je me sens bien. Tout ceux que j'aime sont reunis dans un seul et meme endroit, au centre de mon coeur et de ma maison.
+
+32 : Cadeau (poser)
+- Ce cadeau represente tout l'amour que je porte a ceux que j'aime, l'aboutissement de ma nouvelle vie.
+
+33 : Verre (vide)
+- Ce soir c'est mon soir, personne n'aura son verre vide.
+
+34 : Verre (remplir)
+- J'ai passé une très bonne soirée.
+- *bruit de clés de voiture*
+- Maintenant il est temps pour moi de vous quitter.
+
+35 : Exit (ouvrir)
+bruits d'accident, ambulance, hopital avec bip bip - en fond tres loin
+
+- Il est minuit sur l'horloge, j'entend les gonds rouillés se déplacer, vers quoi mène cette porte ?
+*porte completement ouverte + perso qui avance*
+- Je comprend maintenant. Mon temps ici est révolu.
+*écran blanc*
+Quelle a été la raison de ma visite dans ce lieu qui portait tout mes souvenirs les plus sincères, les plus profonds ?
+Peut être que les revoir m'a donné envie d'en créer d'autre. Je me rend compte aujourd'hui que je me trompais,
+l'inverse de la vie c'est pas la mort, non, c'est la peur. Car la peur t'empêche et t'empêchera,
+te stop et te stoppera. Alors même si aujourd'hui la mort me demande de rester avec elle, la peur, elle
+n'a plus sa place dans mon coeur. Ses blessures sont comblées par l'amour de mes proches qui ont su
+m'éloigner de ces craintes qui le tappissait.
+Ce soir là l'horloge s'est arrêté, m'a emené avec elle ici pour me le montrer.
+Ce soir là je vivais peut être mon dernier instant, mais aussi le plus important.
+Ce soir là je me suis souvenu que le soleil était parti mais qu'il reviendra toujours.

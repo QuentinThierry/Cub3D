@@ -1,0 +1,24 @@
+NO ./assets/xpm/test/wallpaper_torn_sale.xpm
+SO ./assets/xpm/test/wall_red_wood.xpm
+WE ./assets/xpm/test/abimee.xpm
+EA ./assets/xpm/test/red_wall_paint_happy_women.xpm
+C ./assets/xpm/test/ceiling.xpm
+F ./assets/xpm/test/floor_wood_plank.xpm
+
+OW_2 ./assets/bureau/e1/bureau_empty
+OE_3 ./assets/enfance/salon/lamp.xpm
+
+OI_% ./assets/bureau/e3/palette_blue.xpm ./assets/bureau/e3/palette_item_blue.xpm
+R_%_K ./assets/bureau/e3/chevalet1_in_progress.xpm ./assets/bureau/e3/chevalet1.xpm
+OI_: ./assets/bureau/e1/lettre_demission.xpm ./assets/bureau/e1/lettre_demission_item.xpm ./assets/bureau/e1/poubelle.xpm ./assets/bureau/e1/poubelle_empty.xpm
+
+
+MAP
+11111111111111111
+10002100000000001
+10E00%01111000001
+100000000K1111101
+100003000001  101
+10:00000001111101
+10000000000000001
+11111111111111111

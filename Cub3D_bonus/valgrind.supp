@@ -1,0 +1,42 @@
+{
+	ignore_pulseaudio
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	obj:*/pulseaudio/*
+}
+
+{
+	ignore_libpulse
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	obj:*/libpulse.so.*
+}
+
+{
+	ignore_dlopen
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	fun:*_dl_open*
+}
+
+{
+   ignore_mouse_hide
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:mlx_mouse_hide
+}
+
+{
+   ignore_mouse_hide
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:_XOpenLC
+   fun:_XrmInitParseInfo
+}
+
+

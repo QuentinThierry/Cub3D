@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:14:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/09 20:38:28 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/12/19 19:09:59 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@
 # define WIN_X 1080 //1920 - 918
 # define WIN_Y 1080 //1080 - 468
 # define CHUNK_SIZE 50
-# define FOV 80
+# define FOV 85
 # define MOUV 1
-# define SPEED 1
+# define SPEED 1.25
 # define SPRINT_BOOST 100
 # define ROTATION 1
 # define TO_RADIAN .0174532

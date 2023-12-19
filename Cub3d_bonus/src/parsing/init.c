@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:29:56 by jvigny            #+#    #+#             */
-/*   Updated: 2023/10/15 20:37:49 by qthierry         ###   ########.fr       */
+/*   Updated: 2023/12/19 17:32:47 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ bool	init_mlx(t_game *game)
 	game->mlx_ptr = mlx_init();
 	if (game->mlx_ptr == NULL)
 		return (false);
-	game->win = mlx_new_window(game->mlx_ptr, WIN_X, WIN_Y, "cub3D");
+	game->win = mlx_new_window(game->mlx_ptr, WIN_X, WIN_Y, "le_dernier_voyage");
 	if (game->win == NULL)
 		return (false);
 	init_mouse(game);

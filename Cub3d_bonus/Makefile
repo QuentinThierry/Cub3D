@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: qthierry <qthierry@student.42.fr>          +#+  +:+       +#+         #
+#    By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/31 18:39:31 by jvigny            #+#    #+#              #
-#    Updated: 2023/10/12 20:03:24 by qthierry         ###   ########.fr        #
+#    Updated: 2023/12/19 17:32:29 by jvigny           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = cub3D_bonus
+NAME = le_dernier_voyage
 
 CC = gcc
-CFLAGS = -g -Wall -Wextra -MMD#-O3#-fsanitize=address,leak,undefined #-Werror
+CFLAGS = -Wall -Wextra -MMD#-O3#-fsanitize=address,leak,undefined #-Werror
 LIBS = -L$(MINILIBX_DIR) -lmlx -lX11 -lXext -lm  -L$(RAUDIO_SRC) -lraudio -ldl -pthread
 INCLUDES = -I$(MINILIBX_HEADERS) -I$(HEADERS_DIR) -I$(RAUDIO_HEADERS)
 

@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 00:16:42 by qthierry          #+#    #+#             */
-/*   Updated: 2023/12/04 14:14:53 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/12/19 18:28:15 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define MINIMAP_PAD 0.05
 // Represents the minimap size equals to a percentage of the total window
 # define MINIMAP_SIZE 0.25
+# define MINIMAP_PLAYER_IMAGE "assets/xpm/mandatory/minimap_player.xpm"
 
 // CONSTANT TAB
 # define PLANE_DIST 0
@@ -61,7 +62,7 @@
 
 // SUBTITLES
 # define SUBTITLE_TIME 5000
-# define MAX_CARACTER 100
+# define MAX_CARACTER 85
 
 // TYPES FOR CELLS
 # define NONE 0b0

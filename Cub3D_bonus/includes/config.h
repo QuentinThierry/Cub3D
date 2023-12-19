@@ -6,7 +6,7 @@
 /*   By: jvigny <jvigny@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:58:02 by qthierry          #+#    #+#             */
-/*   Updated: 2023/12/19 17:34:44 by jvigny           ###   ########.fr       */
+/*   Updated: 2023/12/19 18:26:02 by jvigny           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 # define CONFIG_H
 
 // ----------- WINDOW -------------
-# define WIN_X 1280
-# define WIN_Y 720
+# define WIN_X 1920
+# define WIN_Y 1080
 
 // ----------- PLAYER -----------
 # define SPEED 1
 # define SPRINT_BOOST 1
-# define DFL_FOV 100 // check min is less than min and diff > 0
+# define DFL_FOV 85 // check min is less than min and diff > 0
 # define MIN_FOV 70
 # define MAX_FOV 130
 # define ROTATION_KEYBOARD 125
@@ -51,7 +51,6 @@
 # define MINIMAP_DOOROPEN_COLOR 0x707070
 # define MINIMAP_DOORCLOSE_COLOR 0x656565
 # define PATH_MMAP_PLAYER "../assets/xpm/mandatory/minimap_player.xpm"
-# define MINIMAP_PLAYER_IMAGE "assets/xpm/mandatory/minimap_player.xpm"
 
 // ----------- KEYBINDS -----------
 # define DFL_KEY_LEFT_MOVE 'a'

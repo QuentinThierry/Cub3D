@@ -21,3 +21,20 @@
 	...
 	fun:*_dl_open*
 }
+
+{
+   ignore_mouse_hide
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:mlx_mouse_hide
+}
+
+{
+   ignore_mouse_hide
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:_XOpenLC
+   fun:_XrmInitParseInfo
+}

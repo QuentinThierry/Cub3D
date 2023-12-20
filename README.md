@@ -6,6 +6,25 @@
 
 [Subject Cub3D Project 42](https://cdn.intra.42.fr/pdf/pdf/113971/en.subject.pdf)
 
+## Compilation
+
+```bash
+git clone https://github.com/QuentinThierry/Cub3D.git
+cd Cub3D
+```
+For the mandatory part :
+```bash
+cd Cub3D
+make
+./Cud3B maps/valid.c
+```
+For the bonus part :
+```bash
+cd Cub3D_bonus
+make
+./le_dernier_voyage maps/map_final.c
+```
+
 ## How to create a map ?
 ---
 ### 1.Mandatory part of the map:

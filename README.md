@@ -1,7 +1,33 @@
 # Cub3D
 
-## How to create a map ?
+> This project is inspired by the world-famous Wolfenstein 3D game, which
+> was the first FPS ever. It will enable you to explore ray-casting. Your goal will be to
+> make a dynamic view inside a maze, in which you’ll have to find your way
+
+[Subject Cub3D Project 42](https://cdn.intra.42.fr/pdf/pdf/113971/en.subject.pdf)
+
 ---
+## Compilation
+
+```sh
+git clone https://github.com/QuentinThierry/Cub3D.git && cd Cub3D
+```
+For the mandatory part :
+```sh
+cd Cub3D
+make
+./cub3D maps/valid.cub
+```
+For the bonus part :
+```sh
+cd Cub3D_bonus
+make
+./le_dernier_voyage maps/map_final.cub
+```
+
+---
+## How to create a map ?
+
 ### 1.Mandatory part of the map:
 
 #### In the legend/header:

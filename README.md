@@ -8,21 +8,20 @@
 
 ## Compilation
 
-```bash
-git clone https://github.com/QuentinThierry/Cub3D.git
-cd Cub3D
+```sh
+git clone https://github.com/QuentinThierry/Cub3D.git && cd Cub3D
 ```
 For the mandatory part :
-```bash
+```sh
 cd Cub3D
 make
-./Cud3B maps/valid.c
+./cub3D maps/valid.cub
 ```
 For the bonus part :
-```bash
+```sh
 cd Cub3D_bonus
 make
-./le_dernier_voyage maps/map_final.c
+./le_dernier_voyage maps/map_final.cub
 ```
 
 ## How to create a map ?

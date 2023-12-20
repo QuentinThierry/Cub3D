@@ -6,6 +6,7 @@
 
 [Subject Cub3D Project 42](https://cdn.intra.42.fr/pdf/pdf/113971/en.subject.pdf)
 
+---
 ## Compilation
 
 ```sh
@@ -24,8 +25,9 @@ make
 ./le_dernier_voyage maps/map_final.cub
 ```
 
-## How to create a map ?
 ---
+## How to create a map ?
+
 ### 1.Mandatory part of the map:
 
 #### In the legend/header:

@@ -1,4 +1,9 @@
-# Cub3D
+<h1 align=center>💻 Cub3D</h1>
+<p align="center">
+  <img src="img/cub3d.png?raw=true"/>
+</p>
+
+## About
 
 > This project is inspired by the world-famous Wolfenstein 3D game, which
 > was the first FPS ever. It will enable you to explore ray-casting. Your goal will be to
@@ -7,7 +12,7 @@
 [Subject Cub3D Project 42](https://cdn.intra.42.fr/pdf/pdf/113971/en.subject.pdf)
 
 ---
-## Compilation
+## Setup
 
 ```sh
 git clone https://github.com/QuentinThierry/Cub3D.git && cd Cub3D

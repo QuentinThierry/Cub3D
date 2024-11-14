@@ -11,31 +11,63 @@
 
 [Subject Cub3D Project 42](cub3d.pdf)
 
----
+Create a 3D game using ray-casting and your creativity to generate a compelling visual experience.
+
+## Features
+- **Description**: Move through a 3D maze for an immersive experience.
+- **Feature**:  From a 2D map, generate a 3D maze in a window, allowing players to navigate and explore the storyline.
+- **How to Use**: Launch the program with `./Cub3D` or `./le_dernier_voyage`, and enjoy the game's experience.
+
 ## Setup
 
-```sh
-git clone https://github.com/QuentinThierry/Cub3D.git && cd Cub3D
-```
-For the mandatory part :
-```sh
+**Clone the Repository**:
+```bash
+git clone https://github.com/QuentinThierry/Cub3D.git;
 cd Cub3D
-make
-./cub3D maps/valid.cub
-```
-For the bonus part :
-```sh
-cd Cub3D_bonus
-make
-./le_dernier_voyage maps/map_final.cub
 ```
 
----
+### Mandatory Part
+```bash
+cd Cub3D;
+make
+```
+
+### Bonus Part
+```bash
+cd Cub3D_bonus;
+make
+```
+
+## Usage
+### Mandatory Part
+```bash
+./cub3D maps/valid.cub
+```
+
+### Bonus Part
+```bash
+./le_dernier_voyage maps/map_final.cub
+```
+1. Run the program with a map file as the first argument. The map file must have a `.cub` extension.
+2. A game window will open.
+3. Use `Esc` or the top-right cross to exit the game.
+4. Use the options menu to configure key bindings.
+
+- Controls:
+  - **a/w/s/d** to move.
+  - **left/right arrows** or **mouse** to rotate the view.
+  - **p** to pause the game.
+  - **Space** to open doors.
+  - **Left-click** to interact with objects and locked doors.
+  - Walk over items on the floor to pick them up.
+  - **Left-shift** to sprint
+  - **=/-** to zoom in/out on the minimap
+
 ## How to create a map ?
 
 ### 1.Mandatory part of the map:
 
-#### In the legend/header:
+#### Legend/Header Requirements:
  - **NO** <.xpm file's name>      define the wall's north texture
  - **SO** <.xpm file's name>      define the wall's south texture
  - **EA** <.xpm file's name>      define the wall's east texture
@@ -84,7 +116,7 @@ C 225,30,0
 11110111 1110101 101111010001
 11111111 1111111 111111111111
 ```
----
+
 ### 2.Bonus part of the map:
 
 #### 2.1.Items required in the map

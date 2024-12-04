@@ -3,6 +3,8 @@
   <img src="img/cub3d.png?raw=true"/>
 </p>
 
+<span style="color: #f00000">We strongly recommend you to try *Le dernier voyage* game with bonuses.</span>
+
 ## About
 
 > This project is inspired by the world-famous Wolfenstein 3D game, which
@@ -13,12 +15,8 @@
 
 Create a 3D game using ray-casting and your creativity to generate a compelling visual experience.
 
-## Features
-- **Description**: Move through a 3D maze for an immersive experience.
-- **Feature**:  From a 2D map, generate a 3D maze in a window, allowing players to navigate and explore the storyline.
-- **How to Use**: Launch the program with `./Cub3D` or `./le_dernier_voyage`, and enjoy the game's experience.
-
-## Setup
+<details>
+<summary style="font-size: x-large; font-weight: bold"> Setup and Usage</summary>
 
 **Clone the Repository**:
 ```bash
@@ -46,7 +44,7 @@ make
 
 ### Bonus Part
 ```bash
-./le_dernier_voyage maps/map_final.cub
+./le_dernier_voyage maps/le_dernier_voyage.cub
 ```
 1. Run the program with a map file as the first argument. The map file must have a `.cub` extension.
 2. A game window will open.
@@ -63,7 +61,35 @@ make
   - **Left-shift** to sprint
   - **=/-** to zoom in/out on the minimap
 
-## How to create a map ?
+</details>
+
+---------
+
+## Overview of *Le dernier voyage*'s map
+
+#### 1. General
+- The game has been designed in full ```raycasting```.
+- A particular attention has been given to ```optimization``` with clever C stack/heap utilization.
+- Involved ```maths``` behind the walls, floor/ceiling, objects and blurs have be recreated for the project.
+- All the sprites have been ```hand-made``` based on raw images.
+- ```Audio dialogs``` were recorded by ourselves.
+- The map is ```fully customizable``` and anyone can create one (see [this](#how-to-create-a-map) section)
+
+#### 2. The menu/keybinds
+
+#### 3. Walls, floor and ceiling
+
+#### 4. Doors
+
+#### 5. Objects and interactions
+
+#### 6. Story and subtitles
+
+#### 7. Animated sprites
+
+## How to create a map
+<details>
+<summary style="font-size: large;">Unroll map rules</summary>
 
 ### 1.Mandatory part of the map:
 

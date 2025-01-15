@@ -77,15 +77,39 @@ make
 
 #### 2. The menu/keybinds
 
+Keys can be totally remapped, except for ``Esc`` that will always quit the game. 
+
+![image](https://github.com/user-attachments/assets/64939f87-e05f-4ef3-b2ae-1c13d9174302)
+
 #### 3. Walls, floor and ceiling
+
+Walls, floor and ceiling are drawn with complex raycating mathematics, e.g trigonometry, arctans.
+
+![image](https://github.com/user-attachments/assets/f70992a1-d76a-4733-8dc8-4d3c0620cc4c)
 
 #### 4. Doors
 
+Door's calculation are handly made, they are double doors and can be openned and closed at any time if possible; There is two types of doors, locked and unlocked ones. Locked one can not be close after being openned with an object interaction.
+
+![image](https://github.com/user-attachments/assets/870a3700-d53a-410b-a2db-f894d27f3741)
+
 #### 5. Objects and interactions
+
+Objects will always face the player and are drawn after the raycasting is done. They support simple transparency and can be interacted with on a mouse click.
+Come of them can be pick up, others can receive objects to unlock the ending.
+
+![image](https://github.com/user-attachments/assets/08fcf7b0-0eb7-456b-ba03-9c708b5180f6)
 
 #### 6. Story and subtitles
 
+There is a story behind the game, based on memory and life of a man. The story has been audio recorded and written in french. Subtitles can be found on s creen when a objects, fdoor, or displacement triggers one.
+
+![image](https://github.com/user-attachments/assets/ac0dbbde-2221-4ee6-b498-0904631db93a)
+
+
 #### 7. Animated sprites
+
+
 
 ## How to create a map
 <details>
